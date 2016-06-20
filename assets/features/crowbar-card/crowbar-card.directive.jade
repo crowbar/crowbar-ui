@@ -1,0 +1,9 @@
+md-card.cards.card-fixed-width.crowbar-card
+  img.md-card-image(ng-src='images/works/{{work.thumb}}')  
+  .mask
+    md-card-title
+      md-card-title-text
+        span.md-headline {{work.title}}
+        span.md-subhead 
+          .author-thumb(ng-repeat='authors in work.authors')
+            img(src='images/users/{{authors.thumb}}')

@@ -1,40 +1,15 @@
-const gulp = require('gulp');
-const HubRegistry = require('gulp-hub');
-const browserSync = require('browser-sync');
+// Include gulp
+var gulp = require('gulp');
 
-const conf = require('./conf/gulp.conf');
+// The require-dir module will automatically include all the files in under the
+// gulp/ folder and require() all the modules in this file
+var requireDir = require('require-dir'),
+    dir = requireDir('./gulp');
 
-// Load some files into the registry
-const hub = new HubRegistry([conf.path.tasks('*.js')]);
+// Build
+gulp.task('build', ['jsBowerExtract', 'cssBowerExtract', 'js', 'less', 'images', 'angularStates', 'angularFeatures', 'angularShared', 'watch', 'cleanAssetsHtml']);
 
-// Tell gulp to use the tasks just loaded
-gulp.registry(hub);
-
-gulp.task('inject', gulp.series(gulp.parallel('styles', 'scripts'), 'inject'));
-gulp.task('build', gulp.series('partials', gulp.parallel('inject', 'other'), 'build'));
-gulp.task('test', gulp.series('scripts', 'karma:single-run'));
-gulp.task('test:auto', gulp.series('watch', 'karma:auto-run'));
-gulp.task('serve', gulp.series('inject', 'watch', 'browsersync'));
-gulp.task('serve:dist', gulp.series('default', 'browsersync:dist'));
-gulp.task('default', gulp.series('clean', 'build'));
-gulp.task('watch', watch);
-
-function reloadBrowserSync(cb) {
-  browserSync.reload();
-  cb();
-}
-
-function watch(done) {
-  gulp.watch([
-    conf.path.src('index.html'),
-    'bower.json'
-  ], gulp.parallel('inject'));
-
-  gulp.watch(conf.path.src('app/**/*.html'), reloadBrowserSync);
-  gulp.watch([
-    conf.path.src('**/*.less'),
-    conf.path.src('**/*.css')
-  ], gulp.series('styles'));
-  gulp.watch(conf.path.src('**/*.js'), gulp.series('inject'));
-  done();
-}
+// Default task
+gulp.task('default', ['clean'], function () {
+  gulp.start('build');
+});

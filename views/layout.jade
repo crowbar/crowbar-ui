@@ -1,0 +1,42 @@
+doctype html
+html(ng-app='crowbarApp')
+  head
+    title= title
+    link(rel='stylesheet', href='/css/bower_components.min.css')
+    // Load assets according to NODE_ENV
+    - if (env == 'production') {
+      link(rel='stylesheet', href='/css/app.min.css')
+    - } else {
+      link(rel='stylesheet', href='/css/app.css')
+    - }
+  body
+    crowbar-header
+
+    .container
+      .row
+        .col-xs-12
+          block content
+  
+    script(src='js/bower_components.min.js')
+    - if (env == 'production') {
+      script(src='js/main.min.js')
+    - } else {
+      script(src='js/crowbar-app.module.js')
+    - }
+    // Suse Crowbar Angular application
+    script(src='states/about/about.controller.js')
+
+    // NODE State
+    script(src='states/node/node-dashboard.controller.js')
+    script(src='states/node/node-list.controller.js')
+    script(src='states/node/node-cluster.controller.js')
+    script(src='states/node/node-active-roles.controller.js')
+    script(src='states/node/node-family-groups.controller.js')
+
+    script(src='features/crowbar-header/crowbar-header.module.js')
+    script(src='features/crowbar-header/crowbar-header.directive.js')
+    script(src='features/crowbar-menu/crowbar-menu.module.js')
+    script(src='features/crowbar-menu/crowbar-menu.directive.js')
+    script(src='features/crowbar-card/crowbar-card.module.js')
+    script(src='features/crowbar-card/crowbar-card.directive.js')
+    script(src='shared/services/works.service.js')
