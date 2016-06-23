@@ -7,7 +7,7 @@ var requireDir = require('require-dir'),
     dir = requireDir('./gulp');
 
 // Build
-gulp.task('build', ['jsBowerExtract', 'cssBowerExtract', 'js', 'less', 'images', 'angularStates', 'angularFeatures', 'angularShared', 'watch', 'cleanAssetsHtml']);
+gulp.task('build', ['jsBowerExtract', 'cssBowerExtract', 'js', 'less', 'images', 'fonts', 'angularStates', 'angularFeatures', 'angularShared', 'watch', 'cleanAssetsHtml']);
 
 // Default task
 gulp.task('default', ['clean'], function () {

@@ -1,68 +1,13 @@
 header
-  .navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+  .navbar.navbar-inverse.navbar-fixed-top(role="navigation")
     .container
       .navbar-header
-        button.navbar-toggle(data-target='.navbar-collapse', data-toggle='collapse')
+        button.navbar-toggle(data-target=".navbar-collapse", data-toggle="collapse")
           span.sr-only
             | Navigation
           span.icon-bar
           span.icon-bar
           span.icon-bar
-        a.navbar-brand(ui-sref='node')
-          span.title Crowbar
-      .collapse.navbar-collapse.navbar-right
-        ul.nav.navbar-nav.nav.navbar-nav
-          li.dropdown
-            a.dropdown-toggle(data-toggle='dropdown', data-target='#')
-              | Nodes 
-              b.caret
-            ul.dropdown-menu
-              li
-                a(ui-sref='node') Dashboard
-              li
-                a(ui-sref='node.list') Bulk Edit
-              li
-                a(ui-sref='node.cluster') HA Clusters
-              li
-                a(ui-sref='node.active-roles') Active Roles
-              li
-                a(ui-sref='node.family-groups') Family Groups
-          li.dropdown
-            a.dropdown-toggle(data-toggle='dropdown', data-target='#', href='#')
-              | Network 
-              b.caret
-            ul.dropdown-menu
-              li
-                a(href='/network/switch/default') Switches
-              li
-                a(href='/network/vlan/default') VLANs
-          li.active.dropdown
-            a.dropdown-toggle(data-toggle='dropdown', data-target='#', href='#')
-              | Barclamps 
-              b.caret
-            ul.dropdown-menu
-              li.active.leaf
-                a(href='/crowbar/modules/1.0') All Barclamps
-              li
-                a(href='/crowbar/crowbar/1.0') Crowbar
-              li
-                a(href='/crowbar/openstack/1.0') OpenStack
-          li.dropdown
-            a.dropdown-toggle(data-toggle='dropdown', data-target='#', href='#')
-              | Utilities 
-              b.caret
-            ul.dropdown-menu
-              li
-                a(href='/deployment_queue') Deployment Queue
-              li
-                a(href='/utils/repositories') Repositories
-              li
-                a(href='/utils/backups') Backup & Restore
-              li
-                a(href='/utils') Exported Items
-              li
-                a(href='/swift/dashboard') Swift Dashboard
-              li
-                a(href='/ucs/edit') Cisco UCS
-          li
-            a(href='/docs') Help
+        a.navbar-brand(href="#")
+          span.title SUSE&reg; OpenStack Cloud Crowbar
+

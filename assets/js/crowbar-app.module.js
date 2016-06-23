@@ -20,8 +20,8 @@
       'pascalprecht.translate',
       'angular-loading-bar',
       'crowbarApp.crowbar-header',
-      'crowbarApp.crowbar-menu',
-      'crowbarApp.crowbar-card',
+      'crowbarApp.crowbar-upgrade-steps',
+      'crowbarApp.crowbar-upgrade-nav',
       'crowbarApp.services.works',
       'ui.bootstrap'
       ])
@@ -39,46 +39,57 @@
     //@todo: SOC - Store routing configurations into separate files
     function configureRouter() {
 
-      // For any unmatched url, redirect to /
-      $urlRouterProvider.otherwise('/node/dashboard');
       // Now set up the states
       $stateProvider
-        .state('node', {
-          url: '/node',
-          templateUrl: 'states/node/node-dashboard.html',
-          controller: 'NodeDashboardCtrl',
-          controllerAs: 'nodeDashboardVm'
+        .state('upgrade', {
+          url: '/upgrade',
+          templateUrl: 'states/upgrade/upgrade.html',
+          controller: 'UpgradeCtrl',
+          controllerAs: 'upgradeVm'
         })
-        .state('node.list', {
-          url: '/list',
-          templateUrl: 'states/node/node-list.html',
-          controller: 'NodeListCtrl',
-          controllerAs: 'nodeListVm'
+        .state('upgrade.prepare', {
+          url: '/prepare',
+          templateUrl: 'states/upgrade/prepare.html'
         })
-        .state('node.cluster', {
-          url: '/cluster',
-          templateUrl: 'states/node/node-cluster.html',
-          controller: 'NodeClusterCtrl',
-          controllerAs: 'nodeClusterVm'
+        .state('upgrade.backup', {
+          url: '/backup',
+          templateUrl: 'states/upgrade/backup.html'
         })
-        .state('node.active-roles', {
-          url: '/active-roles',
-          templateUrl: 'states/node/node-active-roles.html',
-          controller: 'NodeActiveRolesCtrl',
-          controllerAs: 'nodeActiveRolesVm'
+        .state('upgrade.reinstall-admin', {
+          url: '/reinstall-admin',
+          templateUrl: 'states/upgrade/reinstall-admin.html'
         })
-        .state('node.family-groups', {
-          url: '/family-groups',
-          templateUrl: 'states/node/node-family-groups.html',
-          controller: 'NodeFamilyGroupsCtrl',
-          controllerAs: 'nodeFamilyGroupsVm'
+        .state('upgrade.continue-upgrade', {
+          url: '/continue-upgrade',
+          templateUrl: 'states/upgrade/continue-upgrade.html'
         })
-        .state('about', {
-          url: '/about',
-          templateUrl: 'states/about/about.html',
-          controller: 'AboutCtrl',
-          controllerAs: 'aboutVm'
+        .state('upgrade.restore-admin', {
+          url: '/restore-admin',
+          templateUrl: 'states/upgrade/restore-admin.html'
+        })
+        .state('upgrade.verify-repos', {
+          url: '/verify-repos',
+          templateUrl: 'states/upgrade/verify-repos.html'
+        })
+        .state('upgrade.stop-openstack-services', {
+          url: '/stop-openstack-services',
+          templateUrl: 'states/upgrade/stop-openstack-services.html'
+        })
+        .state('upgrade.openstack-backup', {
+          url: '/openstack-backup',
+          templateUrl: 'states/upgrade/openstack-backup.html'
+        })
+        .state('upgrade.upgrade-nodes-os', {
+          url: '/upgrade-nodes-os',
+          templateUrl: 'states/upgrade/upgrade-nodes-os.html'
+        })
+        .state('upgrade.finishing-upgrade', {
+          url: '/finishing-upgrade',
+          templateUrl: 'states/upgrade/finishing-upgrade.html'
         });
+
+      // For any unmatched url, redirect to /
+      $urlRouterProvider.otherwise('/node');
     }
 
     //@todo: SOC - Store translation keys into separate files
