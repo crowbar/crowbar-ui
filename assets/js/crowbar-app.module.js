@@ -89,7 +89,7 @@
         });
 
       // For any unmatched url, redirect to /
-      $urlRouterProvider.otherwise('/node');
+      $urlRouterProvider.otherwise('/upgrade/prepare');
     }
 
     //@todo: SOC - Store translation keys into separate files
