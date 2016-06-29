@@ -2,13 +2,13 @@
   'use strict';
 
   angular
-    .module('crowbarApp.crowbar-upgrade-nav')
+    .module('crowbarWidgets')
     .directive('crowbarUpgradeNav', [crowbarUpgradeNav]);
 
   function crowbarUpgradeNav() {
     return {
       restrict: 'E',
-      templateUrl: 'features/crowbar-upgrade-nav/crowbar-upgrade-nav.directive.html',
+      templateUrl: 'app/widgets/crowbar-upgrade-nav/crowbar-upgrade-nav.directive.html',
       scope: {
         steps: '='
       }

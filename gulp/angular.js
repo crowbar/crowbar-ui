@@ -16,25 +16,44 @@ var gulp = require('gulp'),
 var assets = 'assets/',
     destination = 'public/';
 
+// Concatenate & Minify propietary JS
+gulp.task('app', function() {
+  return gulp.src([assets + 'app/*.js'])
+    .pipe(gulpDebug())
+    // - tasks only for production env = NODE_ENV=production gulp
+    // .pipe(production(concat('main.js')))
+    // .pipe(production(rename({suffix: '.min'})))
+    // .pipe(production(uglify()))
+    // -
+    .pipe(gulp.dest(destination + 'app'));
+});
+
 // Copy the entire States, Features and Shared folders, but without .less files (they are already)
 // imported in the app.min.css
-gulp.task('angularStates', ['bower', 'jade2html'], function() {
+gulp.task('angularWidgets', ['bower', 'jade2html'], function() {
   var excludeLess = filter(['**/*.*', '!**/*.less']);
-  return gulp.src(assets + 'states/**/*.*')
+  return gulp.src(assets + 'app/widgets/**/*.*')
     .pipe(excludeLess)
-    .pipe(gulp.dest(destination + 'states'))
+    .pipe(gulp.dest(destination + 'app/widgets'))
 });
 
 gulp.task('angularFeatures', ['bower', 'jade2html'], function() {
   var excludeLess = filter(['**/*.*', '!**/*.less']);
-  return gulp.src(assets + 'features/**/*.*')
+  return gulp.src(assets + 'app/features/**/*.*')
     .pipe(excludeLess)
-    .pipe(gulp.dest(destination + 'features'))
+    .pipe(gulp.dest(destination + 'app/features'))
 });
 
-gulp.task('angularShared', ['bower'], function() {
+gulp.task('angularData', ['bower'], function() {
   var excludeLess = filter(['**/*.*', '!**/*.less']);
-  return gulp.src(assets + 'shared/**/*.*')
+  return gulp.src(assets + 'app/data/**/*.*')
     .pipe(excludeLess)
-    .pipe(gulp.dest(destination + 'shared'))
+    .pipe(gulp.dest(destination + 'app/data'))
+});
+
+gulp.task('angularCore', ['bower'], function() {
+  var excludeLess = filter(['**/*.*', '!**/*.less']);
+  return gulp.src(assets + 'app/core/**/*.*')
+    .pipe(excludeLess)
+    .pipe(gulp.dest(destination + 'app/core'))
 });

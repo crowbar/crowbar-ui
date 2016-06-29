@@ -58,7 +58,7 @@ gulp.task('cssBowerExtract', ['bower'], function() {
   .pipe(gulp.dest(destination + 'css'))
 });
 
-gulp.task('fonts', function() { 
+gulp.task('fontsBowerExtract', function() { 
   return gulp.src(mainBowerFiles({
     overrides: {
         "font-awesome": {
