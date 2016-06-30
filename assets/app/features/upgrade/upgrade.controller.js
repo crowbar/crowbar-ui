@@ -11,91 +11,37 @@
   angular.module('crowbarApp')
     .controller('UpgradeCtrl', UpgradeCtrl);
 
+  UpgradeCtrl.$inject = ['$scope', '$translate', '$state', 'stepsFactory'];
   // @ngInject
-  function UpgradeCtrl($scope, $translate, $state) {
+  function UpgradeCtrl($scope, $translate, $state, stepsFactory) {
     var controller = this,
       steps = {
+        list: [],
+        activeStep: {},
         nextStep: nextStep,
         isLastStep: isLastStep
       };
     controller.steps = steps;
 
-    // @TODO: move this into a Provider!
-    steps.list = [
-      {
-        id: 0,
-        title: 'Prepare Client Node',
-        state: 'upgrade.prepare',
-        active: true,
-        enabled: true
+    stepsFactory.getAll().then(
+      function(stepsResponse) {
+        steps.list = stepsResponse.data;
+        refeshStepsList();
+
       },
-      {
-        id: 1,
-        title: 'Download Upgrade Data',
-        state: 'upgrade.backup',
-        active: false,
-        enabled: false
-      },
-      {
-        id: 2,
-        title: 'Reinstall Admin Server',
-        state: 'upgrade.reinstall-admin',
-        active: false,
-        enabled: false
-      },
-      {
-        id: 3,
-        title: 'Continue Upgrade',
-        state: 'upgrade.continue-upgrade',
-        active: false,
-        enabled: false
-      },
-      {
-        id: 4,
-        title: 'Restore',
-        state: 'upgrade.restore-admin',
-        active: false,
-        enabled: false
-      },
-      {
-        id: 5,
-        title: 'Verify Repositories',
-        state: 'upgrade.verify-repos',
-        active: false,
-        enabled: false
-      },
-      {
-        id: 6,
-        title: 'Stop OpenStack Services',
-        state: 'upgrade.stop-openstack-services',
-        active: false,
-        enabled: false
-      },
-      {
-        id: 7,
-        title: 'Data Backup',
-        state: 'upgrade.openstack-backup',
-        active: false,
-        enabled: false
-      },
-      {
-        id: 8,
-        title: 'Upgrading Nodes OS',
-        state: 'upgrade.upgrade-nodes-os',
-        active: false,
-        enabled: false
-      },
-      {
-        id: 9,
-        title: 'Finishing Upgrade',
-        state: 'upgrade.finishing-upgrade',
-        active: false,
-        enabled: false
+      function(errorResponse) {
+        console.log(errorResponse);
+
       }
-    ];
+    );
 
     // Watch for view changes on the Step in order to update the steps list.
-    $scope.$on('$viewContentLoaded', function(event) {
+    $scope.$on('$viewContentLoaded', refeshStepsList);
+
+    /**
+     * Refresh the list of steps and active step models
+     */
+    function refeshStepsList() {
       steps.activeStep = steps.list[0];
       var currentState = $state.current.name,
         isCompletedStep = true;
@@ -112,7 +58,7 @@
           steps.list[i].enabled = isCompletedStep;
         }
       }
-    });
+    };
 
     /**
      * Move to the next available Step
@@ -122,14 +68,14 @@
       if (steps.isLastStep()) {
         return;
       }
-      steps.activeStep.active = false;
-      steps.activeStep.enabled = true;
+      controller.steps.activeStep.active = false;
+      controller.steps.activeStep.enabled = true;
 
-      steps.activeStep = steps.list[steps.activeStep.id + 1];
-      steps.activeStep.active = true;
-      steps.activeStep.enabled = true;
+      controller.steps.activeStep = controller.steps.list[controller.steps.activeStep.id + 1];
+      controller.steps.activeStep.active = true;
+      controller.steps.activeStep.enabled = true;
 
-      $state.go(steps.activeStep.state);
+      $state.go(controller.steps.activeStep.state);
     };
 
     /**
@@ -137,7 +83,7 @@
      * @return boolean
      */
     function isLastStep() {
-      return steps.list[steps.list.length - 1] === steps.activeStep;
+      return controller.steps.list[steps.list.length - 1] === controller.steps.activeStep;
     }
   }
 })();
