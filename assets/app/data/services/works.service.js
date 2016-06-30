@@ -1,7 +1,7 @@
 (function() {
 
   angular
-    .module('crowbarApp.services.works', [])
+    .module('crowbarData')
     .factory('worksFactory', worksFactory);
 
   /* @ngInject */

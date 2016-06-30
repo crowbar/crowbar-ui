@@ -19,18 +19,26 @@ html(ng-app='crowbarApp')
 
     script(src='js/bower_components.min.js')
     - if (env == 'production') {
-      script(src='js/main.min.js')
+      script(src='app/main.min.js')
     - } else {
-      script(src='js/crowbar-app.module.js')
+      script(src='app/crowbar-app.module.js')
     - }
 
-    // UPGRADE State
-    script(src='states/upgrade/upgrade.controller.js')
-    script(src='features/crowbar-upgrade-steps/crowbar-upgrade-steps.module.js')
-    script(src='features/crowbar-upgrade-steps/crowbar-upgrade-steps.directive.js')
-    script(src='features/crowbar-upgrade-nav/crowbar-upgrade-nav.module.js')
-    script(src='features/crowbar-upgrade-nav/crowbar-upgrade-nav.directive.js')
+    // Crowbar Core
+    script(src='app/core/crowbar-core.module.js')
 
-    script(src='features/crowbar-header/crowbar-header.module.js')
-    script(src='features/crowbar-header/crowbar-header.directive.js')
-    script(src='shared/services/works.service.js')
+    // Crowbar Data
+    script(src='app/data/crowbar-data.module.js')
+    script(src='app/data/services/works.service.js')
+
+    // Crowbar Widgets
+    script(src='app/widgets/crowbar-widgets.module.js')
+    script(src='app/widgets/crowbar-upgrade-steps/crowbar-upgrade-steps.directive.js')
+    script(src='app/widgets/crowbar-upgrade-nav/crowbar-upgrade-nav.directive.js')
+    script(src='app/widgets/crowbar-header/crowbar-header.directive.js')
+
+    // Crowbar Features
+    // Upgrade State
+    script(src='app/features/upgrade/upgrade.module.js')
+    script(src='app/features/upgrade/upgrade.config.js')
+    script(src='app/features/upgrade/upgrade.controller.js')

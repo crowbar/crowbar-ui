@@ -1,0 +1,11 @@
+.panel.panel-default.upgrade-flow
+  .panel-heading
+    h1 SUSE&reg; OpenStack Cloud Crowbar: Upgrade from SUSE OpenStack Cloud 5
+  .panel-body
+    .row
+      .col-lg-3
+        crowbar-upgrade-steps(steps='upgradeVm.steps.list')
+      .col-lg-9
+        div(ui-view='')
+  .panel-footer
+    crowbar-upgrade-nav.clearfix(steps='upgradeVm.steps')

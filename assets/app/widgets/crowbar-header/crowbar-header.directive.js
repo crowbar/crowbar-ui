@@ -2,13 +2,13 @@
   'use strict';
 
   angular
-    .module('crowbarApp.crowbar-header')
+    .module('crowbarWidgets')
     .directive('crowbarHeader', crowbarHeader);
 
   function crowbarHeader() {
     return {
       restrict: 'E',
-      templateUrl: 'features/crowbar-header/crowbar-header.directive.html'
+      templateUrl: 'app/widgets/crowbar-header/crowbar-header.directive.html'
     };
   }
 })();
