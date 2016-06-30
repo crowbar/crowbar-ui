@@ -24,5 +24,5 @@ gulp.task('build', [
 
 // Default task
 gulp.task('default', ['clean'], function () {
-	gulp.start('build');
+  gulp.start('build');
 });

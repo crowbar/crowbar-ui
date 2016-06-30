@@ -94,27 +94,25 @@
       }
     ];
 
-    /*
-     * Validate If the current state is the initial one.
-     * If not, update the steps list and active steps to the current one.
-     */
-    if ($state.is(steps.list[0].state)) {
+    // Watch for view changes on the Step in order to update the steps list.
+    $scope.$on('$viewContentLoaded', function(event) {
       steps.activeStep = steps.list[0];
-    } else {
-      steps.activeStep = steps.list[0];
-      var currentState = $state.current.name;
+      var currentState = $state.current.name,
+        isCompletedStep = true;
+
       for (var i = 0; i < steps.list.length; i++) {
         if (steps.list[i].state === currentState) {
           steps.activeStep = steps.list[i];
           steps.activeStep.active = true;
-          steps.activeStep.enabled = true;
-          break;
+          steps.activeStep.enabled = isCompletedStep;
+          isCompletedStep = false;
+
         } else {
           steps.list[i].active = false;
-          steps.list[i].enabled = true;
+          steps.list[i].enabled = isCompletedStep;
         }
       }
-    }
+    });
 
     /**
      * Move to the next available Step
