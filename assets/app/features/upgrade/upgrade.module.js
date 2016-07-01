@@ -1,5 +1,6 @@
 (function () {
     'use strict';
 
-    angular.module('crowbarApp.upgrade', []);
+    angular
+      .module('crowbarApp.upgrade', []);
 })();
