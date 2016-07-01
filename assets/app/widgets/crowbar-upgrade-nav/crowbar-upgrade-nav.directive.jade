@@ -1,13 +1,3 @@
-// Breadcrumbs menu for debug
-ol.breadcrumb
-  li
-    a(ui-sref="upgrade") Upgrade
-  li
-    a(ui-sref="upgrade.prepare") Prepare Nodes
-  li
-    a(ui-sref="upgrade.backup") Backup
-    li.active Reinstall Admin Server
-
 button.btn.btn-primary.pull-right(type='button', ng-click="steps.nextStep()", ng-if="!steps.isLastStep()")
   span.fa-fw.fa.fa-chevron-right(aria-hidden="true")
   | Continue Upgrade Process
