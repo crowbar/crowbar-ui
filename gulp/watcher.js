@@ -14,7 +14,9 @@ gulp.task('watch', function() {
     gulp.watch(assets + 'app/*.js', ['app']);
     gulp.watch(assets + 'app/core/**/*.js', ['angularCore']);
     gulp.watch(assets + 'app/features/**/*.js', ['angularFeatures']);
+    gulp.watch(assets + 'app/features/**/*.json', ['angularFeatures']);
     gulp.watch(assets + 'app/widgets/**/*.js', ['angularWidgets']);
+    gulp.watch(assets + 'app/widgets/**/*.json', ['angularWidgets']);
     gulp.watch(assets + 'app/data/**/*.js', ['angularData']);
 
     // Watch .css files
