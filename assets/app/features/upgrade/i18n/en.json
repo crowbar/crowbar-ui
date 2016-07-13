@@ -1,6 +1,6 @@
 {
   "upgrade": {
-    "title": "SUSE&reg; OpenStack Cloud Crowbar: Upgrade from SUSE OpenStack Cloud 5",
+    "title": "SUSE&reg; OpenStack Cloud Non-Disruptive Upgrade",
     "steps": {
       "prepare": {
         "name": "Prepare Client Node",
@@ -15,7 +15,6 @@
       },
       "backup": {
         "name": "Download Upgrade Data",
-        "": "",
         "title": "Download the Upgrade Data",
         "description": "This step will create a tar archive with all relevant data to restore your setup later on the SUSE OpenStack Cloud 6 Administration Server. Click 'Download Upgrade Data' and keep that tar archive in a secure place. You will be asked to upload it later on in the process. After you downloaded and saved the upgrade data click 'Continue Upgrade Process'."
       },
@@ -79,6 +78,40 @@
           "remaining": "Nodes Left",
           "failed": "Nodes Failed"
         }
+      }
+    }
+  },
+  "upgrade7": {
+    "title": "SUSE&reg; OpenStack Cloud Non-Disruptive Upgrade",
+    "steps": {
+      "landing": {
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "description2": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "form": {
+          "button": "Begin Upgrade"
+        }
+      },
+      "backup": {
+        "name": "Back up Admin Server",
+        "title": "Backing up configuration of Administration Server",
+        "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "form": {
+          "backup": "Create Backup"
+        }
+      }
+    },
+    "errors": {
+      "prechecks": {
+        "title": "Preliminary checks failed!",
+        "description": "Please see the information below in order to prepare your system for an upgrade:",
+        "form": {
+          "check-again": "Check again"
+        }
+      },
+      "codes": {
+        "001": "The bits are flowing slowly today",
+        "002": "Your main hamster is spinning slowly",
+        "003": "The server is powered by a lemon and two electrodes"
       }
     }
   }
