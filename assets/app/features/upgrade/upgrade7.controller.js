@@ -14,14 +14,13 @@
   Upgrade7Ctrl.$inject = ['$scope', '$translate', '$state', 'stepsFactory', 'prechecksFactory'];
   // @ngInject
   function Upgrade7Ctrl($scope, $translate, $state, stepsFactory, prechecksFactory) {
-    var controller = this,
-      steps = {
+    var controller = this;
+    controller.steps = {
         list: [],
         activeStep: {},
         nextStep: nextStep,
         isLastStep: isLastStep
       };
-    controller.steps = steps;
 
     controller.prechecks = {
       completed: false,
