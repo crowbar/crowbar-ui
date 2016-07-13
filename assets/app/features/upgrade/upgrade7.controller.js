@@ -6,7 +6,7 @@
    * @name crowbarApp.controller:Upgrade7Ctrl
    * @description
    * # Upgrade7Ctrl
-   * Controller of the crowbarApp
+   * This is the controller that will be used across the upgrade process.
    */
   angular.module('crowbarApp')
     .controller('Upgrade7Ctrl', Upgrade7Ctrl);
@@ -23,19 +23,21 @@
       };
     controller.steps = steps;
 
-    controller.removeErrors = function() {
-      delete controller.errors;
+    controller.prechecks = {
+      completed: false,
+      runPrechecks: runPrechecks
     };
 
-    prechecksFactory.getAll(true).then(
-      function(prechecksResponse) {
+    //@TODO: Remove this once the precheck integration is completed.
+    controller.forcePrecheckFailure = true;
 
-      },
-      function(errorPrechecksResponse) {
-        controller.errors = errorPrechecksResponse.data.errors;
-      }
-    );
+    //Run prechecks
+    controller.prechecks.runPrechecks(controller.forcePrecheckFailure);
 
+    //@TODO: Remove this once the precheck integration is completed.
+    controller.forcePrecheckFailure = false;
+
+    // Get Steps list from provider
     stepsFactory.getAll().then(
       function(stepsResponse) {
         steps.list = stepsResponse.data;
@@ -98,5 +100,28 @@
     function isLastStep() {
       return controller.steps.list[steps.list.length - 1] === controller.steps.activeStep;
     }
+
+    /**
+     * Pre validation checks
+     */
+    function runPrechecks(forceFailure = false) {
+      prechecksFactory
+        .getAll(forceFailure)
+        .then(
+          //Success handler. Al precheck passed successfully:
+          function(prechecksResponse) {
+            delete controller.prechecks.errors;
+          },
+          //Failure handler:
+          function(errorPrechecksResponse) {
+            controller.prechecks.errors = errorPrechecksResponse.data.errors;
+          }
+        ).finally(
+          function() {
+            controller.prechecks.completed = true;
+          }
+        );
+
+    };
   }
 })();
