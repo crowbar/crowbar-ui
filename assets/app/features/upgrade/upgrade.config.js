@@ -10,11 +10,28 @@
   // @ngInject
   function configuration($stateProvider, $urlRouterProvider, $translateProvider) {
 
-console.log($translateProvider);
     /**
      * Configure States, Views and Urls
      */
     $stateProvider
+      .state('upgrade7-landing', {
+        url: '/upgrade7/landing',
+        templateUrl: 'app/features/upgrade/templates/upgrade7/landing.html',
+        controller: 'Upgrade7Ctrl',
+        controllerAs: 'upgradeVm'
+      })
+      .state('upgrade7', {
+        url: '/upgrade7',
+        templateUrl: 'app/features/upgrade/templates/upgrade7/upgrade.html',
+        controller: 'Upgrade7Ctrl',
+        controllerAs: 'upgradeVm'
+      })
+      .state('upgrade7.backup', {
+        url: '/backup',
+        templateUrl: 'app/features/upgrade/templates/upgrade7/backup.html'
+      })
+
+
       .state('upgrade', {
         url: '/upgrade',
         templateUrl: 'app/features/upgrade/templates/upgrade.html',

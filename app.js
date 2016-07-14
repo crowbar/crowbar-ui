@@ -8,6 +8,8 @@ var express = require('express'),
   //Routes
   index = require('./routes/index'),
   steps = require('./routes/api/steps'),
+  upgrade7Steps = require('./routes/api/upgrade7/steps'),
+  upgrade7Prechecks = require('./routes/api/upgrade7/prechecks'),
 
   app = express();
 
@@ -25,6 +27,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/api/steps', steps);
+app.use('/api/upgrade7/steps', upgrade7Steps);
+app.use('/api/upgrade7/prechecks', upgrade7Prechecks);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
