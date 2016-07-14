@@ -11,9 +11,9 @@
   angular.module('crowbarApp')
     .controller('Upgrade7Ctrl', Upgrade7Ctrl);
 
-  Upgrade7Ctrl.$inject = ['$scope', '$translate', '$state', 'stepsFactory', 'prechecksFactory'];
+  Upgrade7Ctrl.$inject = ['$scope', '$translate', '$state', 'upgradeStepsFactory', 'prechecksFactory'];
   // @ngInject
-  function Upgrade7Ctrl($scope, $translate, $state, stepsFactory, prechecksFactory) {
+  function Upgrade7Ctrl($scope, $translate, $state, upgradeStepsFactory, prechecksFactory) {
     var controller = this;
     controller.steps = {
         list: [],
@@ -37,9 +37,9 @@
     controller.forcePrecheckFailure = false;
 
     // Get Steps list from provider
-    stepsFactory.getAll().then(
+    upgradeStepsFactory.getAll().then(
       function(stepsResponse) {
-        steps.list = stepsResponse.data;
+        controller.steps.list = stepsResponse.data;
         refeshStepsList();
 
       },
@@ -56,20 +56,20 @@
      * Refresh the list of steps and active step models
      */
     function refeshStepsList() {
-      steps.activeStep = steps.list[0];
+      controller.steps.activeStep = controller.steps.list[0];
       var currentState = $state.current.name,
         isCompletedStep = true;
 
-      for (var i = 0; i < steps.list.length; i++) {
-        if (steps.list[i].state === currentState) {
-          steps.activeStep = steps.list[i];
-          steps.activeStep.active = true;
-          steps.activeStep.enabled = isCompletedStep;
+      for (var i = 0; i < controller.steps.list.length; i++) {
+        if (controller.steps.list[i].state === currentState) {
+          controller.steps.activeStep = controller.steps.list[i];
+          controller.steps.activeStep.active = true;
+          controller.steps.activeStep.enabled = isCompletedStep;
           isCompletedStep = false;
 
         } else {
-          steps.list[i].active = false;
-          steps.list[i].enabled = isCompletedStep;
+          controller.steps.list[i].active = false;
+          controller.steps.list[i].enabled = isCompletedStep;
         }
       }
     };
@@ -79,7 +79,7 @@
      */
     function nextStep() {
       // Only move forward if active step isn't last step available
-      if (steps.isLastStep()) {
+      if (controller.steps.isLastStep()) {
         return;
       }
       controller.steps.activeStep.active = false;
@@ -97,7 +97,7 @@
      * @return boolean
      */
     function isLastStep() {
-      return controller.steps.list[steps.list.length - 1] === controller.steps.activeStep;
+      return controller.steps.list[controller.steps.list.length - 1] === controller.steps.activeStep;
     }
 
     /**

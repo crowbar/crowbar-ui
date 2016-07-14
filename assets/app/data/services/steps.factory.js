@@ -4,6 +4,7 @@
     .module('crowbarData')
     .factory('stepsFactory', stepsFactory);
 
+  stepsFactory.$inject = ['$q', '$http'];
   /* @ngInject */
   function stepsFactory($q, $http) {
     var factory = {

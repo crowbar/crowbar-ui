@@ -4,6 +4,7 @@
     .module('crowbarData')
     .factory('prechecksFactory', prechecksFactory);
 
+  prechecksFactory.$inject = ['$q', '$http'];
   /* @ngInject */
   function prechecksFactory($q, $http) {
     var factory = {

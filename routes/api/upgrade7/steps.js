@@ -4,71 +4,43 @@ router = express.Router();
 var steps = [
   {
     id: 0,
-    title: 'Prepare Client Node',
-    state: 'upgrade.prepare',
+    title: 'Backup Admin Node',
+    state: 'upgrade7.backup',
     active: true,
     enabled: true
   },
   {
     id: 1,
-    title: 'Download Upgrade Data',
-    state: 'upgrade.backup',
+    title: 'Repositories check',
+    state: 'upgrade7.verify-repos',
     active: false,
     enabled: false
   },
   {
     id: 2,
-    title: 'Reinstall Admin Server',
-    state: 'upgrade.reinstall-admin',
+    title: 'Upgrade Admin Server',
+    state: 'upgrade7.upgrade-admin',
     active: false,
     enabled: false
   },
   {
     id: 3,
-    title: 'Continue Upgrade',
-    state: 'upgrade.continue-upgrade',
+    title: 'Database Configuration',
+    state: 'upgrade7.databse',
     active: false,
     enabled: false
   },
   {
     id: 4,
-    title: 'Restore',
-    state: 'upgrade.restore-admin',
+    title: 'Migrate OpenStack Database',
+    state: 'upgrade7.migrate-openstack-database',
     active: false,
     enabled: false
   },
   {
     id: 5,
-    title: 'Verify Repositories',
-    state: 'upgrade.verify-repos',
-    active: false,
-    enabled: false
-  },
-  {
-    id: 6,
-    title: 'Stop OpenStack Services',
-    state: 'upgrade.stop-openstack-services',
-    active: false,
-    enabled: false
-  },
-  {
-    id: 7,
-    title: 'Data Backup',
-    state: 'upgrade.openstack-backup',
-    active: false,
-    enabled: false
-  },
-  {
-    id: 8,
-    title: 'Upgrading Nodes OS',
-    state: 'upgrade.upgrade-nodes-os',
-    active: false,
-    enabled: false
-  },
-  {
-    id: 9,
-    title: 'Finishing Upgrade',
-    state: 'upgrade.finishing-upgrade',
+    title: 'Finish Upgrade',
+    state: 'upgrade7.finish-upgrade',
     active: false,
     enabled: false
   }
