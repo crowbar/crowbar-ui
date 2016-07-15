@@ -5,10 +5,10 @@ var errors = ['001', '002', '003'];
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  if(req.query.fail) {
+  if('fail' in req.query && JSON.parse(req.query.fail) === true) {
     res.status(500).json({'errors': errors});
   } else {
-    res.status(200);
+    res.sendStatus(200);
   }
 });
 
