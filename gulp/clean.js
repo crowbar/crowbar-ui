@@ -13,7 +13,7 @@ gulp.task('clean', function () {
 });
 
 // Clean the built files to start a fresh building
-gulp.task('cleanAssetsHtml', ['angularStates', 'angularFeatures', 'angularShared'], function () {
-  return gulp.src(assets + '**/*.html', {read: false})
+gulp.task('cleanAssetsHtml', ['angularWidgets', 'angularFeatures', 'angularData', 'angularCore'], function () {
+  return gulp.src(assets + 'app/**/*.html', {read: false})
     .pipe(clean());
 });

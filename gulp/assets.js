@@ -15,37 +15,25 @@ var gulp = require('gulp'),
 
 // Define main directories
 var assets = 'assets/',
-    destination = 'public/',
-    production = environments.production;
-
-// Concatenate & Minify propietary JS
-gulp.task('js', function() {
-  return gulp.src([assets + 'js/*.js'])
-    .pipe(gulpDebug())
-    // - tasks only for production env = NODE_ENV=production gulp
-    .pipe(production(concat('main.js')))
-    .pipe(production(rename({suffix: '.min'})))
-    .pipe(production(uglify()))
-    // -
-    .pipe(gulp.dest(destination + 'js'));
-});
+    destination = 'public/';
+    // production = environments.production;
 
 // Preprocess CSS and minify it
 gulp.task('less', function () {
   return gulp.src(assets + '**/*.less')
     .pipe(gulpDebug())
     .pipe(lessImport('app.less'))
-    .pipe(less({ paths: [assets + 'less', assets + 'states']}))
+    .pipe(less({ paths: [assets + 'content/less', assets + 'app/features']}))
     // - tasks only for production env = NODE_ENV=production gulp
-    .pipe(production(rename({suffix: '.min'})))
-    .pipe(production(minifyCss()))
+    // .pipe(production(rename({suffix: '.min'})))
+    // .pipe(production(minifyCss()))
     // -
     .pipe(gulp.dest(destination + 'css'));
 });
 
 // Images optimization
 gulp.task('images', function() {
-  return gulp.src(assets + 'images/**/*')
+  return gulp.src(assets + 'content/images/**/*')
     .pipe(gulpDebug())
     .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
     .pipe(gulp.dest(destination + 'images'));

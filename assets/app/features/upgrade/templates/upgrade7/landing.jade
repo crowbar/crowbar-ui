@@ -1,0 +1,13 @@
+uib-alert(type="danger", ng-if="upgradeVm.prechecks.errors")
+  h4(translate='') upgrade7.errors.prechecks.title
+  span(translate='') upgrade7.errors.prechecks.description
+  ul
+    li(ng-repeat="error in upgradeVm.prechecks.errors", translate='upgrade7.errors.codes.{{::error}}')
+  button.btn.btn-default.btn-sm(translate='', ng-click="upgradeVm.prechecks.runPrechecks()") upgrade7.errors.prechecks.form.check-again
+.panel.panel-default.upgrade-flow
+  .panel-heading
+    h1(translate='upgrade7.title') Suse Upgrade
+  .panel-body
+    p(translate='') upgrade7.steps.landing.description
+    p(translate='') upgrade7.steps.landing.description2
+    button.btn.btn-success.center-block.btn-lg(translate='', ng-class="{disabled: !upgradeVm.prechecks.completed || upgradeVm.prechecks.errors}") upgrade7.steps.landing.form.button
