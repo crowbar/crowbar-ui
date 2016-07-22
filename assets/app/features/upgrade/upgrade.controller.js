@@ -3,12 +3,12 @@
 
   /**
    * @ngdoc function
-   * @name crowbarApp.controller:UpgradeCtrl
+   * @name crowbarApp.upgrade.controller:UpgradeCtrl
    * @description
    * # UpgradeCtrl
    * Controller of the crowbarApp
    */
-  angular.module('crowbarApp')
+  angular.module('crowbarApp.upgrade')
     .controller('UpgradeCtrl', UpgradeCtrl);
 
   UpgradeCtrl.$inject = ['$scope', '$translate', '$state', 'stepsFactory'];

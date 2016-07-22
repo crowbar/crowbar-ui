@@ -8,7 +8,7 @@
    * # Upgrade7Ctrl
    * This is the controller that will be used across the upgrade process.
    */
-  angular.module('crowbarApp')
+  angular.module('crowbarApp.upgrade')
     .controller('Upgrade7Ctrl', Upgrade7Ctrl);
 
   Upgrade7Ctrl.$inject = ['$scope', '$translate', '$state', 'upgradeStepsFactory', 'prechecksFactory'];

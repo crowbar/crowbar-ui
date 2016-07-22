@@ -21,7 +21,7 @@
           {
             id: 1,
             title: 'Repositories check',
-            state: 'upgrade7.verify-repos',
+            state: 'upgrade7.repository-checks',
             active: false,
             enabled: false
           },
