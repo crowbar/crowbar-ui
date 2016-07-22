@@ -1,4 +1,4 @@
-# Welcome to Crowbar Angular Prototipe
+# Welcome to Crowbar Angular Prototype
 
 ##### First steps to have the app running locally for PRODUCTION ENV only:
 
