@@ -11,7 +11,7 @@
   angular.module('crowbarApp')
     .controller('Upgrade7BackupCtrl', Upgrade7BackupCtrl);
 
-  Upgrade7LandingCtrl.$inject = ['$scope', '$translate', '$state'];
+  Upgrade7BackupCtrl.$inject = ['$scope', '$translate', '$state'];
   // @ngInject
   function Upgrade7BackupCtrl($scope, $translate, $state) {
     var controller = this;

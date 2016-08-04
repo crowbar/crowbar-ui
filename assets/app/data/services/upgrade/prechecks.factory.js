@@ -17,7 +17,8 @@
     };
 
     return factory;
-    function getStepsFactory(forceFailure = false) {
+
+    function getStepsFactory(forceFailure) {
 
       var requestOptions = {
         method: 'GET',

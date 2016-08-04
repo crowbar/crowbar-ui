@@ -46,7 +46,7 @@
     /**
      * Pre validation checks
      */
-    function runPrechecks(forceFailure = false) {
+    function runPrechecks(forceFailure) {
       prechecksFactory
         .getAll(forceFailure)
         .then(

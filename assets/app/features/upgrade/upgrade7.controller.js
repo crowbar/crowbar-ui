@@ -103,7 +103,7 @@
     /**
      * Pre validation checks
      */
-    function runPrechecks(forceFailure = false) {
+    function runPrechecks() {
       prechecksFactory
         .getAll(forceFailure)
         .then(
