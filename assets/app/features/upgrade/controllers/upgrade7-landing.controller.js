@@ -19,24 +19,34 @@
 
     controller.prechecks = {
       completed: false,
-      runPrechecks: runPrechecks
+      runPrechecks: runPrechecks,
+      checks: [
+        {
+          code: '001',
+          status: true
+        },
+        {
+          code: '002',
+          status: false
+        },
+        {
+          code: '003',
+          status: true
+        }
+      ],
+      valid: false,
+      button: 'upgrade'
     };
 
-    //@TODO: Remove this once the precheck integration is completed.
-    controller.forcePrecheckFailure = true;
-
     //Run prechecks
-    controller.prechecks.runPrechecks(controller.forcePrecheckFailure);
-
-    //@TODO: Remove this once the precheck integration is completed.
-    controller.forcePrecheckFailure = false;
+    //controller.prechecks.runPrechecks();
 
     /**
      * Move to the next available Step
      */
     function beginUpdate() {
       // Only move forward if all prechecks has been executed and passed.
-      if (!controller.prechecks.completed || controller.prechecks.errors) {
+      if (!controller.prechecks.completed || !controller.prechecks.valid) {
         return;
       }
 
@@ -47,12 +57,13 @@
      * Pre validation checks
      */
     function runPrechecks(forceFailure = false) {
+
       prechecksFactory
         .getAll(forceFailure)
         .then(
           //Success handler. Al precheck passed successfully:
           function(prechecksResponse) {
-            delete controller.prechecks.errors;
+            //delete controller.prechecks.errors;
           },
           //Failure handler:
           function(errorPrechecksResponse) {
@@ -61,9 +72,17 @@
         ).finally(
           function() {
             controller.prechecks.completed = true;
+
+            for(var i=0; i<controller.prechecks.checks.length; i++) {
+              if(!controller.prechecks.checks[i].status){
+                controller.prechecks.valid = false;
+                return;
+              } else {
+                controller.prechecks.valid = true;
+              }
+            }
           }
         );
-
     };
   }
 })();

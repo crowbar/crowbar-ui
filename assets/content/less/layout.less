@@ -6,7 +6,79 @@
 body {
   font: @default-font;
   padding-top: 70px;
+  background: @body-bg;
+  font-size: 14px;
+  color: @body-fg;
 }
+
+.panel-default {
+  border: 0px;
+  background: none;
+  box-shadow: none;
+  .panel-heading{
+    background: none;
+    border: 0px;
+    h1 {
+      margin: 0px;
+      font-size: 19px;
+      color: @panel-heading-fg;
+    }
+  }
+  
+  ul.requirements-list {
+    margin-top: 15px;
+    li {
+      margin: 7px 0px;
+    }
+  }
+
+  h4 {
+    margin-top: 25px;
+    font-size: 17px;
+  }
+
+  .checks-container {
+    border: @container-border;
+    padding: 20px;
+    background: @checks-container-bg;
+    border-radius: 3px;
+    p {
+      margin: 5px 0px 20px 0px; 
+    }
+    ul {
+      padding-left: 10px;
+      margin-bottom: 20px;
+      li {
+        list-style: none;
+        padding: 0px;
+        margin: 10px 0px;
+        font-weight: bold;
+        span {
+          margin-right: 7px;
+        }
+      }
+    }
+  }
+  .text-info {        
+    color: @info-text; 
+  }
+  .text-danger {
+    color: @danger-text;
+  }
+  .text-success {
+    color: @success-text;
+  }
+  .note-msg {
+    text-align: center;
+    margin: 0px  auto; 
+    margin-top: 15px;
+    margin-bottom: 20px;
+    font-style: italic;
+    width: 85%;
+    font-weight: bold;
+  }
+}
+
 
 
 /* End= layout.less */
