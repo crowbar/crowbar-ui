@@ -10,4 +10,4 @@ uib-alert(type="danger", ng-if="Upgrade7LandingVm.prechecks.errors")
   .panel-body
     p(translate='') upgrade7.steps.landing.description
     p(translate='') upgrade7.steps.landing.description2
-    button.btn.btn-success.center-block.btn-lg(translate='', ng-class="{disabled: !Upgrade7LandingVm.prechecks.completed || Upgrade7LandingVm.prechecks.errors}", ng-click="Upgrade7LandingVm.beginUpdate()") upgrade7.steps.landing.form.button
+    button.btn.btn-success.center-block.btn-lg(translate='', ng-class="{disabled: !Upgrade7LandingVm.prechecks.completed || Upgrade7LandingVm.prechecks.errors}", ng-click="Upgrade7LandingVm.beginUpgrade()") upgrade7.steps.landing.form.button

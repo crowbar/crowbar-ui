@@ -31,6 +31,8 @@
     "angular-translate-loader-partial": "^2.11.0"
   },
   "devDependencies": {
-    "angular-mocks": "^1.5.8"
+    "angular-mocks": "^1.5.8",
+    "bardjs": "^0.1.8",
+    "sinon": "http://sinonjs.org/releases/sinon-1.17.5.js"
   }
 }

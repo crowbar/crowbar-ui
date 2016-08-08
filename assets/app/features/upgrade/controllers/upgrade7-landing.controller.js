@@ -11,11 +11,11 @@
   angular.module('crowbarApp')
     .controller('Upgrade7LandingCtrl', Upgrade7LandingCtrl);
 
-  Upgrade7LandingCtrl.$inject = ['$scope', '$translate', '$state', 'prechecksFactory'];
+  Upgrade7LandingCtrl.$inject = ['$translate', '$state', 'prechecksFactory'];
   // @ngInject
-  function Upgrade7LandingCtrl($scope, $translate, $state, prechecksFactory) {
+  function Upgrade7LandingCtrl($translate, $state, prechecksFactory) {
     var controller = this;
-    controller.beginUpdate = beginUpdate;
+    controller.beginUpgrade = beginUpgrade;
 
     controller.prechecks = {
       completed: false,
@@ -34,7 +34,7 @@
     /**
      * Move to the next available Step
      */
-    function beginUpdate() {
+    function beginUpgrade() {
       // Only move forward if all prechecks has been executed and passed.
       if (!controller.prechecks.completed || controller.prechecks.errors) {
         return;
