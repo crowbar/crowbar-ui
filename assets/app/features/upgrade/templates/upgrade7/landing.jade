@@ -1,13 +1,34 @@
-uib-alert(type="danger", ng-if="Upgrade7LandingVm.prechecks.errors")
-  h4(translate='') upgrade7.errors.prechecks.title
-  span(translate='') upgrade7.errors.prechecks.description
-  ul
-    li(ng-repeat="error in Upgrade7LandingVm.prechecks.errors", translate='upgrade7.errors.codes.{{::error}}')
-  button.btn.btn-default.btn-sm(translate='', ng-click="Upgrade7LandingVm.prechecks.runPrechecks()") upgrade7.errors.prechecks.form.check-again
+  
 .panel.panel-default.upgrade-flow
   .panel-heading
     h1(translate='upgrade7.title') Suse Upgrade
   .panel-body
     p(translate='') upgrade7.steps.landing.description
-    p(translate='') upgrade7.steps.landing.description2
-    button.btn.btn-success.center-block.btn-lg(translate='', ng-class="{disabled: !Upgrade7LandingVm.prechecks.completed || Upgrade7LandingVm.prechecks.errors}", ng-click="Upgrade7LandingVm.beginUpgrade()") upgrade7.steps.landing.form.button
+    ul.requirements-list
+      li(translate='') upgrade7.steps.landing.requirements.req01
+      li(translate='') upgrade7.steps.landing.requirements.req02
+      li(translate='') upgrade7.steps.landing.requirements.req03
+    
+    h4(translate='') upgrade7.errors.prechecks.title
+    div.checks-container
+      p(translate='') upgrade7.errors.prechecks.description
+      ul
+        li(ng-repeat="check in Upgrade7LandingVm.prechecks.checks",
+          translate='',
+          ng-class="{\
+            'text-info': !Upgrade7LandingVm.prechecks.completed,\
+            'text-success': check.status && Upgrade7LandingVm.prechecks.completed,\
+            'text-danger': !check.status && Upgrade7LandingVm.prechecks.completed\
+          }")
+          span.glyphicon(ng-class="{\
+            'glyphicon-ban-circle': !Upgrade7LandingVm.prechecks.completed,\
+            'glyphicon-ok-circle': check.status && Upgrade7LandingVm.prechecks.completed,\
+            'glyphicon-remove-circle': !check.status && Upgrade7LandingVm.prechecks.completed\
+          }")
+          span(translate='upgrade7.errors.codes.{{::check.code}}') 
+  
+      button.btn.btn-default.btn-sm(translate='', ng-class="{disabled: Upgrade7LandingVm.prechecks.completed && Upgrade7LandingVm.prechecks.valid}", ng-click="Upgrade7LandingVm.prechecks.runPrechecks()") upgrade7.errors.prechecks.form.check-again
+    
+    p.note-msg(translate='') upgrade7.steps.landing.note
+
+    button.btn.btn-success.center-block.btn-lg(translate='', ng-class="{disabled: !Upgrade7LandingVm.prechecks.completed || !Upgrade7LandingVm.prechecks.valid}", ng-click="Upgrade7LandingVm.beginUpdate()") upgrade7.steps.landing.form.button
