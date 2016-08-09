@@ -4,8 +4,6 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "postinstall": "gulp",
-    "preinstall": "bower install",
     "test": "./node_modules/karma/bin/karma start karma.conf.js"
   },
   "dependencies": {
