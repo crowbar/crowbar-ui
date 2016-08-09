@@ -8,5 +8,58 @@ body {
   padding-top: 70px;
 }
 
+.upgrade-flow {
+  padding: 0px;
+  border-color: #ccc;
+  box-shadow: 0px 0px 8px #d8d6d6;
+  margin-top: 10px;
+  .panel-body {
+    padding: 0px;
+    .upgrade-steps {
+      ul.list-group {
+        margin-bottom: 0px;
+        .list-group-item {
+          border-color: #ccc;
+          border-left: 0px;
+          padding: 15px 15px;
+          color: #969797;
+          background: #f3f3f3;
+          &:first-child {
+            border-top-right-radius: 0px;
+            border-left: 0px;
+            border-top: 0;
+          }
+          &:last-child {
+            border-bottom-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+            border-bottom: 0;
+          }
+        }
+        .list-group-item-success {
+            background-color: #f3f3f3;
+            color: #969797;
+          }
+        .active{
+          background-image: none;
+          background-color: #fff;
+          border-color: #ccc;
+          color: #3a3e40;
+          text-shadow: none;
+        }
+      }
+    }
+    .upgrade-details {
+      margin-right: 15px;
+      h2 {
+        color: #3a3e40;
+        margin-top: 30px;
+        margin-bottom: 15px
+      }
+    }
+  }
+  .panel-footer {
+    border-top: 1px solid #ccc;
+  }
+}
 
 /* End= layout.less */
