@@ -1,0 +1,8 @@
+before_script:
+    - npm install; npm install -g gulp
+script: npm test
+language: node_js
+node_js:
+    - "6.3.1"
+    - "4.4.7"
+    - "4.4.5"
