@@ -26,12 +26,13 @@ gulp.task('jsBowerExtract', ['bower'], function() {
             './dist/js/bootstrap.js'
             ]
         }
-    }
+    },
+    includeDev: true
 }), { base: vendors })
   .pipe(jsFilter)
   .pipe(concat('bower_components.js'))
   .pipe(rename({suffix: '.min'}))
-  .pipe(uglify())
+  //.pipe(uglify())
   .pipe(gulp.dest(destination + 'js'))
 });
 
