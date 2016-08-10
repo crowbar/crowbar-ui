@@ -48,7 +48,7 @@
       }
 
       $state.go('upgrade7.backup');
-    };
+    }
 
     /**
      * Pre validation checks
@@ -79,6 +79,7 @@
             }
           }
         );
-    };
+
+    }
   }
 })();

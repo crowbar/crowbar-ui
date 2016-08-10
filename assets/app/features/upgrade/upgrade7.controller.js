@@ -72,7 +72,7 @@
           controller.steps.list[i].enabled = isCompletedStep;
         }
       }
-    };
+    }
 
     /**
      * Move to the next available Step
@@ -90,7 +90,7 @@
       controller.steps.activeStep.enabled = true;
 
       $state.go(controller.steps.activeStep.state);
-    };
+    }
 
     /**
      * Validate if the active step is the last avilable step
@@ -105,7 +105,7 @@
      */
     function runPrechecks() {
       prechecksFactory
-        .getAll(forceFailure)
+        .getAll()
         .then(
           //Success handler. Al precheck passed successfully:
           function(prechecksResponse) {
@@ -121,6 +121,6 @@
           }
         );
 
-    };
+    }
   }
 })();

@@ -27,6 +27,6 @@
       }
 
       $state.go('upgrade7.backup');
-    };
+    }
   }
 })();
