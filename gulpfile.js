@@ -10,6 +10,7 @@ requireDir('./gulp');
 // Build
 gulp.task('build', function (callback) {
     runSequence(
+        'bower',
         [
             'jsBowerExtract',
             'cssBowerExtract',
