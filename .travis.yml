@@ -2,7 +2,8 @@ before_install:
     - npm install -g gulp bower
 install: 
     - npm install
-    - bower install
+before_script:
+    - gulp
 script:
     - npm test
 language: node_js
