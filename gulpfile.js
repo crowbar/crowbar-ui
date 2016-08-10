@@ -7,6 +7,11 @@ var gulp = require('gulp'),
 var requireDir = require('require-dir');
 requireDir('./gulp');
 
+//Lints
+gulp.task('lints', function (callback) {
+    runSequence('jslint', 'lesslint', callback);
+});
+
 // Build
 gulp.task('build', function (callback) {
     runSequence(
