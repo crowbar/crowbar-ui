@@ -6,6 +6,7 @@ install:
 before_script:
     - gulp build
 script:
+    - gulp lints
     - npm test
 language: node_js
 node_js:

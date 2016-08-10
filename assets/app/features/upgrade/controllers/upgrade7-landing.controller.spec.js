@@ -68,7 +68,7 @@ describe('Upgrade Landing Controller', function() {
       
       it('changes completed status after run', function() {
         var prechecks = {
-          "errors": ["001", "002", "003"]
+          'errors': ['001', '002', '003']
         };
         sinon.stub(prechecksFactory, 'getAll').returns($q.when(prechecks));
         controller.prechecks.runPrechecks();
@@ -76,7 +76,7 @@ describe('Upgrade Landing Controller', function() {
 
         assert.isTrue(controller.prechecks.completed);
       });
-    })
+    });
 
   });
 });
