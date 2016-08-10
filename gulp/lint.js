@@ -7,7 +7,8 @@ var gulp = require('gulp'),
 gulp.task('jslint', function() {
   return gulp.src('assets/**/*.js')
     .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'));
+    .pipe(jshint.reporter('jshint-stylish'))
+    .pipe(jshint.reporter('fail'));
 });
 
 
