@@ -1,14 +1,17 @@
 // Modules required for this task
-var gulp = require('gulp'),
+var 
+    gulpDebug = require('gulp-debug'),
+    gulp = require('gulp'),
     gulpDebug = require('gulp-debug'),
     jshint = require('gulp-jshint'),
+    eslint = require('gulp-eslint'),
     lesshint = require('gulp-lesshint');
 
-gulp.task('jslint', function() {
+gulp.task('eslint', function() {
   return gulp.src('assets/**/*.js')
-    .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'))
-    .pipe(jshint.reporter('fail'));
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
 });
 
 

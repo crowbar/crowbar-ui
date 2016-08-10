@@ -9,7 +9,7 @@ requireDir('./gulp');
 
 //Lints
 gulp.task('lints', function (callback) {
-    runSequence('jslint', 'lesslint', callback);
+    runSequence('eslint', 'lesslint', callback);
 });
 
 // Build

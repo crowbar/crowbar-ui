@@ -16,6 +16,8 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'public/js/bower_components.min.js',
+      'bower_components/bardjs/dist/bard.js',
+      'bower_components/bardjs/dist/bard-ngRouteTester.js',
       'assets/app/**/*.module.js',
       'assets/app/**/*.js'
     ],

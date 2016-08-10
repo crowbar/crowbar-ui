@@ -3,25 +3,25 @@
 
   /**
    * @ngdoc function
-   * @name crowbarApp.upgrade.controller:UpgradeCtrl
+   * @name crowbarApp.upgrade.controller:UpgradeController
    * @description
-   * # UpgradeCtrl
+   * # UpgradeController
    * Controller of the crowbarApp
    */
   angular.module('crowbarApp.upgrade')
-    .controller('UpgradeCtrl', UpgradeCtrl);
+    .controller('UpgradeController', UpgradeController);
 
-  UpgradeCtrl.$inject = ['$scope', '$translate', '$state', 'stepsFactory'];
+  UpgradeController.$inject = ['$scope', '$translate', '$state', 'stepsFactory'];
   // @ngInject
-  function UpgradeCtrl($scope, $translate, $state, stepsFactory) {
-    var controller = this,
+  function UpgradeController($scope, $translate, $state, stepsFactory) {
+    var vm = this,
       steps = {
         list: [],
         activeStep: {},
         nextStep: nextStep,
         isLastStep: isLastStep
       };
-    controller.steps = steps;
+    vm.steps = steps;
 
     stepsFactory.getAll().then(
       function(stepsResponse) {
@@ -29,8 +29,8 @@
         refeshStepsList();
 
       },
-      function(errorResponse) {
-        console.log(errorResponse);
+      function() {
+        //console.log(errorResponse);
 
       }
     );
@@ -68,14 +68,14 @@
       if (steps.isLastStep()) {
         return;
       }
-      controller.steps.activeStep.active = false;
-      controller.steps.activeStep.enabled = true;
+      vm.steps.activeStep.active = false;
+      vm.steps.activeStep.enabled = true;
 
-      controller.steps.activeStep = controller.steps.list[controller.steps.activeStep.id + 1];
-      controller.steps.activeStep.active = true;
-      controller.steps.activeStep.enabled = true;
+      vm.steps.activeStep = vm.steps.list[vm.steps.activeStep.id + 1];
+      vm.steps.activeStep.active = true;
+      vm.steps.activeStep.enabled = true;
 
-      $state.go(controller.steps.activeStep.state);
+      $state.go(vm.steps.activeStep.state);
     }
 
     /**
@@ -83,7 +83,7 @@
      * @return boolean
      */
     function isLastStep() {
-      return controller.steps.list[steps.list.length - 1] === controller.steps.activeStep;
+      return vm.steps.list[steps.list.length - 1] === vm.steps.activeStep;
     }
   }
 })();

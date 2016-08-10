@@ -1,4 +1,5 @@
 /* jshint -W117, -W030 */
+/*global bard $controller $httpBackend should assert sinon prechecksFactory $q $rootScope */
 describe('Upgrade Landing Controller', function() {
   var controller;
 
@@ -8,22 +9,16 @@ describe('Upgrade Landing Controller', function() {
     bard.inject('$controller', '$rootScope', '$state', 'prechecksFactory', '$q', '$httpBackend');
 
     //Create the controller
-    controller = $controller('Upgrade7LandingCtrl');
+    controller = $controller('Upgrade7LandingController');
 
     //Mock requests that are expected to be made
     $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
-    $httpBackend.expectGET('/api/upgrade7/prechecks?fail=true').respond({});
+    $httpBackend.flush();
 
   });
 
   // Verify no unexpected http call has been made
   bard.verifyNoOutstandingHttpRequests();
-
-  afterEach(function() {
-    // flush pending promises
-    $httpBackend.flush();
-  });
-
 
   it('should exist', function() {
     should.exist(controller);
@@ -63,6 +58,12 @@ describe('Upgrade Landing Controller', function() {
 
       //@TODO
       it('gets all prechecks from prechecksFactory', function() {
+        sinon.stub(prechecksFactory, 'getAll').returns($q.when({}));
+        //$httpBackend.expectGET('/api/upgrade7/prechecks').respond({});
+        controller.prechecks.runPrechecks();
+        $rootScope.$apply();
+
+        assert.isTrue(controller.prechecks.completed);
 
       });
       
@@ -70,11 +71,12 @@ describe('Upgrade Landing Controller', function() {
         var prechecks = {
           'errors': ['001', '002', '003']
         };
-        sinon.stub(prechecksFactory, 'getAll').returns($q.when(prechecks));
+        $httpBackend.when('GET', '/api/upgrade7/prechecks').respond(500, prechecks);
         controller.prechecks.runPrechecks();
-        $rootScope.$apply();
+        $httpBackend.flush();
 
         assert.isTrue(controller.prechecks.completed);
+        expect(controller.prechecks.errors).toEqual(prechecks.errors);
       });
     });
 
