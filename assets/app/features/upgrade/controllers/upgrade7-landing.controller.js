@@ -27,7 +27,7 @@
         },
         {
           code: '002',
-          status: false
+          status: true
         },
         {
           code: '003',
@@ -37,9 +37,6 @@
       valid: false,
       button: 'upgrade'
     };
-
-    //Run prechecks
-    //controller.prechecks.runPrechecks();
 
     /**
      * Move to the next available Step
