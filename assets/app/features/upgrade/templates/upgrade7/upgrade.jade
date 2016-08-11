@@ -1,11 +1,9 @@
-.panel.panel-default.upgrade-flow
-  .panel-heading
-    h1(translate='upgrade7.title') Suse Upgrade
+.panel.panel-default.upgrade-flow 
   .panel-body
     .row
       .col-lg-3
-        crowbar-upgrade-steps(steps='upgradeVm.steps.list')
+        crowbar-upgrade-steps.upgrade-steps(steps='upgradeVm.steps.list')
       .col-lg-9
-        div(ui-view='')
+        div.upgrade-details(ui-view='')
   .panel-footer
     crowbar-upgrade-nav.clearfix(steps='upgradeVm.steps')

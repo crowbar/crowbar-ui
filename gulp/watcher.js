@@ -4,26 +4,55 @@ var gulp = require('gulp'),
 
 // Define main directories
 var assets = 'assets/',
-    development = environments.development;
+    development = environments.development,
+    excludeTests = '!' + assets + '**/*.spec.js';
 
 // Watch for changes in our custom assets
-gulp.task('watch', function() {
-  // watch only if in development ENV
-  if (development()) {
-    // Watch .js files
-    gulp.watch(assets + 'app/*.js', ['app']);
-    gulp.watch(assets + 'app/core/**/*.js', ['angularCore']);
-    gulp.watch(assets + 'app/features/**/*.js', ['angularFeatures']);
-    gulp.watch(assets + 'app/features/**/*.json', ['angularFeatures']);
-    gulp.watch(assets + 'app/widgets/**/*.js', ['angularWidgets']);
-    gulp.watch(assets + 'app/widgets/**/*.json', ['angularWidgets']);
-    gulp.watch(assets + 'app/data/**/*.js', ['angularData']);
+gulp.task('watch', function () {
+    // watch only if in development ENV
+    if (development()) {
+        // Watch .js files
+        gulp.watch(
+            [
+                assets + 'app/*.js',
+                excludeTests
+            ],
+            ['app']
+        );
+        gulp.watch(
+            [
+                assets + 'app/core/**/*.js',
+                excludeTests
+            ],
+            ['angularCore']
+        );
+        gulp.watch(
+            [
+                assets + 'app/features/**/*.+(js|json)',
+                excludeTests
+            ],
+            ['angularFeatures']
+        );
+        gulp.watch(
+            [
+                assets + 'app/widgets/**/*.+(js|json)',
+                excludeTests
+            ],
+            ['angularWidgets']
+        );
+        gulp.watch(
+            [
+                assets + 'app/data/**/*.js',
+                excludeTests
+            ],
+            ['angularData']
+        );
 
-    // Watch .css files
-    gulp.watch(assets + '**/*.less', ['less']);
-    // Watch image files
-    gulp.watch(assets + 'content/images/**/*', ['images']);
-    // Watch the Jade files in the Assets folder
-    gulp.watch(assets + '**/*.jade', ['cleanAssetsHtml']);
-  }
+        // Watch .css files
+        gulp.watch(assets + '**/*.less', ['less']);
+        // Watch image files
+        gulp.watch(assets + 'content/images/**/*', ['images']);
+        // Watch the Jade files in the Assets folder
+        gulp.watch(assets + '**/*.jade', ['cleanAssetsHtml']);
+    }
 });

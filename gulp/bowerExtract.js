@@ -25,13 +25,17 @@ gulp.task('jsBowerExtract', ['bower'], function() {
             main: [
             './dist/js/bootstrap.js'
             ]
+        },
+        bardjs: {
+          main: []
         }
-    }
+    },
+    includeDev: true
 }), { base: vendors })
   .pipe(jsFilter)
   .pipe(concat('bower_components.js'))
   .pipe(rename({suffix: '.min'}))
-  .pipe(uglify())
+  //.pipe(uglify())
   .pipe(gulp.dest(destination + 'js'))
 });
 

@@ -3,48 +3,48 @@
 
   /**
    * @ngdoc function
-   * @name crowbarApp.controller:Upgrade7Ctrl
+   * @name crowbarApp.controller:Upgrade7Controller
    * @description
-   * # Upgrade7Ctrl
+   * # Upgrade7Controller
    * This is the controller that will be used across the upgrade process.
    */
   angular.module('crowbarApp.upgrade')
-    .controller('Upgrade7Ctrl', Upgrade7Ctrl);
+    .controller('Upgrade7Controller', Upgrade7Controller);
 
-  Upgrade7Ctrl.$inject = ['$scope', '$translate', '$state', 'upgradeStepsFactory', 'prechecksFactory'];
+  Upgrade7Controller.$inject = ['$scope', '$translate', '$state', 'upgradeStepsFactory', 'prechecksFactory'];
   // @ngInject
-  function Upgrade7Ctrl($scope, $translate, $state, upgradeStepsFactory, prechecksFactory) {
-    var controller = this;
-    controller.steps = {
+  function Upgrade7Controller($scope, $translate, $state, upgradeStepsFactory, prechecksFactory) {
+    var vm = this;
+    vm.steps = {
         list: [],
         activeStep: {},
         nextStep: nextStep,
         isLastStep: isLastStep
       };
 
-    controller.prechecks = {
+    vm.prechecks = {
       completed: false,
       runPrechecks: runPrechecks
     };
 
     //@TODO: Remove this once the precheck integration is completed.
-    controller.forcePrecheckFailure = true;
+    vm.forcePrecheckFailure = true;
 
     //Run prechecks
-    controller.prechecks.runPrechecks(controller.forcePrecheckFailure);
+    vm.prechecks.runPrechecks(vm.forcePrecheckFailure);
 
     //@TODO: Remove this once the precheck integration is completed.
-    controller.forcePrecheckFailure = false;
+    vm.forcePrecheckFailure = false;
 
     // Get Steps list from provider
     upgradeStepsFactory.getAll().then(
       function(stepsResponse) {
-        controller.steps.list = stepsResponse.data;
+        vm.steps.list = stepsResponse.data;
         refeshStepsList();
 
       },
-      function(errorResponse) {
-        console.log(errorResponse);
+      function() {
+        //console.log(errorResponse);
 
       }
     );
@@ -56,71 +56,71 @@
      * Refresh the list of steps and active step models
      */
     function refeshStepsList() {
-      controller.steps.activeStep = controller.steps.list[0];
+      vm.steps.activeStep = vm.steps.list[0];
       var currentState = $state.current.name,
         isCompletedStep = true;
 
-      for (var i = 0; i < controller.steps.list.length; i++) {
-        if (controller.steps.list[i].state === currentState) {
-          controller.steps.activeStep = controller.steps.list[i];
-          controller.steps.activeStep.active = true;
-          controller.steps.activeStep.enabled = isCompletedStep;
+      for (var i = 0; i < vm.steps.list.length; i++) {
+        if (vm.steps.list[i].state === currentState) {
+          vm.steps.activeStep = vm.steps.list[i];
+          vm.steps.activeStep.active = true;
+          vm.steps.activeStep.enabled = isCompletedStep;
           isCompletedStep = false;
 
         } else {
-          controller.steps.list[i].active = false;
-          controller.steps.list[i].enabled = isCompletedStep;
+          vm.steps.list[i].active = false;
+          vm.steps.list[i].enabled = isCompletedStep;
         }
       }
-    };
+    }
 
     /**
      * Move to the next available Step
      */
     function nextStep() {
       // Only move forward if active step isn't last step available
-      if (controller.steps.isLastStep()) {
+      if (vm.steps.isLastStep()) {
         return;
       }
-      controller.steps.activeStep.active = false;
-      controller.steps.activeStep.enabled = true;
+      vm.steps.activeStep.active = false;
+      vm.steps.activeStep.enabled = true;
 
-      controller.steps.activeStep = controller.steps.list[controller.steps.activeStep.id + 1];
-      controller.steps.activeStep.active = true;
-      controller.steps.activeStep.enabled = true;
+      vm.steps.activeStep = vm.steps.list[vm.steps.activeStep.id + 1];
+      vm.steps.activeStep.active = true;
+      vm.steps.activeStep.enabled = true;
 
-      $state.go(controller.steps.activeStep.state);
-    };
+      $state.go(vm.steps.activeStep.state);
+    }
 
     /**
      * Validate if the active step is the last avilable step
      * @return boolean
      */
     function isLastStep() {
-      return controller.steps.list[controller.steps.list.length - 1] === controller.steps.activeStep;
+      return vm.steps.list[vm.steps.list.length - 1] === vm.steps.activeStep;
     }
 
     /**
      * Pre validation checks
      */
-    function runPrechecks(forceFailure = false) {
+    function runPrechecks() {
       prechecksFactory
-        .getAll(forceFailure)
+        .getAll()
         .then(
           //Success handler. Al precheck passed successfully:
-          function(prechecksResponse) {
-            delete controller.prechecks.errors;
+          function() {
+            delete vm.prechecks.errors;
           },
           //Failure handler:
           function(errorPrechecksResponse) {
-            controller.prechecks.errors = errorPrechecksResponse.data.errors;
+            vm.prechecks.errors = errorPrechecksResponse.data.errors;
           }
         ).finally(
           function() {
-            controller.prechecks.completed = true;
+            vm.prechecks.completed = true;
           }
         );
 
-    };
+    }
   }
 })();
