@@ -3,40 +3,47 @@
 
   /**
    * @ngdoc function
-   * @name crowbarApp.controller:Upgrade7LandingCtrl
+   * @name crowbarApp.controller:Upgrade7LandingController
    * @description
-   * # Upgrade7LandingCtrl
+   * # Upgrade7LandingController
    * This is the controller used on the Upgrade landing page
    */
   angular.module('crowbarApp')
-    .controller('Upgrade7LandingCtrl', Upgrade7LandingCtrl);
+    .controller('Upgrade7LandingController', Upgrade7LandingController);
 
-  Upgrade7LandingCtrl.$inject = ['$translate', '$state', 'prechecksFactory'];
+  Upgrade7LandingController.$inject = ['$translate', '$state', 'prechecksFactory'];
   // @ngInject
-  function Upgrade7LandingCtrl($translate, $state, prechecksFactory) {
-    var controller = this;
-    controller.beginUpgrade = beginUpgrade;
+  function Upgrade7LandingController($translate, $state, prechecksFactory) {
+    var vm = this;
+    vm.beginUpgrade = beginUpgrade;
 
-    controller.prechecks = {
+    vm.prechecks = {
       completed: false,
-      runPrechecks: runPrechecks
+      runPrechecks: runPrechecks,
+      checks: [
+        {
+          code: '001',
+          status: true
+        },
+        {
+          code: '002',
+          status: true
+        },
+        {
+          code: '003',
+          status: true
+        }
+      ],
+      valid: false,
+      button: 'upgrade'
     };
-
-    //@TODO: Remove this once the precheck integration is completed.
-    controller.forcePrecheckFailure = true;
-
-    //Run prechecks
-    controller.prechecks.runPrechecks(controller.forcePrecheckFailure);
-
-    //@TODO: Remove this once the precheck integration is completed.
-    controller.forcePrecheckFailure = false;
 
     /**
      * Move to the next available Step
      */
     function beginUpgrade() {
       // Only move forward if all prechecks has been executed and passed.
-      if (!controller.prechecks.completed || controller.prechecks.errors) {
+      if (!vm.prechecks.completed || !vm.prechecks.valid) {
         return;
       }
 
@@ -51,16 +58,24 @@
         .getAll(forceFailure)
         .then(
           //Success handler. Al precheck passed successfully:
-          function(prechecksResponse) {
-            delete controller.prechecks.errors;
+          function() {
           },
           //Failure handler:
           function(errorPrechecksResponse) {
-            controller.prechecks.errors = errorPrechecksResponse.data.errors;
+            vm.prechecks.errors = errorPrechecksResponse.data.errors;
           }
         ).finally(
           function() {
-            controller.prechecks.completed = true;
+            vm.prechecks.completed = true;
+
+            for(var i=0; i<vm.prechecks.checks.length; i++) {
+              if (!vm.prechecks.checks[i].status) {
+                vm.prechecks.valid = false;
+                return;
+              } else {
+                vm.prechecks.valid = true;
+              }
+            }
           }
         );
 

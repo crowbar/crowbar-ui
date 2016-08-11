@@ -25,6 +25,9 @@ gulp.task('jsBowerExtract', ['bower'], function() {
             main: [
             './dist/js/bootstrap.js'
             ]
+        },
+        bardjs: {
+          main: []
         }
     },
     includeDev: true

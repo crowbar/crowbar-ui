@@ -17,13 +17,13 @@
       .state('upgrade7-landing', {
         url: '/upgrade7/landing',
         templateUrl: 'app/features/upgrade/templates/upgrade7/landing.html',
-        controller: 'Upgrade7LandingCtrl',
+        controller: 'Upgrade7LandingController',
         controllerAs: 'Upgrade7LandingVm'
       })
       .state('upgrade7', {
         url: '/upgrade7',
         templateUrl: 'app/features/upgrade/templates/upgrade7/upgrade.html',
-        controller: 'Upgrade7Ctrl',
+        controller: 'Upgrade7Controller',
         controllerAs: 'upgradeVm'
       })
       .state('upgrade7.backup', {
@@ -39,7 +39,7 @@
       .state('upgrade', {
         url: '/upgrade',
         templateUrl: 'app/features/upgrade/templates/upgrade.html',
-        controller: 'UpgradeCtrl',
+        controller: 'UpgradeController',
         controllerAs: 'upgradeVm'
       })
       .state('upgrade.prepare', {
