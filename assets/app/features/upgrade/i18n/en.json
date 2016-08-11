@@ -87,9 +87,9 @@
       "landing": {
         "description": "In order to upgrade SUSE OpenStack Cloud from version 6 to 7, the following requirements must be met:",
         "requirements": {
-          "req01": "The Administration Server needs to have the latest SUSE OpenStack Cloud 6 updates installed. One of these updates will add the new upgrade routine to the Crowbar Web interface.",
-          "req02": "All other nodes need to have the latest SUSE OpenStack Cloud 6 updates and the latest SLES updates.",
-          "req03": "All allocated nodes need to be available. In addition, a free node with at least an equal amount of disk and memory space as the largest running node must be free of any workload and available."
+          "point1": "The Administration Server needs to have the latest SUSE OpenStack Cloud 6 updates installed. One of these updates will add the new upgrade routine to the Crowbar Web interface.",
+          "point2": "All other nodes need to have the latest SUSE OpenStack Cloud 6 updates and the latest SLES updates.",
+          "point3": "All allocated nodes need to be available. In addition, a free node with at least an equal amount of disk and memory space as the largest running node must be free of any workload and available."
         },
         "note": "Note: Manual changes to the cloud during the upgrade process could lead to irrepairable damage to the cloud, the workloads running in it and the data they produce or consume.",
         "form": {
