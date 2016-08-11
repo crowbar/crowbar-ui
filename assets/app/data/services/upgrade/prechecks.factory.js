@@ -11,13 +11,14 @@
       getAll: getStepsFactory,
       getAllStatic: function() {
         return {
-          "errors": ["001", "002", "003"]
+          'errors': ['001', '002', '003']
         };
       }
     };
 
     return factory;
-    function getStepsFactory(forceFailure = false) {
+
+    function getStepsFactory(forceFailure) {
 
       var requestOptions = {
         method: 'GET',
