@@ -11,32 +11,50 @@ body {
   padding-top: 70px;
 }
 
-.upgrade-flow {
-  padding: 0px;
-  border-color: #ccc;
-  box-shadow: 0px 0px 8px #d8d6d6;
-  margin-top: 10px;
-  .panel-body {
-    padding: 0px;
-    .upgrade-steps {
-      ul.list-group {
-        margin-bottom: 0px;
-        .list-group-item {
-          border-color: #ccc;
-          border-left: 0px;
-          padding: 15px 15px;
-          color: #969797;
-          background: #f3f3f3;
-          &:first-child {
-            border-top-right-radius: 0px;
-            border-left: 0px;
-            border-top: 0;
-          }
-          &:last-child {
-            border-bottom-right-radius: 0px;
-            border-bottom-left-radius: 0px;
-            border-bottom: 0;
-          }
+.landing-page {
+  background: none;
+  border: 0px;
+  box-shadow: none;
+  .panel-heading {
+    background: none;
+    border: 0px;
+    h1 {
+      color: @panel-heading-fg;
+      font-size: 19px;
+      margin: 0px;
+    }
+  }
+
+  ul.requirements-list {
+    margin-top: 15px;
+    li {
+      margin: 7px 0px;
+    }
+  }
+
+  h4 {
+    font-size: 17px;
+    margin-top: 25px;
+  }
+
+  .checks-container {
+    background: @checks-container-bg;
+    border: @container-border;
+    border-radius: 3px;
+    padding: 20px;
+    p {
+      margin: 5px 0px 20px;
+    }
+    ul {
+      margin-bottom: 20px;
+      padding-left: 10px;
+      li {
+        font-weight: bold;
+        list-style: none;
+        margin: 10px 0px;
+        padding: 0px;
+        span {
+          margin-right: 7px;
         }
         .list-group-item-success {
             background-color: #f3f3f3;
@@ -70,6 +88,21 @@ body {
   }
   .panel-footer {
     border-top: 1px solid #ccc;
+  }
+  .text-danger {
+    color: @danger-text;
+  }
+  .text-success {
+    color: @success-text;
+  }
+  .note-message {
+    font-style: italic;
+    font-weight: bold;
+    margin: 0px auto;
+    margin-bottom: 20px;
+    margin-top: 15px;
+    text-align: center;
+    width: 85%;
   }
 }
 

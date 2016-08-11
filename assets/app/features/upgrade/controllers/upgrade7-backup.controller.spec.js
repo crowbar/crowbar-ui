@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-/*global bard $controller $httpBackend should assert sinon prechecksFactory $q $rootScope */
+/*global bard $controller $httpBackend should assert sinon backupFactory $q $rootScope */
 describe('Upgrade Backup Controller', function() {
   var controller;
 
