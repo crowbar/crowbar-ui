@@ -1,13 +1,13 @@
   
-.panel.panel-default.upgrade-flow
+.panel.panel-default.landing-page
   .panel-heading
     h1(translate='upgrade7.title') Suse Upgrade
   .panel-body
     p(translate='') upgrade7.steps.landing.description
     ul.requirements-list
-      li(translate='') upgrade7.steps.landing.requirements.req01
-      li(translate='') upgrade7.steps.landing.requirements.req02
-      li(translate='') upgrade7.steps.landing.requirements.req03
+      li(translate='') upgrade7.steps.landing.requirements.point1
+      li(translate='') upgrade7.steps.landing.requirements.point2
+      li(translate='') upgrade7.steps.landing.requirements.point3
     
     h4(translate='') upgrade7.errors.prechecks.title
     div.checks-container
@@ -27,8 +27,14 @@
           }")
           span(translate='upgrade7.errors.codes.{{::check.code}}') 
   
-      button.btn.btn-default.btn-sm(translate='', ng-class="{disabled: Upgrade7LandingVm.prechecks.completed && Upgrade7LandingVm.prechecks.valid}", ng-click="Upgrade7LandingVm.prechecks.runPrechecks()") upgrade7.errors.prechecks.form.check-again
+      button.btn.btn-default.btn-sm(translate='', 
+        ng-class="{disabled: Upgrade7LandingVm.prechecks.completed && Upgrade7LandingVm.prechecks.valid}",
+        ng-click="Upgrade7LandingVm.prechecks.runPrechecks()"
+      ) upgrade7.errors.prechecks.form.check-again
     
-    p.note-msg(translate='') upgrade7.steps.landing.note
+    p.note-message(translate='') upgrade7.steps.landing.note
 
-    button.btn.btn-success.center-block.btn-lg(translate='', ng-class="{disabled: !Upgrade7LandingVm.prechecks.completed || !Upgrade7LandingVm.prechecks.valid}", ng-click="Upgrade7LandingVm.beginUpdate()") upgrade7.steps.landing.form.button
+    button.btn.btn-success.center-block.btn-lg(translate='', 
+      ng-class="{disabled: !Upgrade7LandingVm.prechecks.completed || !Upgrade7LandingVm.prechecks.valid}",
+      ng-click="Upgrade7LandingVm.beginUpgrade()"
+    ) upgrade7.steps.landing.form.button
