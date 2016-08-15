@@ -1,6 +1,6 @@
 /* jshint -W117, -W030 */
 /*global bard $controller $httpBackend should assert sinon prechecksFactory $q $rootScope */
-describe('Upgrade Landing Controller', function() {
+describe('Upgrade Flow - Landing Controller', function() {
   var controller;
 
   beforeEach(function() {
