@@ -119,6 +119,22 @@
         "form": {
           "check-again": "Check"
         }
+      },
+      "upgrade-admin": {
+        "name": "",
+        "title": "Upgrade the Administration server",
+        "description": "With the upgrade to SUSE OpenStack Cloud 7 the administration server will be upgraded to SUSE Linux Enterprise 11 SP2.",
+        "repositories": {
+          "instructions": "Please update the urls of the following software repositories", 
+          "list": {
+            "aaa": "Blue Skies Calibration",
+            "bbb": "Job Degenerators",
+            "ccc": "The Matrix Obfuscation"
+          }
+        },
+        "form": {
+          "check-again": "Upgrade Admin server"
+        }
       }
     },
     "errors": {
