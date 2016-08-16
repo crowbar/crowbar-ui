@@ -11,22 +11,30 @@
   angular.module('crowbarApp')
     .controller('Upgrade7BackupController', Upgrade7BackupController);
 
-  Upgrade7BackupController.$inject = ['$scope', '$translate', '$state'];
+  Upgrade7BackupController.$inject = ['$translate', '$state', 'backupFactory'];
   // @ngInject
-  function Upgrade7BackupController($scope, $translate, $state) {
+  function Upgrade7BackupController($translate, $state, backupFactory) {
     var vm = this;
-    vm.beginUpdate = beginUpdate;
+    vm.nextStep = nextStep;
+    vm.backup = {
+      completed: false,
+      create: function () {
+        backupFactory.create().finally(function () {
+          vm.backup.completed = true;
+        });
+      }
+    };
 
     /**
      * Move to the next available Step
      */
-    function beginUpdate() {
-      // Only move forward if all prechecks has been executed and passed.
-      if (!vm.prechecks.completed || vm.prechecks.errors) {
+    function nextStep() {
+      // Only move forward if the backup has been triggered and offered to download.
+      if (!vm.backup.completed) {
         return;
       }
 
-      $state.go('upgrade7.backup');
+      $state.go('upgrade7.repository-checks');
     }
   }
 })();
