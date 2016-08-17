@@ -94,6 +94,19 @@
         "note": "Note: Manual changes to the cloud during the upgrade process could lead to irrepairable damage to the cloud, the workloads running in it and the data they produce or consume.",
         "form": {
           "button": "Begin Upgrade"
+        },
+        "prechecks": {
+          "title": "Preliminary checks:",
+          "description": "Pre-requirements to update SUSE OpenStack Cloud from version 6 to 7:",
+          "form": {
+            "check-again": "Check"
+          },
+          "codes": {
+            "updates_installed": "Maintenance Updates to SLES SP1",
+            "network_sanity": "Cloud Health",
+            "high_availability": "High Availability Health",
+            "free_node_available": "Free node available"
+          }
         }
       },
       "backup": {
@@ -122,19 +135,6 @@
       }
     },
     "errors": {
-      "prechecks": {
-        "title": "Preliminary checks:",
-        "description": "Pre-requirements to update SUSE OpenStack Cloud from version 6 to 7:",
-        "form": {
-          "check-again": "Check"
-        }
-      },
-      "codes": {
-        "updates_installed": "Maintenance Updates to SLES SP1",
-        "network_sanity": "Cloud Health",
-        "high_availability": "High Availability Health",
-        "free_node_available": "Free node available"
-      }
-    }  
+    }
   }
 }

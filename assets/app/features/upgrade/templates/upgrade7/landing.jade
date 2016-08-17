@@ -9,9 +9,9 @@
       li(translate='') upgrade7.steps.landing.requirements.point2
       li(translate='') upgrade7.steps.landing.requirements.point3
     
-    h4(translate='') upgrade7.errors.prechecks.title
+    h4(translate='') upgrade7.steps.landing.prechecks.title
     div.checks-container
-      p(translate='') upgrade7.errors.prechecks.description
+      p(translate='') upgrade7.steps.landing.prechecks.description
       ul
         li(ng-repeat="(checkKey, check) in Upgrade7LandingVm.prechecks.checks",
           translate='',
@@ -25,12 +25,12 @@
             'glyphicon-ok-circle': check && Upgrade7LandingVm.prechecks.completed,\
             'glyphicon-remove-circle': !check && Upgrade7LandingVm.prechecks.completed\
           }")
-          span(translate='upgrade7.errors.codes.{{::checkKey}}') 
+          span(translate='upgrade7.steps.landing.prechecks.codes.{{::checkKey}}') 
   
       button.btn.btn-default.btn-sm(translate='', 
         ng-class="{disabled: Upgrade7LandingVm.prechecks.completed && Upgrade7LandingVm.prechecks.valid}",
         ng-click="Upgrade7LandingVm.prechecks.runPrechecks()"
-      ) upgrade7.errors.prechecks.form.check-again
+      ) upgrade7.steps.landing.prechecks.form.check-again
     
     p.note-message(translate='') upgrade7.steps.landing.note
 
