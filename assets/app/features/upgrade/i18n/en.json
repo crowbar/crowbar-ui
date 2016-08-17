@@ -130,9 +130,10 @@
         }
       },
       "codes": {
-        "001": "Maintenance Updates to SLES SP1",
-        "002": "Cloud Health",
-        "003": "High Availability Health"
+        "updates_installed": "Maintenance Updates to SLES SP1",
+        "network_sanity": "Cloud Health",
+        "high_availability": "High Availability Health",
+        "free_node_available": "Free node available"
       }
     }  
   }

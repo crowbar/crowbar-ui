@@ -19,23 +19,14 @@
 
     vm.prechecks = {
       completed: false,
-      runPrechecks: runPrechecks,
-      checks: [
-        {
-          code: '001',
-          status: true
-        },
-        {
-          code: '002',
-          status: true
-        },
-        {
-          code: '003',
-          status: true
-        }
-      ],
       valid: false,
-      button: 'upgrade'
+      checks: {
+        updates_installed: false,
+        network_sanity: false,
+        high_availability: false,
+        free_node_available: false
+      },
+      runPrechecks: runPrechecks
     };
 
     /**
@@ -53,29 +44,36 @@
     /**
      * Pre validation checks
      */
-    function runPrechecks(forceFailure) {
+    function runPrechecks() {
       prechecksFactory
-        .getAll(forceFailure)
+        .getAll()
         .then(
           //Success handler. Al precheck passed successfully:
-          function() {
+          function(prechecksResponse) {
+
+            _.merge(vm.prechecks.checks, prechecksResponse.data);
+            var prechecksResult = true;
+            // Update prechecks status
+            _.forEach(vm.prechecks.checks, function (checkStatus) {
+              if (false === checkStatus) {
+                prechecksResult = false;
+                return false;
+              }
+            });
+
+            // Update prechecks validity
+            vm.prechecks.valid = prechecksResult;
           },
           //Failure handler:
           function(errorPrechecksResponse) {
+
+            // Expose the error list to prechecks object
             vm.prechecks.errors = errorPrechecksResponse.data.errors;
           }
         ).finally(
           function() {
+            // Either on sucess or failure, the prechecks has been completed.
             vm.prechecks.completed = true;
-
-            for(var i=0; i<vm.prechecks.checks.length; i++) {
-              if (!vm.prechecks.checks[i].status) {
-                vm.prechecks.valid = false;
-                return;
-              } else {
-                vm.prechecks.valid = true;
-              }
-            }
           }
         );
 
