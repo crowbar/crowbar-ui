@@ -119,6 +119,19 @@
         "form": {
           "check-again": "Check Again"
         }
+      },
+      "database-configuration": {
+        "name": "",
+        "title": "Create or Connect to an OpenStack PostgreSQL Database",
+        "form": {
+          "username": "Username",
+          "password": "Password",
+          "create-database": "Create New Database",
+          "server": "server",
+          "port": "port",
+          "table-prefix": "Table_Prefix",
+          "connect-database": "Connect to Database"
+        }
       }
     },
     "errors": {

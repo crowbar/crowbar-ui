@@ -34,6 +34,10 @@
         url: '/repository-checks',
         templateUrl: 'app/features/upgrade/templates/upgrade7/repository-checks.html'
       })
+      .state('upgrade7.database-configuration', {
+        url: '/database-configuration',
+        templateUrl: 'app/features/upgrade/templates/upgrade7/database-configuration.html'
+      })
 
 
       .state('upgrade', {
