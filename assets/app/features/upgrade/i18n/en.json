@@ -127,9 +127,9 @@
           "username": "Username",
           "password": "Password",
           "create-database": "Create New Database",
-          "server": "server",
-          "port": "port",
-          "table-prefix": "Table_Prefix",
+          "server": "Server",
+          "port": "Port",
+          "table-prefix": "Table Prefix",
           "connect-database": "Connect to Database"
         }
       }

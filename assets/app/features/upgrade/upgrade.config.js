@@ -36,7 +36,9 @@
       })
       .state('upgrade7.database-configuration', {
         url: '/database-configuration',
-        templateUrl: 'app/features/upgrade/templates/upgrade7/database-configuration.html'
+        templateUrl: 'app/features/upgrade/templates/upgrade7/database-configuration.html',
+        controller: 'Upgrade7DatabaseConfigController',
+        controllerAs: 'Upgrade7DatabaseVm'
       })
 
 
