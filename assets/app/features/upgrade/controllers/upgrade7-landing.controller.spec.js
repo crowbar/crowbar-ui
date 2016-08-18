@@ -1,12 +1,29 @@
 /* jshint -W117, -W030 */
-/*global bard $controller $httpBackend should assert sinon prechecksFactory $q $rootScope */
+/*global bard $controller $httpBackend should assert prechecksFactory $q $rootScope module $state */
 describe('Upgrade Landing Controller', function() {
-  var controller;
+  var controller,
+    passingChecks = {
+      updates_installed: true,
+      network_sanity: true,
+      high_availability: true,
+      free_node_available: true
+    },
+    failingChecks = {
+      updates_installed: false,
+      network_sanity: false,
+      high_availability: false,
+      free_node_available: false
+    },
+    failingResponse = {
+      data: {
+        errors: failingChecks
+      }
+    };
 
   beforeEach(function() {
     //Setup the module and dependencies to be used.
     bard.appModule('crowbarApp');
-    bard.inject('$controller', '$rootScope', '$state', 'prechecksFactory', '$q', '$httpBackend');
+    bard.inject('$controller', '$rootScope', 'prechecksFactory', '$q', '$httpBackend');
 
     //Create the controller
     controller = $controller('Upgrade7LandingController');
@@ -28,16 +45,6 @@ describe('Upgrade Landing Controller', function() {
     it('should have a beginUpgrade function defined', function() {
       should.exist(controller.beginUpgrade);
     });
-
-    //@TODO
-    it('should redirect the user to /backup when clicked', function() {
-    });
-
-
-    //@TODO
-    it('should avoid any redirection if prechecks are not successfully validated', function() {
-      
-    });
   });
 
   describe('Prechecks object', function() {
@@ -50,35 +57,96 @@ describe('Upgrade Landing Controller', function() {
       assert.isFalse(controller.prechecks.completed);
     });
 
+    it('is not valid by default', function() {
+      assert.isFalse(controller.prechecks.valid);
+    });
+
+    describe('contains a collection of checks that', function () {
+
+      it('should be defined', function () {
+        should.exist(controller.prechecks.checks);
+      });
+
+      it('should all be set to false', function () {
+        assert.isObject(controller.prechecks.checks);
+        expect(controller.prechecks.checks).toEqual(failingChecks);
+      });
+    });
+
     describe('runPrechecks function', function() {
 
       it('is defined', function() {
         should.exist(controller.prechecks.runPrechecks);
       });
 
-      //@TODO
-      it('gets all prechecks from prechecksFactory', function() {
-        sinon.stub(prechecksFactory, 'getAll').returns($q.when({}));
-        //$httpBackend.expectGET('/api/upgrade7/prechecks').respond({});
-        controller.prechecks.runPrechecks();
-        $rootScope.$apply();
+      describe('when checks pass successfully', function () {
+          beforeEach(function () {
+            bard.mockService(prechecksFactory, {
+                getAll: $q.when(passingChecks)
+            });
+            controller.prechecks.runPrechecks();
+            $rootScope.$digest();
+          });
 
-        assert.isTrue(controller.prechecks.completed);
+        it('should set prechecks.completed status to true', function () {
+          assert.isTrue(controller.prechecks.completed);
+        });
 
       });
-      
-      it('changes completed status after run', function() {
-        var prechecks = {
-          'errors': ['001', '002', '003']
-        };
-        $httpBackend.when('GET', '/api/upgrade7/prechecks').respond(500, prechecks);
-        controller.prechecks.runPrechecks();
-        $httpBackend.flush();
 
-        assert.isTrue(controller.prechecks.completed);
-        expect(controller.prechecks.errors).toEqual(prechecks.errors);
+      describe('when checks fail', function () {
+        beforeEach(function () {
+          bard.mockService(prechecksFactory, {
+              getAll: $q.reject(failingResponse)
+          });
+          controller.prechecks.runPrechecks();
+          $rootScope.$digest();
+        });
+
+        it('should set prechecks.completed status to true', function () {
+          assert.isTrue(controller.prechecks.completed);
+        });
+        
+        it('should expose the errors through vm.prechecks.errors object', function () {
+          expect(controller.prechecks.errors).toEqual(failingChecks);
+        });
       });
+
     });
 
   });
+});
+
+// Bardjs' appModule() cannot be used to test States and states transitions
+// @see: https://github.com/wardbell/bardjs#dont-use-appmodule-when-testing-routes
+describe('Upgrade Landing Controller - States', function () {
+    var controller;
+    // inject the services using Angular "underscore wrapping"
+    beforeEach(function () {
+      module('crowbarApp');
+      bard.inject('$state', '$controller');
+
+      spyOn($state, 'go');
+
+      controller = $controller('Upgrade7LandingController');
+
+    });
+
+    it('Begin Upgrade button should redirect the user to /backup when clicked', function() {
+        controller.prechecks.completed = true;
+        controller.prechecks.valid = true;
+
+        controller.beginUpgrade();
+
+        expect($state.go).toHaveBeenCalledWith('upgrade7.backup');
+    });
+
+    it('should avoid any redirection if prechecks are not successfully validated', function() {
+        controller.prechecks.completed = false;
+        controller.prechecks.valid = false;
+
+        controller.beginUpgrade();
+
+        expect($state.go).not.toHaveBeenCalled();
+    });
 });
