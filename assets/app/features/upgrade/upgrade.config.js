@@ -28,11 +28,15 @@
       })
       .state('upgrade7.backup', {
         url: '/backup',
-        templateUrl: 'app/features/upgrade/templates/upgrade7/backup.html'
+        templateUrl: 'app/features/upgrade/templates/upgrade7/backup.html',
+        controller: 'Upgrade7BackupController',
+        controllerAs: 'Upgrade7BackupVm'
       })
       .state('upgrade7.repository-checks', {
         url: '/repository-checks',
-        templateUrl: 'app/features/upgrade/templates/upgrade7/repository-checks.html'
+        templateUrl: 'app/features/upgrade/templates/upgrade7/repository-checks.html',
+        controller: 'Upgrade7RepositoriesCheckController',
+        controllerAs: 'upgrade7RepositoriesCheckControllerVm'
       })
       .state('upgrade7.upgrade-admin', {
         url: '/upgrade-admin',

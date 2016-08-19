@@ -1,6 +1,9 @@
+button.btn.btn-primary.pull-left(type='button')
+  span(aria-hidden="true")
+  | Cancel Upgrade
 button.btn.btn-primary.pull-right(type='button', ng-click="steps.nextStep()", ng-if="!steps.isLastStep()")
-  span.fa-fw.fa.fa-chevron-right(aria-hidden="true")
-  | Continue Upgrade Process
+  span(aria-hidden="true")
+  | Next
 button.btn.btn-primary.disabled.pull-right(type='button', ng-click="steps.nextStep()", ng-if="steps.isLastStep()")
   span.fa-fw.fa-spinner.fa.fa-spin(aria-hidden="true")
   | Upgrading Nodes...
