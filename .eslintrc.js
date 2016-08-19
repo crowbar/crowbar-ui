@@ -1,22 +1,23 @@
 module.exports = {
-    "extends": [
-        "eslint:recommended",
-        "angular"
+    'extends': [
+        'eslint:recommended',
+        'angular'
     ],
-    "globals": {
-        "_": true,
-        "bard": true
+    'globals': {
+        '_': true,
+        'bard': true
     },
-    "env": {
-        "jasmine": true
+    'env': {
+        'jasmine': true
     },
-    "plugins": ["chai-expect"],
-    "rules": {
-        "indent": ["error", 4, {"MemberExpression": 1}],
-        "quotes": ["error", "single", {"avoidEscape": true, "allowTemplateLiterals": true}],
-        "linebreak-style": ["error", "unix"],
-        "max-len": ["error", 120],
-        "complexity": ["error", { "max": 20 }]
+    'plugins': ['chai-expect'],
+    'rules': {
+        'indent': ['error', 4, {'MemberExpression': 1}],
+        'quotes': ['error', 'single', {'avoidEscape': true, 'allowTemplateLiterals': true}],
+        'linebreak-style': ['error', 'unix'],
+        'max-len': ['error', 120],
+        'complexity': ['error', {'max': 20}],
+        'eol-last': 'error'
     }
 }
 // {
