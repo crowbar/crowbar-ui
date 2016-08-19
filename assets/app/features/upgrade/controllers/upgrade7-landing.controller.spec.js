@@ -49,26 +49,26 @@ describe('Upgrade Landing Controller', function() {
 
     describe('Prechecks object', function() {
 
-    it('should exist', function() {
-        should.exist(controller.prechecks);
-    });
-
-    it('is not completed by default', function() {
-        assert.isFalse(controller.prechecks.completed);
-    });
-
-    it('is not valid by default', function() {
-        assert.isFalse(controller.prechecks.valid);
-    });
-
-    describe('contains a collection of checks that', function () {
-
-        it('should be defined', function () {
-            should.exist(controller.prechecks.checks);
+        it('should exist', function() {
+            should.exist(controller.prechecks);
         });
 
-        it('should all be set to false', function () {
-            assert.isObject(controller.prechecks.checks);
+        it('is not completed by default', function() {
+            assert.isFalse(controller.prechecks.completed);
+        });
+
+        it('is not valid by default', function() {
+            assert.isFalse(controller.prechecks.valid);
+        });
+
+        describe('contains a collection of checks that', function () {
+
+            it('should be defined', function () {
+                should.exist(controller.prechecks.checks);
+            });
+
+            it('should all be set to false', function () {
+                assert.isObject(controller.prechecks.checks);
                 expect(controller.prechecks.checks).toEqual(failingChecks);
             });
         });
