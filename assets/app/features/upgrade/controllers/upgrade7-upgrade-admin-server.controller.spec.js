@@ -5,7 +5,9 @@ describe('Upgrade Flow - Upgrade Admin Server Controller', function () {
     describe('nextStep function', function () {
         it('should be defined', function () {});
 
-        it('should redirect the user to "Create or Connect to Database" page when admin upgrade is successfull', function () {});
+        it('should redirect the user to "Create or Connect to Database" page when admin upgrade is successfull',
+        function () {
+        });
 
         it('should retain the user on the curent page until the admin upgrade is completed', function () {});
     });
