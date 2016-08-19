@@ -41,7 +41,7 @@ describe('Upgrade Flow - Backup Controller', function() {
                 should.exist(controller.backup.create);
             });
 
-            fdescribe('when executed', function () {
+            describe('when executed', function () {
 
                 beforeEach(function () {
                     bard.inject('upgradeBackupFactory');
