@@ -12,7 +12,7 @@ module.exports = {
     },
     "plugins": ["chai-expect"],
     "rules": {
-        "indent": ["error", 4]
+        "indent": ["error", 4, {"MemberExpression": 1}]
     }
 }
 // {
