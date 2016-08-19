@@ -8,7 +8,12 @@ router.get('/', function(req, res, next) {
   if('fail' in req.query && JSON.parse(req.query.fail) === true) {
     res.status(500).json({'errors': errors});
   } else {
-    res.sendStatus(200);
+    res.status(200).json({
+      'updates_installed': true,
+      'network_sanity': true,
+      'high_availability': true,
+      'free_node_available': true
+    });
   }
 });
 
