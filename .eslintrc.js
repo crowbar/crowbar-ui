@@ -12,7 +12,11 @@ module.exports = {
     },
     "plugins": ["chai-expect"],
     "rules": {
-        "indent": ["error", 4, {"MemberExpression": 1}]
+        "indent": ["error", 4, {"MemberExpression": 1}],
+        "quotes": ["error", "single", {"avoidEscape": true, "allowTemplateLiterals": true}],
+        "linebreak-style": ["error", "unix"],
+        "max-len": ["error", 120],
+        "complexity": ["error", { "max": 20 }]
     }
 }
 // {
