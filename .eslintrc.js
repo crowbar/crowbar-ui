@@ -1,16 +1,19 @@
 module.exports = {
     "extends": [
-      "eslint:recommended",
-      "angular"
+        "eslint:recommended",
+        "angular"
     ],
     "globals": {
         "_": true,
         "bard": true
     },
     "env": {
-      "jasmine": true
+        "jasmine": true
     },
-    "plugins": ["chai-expect"]
+    "plugins": ["chai-expect"],
+    "rules": {
+        "indent": ["error", 4]
+    }
 }
 // {
 //   // http://eslint.org/docs/rules/
