@@ -1,96 +1,87 @@
 /* jshint -W117, -W030 */
-/*global bard $controller $httpBackend should assert sinon backupFactory $q $rootScope */
+/*global bard $controller $httpBackend should assert upgradeBackupFactory $q $rootScope */
 describe('Upgrade Flow - Backup Controller', function() {
-  var controller;
+    var controller,
+        mockedBackupFile = '--Mock Backup File--';
 
-  beforeEach(function() {
-    //Setup the module and dependencies to be used.
-    bard.appModule('crowbarApp');
-    bard.inject('$controller', '$rootScope', '$state', 'backupFactory', '$q', '$httpBackend');
+    beforeEach(function() {
+        //Setup the module and dependencies to be used.
+        bard.appModule('crowbarApp');
+        bard.inject('$controller', '$rootScope', '$q', '$httpBackend');
 
-    //Create the controller
-    controller = $controller('Upgrade7BackupController');
+        //Create the controller
+        controller = $controller('Upgrade7BackupController');
 
-    //Mock requests that are expected to be made
-    $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
-    $httpBackend.flush();
+        //Mock requests that are expected to be made
+        $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
+        $httpBackend.flush();
 
-  });
-
-  // Verify no unexpected http call has been made
-  bard.verifyNoOutstandingHttpRequests();
-
-  it('should exist', function() {
-    should.exist(controller);
-  });
-
-  describe('nextStep function', function() {
-    it('should be defined', function() {
-      should.exist(controller.nextStep);
     });
 
-    //@TODO
-    it('should redirect the user to /repository-checks when clicked', function() {
-    });
-
-
-    //@TODO
-    it('should avoid any redirection if backup has not been done', function() {
-      
-    });
-  });
-
-  describe('Backup object', function() {
+    // Verify no unexpected http call has been made
+    bard.verifyNoOutstandingHttpRequests();
 
     it('should exist', function() {
-      should.exist(controller.backup);
+        should.exist(controller);
     });
 
-    it('should not completed by default', function() {
-      assert.isFalse(controller.backup.completed);
-    });
+    describe('Backup object', function() {
 
-    describe('create function', function() {
+        it('should exist', function() {
+            should.exist(controller.backup);
+        });
 
-      it('is defined', function() {
-        should.exist(controller.backup.create);
-      });
+        it('should not completed by default', function() {
+            assert.isFalse(controller.backup.completed);
+        });
 
-      //@TODO
-      it('creates a backup from backupFactory', function() {
-        sinon.stub(backupFactory, 'create').returns($q.when({}));
-        //$httpBackend.expectGET('/api/upgrade7/prechecks').respond({});
-        controller.backup.create();
-        $rootScope.$apply();
-      });
+        describe('create function', function() {
 
-      it('changes the completed status when a backup is created', function() {
-        sinon.stub(backupFactory, 'create').returns($q.when({}));
-        controller.backup.create();
-        $rootScope.$apply();
+            it('is defined', function() {
+                should.exist(controller.backup.create);
+            });
 
-        assert.isTrue(controller.backup.completed);
+            fdescribe('when executed', function () {
 
-      });
-      
-    });
+                beforeEach(function () {
+                    bard.inject('upgradeBackupFactory');
 
-  });
+                    bard.mockService(upgradeBackupFactory, {
+                        create: $q.when(mockedBackupFile)
+                    });
+                    controller.backup.create();
+                    $rootScope.$digest();
 
-  //@TODO: Implement the following tests
-  describe('cancelUpgrade function', function () {
-    it('should be defined', function () {});
+                    assert.isTrue(upgradeBackupFactory.create.calledOnce);
+                });
 
-    it('should be enabled', function () {});
+                it('creates a backup from upgradeBackupFactory', function() {
+                    expect(controller.backup.file).toEqual(mockedBackupFile);
+                });
 
-    describe('cancel modal', function () {
-      it('should be displayed when cancel button is clicked', function () {});
-
-      it('should trigger the cancellation routine upon user confirmation', function () {});
-
-      it('should be closed and let the user continue with the upgrade flow when canceled', function () {});
+                it('changes the completed status when a backup is created', function() {
+                    assert.isTrue(controller.backup.completed);
+                });
+            });
+            
+        });
 
     });
 
-  });
+    //@TODO: Implement the following tests
+    describe('cancelUpgrade function', function () {
+        it('should be defined', function () {});
+
+        it('should be enabled', function () {});
+
+        describe('cancel modal', function () {
+            it('should be displayed when cancel button is clicked', function () {});
+
+            it('should trigger the cancellation routine upon user confirmation', function () {});
+
+            it('should be closed and let the user continue with the upgrade flow when canceled', function () {});
+
+        });
+
+    });
 });

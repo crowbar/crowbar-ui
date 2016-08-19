@@ -1,140 +1,140 @@
 {
-  "upgrade": {
-    "title": "SUSE&reg; OpenStack Cloud Non-Disruptive Upgrade",
-    "steps": {
-      "prepare": {
-        "name": "Prepare Client Node",
-        "introduction": {
-          "title": "Upgrade to SUSE OpenStack Cloud 6",
-          "description": "Upgrading is a multistep process. The first few steps of this process are still done using the SUSE OpenStack Cloud 5 version of the Administration Server. After that you will be asked to reinstall the Server with SUSE OpenStack Cloud 6, where the rest of the upgrade Process is performed. At some point during the upgrade the OpenStack Cloud will be turned off and all cloud services will be inaccessible. It is highly recommended to back up data before the upgrade."
-        },
-        "nodes": {
-          "title": "Prepare Nodes for Upgrade",
-          "description": "As a first step all client nodes of this setup need to be prepared to allow the administration server to be upgraded. Click 'Prepare Nodes for Upgrade' to start that preparation. It is still possible to revert the Upgrade Process after that."
+    "upgrade": {
+        "title": "SUSE&reg; OpenStack Cloud Non-Disruptive Upgrade",
+        "steps": {
+            "prepare": {
+                "name": "Prepare Client Node",
+                "introduction": {
+                    "title": "Upgrade to SUSE OpenStack Cloud 6",
+                    "description": "Upgrading is a multistep process. The first few steps of this process are still done using the SUSE OpenStack Cloud 5 version of the Administration Server. After that you will be asked to reinstall the Server with SUSE OpenStack Cloud 6, where the rest of the upgrade Process is performed. At some point during the upgrade the OpenStack Cloud will be turned off and all cloud services will be inaccessible. It is highly recommended to back up data before the upgrade."
+                },
+                "nodes": {
+                    "title": "Prepare Nodes for Upgrade",
+                    "description": "As a first step all client nodes of this setup need to be prepared to allow the administration server to be upgraded. Click 'Prepare Nodes for Upgrade' to start that preparation. It is still possible to revert the Upgrade Process after that."
+                }
+            },
+            "backup": {
+                "name": "Download Upgrade Data",
+                "title": "Download the Upgrade Data",
+                "description": "This step will create a tar archive with all relevant data to restore your setup later on the SUSE OpenStack Cloud 6 Administration Server. Click 'Download Upgrade Data' and keep that tar archive in a secure place. You will be asked to upload it later on in the process. After you downloaded and saved the upgrade data click 'Continue Upgrade Process'."
+            },
+            "reinstall-admin": {
+                "name": "Reinstall Admin Server",
+                "title": "Reinstall SUSE OpenStack Cloud 6",
+                "description": "As the next step in the upgrade process you need to redeploy the Administration Server with the new version of SUSE OpenStack Cloud. Please make sure to redeploy on the very same machine using the same network configuration as before. Note, after redeploying it is not possible anymore to get back to SUSE OpenStack Cloud 5.",
+                "description2": "Please reassure that you successfully downloaded the upgrade data and continue the upgrade process by redeploying the Administration Server. After that, open the Web Interface again and select the 'Continue Upgrade Process' option in the installation wizard."
+            },
+            "continue-upgrade": {
+                "name": "Continue Upgrade",
+                "title": "Continue Upgrade",
+                "description": "Select the upgrade data archive that you downloaded from the SUSE OpenStack Cloud 5 Administration server when you started the upgrade wizard. Upload it by clicking 'Upload and Restore'.",
+                "form": {
+                    "placeholder": "Search for...",
+                    "button": "Browse..."
+                }
+            },
+            "restore-admin": {
+                "name": "Restore",
+                "title": "Restore",
+                "description": "The upgrade-data was uploaded successfully. The restoration process may take a long time to import the required data from the SUSE OpenStack Cloud 5 Administration Server while the installation process runs in the background.",
+                "description2": "The crowbar admin password will be required, possibly more than once. The password is either the default password or, depending on whether the password was changed in SUSE OpenStack Cloud 5, the one set by the user.",
+                "messages": {
+                    "success": "Restoration successful."
+                }
+            },
+            "verify-repos": {
+                "name": "Verify Repositories",
+                "title": "Verify Add-On Product Repositories",
+                "description": "This step verifies that the software repositories for \"SUSE Linux Enterprise High Availability Extension\" and \"SUSE Enterprise Storage\" are available if they were previously installed on SUSE OpenStack Cloud 5.",
+                "messages": {
+                    "no-add-on": "No Add-On Products Installed."
+                }
+            },
+            "stop-openstack-services": {
+                "name": "Stop OpenStack Services",
+                "title": "Stop OpenStack Services",
+                "description": "Continuing the upgrade process by clicking 'Stop OpenStack Services' below will stop all services on the client nodes. This is the last chance to access any OpenStack service. If you haven't done so yet, please shut down all VM instances in your cloud and backup everything needed which uses OpenStack APIs."
+            },
+            "openstack-backup": {
+                "name": "Data Backup",
+                "title": "Database Dump",
+                "description": "The SQL dump of the database was created. This will be re-imported later when re-applying the OpenStack barclamps. It is strongly recommended to download this dump.",
+                "backup": {
+                    "node": "Download the database dump from node <strong>{{name}}</strong>.",
+                    "path": "The file can be found here: <strong>{{path}}</strong>."
+                }
+            },
+            "upgrade-nodes-os": {
+                "name": "Upgrading Nodes OS",
+                "title": "Upgrading Nodes OS",
+                "description": "All services on the client nodes have now been stopped. Next, the client nodes will be upgraded to SLES 12 SP1. To begin this process click 'Upgrade Nodes Now'. This process will take a long time, so please be patient."
+            },
+            "finishing-upgrade": {
+                "name": "Finishing Upgrade",
+                "title": "Finishing Upgrade",
+                "description": "Please wait until all nodes are upgraded. This may take a long time.",
+                "nodes": {
+                    "total": "Nodes in Total",
+                    "remaining": "Nodes Left",
+                    "failed": "Nodes Failed"
+                }
+            }
         }
-      },
-      "backup": {
-        "name": "Download Upgrade Data",
-        "title": "Download the Upgrade Data",
-        "description": "This step will create a tar archive with all relevant data to restore your setup later on the SUSE OpenStack Cloud 6 Administration Server. Click 'Download Upgrade Data' and keep that tar archive in a secure place. You will be asked to upload it later on in the process. After you downloaded and saved the upgrade data click 'Continue Upgrade Process'."
-      },
-      "reinstall-admin": {
-        "name": "Reinstall Admin Server",
-        "title": "Reinstall SUSE OpenStack Cloud 6",
-        "description": "As the next step in the upgrade process you need to redeploy the Administration Server with the new version of SUSE OpenStack Cloud. Please make sure to redeploy on the very same machine using the same network configuration as before. Note, after redeploying it is not possible anymore to get back to SUSE OpenStack Cloud 5.",
-        "description2": "Please reassure that you successfully downloaded the upgrade data and continue the upgrade process by redeploying the Administration Server. After that, open the Web Interface again and select the 'Continue Upgrade Process' option in the installation wizard."
-      },
-      "continue-upgrade": {
-        "name": "Continue Upgrade",
-        "title": "Continue Upgrade",
-        "description": "Select the upgrade data archive that you downloaded from the SUSE OpenStack Cloud 5 Administration server when you started the upgrade wizard. Upload it by clicking 'Upload and Restore'.",
-        "form": {
-          "placeholder": "Search for...",
-          "button": "Browse..."
-        }
-      },
-      "restore-admin": {
-        "name": "Restore",
-        "title": "Restore",
-        "description": "The upgrade-data was uploaded successfully. The restoration process may take a long time to import the required data from the SUSE OpenStack Cloud 5 Administration Server while the installation process runs in the background.",
-        "description2": "The crowbar admin password will be required, possibly more than once. The password is either the default password or, depending on whether the password was changed in SUSE OpenStack Cloud 5, the one set by the user.",
-        "messages": {
-          "success": "Restoration successful."
-        }
-      },
-      "verify-repos": {
-        "name": "Verify Repositories",
-        "title": "Verify Add-On Product Repositories",
-        "description": "This step verifies that the software repositories for \"SUSE Linux Enterprise High Availability Extension\" and \"SUSE Enterprise Storage\" are available if they were previously installed on SUSE OpenStack Cloud 5.",
-        "messages": {
-          "no-add-on": "No Add-On Products Installed."
-        }
-      },
-      "stop-openstack-services": {
-        "name": "Stop OpenStack Services",
-        "title": "Stop OpenStack Services",
-        "description": "Continuing the upgrade process by clicking 'Stop OpenStack Services' below will stop all services on the client nodes. This is the last chance to access any OpenStack service. If you haven't done so yet, please shut down all VM instances in your cloud and backup everything needed which uses OpenStack APIs."
-      },
-      "openstack-backup": {
-        "name": "Data Backup",
-        "title": "Database Dump",
-        "description": "The SQL dump of the database was created. This will be re-imported later when re-applying the OpenStack barclamps. It is strongly recommended to download this dump.",
-        "backup": {
-          "node": "Download the database dump from node <strong>{{name}}</strong>.",
-          "path": "The file can be found here: <strong>{{path}}</strong>."
-        }
-      },
-      "upgrade-nodes-os": {
-        "name": "Upgrading Nodes OS",
-        "title": "Upgrading Nodes OS",
-        "description": "All services on the client nodes have now been stopped. Next, the client nodes will be upgraded to SLES 12 SP1. To begin this process click 'Upgrade Nodes Now'. This process will take a long time, so please be patient."
-      },
-      "finishing-upgrade": {
-        "name": "Finishing Upgrade",
-        "title": "Finishing Upgrade",
-        "description": "Please wait until all nodes are upgraded. This may take a long time.",
-        "nodes": {
-          "total": "Nodes in Total",
-          "remaining": "Nodes Left",
-          "failed": "Nodes Failed"
-        }
-      }
-    }
-  },
-  "upgrade7": {
-    "title": "Download Backup of Administration Server",
-    "steps": {
-      "landing": {
-        "description": "In order to upgrade SUSE OpenStack Cloud from version 6 to 7, the following requirements must be met:",
-        "requirements": {
-          "point1": "The Administration Server needs to have the latest SUSE OpenStack Cloud 6 updates installed. One of these updates will add the new upgrade routine to the Crowbar Web interface.",
-          "point2": "All other nodes need to have the latest SUSE OpenStack Cloud 6 updates and the latest SLES updates.",
-          "point3": "All allocated nodes need to be available. In addition, a free node with at least an equal amount of disk and memory space as the largest running node must be free of any workload and available."
-        },
-        "note": "Note: Manual changes to the cloud during the upgrade process could lead to irrepairable damage to the cloud, the workloads running in it and the data they produce or consume.",
-        "form": {
-          "button": "Begin Upgrade"
-        },
-        "prechecks": {
-          "title": "Preliminary checks:",
-          "description": "Pre-requirements to update SUSE OpenStack Cloud from version 6 to 7:",
-          "form": {
-            "check-again": "Check"
-          },
-          "codes": {
-            "updates_installed": "Maintenance Updates to SLES SP1",
-            "network_sanity": "Cloud Health",
-            "high_availability": "High Availability Health",
-            "free_node_available": "Free node available"
-          }
-        }
-      },
-      "backup": {
-        "name": "Back up Admin Server",
-        "title": "Download Backup of Administration Server",
-        "description": "Create a backup of the Administration Server configuration and download it in your browser. Keep this backup somewhere safe in case of emergency. With this backup and a fresh deployment of SUSE OpenStack Cloud 6 your cloud can be returned to it’s previous state.",
-        "form": {
-          "backup": "Download Backup of Administration Server"
-        }
-      },
-      "repository-checks": {
-        "name": "",
-        "title": "Repository checks",
-        "description": "With the upgrade to SUSE OpenStack Cloud 7 the administration server will be upgraded to SUSE Linux Enterprise 11 SP2.",
-        "repositories": {
-          "instructions": "Please update the urls of the following software repositories", 
-          "list": {
-            "aaa": "Blue Skies Calibration",
-            "bbb": "Job Degenerators",
-            "ccc": "The Matrix Obfuscation"
-          }
-        },
-        "form": {
-          "check-again": "Check Again"
-        }
-      }
     },
-    "errors": {
+    "upgrade7": {
+        "title": "Download Backup of Administration Server",
+        "steps": {
+            "landing": {
+                "description": "In order to upgrade SUSE OpenStack Cloud from version 6 to 7, the following requirements must be met:",
+                "requirements": {
+                    "point1": "The Administration Server needs to have the latest SUSE OpenStack Cloud 6 updates installed. One of these updates will add the new upgrade routine to the Crowbar Web interface.",
+                    "point2": "All other nodes need to have the latest SUSE OpenStack Cloud 6 updates and the latest SLES updates.",
+                    "point3": "All allocated nodes need to be available. In addition, a free node with at least an equal amount of disk and memory space as the largest running node must be free of any workload and available."
+                },
+                "note": "Note: Manual changes to the cloud during the upgrade process could lead to irrepairable damage to the cloud, the workloads running in it and the data they produce or consume.",
+                "form": {
+                    "button": "Begin Upgrade"
+                },
+                "prechecks": {
+                    "title": "Preliminary checks:",
+                    "description": "Pre-requirements to update SUSE OpenStack Cloud from version 6 to 7:",
+                    "form": {
+                        "check-again": "Check"
+                    },
+                    "codes": {
+                        "updates_installed": "Maintenance Updates to SLES SP1",
+                        "network_sanity": "Cloud Health",
+                        "high_availability": "High Availability Health",
+                        "free_node_available": "Free node available"
+                    }
+                }
+            },
+            "backup": {
+                "name": "Back up Admin Server",
+                "title": "Backing up configuration of Administration Server",
+                "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "form": {
+                    "backup": "Create Backup"
+                }
+            },
+            "repository-checks": {
+                "name": "",
+                "title": "Repository checks",
+                "description": "With the upgrade to SUSE OpenStack Cloud 7 the administration server will be upgraded to SUSE Linux Enterprise 11 SP2.",
+                "repositories": {
+                    "instructions": "Please update the urls of the following software repositories", 
+                    "list": {
+                        "aaa": "Blue Skies Calibration",
+                        "bbb": "Job Degenerators",
+                        "ccc": "The Matrix Obfuscation"
+                    }
+                },
+                "form": {
+                    "check-again": "Check Again"
+                }
+            }
+        },
+        "errors": {
+        }
     }
-  }
 }

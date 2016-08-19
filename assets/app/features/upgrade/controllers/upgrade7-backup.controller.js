@@ -1,40 +1,43 @@
 (function() {
-  'use strict';
-
-  /**
-   * @ngdoc function
-   * @name crowbarApp.controller:Upgrade7BackupController
-   * @description
-   * # Upgrade7BackupController
-   * This is the controller used on the Upgrade landing page
-   */
-  angular.module('crowbarApp')
-    .controller('Upgrade7BackupController', Upgrade7BackupController);
-
-  Upgrade7BackupController.$inject = ['$translate', '$state', 'backupFactory'];
-  // @ngInject
-  function Upgrade7BackupController($translate, $state, backupFactory) {
-    var vm = this;
-    vm.nextStep = nextStep;
-    vm.backup = {
-      completed: false,
-      create: function () {
-        backupFactory.create().finally(function () {
-          vm.backup.completed = true;
-        });
-      }
-    };
+    'use strict';
 
     /**
-     * Move to the next available Step
+     * @ngdoc function
+     * @name crowbarApp.controller:Upgrade7BackupController
+     * @description
+     * # Upgrade7BackupController
+     * This is the controller used on the Upgrade landing page
      */
-    function nextStep() {
-      // Only move forward if the backup has been triggered and offered to download.
-      if (!vm.backup.completed) {
-        return;
-      }
+    angular.module('crowbarApp')
+        .controller('Upgrade7BackupController', Upgrade7BackupController);
 
-      $state.go('upgrade7.repository-checks');
+    Upgrade7BackupController.$inject = ['$translate', '$state', 'upgradeBackupFactory'];
+    // @ngInject
+    function Upgrade7BackupController($translate, $state, upgradeBackupFactory) {
+        var vm = this;
+        vm.backup = {
+            completed: false,
+            create: createBackup
+        };
+
+        /**
+         * Move to the next available Step
+         */
+        function createBackup() {
+            upgradeBackupFactory.create()
+                .then(
+                    // When Backup Data has been created successfully
+                    function (backupData) {
+                        vm.backup.file = backupData;
+                    },
+                    // In case of backup error
+                    function (error) {
+                        vm.backup.error = error;
+                    }
+                )
+                .finally(function () {
+                    vm.backup.completed = true;
+                });
+        }
     }
-  }
 })();
