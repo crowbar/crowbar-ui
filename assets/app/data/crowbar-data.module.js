@@ -1,5 +1,5 @@
 (function () {
     'use strict';
 
-    angular.module('crowbarData', []);
+    angular.module('crowbarData', ['crowbarData.upgrade']);
 })();
