@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-/*global bard $controller $httpBackend should assert prechecksFactory $q $rootScope module $state */
+/*global bard $controller $httpBackend should assert upgradePrechecksFactory $q $rootScope module $state */
 describe('Upgrade Landing Controller', function() {
     var controller,
         passingChecks = {
@@ -23,7 +23,7 @@ describe('Upgrade Landing Controller', function() {
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
-        bard.inject('$controller', '$rootScope', 'prechecksFactory', '$q', '$httpBackend');
+        bard.inject('$controller', '$rootScope', 'upgradePrechecksFactory', '$q', '$httpBackend');
 
         //Create the controller
         controller = $controller('Upgrade7LandingController');
@@ -81,7 +81,7 @@ describe('Upgrade Landing Controller', function() {
 
             describe('when checks pass successfully', function () {
                 beforeEach(function () {
-                    bard.mockService(prechecksFactory, {
+                    bard.mockService(upgradePrechecksFactory, {
                         getAll: $q.when(passingChecks)
                     });
                     controller.prechecks.runPrechecks();
@@ -96,7 +96,7 @@ describe('Upgrade Landing Controller', function() {
 
             describe('when checks fail', function () {
                 beforeEach(function () {
-                    bard.mockService(prechecksFactory, {
+                    bard.mockService(upgradePrechecksFactory, {
                         getAll: $q.reject(failingResponse)
                     });
                     controller.prechecks.runPrechecks();
