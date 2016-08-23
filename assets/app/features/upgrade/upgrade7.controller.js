@@ -11,9 +11,9 @@
     angular.module('crowbarApp.upgrade')
         .controller('Upgrade7Controller', Upgrade7Controller);
 
-    Upgrade7Controller.$inject = ['$scope', '$translate', '$state', 'upgradeStepsFactory', 'prechecksFactory'];
+    Upgrade7Controller.$inject = ['$scope', '$translate', '$state', 'upgradeStepsFactory'];
     // @ngInject
-    function Upgrade7Controller($scope, $translate, $state, upgradeStepsFactory, prechecksFactory) {
+    function Upgrade7Controller($scope, $translate, $state, upgradeStepsFactory) {
         var vm = this;
         vm.steps = {
             list: [],
@@ -21,20 +21,6 @@
             nextStep: nextStep,
             isLastStep: isLastStep
         };
-
-        vm.prechecks = {
-            completed: false,
-            runPrechecks: runPrechecks
-        };
-
-        //@TODO: Remove this once the precheck integration is completed.
-        vm.forcePrecheckFailure = true;
-
-        //Run prechecks
-        vm.prechecks.runPrechecks(vm.forcePrecheckFailure);
-
-        //@TODO: Remove this once the precheck integration is completed.
-        vm.forcePrecheckFailure = false;
 
         // Get Steps list from provider
         upgradeStepsFactory.getAll().then(
@@ -98,29 +84,6 @@
          */
         function isLastStep() {
             return vm.steps.list[vm.steps.list.length - 1] === vm.steps.activeStep;
-        }
-
-        /**
-         * Pre validation checks
-         */
-        function runPrechecks() {
-            prechecksFactory
-                .getAll()
-                .then(
-                    //Success handler. Al precheck passed successfully:
-                    function() {
-                        delete vm.prechecks.errors;
-                    },
-                    //Failure handler:
-                    function(errorPrechecksResponse) {
-                        vm.prechecks.errors = errorPrechecksResponse.data.errors;
-                    }
-                ).finally(
-                    function() {
-                        vm.prechecks.completed = true;
-                    }
-                );
-
         }
     }
 })();
