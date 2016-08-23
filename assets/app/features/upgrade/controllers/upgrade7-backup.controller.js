@@ -20,6 +20,19 @@
             create: createBackup
         };
 
+
+        vm.downloadPdf = function () {
+            var fileName = 'peace.zip';
+            var fileURL = 'http://www.colorado.edu/conflict/peace/download/peace.zip';
+
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            a.href = fileURL;
+            a.download = fileName;
+            a.click();
+        };
+
         /**
          * Move to the next available Step
          */
@@ -39,5 +52,16 @@
                     vm.backup.completed = true;
                 });
         }
+
+        var zip_file_path = "http://www.colorado.edu/conflict/peace/download/" //put inside "" your server path with file.zip
+        var zip_file_name = "peace.zip" //put inside "" file name or something
+        var a = document.createElement("a");
+        document.body.appendChild(a);
+        a.innerHTML = "Download";
+        a.href = zip_file_path;
+        a.download = zip_file_name;
+        a.click();
+
+
     }
 })();
