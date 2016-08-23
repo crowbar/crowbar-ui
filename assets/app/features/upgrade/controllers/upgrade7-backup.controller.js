@@ -25,9 +25,9 @@
             var fileName = 'peace.zip';
             var fileURL = 'http://www.colorado.edu/conflict/peace/download/peace.zip';
 
-            var a = document.createElement("a");
+            var a = document.createElement('a');
             document.body.appendChild(a);
-            a.style = "display: none";
+            a.style = 'display: none';
             a.href = fileURL;
             a.download = fileName;
             a.click();
