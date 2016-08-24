@@ -11,7 +11,7 @@
     angular.module('crowbarApp.upgrade')
         .controller('Upgrade7Controller', Upgrade7Controller);
 
-    Upgrade7Controller.$inject = ['$scope', '$translate', '$state'];
+    Upgrade7Controller.$inject = ['$scope', '$translate', '$state', 'upgradeStepsFactory'];
     // @ngInject
     function Upgrade7Controller($scope, $translate, $state, upgradeStepsFactory) {
         var vm = this;
