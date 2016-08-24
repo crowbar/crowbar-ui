@@ -1,33 +1,25 @@
 (function() {
 
     angular
-        .module('crowbarData')
-        .factory('prechecksFactory', prechecksFactory);
+        .module('crowbarData.upgrade')
+        .factory('upgradePrechecksFactory', upgradePrechecksFactory);
 
-    prechecksFactory.$inject = ['$q', '$http'];
+    upgradePrechecksFactory.$inject = ['$q', '$http'];
     /* @ngInject */
-    function prechecksFactory($q, $http) {
+    function upgradePrechecksFactory($q, $http) {
         var factory = {
-            getAll: getStepsFactory,
-            getAllStatic: function() {
-                return {
-                    'errors': ['001', '002', '003']
-                };
-            }
+            getAll: getPrechecks
         };
 
         return factory;
 
-        function getStepsFactory(forceFailure) {
+        function getPrechecks() {
 
             var requestOptions = {
                 method: 'GET',
                 url: '/api/upgrade7/prechecks'
             };
 
-            if (forceFailure) {
-                requestOptions.url += '?fail=' + forceFailure;
-            }
             return $http(requestOptions);
         }
     }
