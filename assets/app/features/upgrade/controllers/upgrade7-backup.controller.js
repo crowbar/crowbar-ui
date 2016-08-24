@@ -11,9 +11,9 @@
     angular.module('crowbarApp')
         .controller('Upgrade7BackupController', Upgrade7BackupController);
 
-    Upgrade7BackupController.$inject = ['$translate', '$state', 'upgradeBackupFactory'];
+    Upgrade7BackupController.$inject = ['$translate', '$state', 'upgradeBackupFactory', '$document'];
     // @ngInject
-    function Upgrade7BackupController($translate, $state, upgradeBackupFactory) {
+    function Upgrade7BackupController($translate, $state, upgradeBackupFactory, $document) {
         var vm = this;
         vm.backup = {
             completed: false,
@@ -24,13 +24,12 @@
         function createBackup() {
 
             var zip_file_path = 'http://www.colorado.edu/conflict/peace/download/peace.zip', 
-                zip_file_name = 'peaceNew.zip'
-
-            var anchor = angular.element('<a/>');
-            anchor.attr({
-                href: zip_file_path,
-                download: zip_file_name
-            })[0].click();
+                zip_file_name = 'peaceNew.zip',
+                a = $document[0].createElement('a');
+    
+            a.href = zip_file_path;
+            a.download = zip_file_name;
+            a.click();
 
             upgradeBackupFactory.create()
                 .then(
