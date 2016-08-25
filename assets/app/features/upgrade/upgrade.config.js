@@ -32,11 +32,6 @@
                 controller: 'Upgrade7BackupController',
                 controllerAs: 'upgradeBackupVm'
             })
-            .state('upgrade7.repository-checks', {
-                url: '/repository-checks',
-                templateUrl: 'app/features/upgrade/templates/upgrade7/repository-checks.html'
-            })
-
 
             .state('upgrade', {
                 url: '/upgrade',
