@@ -1,4 +1,5 @@
-(function() {
+(/*global Blob URL */
+function() {
     'use strict';
 
     /**
@@ -6,7 +7,7 @@
      * @name crowbarApp.controller:Upgrade7BackupController
      * @description
      * # Upgrade7BackupController
-     * This is the controller used on the Upgrade landing page
+     * This is the controller used on the Upgrade backup page
      */
     angular.module('crowbarApp')
         .controller('Upgrade7BackupController', Upgrade7BackupController);
@@ -20,22 +21,32 @@
             create: createBackup
         };
 
-
         function createBackup() {
-
-            var zip_file_path = 'http://www.colorado.edu/conflict/peace/download/peace.zip', 
-                zip_file_name = 'peaceNew.zip',
-                a = $document[0].createElement('a');
-    
-            a.href = zip_file_path;
-            a.download = zip_file_name;
-            a.click();
 
             upgradeBackupFactory.create()
                 .then(
                     // When Backup Data has been created successfully
                     function (backupData) {
-                        vm.backup.file = backupData;
+                        var headers = backupData.headers(),
+
+                            // Get the filename from the x-filename header or default to "crowbarBackup"
+                            filename = headers['x-filename'] || 'crowbarBackup',
+
+                            // Determine the content type from the header
+                            contentType = headers['content-type'],
+
+                            backupBlob = new Blob([backupData.data], {type: contentType}),
+                            backupObjectUrl = URL.createObjectURL(backupBlob),
+
+                            // Create download a DOM element
+                            backupElement = $document[0].createElement('a');
+
+                        // Set anchor properties
+                        backupElement.href = backupObjectUrl;
+                        backupElement.download = filename;
+
+                        // Trigger the download
+                        backupElement.click();
                     },
                     // In case of backup error
                     function (error) {
@@ -46,7 +57,6 @@
                     vm.backup.completed = true;
                 });
         }
-
 
     }
 })();

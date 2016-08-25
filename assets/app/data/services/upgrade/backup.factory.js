@@ -16,8 +16,10 @@
         function getBackup() {
 
             var requestOptions = {
-                method: 'GET',
-                url: '/api/upgrade7/prechecks'
+                method: 'POST',
+                cache: false,
+                responseType:'arraybuffer',
+                url: '/api/upgrade7/backup'
             };
 
             return $http(requestOptions);

@@ -1,13 +1,25 @@
 /* jshint -W117, -W030 */
-/*global bard $controller $httpBackend should assert upgradeBackupFactory $q $rootScope */
+/*global bard $controller $httpBackend should assert upgradeBackupFactory $q $rootScope $document */
 describe('Upgrade Flow - Backup Controller', function() {
     var controller,
-        mockedBackupFile = '--Mock Backup File--';
+        mockedBackupFile = '--Mock Backup File--',
+        mockedBackupResponseHeaders = {
+            'connection': 'keep-alive',
+            'content-disposition': 'attachment; filename=S33z8qFX.jpg.zip',
+            'content-type': 'application/zip',
+            'date': 'Thu, 25 Aug 2016 11:07:32 GMT',
+            'transfer-encoding': 'chunked',
+            'x-powered-by': 'Express',
+        },
+        mockedBackupResponse = {
+            data: mockedBackupFile,
+            'headers': function() {}
+        };
 
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
-        bard.inject('$controller', '$rootScope', '$q', '$httpBackend');
+        bard.inject('$controller', '$rootScope', '$q', '$httpBackend', '$document');
 
         //Create the controller
         controller = $controller('Upgrade7BackupController');
@@ -44,43 +56,58 @@ describe('Upgrade Flow - Backup Controller', function() {
             describe('when executed', function () {
 
                 beforeEach(function () {
-                    bard.inject('upgradeBackupFactory');
+                    bard.inject('upgradeBackupFactory', '$document');
+                });
 
-                    bard.mockService(upgradeBackupFactory, {
-                        create: $q.when(mockedBackupFile)
+                describe('on success', function () {
+                    var downloadBackupMock;
+
+                    beforeEach(function () {
+
+                        // Mock the click() method of a fake downloadBackup element
+                        downloadBackupMock = $document[0].createElement('a')
+                        spyOn(downloadBackupMock, 'click');
+
+                        // Mock the createElement() method of $document[0]
+                        spyOn($document[0], 'createElement')
+                            .and.returnValue(downloadBackupMock);
+
+                        // Mock the headers() method of the fake response
+                        spyOn(mockedBackupResponse, 'headers')
+                            .and.returnValue(mockedBackupResponseHeaders);
+
+                        // Mock the create create() method of the upgradeBackupFactory,
+                        // and return a custom promise instead
+                        bard.mockService(upgradeBackupFactory, {
+                            create: $q.when(mockedBackupResponse)
+                        });
+
+                        // Run the backup creation
+                        controller.backup.create();
+                        $rootScope.$digest();
                     });
-                    controller.backup.create();
-                    $rootScope.$digest();
 
-                    assert.isTrue(upgradeBackupFactory.create.calledOnce);
+                    it('click() method should have been triggered to download the backup', function () {
+                        assert.isTrue(upgradeBackupFactory.create.calledOnce);
+                        expect($document[0].createElement).toHaveBeenCalledWith('a');
+                        expect(downloadBackupMock.click).toHaveBeenCalled();
+                    })
+
+                    it('changes the completed status', function() {
+                        assert.isTrue(controller.backup.completed);
+                    });
+
+                    it('no error is created', function() {
+                        should.not.exist(controller.backup.error);
+                    });
+                    
+                });
+                describe('on failure', function () {
+                    
                 });
 
-                it('creates a backup from upgradeBackupFactory', function() {
-                    expect(controller.backup.file).toEqual(mockedBackupFile);
-                });
-
-                it('changes the completed status when a backup is created', function() {
-                    assert.isTrue(controller.backup.completed);
-                });
             });
             
-        });
-
-    });
-
-    //@TODO: Implement the following tests
-    describe('cancelUpgrade function', function () {
-        it('should be defined', function () {});
-
-        it('should be enabled', function () {});
-
-        describe('cancel modal', function () {
-            it('should be displayed when cancel button is clicked', function () {});
-
-            it('should trigger the cancellation routine upon user confirmation', function () {});
-
-            it('should be closed and let the user continue with the upgrade flow when canceled', function () {});
-
         });
 
     });
