@@ -18,7 +18,7 @@
             var requestOptions = {
                 method: 'POST',
                 cache: false,
-                responseType:'arraybuffer',
+                responseType: 'arraybuffer',
                 url: '/api/upgrade7/backup'
             };
 
