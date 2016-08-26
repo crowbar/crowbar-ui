@@ -34,7 +34,9 @@
             })
             .state('upgrade7.repository-checks', {
                 url: '/repository-checks',
-                templateUrl: 'app/features/upgrade/templates/upgrade7/repository-checks.html'
+                templateUrl: 'app/features/upgrade/templates/upgrade7/repository-checks.html',
+                controller: 'Upgrade7RepositoriesCheckController',
+                controllerAs: 'upgradeAdminRepoChecksVm'
             })
 
             .state('upgrade', {

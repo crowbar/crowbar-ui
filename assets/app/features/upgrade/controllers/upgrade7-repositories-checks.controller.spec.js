@@ -1,4 +1,4 @@
-describe('Upgrade Flow - Repositories Checks Controller', function () {
+describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
 
     it('should exist', function () {});
 
