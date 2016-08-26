@@ -9,7 +9,7 @@
     function upgradeRepoChecks($q, $http) {
         var factory = {
             getAdminRepoChecks: getAdminRepoChecks,
-            addOns: function () {}
+            getAddOnsRepoChecks: function () {}
         };
 
         return factory;

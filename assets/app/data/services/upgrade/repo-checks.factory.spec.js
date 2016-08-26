@@ -25,6 +25,10 @@ describe('Upgrade Repo Checks Factory', function () {
             expect(upgradeRepoChecks.getAdminRepoChecks).toEqual(jasmine.any(Function));
         });
 
+        it('returns an object with getAddOnsRepoChecks function is defined', function () {
+            expect(upgradeRepoChecks.getAddOnsRepoChecks).toEqual(jasmine.any(Function));
+        });
+
         describe('when getAdminRepoChecks method is executed', function () {
 
             beforeEach(function () {
