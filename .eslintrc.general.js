@@ -1,16 +1,7 @@
 module.exports = {
     'extends': [
-        'eslint:recommended',
-        'angular'
+        'eslint:recommended'
     ],
-    'globals': {
-        '_': true,
-        'bard': true
-    },
-    'env': {
-        'jasmine': true
-    },
-    'plugins': ['chai-expect'],
     'rules': {
         'indent': ['error', 4, {'MemberExpression': 1}],
         'quotes': ['error', 'single', {'avoidEscape': true, 'allowTemplateLiterals': true}],
