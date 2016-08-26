@@ -1,4 +1,5 @@
-(function() {
+(/*global Blob URL */
+function() {
     'use strict';
 
     /**
@@ -6,27 +7,56 @@
      * @name crowbarApp.controller:Upgrade7BackupController
      * @description
      * # Upgrade7BackupController
-     * This is the controller used on the Upgrade landing page
+     * This is the controller used on the Upgrade backup page
      */
     angular.module('crowbarApp')
         .controller('Upgrade7BackupController', Upgrade7BackupController);
 
-    Upgrade7BackupController.$inject = ['$scope', '$translate', '$state'];
+    Upgrade7BackupController.$inject = ['$translate', '$state', 'upgradeBackupFactory', '$document'];
     // @ngInject
-    function Upgrade7BackupController($scope, $translate, $state) {
+    function Upgrade7BackupController($translate, $state, upgradeBackupFactory, $document) {
         var vm = this;
-        vm.beginUpdate = beginUpdate;
+        vm.backup = {
+            completed: false,
+            create: createBackup
+        };
 
-        /**
-         * Move to the next available Step
-         */
-        function beginUpdate() {
-            // Only move forward if all prechecks has been executed and passed.
-            if (!vm.prechecks.completed || vm.prechecks.errors) {
-                return;
-            }
+        function createBackup() {
 
-            $state.go('upgrade7.backup');
+            upgradeBackupFactory.create()
+                .then(
+                    // When Backup Data has been created successfully
+                    function (backupData) {
+                        var headers = backupData.headers(),
+
+                            // Get the filename from the x-filename header or default to "crowbarBackup"
+                            filename = headers['x-filename'] || 'crowbarBackup',
+
+                            // Determine the content type from the header
+                            contentType = headers['content-type'],
+
+                            backupBlob = new Blob([backupData.data], {type: contentType}),
+                            backupObjectUrl = URL.createObjectURL(backupBlob),
+
+                            // Create download a DOM element
+                            backupElement = $document[0].createElement('a');
+
+                        // Set anchor properties
+                        backupElement.href = backupObjectUrl;
+                        backupElement.download = filename;
+
+                        // Trigger the download
+                        backupElement.click();
+                    },
+                    // In case of backup error
+                    function (error) {
+                        vm.backup.error = error;
+                    }
+                )
+                .finally(function () {
+                    vm.backup.completed = true;
+                });
         }
+
     }
 })();
