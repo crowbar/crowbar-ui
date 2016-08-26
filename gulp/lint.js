@@ -1,17 +1,39 @@
 // Modules required for this task
-var 
-    gulpDebug = require('gulp-debug'),
-    gulp = require('gulp'),
-    gulpDebug = require('gulp-debug'),
-    jshint = require('gulp-jshint'),
+var gulp = require('gulp'),
     eslint = require('gulp-eslint'),
-    lesshint = require('gulp-lesshint');
+    lesshint = require('gulp-lesshint'),
+    runSequence = require('run-sequence');
 
-gulp.task('eslint', function() {
-  return gulp.src('assets/**/*.js')
-    .pipe(eslint())
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
+gulp.task('eslint', function(callback) {
+    runSequence(
+        'eslint-node',
+        'eslint-angular',
+        callback
+    );
+});
+
+gulp.task('eslint-angular', function () {
+    return gulp.src(['assets/**/*.js'])
+        .pipe(eslint({
+            configFile: '.eslintrc.angular.js'
+        }))
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError());
+});
+
+gulp.task('eslint-node', function () {
+    return gulp.src([
+        '**/*.js',
+        '!public/**/*.js',
+        '!bower_components/**/*.js',
+        '!node_modules/**/*.js',
+        '!assets/**/*.js'
+    ])
+        .pipe(eslint({
+            configFile: '.eslintrc.node.js'
+        }))
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError());
 });
 
 
