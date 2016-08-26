@@ -1,5 +1,5 @@
 var express = require('express'),
-    router = express.Router();
+    router = express.Router(),
     path = require('path'),
     mime = require('mime'),
     fs = require('fs');
