@@ -10,6 +10,7 @@ var express = require('express'),
   steps = require('./routes/api/steps'),
   upgrade7Steps = require('./routes/api/upgrade7/steps'),
   upgrade7Prechecks = require('./routes/api/upgrade7/prechecks'),
+  upgrade7Backup = require('./routes/api/upgrade7/backup'),
 
   app = express();
 
@@ -29,6 +30,7 @@ app.use('/', index);
 app.use('/api/steps', steps);
 app.use('/api/upgrade7/steps', upgrade7Steps);
 app.use('/api/upgrade7/prechecks', upgrade7Prechecks);
+app.use('/api/upgrade7/backup', upgrade7Backup);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

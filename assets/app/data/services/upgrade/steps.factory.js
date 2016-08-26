@@ -1,7 +1,7 @@
 (function() {
 
     angular
-        .module('crowbarData')
+        .module('crowbarData.upgrade')
         .factory('upgradeStepsFactory', upgradeStepsFactory);
 
     upgradeStepsFactory.$inject = ['$q', '$http'];

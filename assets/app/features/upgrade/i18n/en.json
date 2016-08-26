@@ -111,10 +111,10 @@
             },
             "backup": {
                 "name": "Back up Admin Server",
-                "title": "Backing up configuration of Administration Server",
-                "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "title": "Download Backup of Administration Server",
+                "description": "Create a backup of the Administration Server configuration and download it in your browser. Keep this backup somewhere safe in case of emergency. With this backup and a fresh deployment of SUSE OpenStack Cloud 6 your cloud can be returned to it’s previous state.",
                 "form": {
-                    "backup": "Create Backup"
+                    "backup": "Download Backup of Administration Server"
                 }
             },
             "repository-checks": {
