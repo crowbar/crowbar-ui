@@ -7,6 +7,6 @@ var vendors = 'bower_components/';
 
 // Run Bower and download dependencies
 gulp.task('bower', function() {
-  return bower()
-    .pipe(gulp.dest(vendors));
+    return bower()
+        .pipe(gulp.dest(vendors));
 });
