@@ -14,6 +14,9 @@ describe('Upgrade Landing Controller', function() {
             high_availability: false,
             free_node_available: false
         },
+        passingChecksResponse = {
+            data: passingChecks
+        },
         failingResponse = {
             data: {
                 errors: failingChecks
@@ -82,7 +85,7 @@ describe('Upgrade Landing Controller', function() {
             describe('when checks pass successfully', function () {
                 beforeEach(function () {
                     bard.mockService(upgradePrechecksFactory, {
-                        getAll: $q.when(passingChecks)
+                        getAll: $q.when(passingChecksResponse)
                     });
                     controller.prechecks.runPrechecks();
                     $rootScope.$digest();
@@ -90,6 +93,15 @@ describe('Upgrade Landing Controller', function() {
 
                 it('should set prechecks.completed status to true', function () {
                     assert.isTrue(controller.prechecks.completed);
+                });
+
+                it('should update valid attribute of checks model to true', function () {
+                    assert.isTrue(controller.prechecks.valid);
+                });
+
+                it('should update checks values to true', function () {
+                    assert.isObject(controller.prechecks.checks);
+                    expect(controller.prechecks.checks).toEqual(passingChecks);
                 });
 
             });
@@ -105,6 +117,10 @@ describe('Upgrade Landing Controller', function() {
 
                 it('should set prechecks.completed status to true', function () {
                     assert.isTrue(controller.prechecks.completed);
+                });
+
+                it('should update valid attribute of checks model to false', function () {
+                    assert.isFalse(controller.prechecks.valid);
                 });
 
                 it('should expose the errors through vm.prechecks.errors object', function () {
