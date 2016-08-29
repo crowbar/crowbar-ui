@@ -2,11 +2,11 @@
 
     angular
         .module('crowbarData.upgrade')
-        .factory('upgradeRepoChecks', upgradeRepoChecks);
+        .factory('upgradeRepoChecksFactory', upgradeRepoChecksFactory);
 
-    upgradeRepoChecks.$inject = ['$q', '$http'];
+    upgradeRepoChecksFactory.$inject = ['$q', '$http'];
     /* @ngInject */
-    function upgradeRepoChecks($q, $http) {
+    function upgradeRepoChecksFactory($q, $http) {
         var factory = {
             getAdminRepoChecks: getAdminRepoChecks,
             getAddOnsRepoChecks: function () {}

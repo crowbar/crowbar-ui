@@ -1,4 +1,4 @@
-/*global bard $httpBackend should expect upgradeRepoChecks */
+/*global bard $httpBackend should expect upgradeRepoChecksFactory */
 describe('Upgrade Repo Checks Factory', function () {
 
     var mockedRepoChecksData = {
@@ -12,21 +12,21 @@ describe('Upgrade Repo Checks Factory', function () {
     beforeEach(function () {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarData.upgrade');
-        bard.inject('upgradeRepoChecks', '$q', '$httpBackend');
+        bard.inject('upgradeRepoChecksFactory', '$q', '$httpBackend');
     });
 
     describe('when executed', function () {
 
         it('returns an object', function () {
-            should.exist(upgradeRepoChecks);
+            should.exist(upgradeRepoChecksFactory);
         });
 
         it('returns an object with getAdminRepoChecks function is defined', function () {
-            expect(upgradeRepoChecks.getAdminRepoChecks).toEqual(jasmine.any(Function));
+            expect(upgradeRepoChecksFactory.getAdminRepoChecks).toEqual(jasmine.any(Function));
         });
 
         it('returns an object with getAddOnsRepoChecks function is defined', function () {
-            expect(upgradeRepoChecks.getAddOnsRepoChecks).toEqual(jasmine.any(Function));
+            expect(upgradeRepoChecksFactory.getAddOnsRepoChecks).toEqual(jasmine.any(Function));
         });
 
         describe('when getAdminRepoChecks method is executed', function () {
@@ -35,7 +35,7 @@ describe('Upgrade Repo Checks Factory', function () {
 
                 $httpBackend.expect('GET', '/api/upgrade7/admin-repo-checks')
                     .respond(200, mockedRepoChecksData);
-                repoChecksPromise = upgradeRepoChecks.getAdminRepoChecks();
+                repoChecksPromise = upgradeRepoChecksFactory.getAdminRepoChecks();
             });
 
             it('returns a promise', function () {

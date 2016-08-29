@@ -1,53 +1,123 @@
+/*global bard $controller $httpBackend should assert upgradeRepoChecksFactory $q $rootScope */
 describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
+    var controller,
+        failingRepoChecks = {
+            'SLES_12_SP2': false,
+            'SLES_12_SP2_Updates': false,
+            'SLES_OpenStack_Cloud_7': false,
+            'SLES_OpenStack_Cloud_7_Updates': false
+        },
+        passingRepoChecks = {
+            'SLES_12_SP2': true,
+            'SLES_12_SP2_Updates': true,
+            'SLES_OpenStack_Cloud_7': true,
+            'SLES_OpenStack_Cloud_7_Updates': true
+        },
+        passingReposResponse = {
+            data: passingRepoChecks
+        },
+        failingReposResponse = {
+            data: {
+                errors: failingRepoChecks
+            }
+        };
 
-    it('should exist', function () {});
+    beforeEach(function() {
+        //Setup the module and dependencies to be used.
+        bard.appModule('crowbarApp');
+        bard.inject('$controller', 'upgradeRepoChecksFactory', '$q', '$httpBackend', '$rootScope');
 
-    describe('nextStep function', function () {
-        it('should be defined', function () {});
+        //Create the controller
+        controller = $controller('Upgrade7RepositoriesCheckController');
 
-        it('should redirect the user to "Create or Connect to Database" page when admin upgrade is successfull',
-        function () {
+        //Mock requests that are expected to be made
+        $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
+        $httpBackend.flush();
+
+    });
+
+    // Verify no unexpected http call has been made
+    bard.verifyNoOutstandingHttpRequests();
+
+    it('should exist', function () {
+        should.exist(controller);
+    });
+
+    describe('Repo Checks Model', function () {
+        it('should be defined', function () {
+            should.exist(controller.repoChecks);
         });
 
-        it('should retain the user on the curent page when checks fails', function () {});
+        it('is not completed by default', function() {
+            assert.isFalse(controller.repoChecks.completed);
+        });
+
+        it('is not valid by default', function() {
+            assert.isFalse(controller.repoChecks.valid);
+        });
+
+        describe('contains a collection of checks that', function () {
+
+            it('should be defined', function () {
+                should.exist(controller.repoChecks.checks);
+            });
+
+            it('should all be set to false', function () {
+                assert.isObject(controller.repoChecks.checks);
+                expect(controller.repoChecks.checks).toEqual(failingRepoChecks);
+            });
+        });
     });
 
-    describe('Checks Model', function () {
-        it('should be defined', function () {});
-
-        it('should have checks items defined', function () {});
-    });
-
-    describe('checkRepositories function', function () {
-        it('should be defined', function () {});
+    describe('runRepoChecks function', function () {
+        it('should be defined', function () {
+            should.exist(controller.repoChecks.runRepoChecks);
+        });
 
         describe('when successfull', function () {
-            it('should enable "Next button"', function () {});
+            beforeEach(function () {
+                bard.mockService(upgradeRepoChecksFactory, {
+                    getAdminRepoChecks: $q.when(passingReposResponse)
+                });
+                controller.repoChecks.runRepoChecks();
+                $rootScope.$digest();
+            });
 
-            it('should update valid attribute of checks model to true', function () {});
+            it('should set repoChecks.completed status to true', function () {
+                assert.isTrue(controller.repoChecks.completed);
+            });
+
+            it('should update valid attribute of checks model to true', function () {
+                assert.isTrue(controller.repoChecks.valid);
+            });
+
+            it('should update checks values to true', function () {
+                assert.isObject(controller.repoChecks.checks);
+                expect(controller.repoChecks.checks).toEqual(passingRepoChecks);
+            });
 
         });
 
         describe('on failure', function () {
-            it('should maintain valid attribute of checks model to false', function () {});
+            beforeEach(function () {
+                bard.mockService(upgradeRepoChecksFactory, {
+                    getAdminRepoChecks: $q.reject(failingReposResponse)
+                });
+                controller.repoChecks.runRepoChecks();
+                $rootScope.$digest();
+            });
 
-            it('should maintain disabled "Next button"', function () {});
-        });
+            it('should maintain valid attribute of checks model to false', function () {
+                assert.isFalse(controller.repoChecks.valid);
+            });
 
-    });
+            it('should set repoChecks.completed status to true', function () {
+                assert.isTrue(controller.repoChecks.completed);
+            });
 
-    describe('cancelUpgrade function', function () {
-        it('should be defined', function () {});
-
-        it('should be enabled', function () {});
-
-        describe('cancel modal', function () {
-            it('should be displayed when cancel button is clicked', function () {});
-
-            it('should trigger the cancellation routine upon user confirmation', function () {});
-
-            it('should be closed and let the user continue with the upgrade flow when canceled', function () {});
-
+            it('should expose the errors through vm.repoChecks.errors object', function () {
+                expect(controller.repoChecks.errors).toEqual(failingRepoChecks);
+            }); 
         });
 
     });

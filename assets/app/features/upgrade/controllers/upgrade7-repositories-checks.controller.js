@@ -11,9 +11,9 @@
     angular.module('crowbarApp')
         .controller('Upgrade7RepositoriesCheckController', Upgrade7RepositoriesCheckController);
 
-    Upgrade7RepositoriesCheckController.$inject = ['$translate', 'upgradeRepoChecks'];
+    Upgrade7RepositoriesCheckController.$inject = ['$translate', 'upgradeRepoChecksFactory'];
     // @ngInject
-    function Upgrade7RepositoriesCheckController($translate, upgradeRepoChecks) {
+    function Upgrade7RepositoriesCheckController($translate, upgradeRepoChecksFactory) {
         var vm = this;
         vm.repoChecks = {
             completed: false,
@@ -32,7 +32,7 @@
          */
         function runRepoChecks() {
 
-            upgradeRepoChecks.getAdminRepoChecks()
+            upgradeRepoChecksFactory.getAdminRepoChecks()
                 .then(
                     // In case of success
                     function (repoChecksResponse) {
