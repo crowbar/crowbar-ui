@@ -12,20 +12,7 @@
     h4(translate='') upgrade7.steps.landing.prechecks.title
     div.checks-container
       p(translate='') upgrade7.steps.landing.prechecks.description
-      ul
-        li(ng-repeat="(checkKey, check) in Upgrade7LandingVm.prechecks.checks",
-          translate='',
-          ng-class="{\
-            'text-info': !Upgrade7LandingVm.prechecks.completed,\
-            'text-success': check && Upgrade7LandingVm.prechecks.completed,\
-            'text-danger': !check && Upgrade7LandingVm.prechecks.completed\
-          }")
-          span.glyphicon(ng-class="{\
-            'glyphicon-ban-circle': !Upgrade7LandingVm.prechecks.completed,\
-            'glyphicon-ok-circle': check && Upgrade7LandingVm.prechecks.completed,\
-            'glyphicon-remove-circle': !check && Upgrade7LandingVm.prechecks.completed\
-          }")
-          span(translate='upgrade7.steps.landing.prechecks.codes.{{::checkKey}}') 
+      crowbar-checklist(checklist='Upgrade7LandingVm.prechecks.checks', completed='Upgrade7LandingVm.prechecks.completed')
   
       button.btn.btn-default.btn-sm(translate='', 
         ng-disabled="Upgrade7LandingVm.prechecks.completed && Upgrade7LandingVm.prechecks.valid",
