@@ -25,7 +25,7 @@
             'glyphicon-ok-circle': check && Upgrade7LandingVm.prechecks.completed,\
             'glyphicon-remove-circle': !check && Upgrade7LandingVm.prechecks.completed\
           }")
-          span(translate='upgrade7.steps.landing.prechecks.codes.{{::checkKey}}') 
+          span(translate='upgrade7.steps.landing.prechecks.codes.{{::checkKey}}')
   
       button.btn.btn-default.btn-sm(translate='', 
         ng-class="{disabled: Upgrade7LandingVm.prechecks.completed && Upgrade7LandingVm.prechecks.valid}",
