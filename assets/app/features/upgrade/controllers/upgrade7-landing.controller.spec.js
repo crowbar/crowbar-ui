@@ -3,16 +3,40 @@
 describe('Upgrade Landing Controller', function() {
     var controller,
         passingChecks = {
-            updates_installed: true,
-            network_sanity: true,
-            high_availability: true,
-            free_node_available: true
+            updates_installed: {
+                status: true, 
+                label: 'upgrade7.steps.landing.prechecks.codes.updates_installed'
+            },
+            network_sanity: {
+                status: true, 
+                label: 'upgrade7.steps.landing.prechecks.codes.network_sanity'
+            },
+            high_availability: {
+                status: true, 
+                label: 'upgrade7.steps.landing.prechecks.codes.high_availability'
+            },
+            free_node_available: {
+                status: true, 
+                label: 'upgrade7.steps.landing.prechecks.codes.free_node_available'
+            }
         },
         failingChecks = {
-            updates_installed: false,
-            network_sanity: false,
-            high_availability: false,
-            free_node_available: false
+            updates_installed: {
+                status: false, 
+                label: 'upgrade7.steps.landing.prechecks.codes.updates_installed'
+            },
+            network_sanity: {
+                status: false, 
+                label: 'upgrade7.steps.landing.prechecks.codes.network_sanity'
+            },
+            high_availability: {
+                status: false, 
+                label: 'upgrade7.steps.landing.prechecks.codes.high_availability'
+            },
+            free_node_available: {
+                status: false, 
+                label: 'upgrade7.steps.landing.prechecks.codes.free_node_available'
+            }
         },
         passingChecksResponse = {
             data: passingChecks
