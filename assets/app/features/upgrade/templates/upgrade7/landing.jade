@@ -1,4 +1,3 @@
-  
 .panel.panel-default.landing-page
   .panel-heading
     h1(translate='upgrade7.title') Suse Upgrade
@@ -12,7 +11,7 @@
     h4(translate='') upgrade7.steps.landing.prechecks.title
     div.checks-container
       p(translate='') upgrade7.steps.landing.prechecks.description
-      crowbar-checklist(checklist='Upgrade7LandingVm.prechecks.checks', completed='Upgrade7LandingVm.prechecks.completed’) 
+      crowbar-checklist(checklist='Upgrade7LandingVm.prechecks.checks', completed='Upgrade7LandingVm.prechecks.completed') 
   
       button.btn.btn-default.btn-sm(translate='', 
         ng-class="{disabled: Upgrade7LandingVm.prechecks.completed && Upgrade7LandingVm.prechecks.valid}",
