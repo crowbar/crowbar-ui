@@ -1,3 +1,23 @@
-h2(translate='') upgrade7.steps.repository-checks.title
-p(translate='') upgrade7.steps.repository-checks.description
-button.btn.btn-success.center-block.btn-lg(translate='') upgrade7.steps.repository-checks.form.backup
+h2(translate='') upgrade7.steps.admin-repository-checks.title
+p(translate='') upgrade7.steps.admin-repository-checks.description
+p(translate='') upgrade7.steps.admin-repository-checks.repositories.instructions
+
+div.checks-container
+    ul.repositories-list
+        li(ng-repeat="(checkKey, check) in upgradeAdminRepoChecksVm.repoChecks.checks",
+            translate='',
+            ng-class="{\
+                'text-info': !upgradeAdminRepoChecksVm.repoChecks.completed,\
+                'text-success': check && upgradeAdminRepoChecksVm.repoChecks.completed,\
+                'text-danger': !check && upgradeAdminRepoChecksVm.repoChecks.completed\
+            }")
+            span.glyphicon(ng-class="{\
+                'glyphicon-ban-circle': !upgradeAdminRepoChecksVm.repoChecks.completed,\
+                'glyphicon-ok-circle': check && upgradeAdminRepoChecksVm.repoChecks.completed,\
+                'glyphicon-remove-circle': !check && upgradeAdminRepoChecksVm.repoChecks.completed\
+            }")
+            span(translate='upgrade7.steps.admin-repository-checks.repositories.codes.{{::checkKey}}') 
+
+    button.btn.btn-success.pull-left.btn-lg(translate='', 
+        ng-class="{disabled: upgradeAdminRepoChecksVm.repoChecks.completed && upgradeAdminRepoChecksVm.repoChecks.valid}",
+        ng-click="upgradeAdminRepoChecksVm.repoChecks.runRepoChecks()") upgrade7.steps.admin-repository-checks.form.check-again

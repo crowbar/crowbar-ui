@@ -28,9 +28,9 @@
                     }
                 }
                 .list-group-item-success {
-                        background-color: #f3f3f3;
-                        color: #969797;
-                    }
+                    background-color: #f3f3f3;
+                    color: #969797;
+                }
                 .active {
                     background-color: #ffffff;
                     background-image: none;
@@ -51,6 +51,18 @@
             }
             p {
                 margin: 0px 0px 10px;
+            }
+            ul.repositories-list {
+                margin: 20px 0px 0px 0px;
+                padding-left: 15px;
+                li {
+                    font-weight: bold;
+                    list-style-type: none;
+                    margin: 5px 0px;
+                    span {
+                        margin-right: 8px;
+                    }
+                }
             }
             .btn {
                 margin-top: 25px;
@@ -136,15 +148,6 @@
             }
         }
     }
-    .text-info {
-        color: @info-text;
-    }
-    .text-danger {
-        color: @danger-text;
-    }
-    .text-success {
-        color: @success-text;
-    }
     .note-message {
         font-style: italic;
         font-weight: bold;
@@ -155,6 +158,21 @@
         width: 85%;
     }
 }
+
 /* End landing-page css */
+
+/* Start Prechecks and Admin repo checks status css */
+
+.text-info {
+    color: @info-text;
+}
+.text-danger {
+    color: @danger-text;
+}
+.text-success {
+    color: @success-text;
+}
+
+/* End Prechecks and Admin repo checks status css */
 
 /* End= states/upgrade/upgrade.less */
