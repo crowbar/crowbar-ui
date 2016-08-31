@@ -42,8 +42,13 @@
                     text-shadow: none;
                 }
                 .bottom-padding {
-                    margin-bottom: -1000px;
-                    padding-bottom: 1000px;
+                    @media (max-width: 1199px) {
+                        display: none;
+                    }
+                    @media (min-width: 1200px) {
+                        margin-bottom: -1000px;
+                        padding-bottom: 1000px;
+                    }
                 }
             }
         }
