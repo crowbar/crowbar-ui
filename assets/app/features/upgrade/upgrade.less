@@ -7,6 +7,9 @@
     padding: 0px;
     .panel-body {
         padding: 0px;
+        .row {
+            overflow: hidden;
+        }
         .upgrade-steps {
             ul.list-group {
                 margin-bottom: 0px;
@@ -38,34 +41,41 @@
                     color: #3a3e40;
                     text-shadow: none;
                 }
-            }
-        }
-        .upgrade-details {
-            margin-right: 15px;
-            h2 {
-                color: #3a3e40;
-                font-size: 20px;
-                font-weight: 600;
-                margin-bottom: 20px;
-                margin-top: 30px;
-            }
-            p {
-                margin: 0px 0px 10px;
-            }
-            ul.repositories-list {
-                margin: 20px 0px 0px 0px;
-                padding-left: 15px;
-                li {
-                    font-weight: bold;
-                    list-style-type: none;
-                    margin: 5px 0px;
-                    span {
-                        margin-right: 8px;
-                    }
+                .bottom-padding {
+                    margin-bottom: -1000px;
+                    padding-bottom: 1000px;
                 }
             }
-            .btn {
-                margin-top: 25px;
+        }
+        .upgrade-details-container {
+            margin-bottom: 30px;
+            .upgrade-details {
+                margin-right: 15px;
+                h2 {
+                    color: #3a3e40;
+                    font-size: 20px;
+                    font-weight: 600;
+                    margin-bottom: 20px;
+                    margin-top: 30px;
+                }
+                p {
+                    margin: 0px 0px 10px;
+                }
+                ul.repositories-list {
+                    margin: 20px 0px 0px 0px;
+                    padding-left: 15px;
+                    li {
+                        font-weight: bold;
+                        list-style-type: none;
+                        margin: 5px 0px;
+                        span {
+                            margin-right: 8px;
+                        }
+                    }
+                }
+                .btn {
+                    margin-top: 25px;
+                }
             }
         }
     }
