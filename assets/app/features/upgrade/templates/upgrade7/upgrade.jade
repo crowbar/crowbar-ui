@@ -3,7 +3,7 @@
     .row
       .col-lg-3
         crowbar-upgrade-steps.upgrade-steps(steps='upgradeVm.steps.list')
-      .col-lg-9
+      .col-lg-9.upgrade-details-container
         div.upgrade-details(ui-view='')
   .panel-footer
     crowbar-upgrade-nav.clearfix(steps='upgradeVm.steps')
