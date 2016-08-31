@@ -50,6 +50,12 @@
                 controller: 'Upgrade7DatabaseConfigController',
                 controllerAs: 'Upgrade7DatabaseVm'
             })
+            .state('upgrade7.nodes-repositories-checks', {
+                url: '/nodes-repositories-checks',
+                templateUrl: 'app/features/upgrade/templates/upgrade7/nodes-repository-checks.html',
+                controller: 'Upgrade7NodesRepositoriesCheckController',
+                controllerAs: 'upgradeNodesRepoChecksVm'
+            })
 
             .state('upgrade', {
                 url: '/upgrade',

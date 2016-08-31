@@ -9,7 +9,7 @@
     function upgradeRepoChecksFactory($q, $http) {
         var factory = {
             getAdminRepoChecks: getAdminRepoChecks,
-            getAddOnsRepoChecks: function () {}
+            getNodesRepoChecks: getNodesRepoChecks
         };
 
         return factory;
@@ -19,6 +19,16 @@
             var requestOptions = {
                 method: 'GET',
                 url: '/api/upgrade7/admin-repo-checks'
+            };
+
+            return $http(requestOptions);
+        }
+
+        function getNodesRepoChecks() {
+
+            var requestOptions = {
+                method: 'GET',
+                url: '/api/upgrade7/nodes-repo-checks'
             };
 
             return $http(requestOptions);
