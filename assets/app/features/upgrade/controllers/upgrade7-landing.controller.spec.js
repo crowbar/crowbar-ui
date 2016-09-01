@@ -3,40 +3,16 @@
 describe('Upgrade Landing Controller', function() {
     var controller,
         passingChecks = {
-            updates_installed: {
-                status: true, 
-                label: 'upgrade7.steps.landing.prechecks.codes.updates_installed'
-            },
-            network_sanity: {
-                status: true, 
-                label: 'upgrade7.steps.landing.prechecks.codes.network_sanity'
-            },
-            high_availability: {
-                status: true, 
-                label: 'upgrade7.steps.landing.prechecks.codes.high_availability'
-            },
-            free_node_available: {
-                status: true, 
-                label: 'upgrade7.steps.landing.prechecks.codes.free_node_available'
-            }
+            updates_installed: true,
+            network_sanity: true,
+            high_availability: true,
+            free_node_available: true
         },
         failingChecks = {
-            updates_installed: {
-                status: false, 
-                label: 'upgrade7.steps.landing.prechecks.codes.updates_installed'
-            },
-            network_sanity: {
-                status: false, 
-                label: 'upgrade7.steps.landing.prechecks.codes.network_sanity'
-            },
-            high_availability: {
-                status: false, 
-                label: 'upgrade7.steps.landing.prechecks.codes.high_availability'
-            },
-            free_node_available: {
-                status: false, 
-                label: 'upgrade7.steps.landing.prechecks.codes.free_node_available'
-            }
+            updates_installed: false,
+            network_sanity: false,
+            high_availability: false,
+            free_node_available: false
         },
         passingChecksResponse = {
             data: passingChecks
@@ -96,7 +72,9 @@ describe('Upgrade Landing Controller', function() {
 
             it('should all be set to false', function () {
                 assert.isObject(controller.prechecks.checks);
-                expect(controller.prechecks.checks).toEqual(failingChecks);
+                _.forEach(failingChecks.data, function(value, key) {
+                    expect(controller.prechecks.checks[key].status).toEqual(value);
+                });
             });
         });
 
@@ -125,7 +103,10 @@ describe('Upgrade Landing Controller', function() {
 
                 it('should update checks values to true', function () {
                     assert.isObject(controller.prechecks.checks);
-                    expect(controller.prechecks.checks).toEqual(passingChecks);
+                    _.forEach(passingChecks.data, function(value, key) {
+                        expect(controller.prechecks.checks[key].status).toEqual(value);
+                    });
+                    
                 });
 
             });

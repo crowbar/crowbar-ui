@@ -9,10 +9,10 @@ router.get('/', function(req, res) {
         res.status(500).json({'errors': errors});
     } else {
         res.status(200).json({
-            'updates_installed': {status: true},
-            'network_sanity': {status: true},
-            'high_availability': {status: true},
-            'free_node_available': {status: true}
+            'updates_installed': true,
+            'network_sanity': true,
+            'high_availability': true,
+            'free_node_available': true
         });
     }
 });

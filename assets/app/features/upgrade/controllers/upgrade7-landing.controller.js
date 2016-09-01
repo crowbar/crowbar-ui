@@ -61,18 +61,25 @@
                 .getAll()
                 .then(
                     //Success handler. Al precheck passed successfully:
-                    function(prechecksResponse) {
+                    function(prechecksResponse) { 
 
-                        _.merge(vm.prechecks.checks, prechecksResponse.data);
+                        _.forEach(prechecksResponse.data, function(value, key) {
+                            vm.prechecks.checks[key].status = value;
+                        });
+
                         var prechecksResult = true;
                         // Update prechecks status
+
                         _.forEach(vm.prechecks.checks, function (checkStatus) {
-                            if (false === checkStatus.status) {
+                            
+                            if (false === checkStatus) {
                                 prechecksResult = false;
                                 return false;
                             }
+
                         });
 
+                        
                         // Update prechecks validity
                         vm.prechecks.valid = prechecksResult;
                     },
