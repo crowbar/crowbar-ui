@@ -128,7 +128,9 @@ describe('Upgrade Landing Controller', function() {
                 });
 
                 it('should expose the errors through vm.prechecks.errors object', function () {
-                    expect(controller.prechecks.errors).toEqual(failingChecks);
+                    _.forEach(controller.prechecks.errors, function(value) {
+                        assert.isFalse(value);
+                    }); 
                 });
             });
 
