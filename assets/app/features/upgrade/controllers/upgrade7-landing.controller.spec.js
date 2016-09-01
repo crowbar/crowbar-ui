@@ -72,8 +72,8 @@ describe('Upgrade Landing Controller', function() {
 
             it('should all be set to false', function () {
                 assert.isObject(controller.prechecks.checks);
-                _.forEach(failingChecks.data, function(value, key) {
-                    expect(controller.prechecks.checks[key].status).toEqual(value);
+                _.forEach(controller.prechecks.checks, function(value) {
+                    assert.isFalse(value.status);
                 });
             });
         });
@@ -103,10 +103,9 @@ describe('Upgrade Landing Controller', function() {
 
                 it('should update checks values to true', function () {
                     assert.isObject(controller.prechecks.checks);
-                    _.forEach(passingChecks.data, function(value, key) {
-                        expect(controller.prechecks.checks[key].status).toEqual(value);
-                    });
-                    
+                    _.forEach(controller.prechecks.checks, function(value) {
+                        assert.isTrue(value.status);
+                    });  
                 });
 
             });
