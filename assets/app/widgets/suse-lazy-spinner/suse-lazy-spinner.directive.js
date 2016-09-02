@@ -13,26 +13,28 @@
             templateUrl: 'app/widgets/suse-lazy-spinner/suse-lazy-spinner.directive.html',
             scope: {
                 active: '=',
+                visible: '=?',
                 delay: '@'
             },
             link: function(scope, elem) {
-                hideSpinner();
+                // dummy-init optional binding values
+                scope.visible = scope.visible || false;
 
                 scope.$watch('active', function(newVal) {
                     newVal ? showSpinner() : hideSpinner();
                 });
 
-                elem.on('$destroy', function() {
-                    if (timer)
-                        $timeout.cancel(timer);
-                });
+                elem.on('$destroy', hideSpinner);
 
                 var timer = null;
 
                 function showSpinner() {
                     if (timer)
                         return;
-                    timer = $timeout(function() { elem.css({display: ''}); }, getDelay());
+                    timer = $timeout(function() {
+                        elem.addClass('visible');
+                        scope.visible = true;
+                    }, getDelay());
                 }
 
                 function hideSpinner() {
@@ -42,7 +44,8 @@
                         timer = null;
                     }
 
-                    elem.css({display: 'none'});
+                    elem.removeClass('visible');
+                    scope.visible = false;
                 }
 
                 function getDelay() {

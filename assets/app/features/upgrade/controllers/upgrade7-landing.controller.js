@@ -21,6 +21,7 @@
             running: false,
             completed: false,
             valid: false,
+            spinnerVisible: false,
             checks: {
                 updates_installed: false,
                 network_sanity: false,
