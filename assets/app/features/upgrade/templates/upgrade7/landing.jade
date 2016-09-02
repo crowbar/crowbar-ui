@@ -28,6 +28,7 @@
   
       button.btn.btn-default.btn-sm(
         ng-disabled="Upgrade7LandingVm.prechecks.completed && Upgrade7LandingVm.prechecks.valid",
+        ng-class="{active: Upgrade7LandingVm.prechecks.running}",
         ng-click="Upgrade7LandingVm.prechecks.runPrechecks()"
       )
           suse-lazy-spinner(delay="2000", active="Upgrade7LandingVm.prechecks.running")
