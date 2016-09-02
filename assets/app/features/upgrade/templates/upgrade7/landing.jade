@@ -30,7 +30,7 @@
         ng-disabled="Upgrade7LandingVm.prechecks.completed && Upgrade7LandingVm.prechecks.valid",
         ng-click="Upgrade7LandingVm.prechecks.runPrechecks()"
       )
-          suse-lazy-spinner(active="Upgrade7LandingVm.prechecks.running")
+          suse-lazy-spinner(delay="2000", active="Upgrade7LandingVm.prechecks.running")
           span(translate='') upgrade7.steps.landing.prechecks.form.check-again
     
     p.note-message(translate='') upgrade7.steps.landing.note

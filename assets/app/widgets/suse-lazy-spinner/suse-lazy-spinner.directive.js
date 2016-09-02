@@ -18,8 +18,13 @@
             link: function(scope, elem) {
                 hideSpinner();
 
-                scope.$watch('active', function(newVal){
+                scope.$watch('active', function(newVal) {
                     newVal ? showSpinner() : hideSpinner();
+                });
+
+                elem.on('$destroy', function() {
+                    if (timer)
+                        $timeout.cancel(timer);
                 });
 
                 var timer = null;
