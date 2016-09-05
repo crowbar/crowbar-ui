@@ -1,3 +1,6 @@
 h2(translate='') upgrade7.steps.upgrade-admin.title
 p(translate='') upgrade7.steps.upgrade-admin.description
-button.btn.btn-success.center-block.btn-lg(translate='', ng-click="upgradeAdminUpgradeVm.beginUpgrade()") upgrade7.steps.upgrade-admin.form.upgrade-admin
+button.btn.btn-success.center-block.btn-lg(ng-click="upgradeAdminUpgradeVm.adminUpgrade.beginAdminUpgrade()",
+    ng-class="{disabled: upgradeAdminUpgradeVm.adminUpgrade.running || upgradeAdminUpgradeVm.adminUpgrade.completed}")
+    i.fa.fa-spinner.fa-spin(ng-show="upgradeAdminUpgradeVm.adminUpgrade.running")
+    span(translate='') upgrade7.steps.upgrade-admin.form.upgrade-admin
