@@ -1,11 +1,21 @@
-/*global bard $controller should $httpBackend */
+/*global bard $controller should $httpBackend upgradeUpgradeAdminFactory assert $q $rootScope */
 describe('Upgrade Flow - Upgrade Admin Server Controller', function () {
-    var controller;
+    var controller,
+/*        completedUpgradeResponse = {
+            completed: true
+        },*/
+        incompleteUpgradeResponse = {
+            completed: false
+        },
+        errorList = ['1', '2', '3'],
+        errorResponse = {
+            data: { errors: errorList }
+        };
 
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
-        bard.inject('$controller', '$q', '$httpBackend', '$rootScope');
+        bard.inject('$controller', '$q', '$httpBackend', '$rootScope', 'upgradeUpgradeAdminFactory');
 
         //Create the controller
         controller = $controller('Upgrade7UpgradeAdminController');
@@ -33,42 +43,96 @@ describe('Upgrade Flow - Upgrade Admin Server Controller', function () {
     });
 
 
-    it('should have an adminUpgrade model defined', function () {
-        should.exist(controller.adminUpgrade);
-    });
-
-    describe('beginAdminUpgrade function', function () {
-        it('should be defined', function () {
-            should.exist(controller.adminUpgrade.beginAdminUpgrade);
-        });
-        it('should send a post request to the api to start upgrade process', function () {});
-        it('should set running flag to true if api accepted the request', function () {});
-    });
-
-    describe('checkAdminUpgrade function', function () {
-        it('should be defined', function () {
-            should.exist(controller.adminUpgrade.checkAdminUpgrade);
+    describe('adminUpgrade model', function () {
+        it('should exist', function() {
+            should.exist(controller.adminUpgrade);
         });
 
-        describe('when api reports upgrade as not completed', function () {
-            it('should schedule another check', function () {});
-            it('should keep running flag set to true', function () {});
-            it('should keep completed flag set to false', function () {});
+        it('is not completed by default', function() {
+            assert.isFalse(controller.adminUpgrade.completed);
         });
 
-/*        describe('when successfull', function () {
-            it('should enable "Next button"', function () {});
+        it('is not running by default', function() {
+            assert.isFalse(controller.adminUpgrade.running);
+        });
 
-            it('should update valid attribute of adminUpgrade model to true', function () {});
+        describe('beginAdminUpgrade function', function () {
+            it('should be defined', function () {
+                should.exist(controller.adminUpgrade.beginAdminUpgrade);
+            });
 
-        }); */
+            describe('when upgrade is started successfully', function () {
+                beforeEach(function () {
+                    spyOn(controller.adminUpgrade, 'checkAdminUpgrade');
 
-/*        describe('on failure', function () {
-            it('should maintain valid attribute of adminUpgrade model to false', function () {});
+                    bard.mockService(upgradeUpgradeAdminFactory, {
+                        getAdminUpgrade: $q.when(incompleteUpgradeResponse)
+                    });
+                    controller.adminUpgrade.beginAdminUpgrade();
+                    $rootScope.$digest();
+                });
 
-            it('should maintain disabled "Next button"', function () {});
-        }); */
+                it('should set running to true', function () {
+                    assert.isTrue(controller.adminUpgrade.running);
+                });
 
+                it('should call checkAdminUpgrade() to start polling', function () {
+                    expect(controller.adminUpgrade.checkAdminUpgrade).toHaveBeenCalledTimes(1);
+                });
+            });
+
+            describe('when starting upgrade failed', function () {
+                beforeEach(function () {
+                    spyOn(controller.adminUpgrade, 'checkAdminUpgrade');
+
+                    bard.mockService(upgradeUpgradeAdminFactory, {
+                        getAdminUpgrade: $q.reject(errorResponse)
+                    });
+                    controller.adminUpgrade.beginAdminUpgrade();
+                    $rootScope.$digest();
+                });
+
+                it('should leave running at false', function () {
+                    assert.isFalse(controller.adminUpgrade.running);
+                });
+
+                it('should not call checkAdminUpgrade()', function () {
+                    expect(controller.adminUpgrade.checkAdminUpgrade).not.toHaveBeenCalled();
+                });
+
+                it('should expose the errors through adminUpgrade.errors object', function () {
+                    expect(controller.adminUpgrade.errors).toEqual(errorList);
+                });
+            });
+
+        });
+
+        describe('checkAdminUpgrade function', function () {
+            it('should be defined', function () {
+                should.exist(controller.adminUpgrade.checkAdminUpgrade);
+            });
+
+            describe('when got upgrade status from api successfully', function () {
+                describe('when received status is completed', function () {
+                    it('should enable "Next button"', function () {});
+                    it('should set running attribute of adminUpgrade model to false', function () {});
+                    it('should set completed flag set to true', function () {});
+                });
+
+                describe('when received status is not completed', function () {
+                    it('should keep "Next button" disabled', function () {});
+                    it('should keep running flag set to true', function () {});
+                    it('should keep completed flag set to false', function () {});
+                    it('should schedule another check', function () {});
+                });
+            });
+
+            describe('when got error from api', function () {
+                it('should expose the errors through adminUpgrade.errors object', function () {
+//                    expect(controller.adminUpgrade.errors).toEqual(errorList);
+                });
+            });
+        });
     });
 
 /*    describe('cancelUpgrade function', function () {

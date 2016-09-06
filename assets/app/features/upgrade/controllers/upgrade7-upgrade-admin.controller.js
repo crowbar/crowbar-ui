@@ -29,7 +29,7 @@
                     function (/*response*/) {
                         vm.adminUpgrade.running = true;
                         // start running checkAdminUpgrade at an interval
-                        checkAdminUpgrade();
+                        vm.adminUpgrade.checkAdminUpgrade();
                     },
                     // In case of failure
                     function (errorResponse) {
@@ -56,7 +56,7 @@
                     function () {
                         // schedule another check if not completed yet
                         if (!vm.adminUpgrade.completed)
-                            $timeout(checkAdminUpgrade, 1000); // TODO: make the interval a constant
+                            $timeout(vm.adminUpgrade.checkAdminUpgrade, 1000); // TODO: make the interval a constant
                         else
                             vm.adminUpgrade.running = false;
                     }
