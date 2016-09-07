@@ -3,11 +3,12 @@
 
     angular
         .module('crowbarWidgets')
-        .directive('suseLazySpinner', lazySpinner);
+        .directive('suseLazySpinner', suseLazySpinner)
+        .constant('SUSE_LAZY_SPINNER', { DEFAULT_DELAY: 2000 });
 
-    lazySpinner.$inject = ['$timeout'];
+    suseLazySpinner.$inject = ['$timeout', 'SUSE_LAZY_SPINNER'];
 
-    function lazySpinner($timeout) {
+    function suseLazySpinner($timeout, SUSE_LAZY_SPINNER) {
         return {
             restrict: 'E',
             templateUrl: 'app/widgets/suse-lazy-spinner/suse-lazy-spinner.directive.html',
@@ -29,10 +30,11 @@
                 var timer = null;
 
                 function showSpinner() {
-                    if (timer)
+                    if (timer) {
                         return;
+                    }
                     timer = $timeout(function() {
-                        elem.addClass('visible');
+                        elem.removeClass('hidden');
                         scope.visible = true;
                     }, getDelay());
                 }
@@ -44,13 +46,13 @@
                         timer = null;
                     }
 
-                    elem.removeClass('visible');
+                    elem.addClass('hidden');
                     scope.visible = false;
                 }
 
                 function getDelay() {
                     var delay = parseInt(scope.delay);
-                    return isFinite(delay) ? delay : 2000;
+                    return isFinite(delay) ? delay : SUSE_LAZY_SPINNER.DEFAULT_DELAY;
                 }
             }
         };
