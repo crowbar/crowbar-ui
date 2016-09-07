@@ -19,6 +19,7 @@
             completed: false,
             running: false,
             beginAdminUpgrade: beginAdminUpgrade,
+            // note: this is exposed in vm only to simplify testing
             checkAdminUpgrade: checkAdminUpgrade
         };
 
@@ -55,10 +56,11 @@
                 ).finally(
                     function () {
                         // schedule another check if not completed yet
-                        if (!vm.adminUpgrade.completed)
+                        if (!vm.adminUpgrade.completed) {
                             $timeout(vm.adminUpgrade.checkAdminUpgrade, 1000); // TODO: make the interval a constant
-                        else
+                        } else {
                             vm.adminUpgrade.running = false;
+                        }
                     }
                 );
         }

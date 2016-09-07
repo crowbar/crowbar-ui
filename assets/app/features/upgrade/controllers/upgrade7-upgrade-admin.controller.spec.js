@@ -62,6 +62,7 @@ describe('Upgrade Flow - Upgrade Admin Server Controller', function () {
         describe('beginAdminUpgrade function', function () {
             it('should be defined', function () {
                 should.exist(controller.adminUpgrade.beginAdminUpgrade);
+                expect(controller.adminUpgrade.beginAdminUpgrade).toEqual(jasmine.any(Function));
             });
 
             describe('when upgrade is started successfully', function () {
@@ -113,6 +114,7 @@ describe('Upgrade Flow - Upgrade Admin Server Controller', function () {
         describe('checkAdminUpgrade function', function () {
             it('should be defined', function () {
                 should.exist(controller.adminUpgrade.checkAdminUpgrade);
+                expect(controller.adminUpgrade.checkAdminUpgrade).toEqual(jasmine.any(Function));
             });
 
             describe('when got upgrade status from api successfully', function () {
@@ -125,7 +127,6 @@ describe('Upgrade Flow - Upgrade Admin Server Controller', function () {
                         $rootScope.$digest();
                     });
 
-//                    it('should enable "Next button"', function () {});
                     it('should set running attribute of adminUpgrade model to false', function () {
                         assert.isFalse(controller.adminUpgrade.running);
                     });
@@ -146,7 +147,6 @@ describe('Upgrade Flow - Upgrade Admin Server Controller', function () {
                         controller.adminUpgrade.checkAdminUpgrade();
                         $rootScope.$digest();
                     });
-//                    it('should keep "Next button" disabled', function () {});
                     it('should keep running flag set to true', function () {
                         assert.isTrue(controller.adminUpgrade.running);
                     });
@@ -174,28 +174,4 @@ describe('Upgrade Flow - Upgrade Admin Server Controller', function () {
             });
         });
     });
-
-/*    describe('cancelUpgrade function', function () {
-        it('should be defined', function () {});
-
-        describe('before trigger Admin Node Upgrade', function () {
-            it('should be enabled', function () {});
-
-            describe('cancel modal', function () {
-                it('should be displayed when cancel button is clicked', function () {});
-
-                it('should trigger the cancellation routine upon user confirmation', function () {});
-
-                it('should be closed and let the user continue with the upgrade flow when canceled', function () {});
-
-            });
-
-        });
-
-        describe('after trigger Admin Node Upgrade', function () {
-            it('should be disabled', function () {});
-
-        });
-
-    });*/
 });
