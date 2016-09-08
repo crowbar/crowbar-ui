@@ -133,6 +133,19 @@
                 "form": {
                     "check-again": "Check"
                 }
+            },
+            "stop-openstack-services": {
+                "name": "",
+                "title": "Stop openStack Services and Create Backup",
+                "description": "When ready, please click below to stop all services and create a backup of the OpenStack database.",
+                "codes": {
+                    "services_stop" : "Services Stopped",
+                    "heat": "Stopping Service: Heat",
+                    "backup" : "Backup Created"
+                },                
+                "form": {
+                    "stop-services": "Stop Openstack Servers"
+                }
             }
         },
         "errors": {

@@ -1,0 +1,10 @@
+h2(translate='') upgrade7.steps.stop-openstack-services.title
+p(translate='') upgrade7.steps.stop-openstack-services.description
+
+button.btn.btn-success.center-block.btn-lg(translate='') upgrade7.steps.stop-openstack-services.form.stop-services
+
+ul
+    li(ng-repeat="(serviceKey, service) in upgradeStopOpenStackServicesVm.stopServices.services", translate='')
+        span(translate='upgrade7.steps.stop-openstack-services.codes.{{::serviceKey}}') 
+
+
