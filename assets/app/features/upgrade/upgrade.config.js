@@ -38,11 +38,11 @@
                 controller: 'Upgrade7RepositoriesCheckController',
                 controllerAs: 'upgradeAdminRepoChecksVm'
             })
-            .state('upgrade7.stop-openstack-services', {
-                url: '/stop-openstack-services',
-                templateUrl: 'app/features/upgrade/templates/upgrade7/stop-openstack-services.html',
-                controller: 'Upgrade7StopOpenStackServicesController',
-                controllerAs: 'upgradeStopOpenStackServicesVm'
+            .state('upgrade7.openstack-services', {
+                url: '/openstack-services',
+                templateUrl: 'app/features/upgrade/templates/upgrade7/openstack-services.html',
+                controller: 'Upgrade7OpenStackServicesController',
+                controllerAs: 'upgradeOpenStackServicesVm'
             })
 
             .state('upgrade', {

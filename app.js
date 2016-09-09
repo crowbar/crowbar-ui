@@ -10,7 +10,7 @@ var express = require('express'),
     upgrade7Steps = require('./routes/api/upgrade7/steps'),
     upgrade7Prechecks = require('./routes/api/upgrade7/prechecks'),
     upgrade7Backup = require('./routes/api/upgrade7/backup'),
-    upgrade7AdminRepoChecks = require('./routes/api/upgrade7/admin-repo-checks'),
+    upgrade7OpenStackServices = require('./routes/api/upgrade7/openstack-services'),
 
     app = express();
 
@@ -31,7 +31,9 @@ app.use('/api/steps', steps);
 app.use('/api/upgrade7/steps', upgrade7Steps);
 app.use('/api/upgrade7/prechecks', upgrade7Prechecks);
 app.use('/api/upgrade7/backup', upgrade7Backup);
-app.use('/api/upgrade7/admin-repo-checks', upgrade7AdminRepoChecks);
+app.use('/api/upgrade7/openstack-services', upgrade7OpenStackServices);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
