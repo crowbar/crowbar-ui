@@ -72,7 +72,7 @@
 
                         _.forEach(vm.prechecks.checks, function (checkStatus) {
                             
-                            if (false === checkStatus) {
+                            if (false === checkStatus.status) {
                                 prechecksResult = false;
                                 return false;
                             }

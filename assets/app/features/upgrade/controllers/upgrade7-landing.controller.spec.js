@@ -14,12 +14,27 @@ describe('Upgrade Landing Controller', function() {
             high_availability: false,
             free_node_available: false
         },
+        partiallyFailingChecks = {
+            updates_installed: true,
+            network_sanity: true,
+            high_availability: false,
+            free_node_available: false
+        },
+        failingErrors = {
+            error_message: 'Authentication failure'
+        },
         passingChecksResponse = {
             data: passingChecks
         },
+        failingChecksResponse = {
+            data: failingChecks
+        },
+        partiallyFailingChecksResponse = {
+            data: partiallyFailingChecks
+        },
         failingResponse = {
             data: {
-                errors: failingChecks
+                errors: failingErrors
             }
         };
 
@@ -107,10 +122,59 @@ describe('Upgrade Landing Controller', function() {
                         assert.isTrue(value.status);
                     });  
                 });
-
             });
 
-            describe('when checks fail', function () {
+            describe('when checks fails', function () {
+                beforeEach(function () {
+                    bard.mockService(upgradePrechecksFactory, {
+                        getAll: $q.when(failingChecksResponse)
+                    });
+                    controller.prechecks.runPrechecks();
+                    $rootScope.$digest();
+                });
+
+                it('should set prechecks.completed status to true', function () {
+                    assert.isTrue(controller.prechecks.completed);
+                });
+
+                it('should update valid attribute of checks model to false', function () {
+                    assert.isFalse(controller.prechecks.valid);
+                });
+
+                it('should update checks values to false', function () {
+                    assert.isObject(controller.prechecks.checks);
+                    _.forEach(controller.prechecks.checks, function(value) {
+                        assert.isFalse(value.status);
+                    });  
+                });
+            });
+
+            describe('when checks partially fails', function () {
+                beforeEach(function () {
+                    bard.mockService(upgradePrechecksFactory, {
+                        getAll: $q.when(partiallyFailingChecksResponse)
+                    });
+                    controller.prechecks.runPrechecks();
+                    $rootScope.$digest();
+                });
+
+                it('should set prechecks.completed status to true', function () {
+                    assert.isTrue(controller.prechecks.completed);
+                });
+
+                it('should update valid attribute of checks model to false', function () {
+                    assert.isFalse(controller.prechecks.valid);
+                });
+
+                it('should update checks values to true or false as per the response', function () {
+                    assert.isObject(controller.prechecks.checks);   
+                    _.forEach(partiallyFailingChecksResponse.data, function(value, key) {
+                        expect(controller.prechecks.checks[key].status).toEqual(value);
+                    });
+                });
+            });
+
+            describe('when service call fails', function () {
                 beforeEach(function () {
                     bard.mockService(upgradePrechecksFactory, {
                         getAll: $q.reject(failingResponse)
@@ -128,12 +192,9 @@ describe('Upgrade Landing Controller', function() {
                 });
 
                 it('should expose the errors through vm.prechecks.errors object', function () {
-                    _.forEach(controller.prechecks.errors, function(value) {
-                        assert.isFalse(value);
-                    }); 
+                    expect(controller.prechecks.errors).toEqual(failingResponse.data.errors);
                 });
             });
-
         });
 
     });
