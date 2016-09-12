@@ -26,7 +26,8 @@ gulp.task('build', function (callback) {
             'angularCore',
             'angularWidgets',
             'angularFeatures',
-            'angularData'
+            'angularData',
+            'templateCache'
         ],
         'cleanAssetsHtml',
         callback

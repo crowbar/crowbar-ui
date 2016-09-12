@@ -14,6 +14,7 @@
             'crowbarCore',
             'crowbarData',
             'crowbarWidgets',
+            'crowbarTemplates',
 
             /*
             * Feature areas
