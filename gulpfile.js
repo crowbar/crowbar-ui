@@ -29,7 +29,6 @@ gulp.task('build', function (callback) {
             'angularData',
             'templateCache'
         ],
-        'cleanAssetsHtml',
         callback
     );
 });
