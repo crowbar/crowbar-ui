@@ -4,13 +4,13 @@ uib-tabset(active='active')
   uib-tab(index='0', heading='Create a Database')
     form(novalidate, name='createDatabase')
       .form-group(ng-class="{'has-warning': createDatabase.username.$error.required}")
-        .col-xs-8 
+        .col-lg-8.col-xs-12 
           .label-control
             label(translate='') upgrade7.steps.database-configuration.form.username
-            span(translate='', ng-show='createDatabase.username.$error.required')  - invalid characters
+            span(translate='', ng-show='createDatabase.username.$error.required') - invalid characters
           input.form-control(type='text', name='username', ng-required='true', ng-model='Upgrade7DatabaseVm.form.username')
       .form-group(ng-class="{'has-warning': createDatabase.password.$error.required}")
-        .col-xs-8
+        .col-lg-8.col-xs-12 
           .label-control
             label(translate='') upgrade7.steps.database-configuration.form.password
             span(translate='', ng-show='createDatabase.password.$error.required') - invalid Password
@@ -47,4 +47,3 @@ uib-tabset(active='active')
           input.form-control(type='text', required='', ng-model='Upgrade7DatabaseVm.form.table_prefix')
 
       button.btn.btn-success.pull-right.btn-lg(translate='') upgrade7.steps.database-configuration.form.connect-database
-      

@@ -38,6 +38,12 @@
                 controller: 'Upgrade7RepositoriesCheckController',
                 controllerAs: 'upgradeAdminRepoChecksVm'
             })
+            .state('upgrade7.upgrade-admin', {
+                url: '/upgrade-admin',
+                templateUrl: 'app/features/upgrade/templates/upgrade7/upgrade-admin.html',
+                controller: 'Upgrade7UpgradeAdminController',
+                controllerAs: 'upgradeAdminUpgradeVm'
+            })
             .state('upgrade7.database-configuration', {
                 url: '/database-configuration',
                 templateUrl: 'app/features/upgrade/templates/upgrade7/database-configuration.html',

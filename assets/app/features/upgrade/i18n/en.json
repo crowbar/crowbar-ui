@@ -134,6 +134,13 @@
                     "check-again": "Check"
                 }
             },
+            "upgrade-admin": {
+                "title": "Upgrade the Administration Server",
+                "description": "The button 'Upgrade Administration Server' begins the update and upgrade process of the administration server. The SLES 12 SP1 operating system of the administration server will be upgraded to SLES 12 SP2. This might take up to half an hour so please be patient.",
+                "form": {
+                    "upgrade-admin": "Upgrade Administration Server"
+                }
+            },
             "database-configuration": {
                 "name": "",
                 "title": "Create or Connect to an OpenStack PostgreSQL Database",

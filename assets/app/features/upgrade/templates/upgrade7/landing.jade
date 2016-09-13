@@ -28,13 +28,13 @@
           span(translate='upgrade7.steps.landing.prechecks.codes.{{::checkKey}}') 
   
       button.btn.btn-default.btn-sm(translate='', 
-        ng-class="{disabled: Upgrade7LandingVm.prechecks.completed && Upgrade7LandingVm.prechecks.valid}",
+        ng-disabled="Upgrade7LandingVm.prechecks.completed && Upgrade7LandingVm.prechecks.valid",
         ng-click="Upgrade7LandingVm.prechecks.runPrechecks()"
       ) upgrade7.steps.landing.prechecks.form.check-again
     
     p.note-message(translate='') upgrade7.steps.landing.note
 
     button.btn.btn-success.center-block.btn-lg(translate='', 
-      ng-class="{disabled: !Upgrade7LandingVm.prechecks.completed || !Upgrade7LandingVm.prechecks.valid}",
+      ng-disabled="!Upgrade7LandingVm.prechecks.completed || !Upgrade7LandingVm.prechecks.valid",
       ng-click="Upgrade7LandingVm.beginUpgrade()"
     ) upgrade7.steps.landing.form.button

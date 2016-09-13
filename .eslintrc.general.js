@@ -8,7 +8,8 @@ module.exports = {
         'linebreak-style': ['error', 'unix'],
         'max-len': ['error', 120],
         'complexity': ['error', {'max': 20}],
-        'eol-last': 'error'
+        'eol-last': 'error',
+        'curly': 'error'
     }
 }
 // {
