@@ -3,7 +3,6 @@ coverage/
 dist/
 node_modules/
 jspm_packages/
-bower_components/
 public/
 npm-debug.log
 .yo-rc.json
