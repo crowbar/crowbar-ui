@@ -7,7 +7,7 @@ var gulp = require('gulp'),
     destination = 'public/',
     exclude = [
         '!' + assets + '**/*.spec.js',
-        '!**/*.less'
+        '!**/*.+(less|html|jade)'
     ];
 
 // Concatenate & Minify propietary JS
@@ -19,22 +19,22 @@ gulp.task('app', function () {
 
 // Copy the entire States, Features and Shared folders, but without .less files (they are already)
 // imported in the app.min.css
-gulp.task('angularWidgets', ['bower', 'jade2html'], function () {
+gulp.task('angularWidgets', function () {
     return gulp.src([assets + 'app/widgets/**/*.*'].concat(exclude))
         .pipe(gulp.dest(destination + 'app/widgets'));
 });
 
-gulp.task('angularFeatures', ['bower', 'jade2html'], function () {
+gulp.task('angularFeatures', function () {
     return gulp.src([assets + 'app/features/**/*.*'].concat(exclude))
         .pipe(gulp.dest(destination + 'app/features'));
 });
 
-gulp.task('angularData', ['bower'], function () {
+gulp.task('angularData', function () {
     return gulp.src([assets + 'app/data/**/*.*'].concat(exclude))
         .pipe(gulp.dest(destination + 'app/data'));
 });
 
-gulp.task('angularCore', ['bower'], function () {
+gulp.task('angularCore', function () {
     return gulp.src([assets + 'app/core/**/*.*'].concat(exclude))
         .pipe(gulp.dest(destination + 'app/core'));
 });
