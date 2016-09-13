@@ -2,8 +2,7 @@
 var gulp = require('gulp'),
     eslint = require('gulp-eslint'),
     lesshint = require('gulp-lesshint'),
-    runSequence = require('run-sequence'),
-    debug = require('gulp-debug');
+    runSequence = require('run-sequence');
 
 gulp.task('eslint', function(callback) {
     runSequence(
@@ -27,8 +26,6 @@ gulp.task('eslint-node', function () {
         '+(gulp|routes|bin)/**/*.js',
         '*.js'
     ])
-        .pipe(debug())
-
         .pipe(eslint({
             configFile: '.eslintrc.node.js'
         }))
