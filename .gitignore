@@ -1,7 +1,6 @@
 .tmp/
 coverage/
 dist/
-node_modules/
 jspm_packages/
 public/
 npm-debug.log
