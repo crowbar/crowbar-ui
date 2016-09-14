@@ -48,6 +48,7 @@
          */
         function runPrechecks() {
             vm.prechecks.running = true;
+
             upgradePrechecksFactory
                 .getAll()
                 .then(
