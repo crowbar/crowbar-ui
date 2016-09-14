@@ -53,6 +53,8 @@ gulp.task('watch', function () {
         // Watch image files
         gulp.watch(assets + 'content/images/**/*', ['images']);
         // Watch the Jade files in the Assets folder
-        gulp.watch(assets + '**/*.jade', ['templateCache']);
+        gulp.watch(assets + 'app/**/*.jade', ['templateCache']);
+        // Watch the Index Jade file in the Assets folder
+        gulp.watch(assets + 'index.jade', ['indexHtml']);
     }
 });
