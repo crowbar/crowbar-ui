@@ -15,11 +15,11 @@
     // @ngInject
     function Upgrade7DatabaseConfigController() {
         var vm = this;
-        vm.form = {
+        vm.databaseForm = {
             username: '',
             password: '',
             server: '',
-            port: '',
+            port: 5432,
             table_prefix: ''
         }
     }

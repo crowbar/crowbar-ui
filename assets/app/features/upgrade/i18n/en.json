@@ -144,7 +144,7 @@
             "database-configuration": {
                 "name": "",
                 "title": "Create or Connect to an OpenStack PostgreSQL Database",
-                "form": {
+                "databaseForm": {
                     "username": "Username",
                     "password": "Password",
                     "create-database": "Create New Database",

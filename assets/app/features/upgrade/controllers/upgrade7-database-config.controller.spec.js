@@ -1,18 +1,66 @@
+/*global bard $controller should $httpBackend */
 describe('Upgrade Flow - Create Connect Database Controller', function () {
+    // @ToDo Need to implement unit test, check below card
+    // https://trello.com/c/w4ZiBPUh/30-3-16-create-connect-crowbar-db-ui-story-2-page-and-navigation
+    var controller;
 
-    it('should exist', function () {});
+    beforeEach(function() {
+        //Setup the module and dependencies to be used.
+        bard.appModule('crowbarApp');
+        bard.inject('$controller', '$q', '$httpBackend', '$rootScope');
 
-    describe('nextStep function', function () {
-        it('should be defined', function () {});
+        //Create the controller
+        controller = $controller('Upgrade7DatabaseConfigController');
 
-        it('should redirect the user to "Add Ons Repo Checks" page when admin upgrade is successfull', function () {});
+        //Mock requests that are expected to be made
+        $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
+        $httpBackend.flush();
 
-        it('should retain the user on the curent page until the database creation is completed', function () {});
     });
 
-    it('should have an createConnectDatabase model defined', function () {});
+    // Verify no unexpected http call has been made
+    bard.verifyNoOutstandingHttpRequests();
 
+    it('should exist', function () {
+        should.exist(controller);
+    });
+
+    it('should have an databaseForm model defined', function () {
+        should.exist(controller.databaseForm);
+    });
+
+    it('should have empty "Username" field', function () {
+        should.exist(controller.databaseForm.username);
+        expect(controller.databaseForm.username).toEqual('');
+    });
+
+    it('should have empty "Password" field', function () {
+        should.exist(controller.databaseForm.password);
+        expect(controller.databaseForm.password).toEqual('');
+    });
+
+    it('should have empty "server" field', function () {
+        should.exist(controller.databaseForm.server);
+        expect(controller.databaseForm.server).toEqual('');
+    });
+
+    it('should have "port" field with default value 5432 ', function () {
+        should.exist(controller.databaseForm.port);
+        expect(controller.databaseForm.port).toEqual(5432);
+    });
+
+    it('should have empty "table_prefix" field', function () {
+        should.exist(controller.databaseForm.table_prefix);
+        expect(controller.databaseForm.table_prefix).toEqual('');
+    });
+        
     it('should display "Username" field', function () {});
+
+    it('username should be required field', function () {});
+
+    it('username should not be lessThan 4 characters', function () {});
+
+    it('username should not be greaterThan 250 characters', function () {});
 
     it('should display "Password" field', function () {});
 
@@ -39,3 +87,4 @@ describe('Upgrade Flow - Create Connect Database Controller', function () {
 
     });
 });
+
