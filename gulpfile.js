@@ -17,6 +17,7 @@ gulp.task('build', function (callback) {
     runSequence(
         'bower',
         [
+            'indexHtml',
             'jsBowerExtract',
             'cssBowerExtract',
             'fontsBowerExtract',
@@ -26,9 +27,9 @@ gulp.task('build', function (callback) {
             'angularCore',
             'angularWidgets',
             'angularFeatures',
-            'angularData'
+            'angularData',
+            'templateCache'
         ],
-        'cleanAssetsHtml',
         callback
     );
 });

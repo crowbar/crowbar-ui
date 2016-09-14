@@ -1,4 +1,3 @@
-  
 .panel.panel-default.landing-page
   .panel-heading
     h1(translate='upgrade7.title') Suse Upgrade
@@ -27,10 +26,14 @@
           }")
           span(translate='upgrade7.steps.landing.prechecks.codes.{{::checkKey}}') 
   
-      button.btn.btn-default.btn-sm(translate='', 
+      button.btn.btn-default.btn-sm(
         ng-disabled="Upgrade7LandingVm.prechecks.completed && Upgrade7LandingVm.prechecks.valid",
+        ng-class="{active: Upgrade7LandingVm.prechecks.spinnerVisible}",
         ng-click="Upgrade7LandingVm.prechecks.runPrechecks()"
-      ) upgrade7.steps.landing.prechecks.form.check-again
+      )
+          suse-lazy-spinner(delay="2000", active="Upgrade7LandingVm.prechecks.running",
+            visible="Upgrade7LandingVm.prechecks.spinnerVisible")
+          span(translate='') upgrade7.steps.landing.prechecks.form.check-again
     
     p.note-message(translate='') upgrade7.steps.landing.note
 
