@@ -1,7 +1,7 @@
 /*global bard $httpBackend assert $rootScope $compile $timeout */
 describe('SUSE Lazy Spinner Directive', function () {
 
-    var directiveElem,
+    var directiveElement,
         scope;
 
     beforeEach(function () {
@@ -16,12 +16,12 @@ describe('SUSE Lazy Spinner Directive', function () {
         scope = $rootScope.$new();
     });
 
-    function compileDirective(tpl) {
-        var elem = angular.element(tpl);
-        var compiledElem = $compile(elem)(scope);
+    function compileDirective(template) {
+        var element = angular.element(template),
+            compiledElement = $compile(element)(scope);
         scope.$digest();
 
-        return compiledElem;
+        return compiledElement;
     }
 
     // Verify no unexpected http call has been made
@@ -29,11 +29,11 @@ describe('SUSE Lazy Spinner Directive', function () {
 
     describe('directive created with default parameters', function () {
         beforeEach(function () {
-            directiveElem = compileDirective('<suse-lazy-spinner active="testActive">');
+            directiveElement = compileDirective('<suse-lazy-spinner active="testActive"></suse-lazy-spinner>');
         });
 
         it('should contain an icon with fa-spin class', function () {
-            var icons = directiveElem.find('i');
+            var icons = directiveElement.find('i');
             expect(icons.length).toEqual(1);
             assert.isTrue(angular.element(icons[0]).hasClass('fa-spin'));
         });
@@ -47,11 +47,11 @@ describe('SUSE Lazy Spinner Directive', function () {
             });
 
             it('should be inactive', function () {
-                assert.isFalse(directiveElem.isolateScope().active);
+                assert.isFalse(directiveElement.isolateScope().active);
             });
 
             it('should be hidden', function () {
-                assert.isTrue(directiveElem.hasClass('hidden'));
+                assert.isTrue(directiveElement.hasClass('hidden'));
             });
         });
 
@@ -62,16 +62,16 @@ describe('SUSE Lazy Spinner Directive', function () {
             });
 
             it('should be active', function () {
-                assert.isTrue(directiveElem.isolateScope().active);
+                assert.isTrue(directiveElement.isolateScope().active);
             });
 
             it('should be hidden before the timeout', function () {
-                assert.isTrue(directiveElem.hasClass('hidden'));
+                assert.isTrue(directiveElement.hasClass('hidden'));
             });
 
             it('should not be hidden after the timeout', function () {
                 $timeout.flush();
-                assert.isFalse(directiveElem.hasClass('hidden'));
+                assert.isFalse(directiveElement.hasClass('hidden'));
             });
         });
     });
@@ -79,18 +79,22 @@ describe('SUSE Lazy Spinner Directive', function () {
     describe('directive with custom delay', function () {
         beforeEach(function () {
             scope.testActive = true;
-            directiveElem = compileDirective('<suse-lazy-spinner active="testActive" delay="100">');
+            directiveElement = compileDirective(
+                '<suse-lazy-spinner active="testActive" delay="100"></suse-lazy-spinner>'
+            );
         });
 
         it('should have the delay value in the internal scope', function () {
             // NOTE: the value is parsed internally in the directive which is not visible from the outside
-            expect(directiveElem.isolateScope().delay).toEqual('100');
+            expect(directiveElement.isolateScope().delay).toEqual('100');
         });
     });
 
     describe('directive with exposed visiblity', function () {
         beforeEach(function () {
-            directiveElem = compileDirective('<suse-lazy-spinner active="testActive" visible="spinnerVisible">');
+            directiveElement = compileDirective(
+                '<suse-lazy-spinner active="testActive" visible="spinnerVisible"></suse-lazy-spinner>'
+            );
         });
 
         describe('attached to active model', function () {
