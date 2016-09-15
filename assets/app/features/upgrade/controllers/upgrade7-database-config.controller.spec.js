@@ -49,9 +49,9 @@ describe('Upgrade Flow - Create Connect Database Controller', function () {
         expect(controller.databaseForm.port).toEqual(5432);
     });
 
-    it('should have empty "table_prefix" field', function () {
-        should.exist(controller.databaseForm.table_prefix);
-        expect(controller.databaseForm.table_prefix).toEqual('');
+    it('should have empty "tablePrefix" field', function () {
+        should.exist(controller.databaseForm.tablePrefix);
+        expect(controller.databaseForm.tablePrefix).toEqual('');
     });
         
     it('should display "Username" field', function () {});

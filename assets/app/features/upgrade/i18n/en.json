@@ -144,13 +144,17 @@
             "database-configuration": {
                 "name": "",
                 "title": "Create or Connect to an OpenStack PostgreSQL Database",
-                "databaseForm": {
+                "navigation-tabs": {
+                    "create-database": "Create New Database",
+                    "connect-database": "Connect to an existong Database"
+                },
+                "database-form": {
                     "username": "Username",
                     "password": "Password",
                     "create-database": "Create New Database",
                     "server": "Server",
                     "port": "Port",
-                    "table-prefix": "Table Prefix",
+                    "tablePrefix": "Table Prefix",
                     "connect-database": "Connect to Database"
                 }
             }
