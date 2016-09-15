@@ -1,5 +1,5 @@
 # Welcome to Crowbar Angular Prototype
-[![Build Status](https://travis-ci.org/crowbar/crowbar-angular.svg?branch=master)](https://travis-ci.org/crowbar/crowbar-angular)
+[![Build Status](https://travis-ci.org/crowbar/crowbar-ui.svg?branch=master)](https://travis-ci.org/crowbar/crowbar-ui)
 
 ##### First steps to have the app running locally for PRODUCTION ENV only:
 
