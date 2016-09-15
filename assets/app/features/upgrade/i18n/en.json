@@ -82,7 +82,7 @@
         }
     },
     "upgrade7": {
-        "title": "Download Backup of Administration Server",
+        "title": "SUSE OpenStack Cloud Upgrade",
         "steps": {
             "landing": {
                 "description": "In order to upgrade SUSE OpenStack Cloud from version 6 to 7, the following requirements must be met:",

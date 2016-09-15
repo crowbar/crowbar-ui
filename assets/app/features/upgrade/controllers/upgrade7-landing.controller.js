@@ -23,10 +23,22 @@
             valid: false,
             spinnerVisible: false,
             checks: {
-                updates_installed: false,
-                network_sanity: false,
-                high_availability: false,
-                free_node_available: false
+                updates_installed: {
+                    status: false, 
+                    label: 'upgrade7.steps.landing.prechecks.codes.updates_installed'
+                },
+                network_sanity: {
+                    status: false, 
+                    label: 'upgrade7.steps.landing.prechecks.codes.network_sanity'
+                },
+                high_availability: {
+                    status: false, 
+                    label: 'upgrade7.steps.landing.prechecks.codes.high_availability'
+                },
+                free_node_available: {
+                    status: false, 
+                    label: 'upgrade7.steps.landing.prechecks.codes.free_node_available'
+                }
             },
             runPrechecks: runPrechecks
         };
@@ -53,18 +65,25 @@
                 .getAll()
                 .then(
                     //Success handler. Al precheck passed successfully:
-                    function(prechecksResponse) {
+                    function(prechecksResponse) { 
 
-                        _.merge(vm.prechecks.checks, prechecksResponse.data);
+                        _.forEach(prechecksResponse.data, function(value, key) {
+                            vm.prechecks.checks[key].status = value;
+                        });
+
                         var prechecksResult = true;
                         // Update prechecks status
+
                         _.forEach(vm.prechecks.checks, function (checkStatus) {
-                            if (false === checkStatus) {
+                            
+                            if (false === checkStatus.status) {
                                 prechecksResult = false;
                                 return false;
                             }
+
                         });
 
+                        
                         // Update prechecks validity
                         vm.prechecks.valid = prechecksResult;
                     },
