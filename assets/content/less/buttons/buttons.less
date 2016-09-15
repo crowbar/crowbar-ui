@@ -1,0 +1,73 @@
+// lesshint qualifyingElement: { enabled: true, allowWithClass: true, allowWithAttribute: true }
+.btn {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    padding-left: 29px;
+    padding-right: 31px;
+
+    &:hover {
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.23);
+    }
+
+    // Blue button
+    &.btn-primary,
+    &.btn-primary:hover {
+        background: #65a6de;
+        border: 1px solid #5a93c4;
+        border-radius: 3px;
+        color: #ffffff;
+    }
+
+    // Green button
+    &.btn-sucess,
+    &.btn-sucess:hover {
+        background: #80c235;
+        border: 1px solid #72ab31;
+        border-radius: 3px;
+        color: #ffffff;
+    }
+
+    // Grey button
+    &.btn-default,
+    &.btn-default:hover {
+        background: #eeeeee;
+        border: 1px solid #b4babe;
+        border-radius: 3px;
+        color: #3a3e40;
+    }
+
+    // Action on-going
+    &.active[disabled],
+    &.active[disabled]:hover {
+        background: #f3f3f3;
+        border: 1px solid #cccccc;
+        border-radius: 3px;
+        box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.23);
+        color: #818585;
+
+        &.spinner-visible {
+            padding-left: 10px;
+            padding-right: 25px;
+        }
+
+        suse-lazy-spinner {
+            i {
+                font-size: 16px;
+                width: auto;
+            }
+
+            margin-right: 9px;
+        }
+    }
+
+    &[disabled],
+    &[disabled]:hover,
+    &.disabled,
+    &.disabled:hover {
+        background: #f3f3f3;
+        border: 1px solid #cccccc;
+        border-radius: 3px;
+        box-shadow: none;
+        color: #969797;
+    }
+}

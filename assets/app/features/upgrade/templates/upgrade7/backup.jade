@@ -1,7 +1,11 @@
 h2(translate='') upgrade7.steps.backup.title
 p(translate='') upgrade7.steps.backup.description
-button.btn.btn-success.center-block.btn-lg(
-  ng-class="{active: upgradeBackupVm.backup.spinnerVisible}",
+button.btn.btn-primary.center-block(
+  ng-disabled="upgradeBackupVm.backup.running",
+  ng-class="{\
+    'spinner-visible': upgradeBackupVm.backup.spinnerVisible,\
+    active: upgradeBackupVm.backup.running\
+  }",
   ng-click="upgradeBackupVm.backup.create()"
 )
   suse-lazy-spinner(delay="2000", active="upgradeBackupVm.backup.running",
