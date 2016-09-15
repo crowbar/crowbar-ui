@@ -13,9 +13,12 @@
       p(translate='') upgrade7.steps.landing.prechecks.description
       crowbar-checklist(checklist='Upgrade7LandingVm.prechecks.checks', completed='Upgrade7LandingVm.prechecks.completed') 
   
-      button.btn.btn-default.btn-sm(
+      button.btn.btn-success(
         ng-disabled="Upgrade7LandingVm.prechecks.completed && Upgrade7LandingVm.prechecks.valid",
-        ng-class="{active: Upgrade7LandingVm.prechecks.spinnerVisible}",
+        ng-class="{\
+          'spinner-visible': Upgrade7LandingVm.prechecks.spinnerVisible,\
+          active: Upgrade7LandingVm.prechecks.running\
+        }",
         ng-click="Upgrade7LandingVm.prechecks.runPrechecks()"
       )
           suse-lazy-spinner(delay="2000", active="Upgrade7LandingVm.prechecks.running",
@@ -24,7 +27,7 @@
     
     p.note-message(translate='') upgrade7.steps.landing.note
 
-    button.btn.btn-success.center-block.btn-lg(translate='', 
+    button.btn.btn-success.center-block(translate='', 
       ng-disabled="!Upgrade7LandingVm.prechecks.completed || !Upgrade7LandingVm.prechecks.valid",
       ng-click="Upgrade7LandingVm.beginUpgrade()"
     ) upgrade7.steps.landing.form.button

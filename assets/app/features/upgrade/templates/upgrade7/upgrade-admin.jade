@@ -1,8 +1,13 @@
 h2(translate='') upgrade7.steps.upgrade-admin.title
 p(translate='') upgrade7.steps.upgrade-admin.description
-button.btn.btn-success.center-block.btn-lg(ng-click="upgradeAdminUpgradeVm.adminUpgrade.beginAdminUpgrade()",
-    ng-class="{active: upgradeAdminUpgradeVm.adminUpgrade.spinnerVisible}",
-    ng-disabled="upgradeAdminUpgradeVm.adminUpgrade.running || upgradeAdminUpgradeVm.adminUpgrade.completed")
+button.btn.btn-success.center-block(
+    ng-click="upgradeAdminUpgradeVm.adminUpgrade.beginAdminUpgrade()",
+    ng-disabled="upgradeAdminUpgradeVm.adminUpgrade.completed || upgradeAdminUpgradeVm.adminUpgrade.running",
+    ng-class="{\
+        'spinner-visible': upgradeAdminUpgradeVm.adminUpgrade.spinnerVisible,\
+        active: upgradeAdminUpgradeVm.adminUpgrade.running\
+    }",
+)
     suse-lazy-spinner(delay="2000", active="upgradeAdminUpgradeVm.adminUpgrade.running",
         visible="upgradeAdminUpgradeVm.adminUpgrade.spinnerVisible")
     span(translate='') upgrade7.steps.upgrade-admin.form.upgrade-admin
