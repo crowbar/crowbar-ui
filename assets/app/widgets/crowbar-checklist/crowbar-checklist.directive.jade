@@ -1,12 +1,12 @@
 ul.check-list
     li(ng-repeat="(checkKey, check) in checklist",
-        translate='',
+        check-key='{{::checkKey}}',
         ng-class="{\
             'text-info': !completed,\
             'text-success': check.status && completed,\
             'text-danger': !check.status && completed\
         }")
-        span.glyphicon(ng-class="{\
+        i.glyphicon(ng-class="{\
             'glyphicon-ban-circle': !completed,\
             'glyphicon-ok-circle': check.status && completed,\
             'glyphicon-remove-circle': !check.status && completed\
