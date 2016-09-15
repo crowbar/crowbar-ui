@@ -18,8 +18,10 @@
         vm.beginUpgrade = beginUpgrade;
 
         vm.prechecks = {
+            running: false,
             completed: false,
             valid: false,
+            spinnerVisible: false,
             checks: {
                 updates_installed: {
                     status: false, 
@@ -57,6 +59,8 @@
          * Pre validation checks
          */
         function runPrechecks() {
+            vm.prechecks.running = true;
+
             upgradePrechecksFactory
                 .getAll()
                 .then(
@@ -93,6 +97,7 @@
                     function() {
                         // Either on sucess or failure, the prechecks has been completed.
                         vm.prechecks.completed = true;
+                        vm.prechecks.running = false;
                     }
                 );
 

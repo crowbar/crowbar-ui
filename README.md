@@ -1,15 +1,15 @@
 # Welcome to Crowbar Angular Prototype
-[![Build Status](https://travis-ci.org/crowbar/crowbar-angular.svg?branch=master)](https://travis-ci.org/crowbar/crowbar-angular)
+[![Build Status](https://travis-ci.org/crowbar/crowbar-ui.svg?branch=master)](https://travis-ci.org/crowbar/crowbar-ui)
 
 ##### First steps to have the app running locally for PRODUCTION ENV only:
 
-1 - Clone the app from gitlab:
+1 - Clone the app from GitHub:
 
-`git clone gitlab@gitlab.suse.de:spetrone/crowbar-angular.git`
+`git@github.com:crowbar/crowbar-ui.git`
 
 2 - Locate yourself into the recently created folder:
 
-`cd crowbar-angular`
+`cd crowbar-ui`
 
 **Make sure you have Node.js installed in your machine with NPM, if not, please proceed to install it before continuing with the following steps. (more info: https://nodejs.org/en/download/)**
 

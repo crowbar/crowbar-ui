@@ -4,12 +4,20 @@ var gulp = require('gulp'),
     imagemin = require('gulp-imagemin'),
     cache = require('gulp-cache'),
     lessImport = require('gulp-less-import'),
-    gulpDebug = require('gulp-debug');
+    gulpDebug = require('gulp-debug'),
+    jade = require('gulp-jade');
 
 // Define main directories
 var assets = 'assets/',
     destination = 'public/';
     // production = environments.production;
+
+//
+gulp.task('indexHtml', function () {
+    return gulp.src(assets + 'index.jade')
+        .pipe(jade())
+        .pipe(gulp.dest(destination));
+});
 
 // Preprocess CSS and minify it
 gulp.task('less', function () {
