@@ -1,29 +1,15 @@
-.repository-checks
+h2(translate='') upgrade7.steps.admin-repository-checks.title
+p(translate='') upgrade7.steps.admin-repository-checks.description
+p(translate='') upgrade7.steps.admin-repository-checks.repositories.instructions
 
-    p.bold(translate='') upgrade7.steps.admin-repository-checks.title
-    p(translate='') upgrade7.steps.admin-repository-checks.description
+div.checks-container
+    crowbar-checklist(checklist='upgradeAdminRepoChecksVm.repoChecks.checks', completed='upgradeAdminRepoChecksVm.repoChecks.completed') 
 
-    div.checks-container
-        ul.repositories-list
-            li(ng-repeat="(checkKey, check) in upgradeAdminRepoChecksVm.repoChecks.checks",
-                translate='',
-                ng-class="{\
-                    'text-info': !upgradeAdminRepoChecksVm.repoChecks.completed,\
-                    'text-success': check && upgradeAdminRepoChecksVm.repoChecks.completed,\
-                    'text-danger': !check && upgradeAdminRepoChecksVm.repoChecks.completed\
-                }")
-                span.glyphicon(ng-class="{\
-                    'glyphicon-question-sign': !upgradeAdminRepoChecksVm.repoChecks.completed,\
-                    'glyphicon-ok-sign': check && upgradeAdminRepoChecksVm.repoChecks.completed,\
-                    'glyphicon-minus-sign': !check && upgradeAdminRepoChecksVm.repoChecks.completed\
-                }")
-                span(translate='upgrade7.steps.admin-repository-checks.repositories.codes.{{::checkKey}}') 
-
-        button.btn.btn-success.pull-left.btn-lg(
-            ng-disabled="upgradeAdminRepoChecksVm.repoChecks.completed && upgradeAdminRepoChecksVm.repoChecks.valid",
-            ng-class="{active: upgradeAdminRepoChecksVm.repoChecks.spinnerVisible}",
-            ng-click="upgradeAdminRepoChecksVm.repoChecks.runRepoChecks()"
-        )
-            suse-lazy-spinner(delay="2000", active="upgradeAdminRepoChecksVm.repoChecks.running",
-                visible="upgradeAdminRepoChecksVm.repoChecks.spinnerVisible")
-            span(translate='') upgrade7.steps.admin-repository-checks.form.check-again
+    button.btn.btn-success.pull-left.btn-lg(
+        ng-disabled="upgradeAdminRepoChecksVm.repoChecks.completed && upgradeAdminRepoChecksVm.repoChecks.valid",
+        ng-class="{active: upgradeAdminRepoChecksVm.repoChecks.spinnerVisible}",
+        ng-click="upgradeAdminRepoChecksVm.repoChecks.runRepoChecks()"
+    )
+        suse-lazy-spinner(delay="2000", active="upgradeAdminRepoChecksVm.repoChecks.running",
+            visible="upgradeAdminRepoChecksVm.repoChecks.spinnerVisible")
+        span(translate='') upgrade7.steps.admin-repository-checks.form.check-again

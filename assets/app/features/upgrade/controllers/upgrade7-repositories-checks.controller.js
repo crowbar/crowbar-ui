@@ -20,10 +20,22 @@
             completed: false,
             valid: false,
             checks: {
-                'SLES_12_SP2': false,
-                'SLES_12_SP2_Updates': false,
-                'SLES_OpenStack_Cloud_7': false,
-                'SLES_OpenStack_Cloud_7_Updates': false
+                'SLES_12_SP2': {
+                    status: false, 
+                    label: 'upgrade7.steps.admin-repository-checks.repositories.codes.SLES_12_SP2'
+                },
+                'SLES_12_SP2_Updates': {
+                    status: false, 
+                    label: 'upgrade7.steps.admin-repository-checks.repositories.codes.SLES_12_SP2_Updates'
+                },
+                'SLES_OpenStack_Cloud_7': {
+                    status: false, 
+                    label: 'upgrade7.steps.admin-repository-checks.repositories.codes.SLES_OpenStack_Cloud_7'
+                },
+                'SLES_OpenStack_Cloud_7_Updates': {
+                    status: false, 
+                    label: 'upgrade7.steps.admin-repository-checks.repositories.codes.SLES_OpenStack_Cloud_7_Updates'
+                }
             },
             runRepoChecks: runRepoChecks
         };
@@ -39,11 +51,15 @@
                     // In case of success
                     function (repoChecksResponse) {
 
-                        _.merge(vm.repoChecks.checks, repoChecksResponse.data);
+                        _.forEach(repoChecksResponse.data, function(value, key) {
+                            vm.repoChecks.checks[key].status = value;
+                        });
+
                         var repoChecksResult = true;
                         // Update prechecks status
+
                         _.forEach(vm.repoChecks.checks, function (repoStatus) {
-                            if (false === repoStatus) {
+                            if (false === repoStatus.status) {
                                 repoChecksResult = false;
                                 return false;
                             }
