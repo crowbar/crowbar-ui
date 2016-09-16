@@ -3,26 +3,21 @@ html(ng-app='crowbarApp')
   head
     title= title
     link(rel='stylesheet', href='/css/bower_components.min.css')
-    // Load assets according to NODE_ENV
-    - if (env == 'production') {
-      link(rel='stylesheet', href='/css/app.min.css')
-    - } else {
-      link(rel='stylesheet', href='/css/app.css')
-    - }
+    link(rel='stylesheet', href='/css/app.css')
+    link(rel='shortcut icon', href='/images/favicon.ico', type='image/x-icon')
   body
     crowbar-header
 
     .container
       .row
         .col-xs-12
-          block content
+          div(ui-view='')
 
     script(src='js/bower_components.min.js')
-    - if (env == 'production') {
-      script(src='app/main.min.js')
-    - } else {
-      script(src='app/crowbar-app.module.js')
-    - }
+    script(src='app/crowbar-app.module.js')
+
+    // Templates
+    script(src='app/crowbar-app.templates.js')
 
     // Crowbar Core
     script(src='app/core/crowbar-core.module.js')
@@ -44,6 +39,8 @@ html(ng-app='crowbarApp')
     script(src='app/widgets/crowbar-upgrade-steps/crowbar-upgrade-steps.directive.js')
     script(src='app/widgets/crowbar-upgrade-nav/crowbar-upgrade-nav.directive.js')
     script(src='app/widgets/crowbar-header/crowbar-header.directive.js')
+    script(src='app/widgets/suse-lazy-spinner/suse-lazy-spinner.directive.js')
+    script(src='app/widgets/crowbar-checklist/crowbar-checklist.directive.js')
 
     // Crowbar Features
     // Upgrade State

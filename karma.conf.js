@@ -19,7 +19,8 @@ module.exports = function(config) {
             'bower_components/bardjs/dist/bard.js',
             'bower_components/bardjs/dist/bard-ngRouteTester.js',
             'assets/app/**/*.module.js',
-            'assets/app/**/*.js'
+            'assets/app/**/*.js',
+            'public/app/crowbar-app.templates.js'
         ],
 
 

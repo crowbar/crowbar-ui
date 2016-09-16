@@ -1,0 +1,13 @@
+ProxyPass /upgrade !
+ProxyPass /app !
+ProxyPass /css !
+ProxyPass /fonts !
+ProxyPass /images !
+ProxyPass /js !
+
+Alias /upgrade /usr/share/crowbar-ui/
+Alias /app /usr/share/crowbar-ui/app
+Alias /css /usr/share/crowbar-ui/css
+Alias /fonts /usr/share/crowbar-ui/fonts
+Alias /images /usr/share/crowbar-ui/images
+Alias /js /usr/share/crowbar-ui/js

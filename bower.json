@@ -1,8 +1,8 @@
 {
-  "name": "Crowbar-Angular",
-  "description": "SUSE Crowbar Angular Prototype",
+  "name": "crowbar-ui",
+  "description": "Crowbar Web UI based on Angular",
   "main": "",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "homepage": "",
   "private": true,
   "ignore": [

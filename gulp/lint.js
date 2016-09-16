@@ -23,11 +23,8 @@ gulp.task('eslint-angular', function () {
 
 gulp.task('eslint-node', function () {
     return gulp.src([
-        '**/*.js',
-        '!public/**/*.js',
-        '!bower_components/**/*.js',
-        '!node_modules/**/*.js',
-        '!assets/**/*.js'
+        '+(gulp|routes|bin)/**/*.js',
+        '*.js'
     ])
         .pipe(eslint({
             configFile: '.eslintrc.node.js'

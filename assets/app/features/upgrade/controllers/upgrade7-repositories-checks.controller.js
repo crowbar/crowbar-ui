@@ -16,6 +16,8 @@
     function Upgrade7RepositoriesCheckController($translate, upgradeRepoChecksFactory) {
         var vm = this;
         vm.repoChecks = {
+            running: false,
+            spinnerVisible: false,
             completed: false,
             valid: false,
             checks: {
@@ -31,6 +33,7 @@
          *  Validate Admin Repositories required for Cloud 7 Upgrade
          */
         function runRepoChecks() {
+            vm.repoChecks.running = true;
 
             upgradeRepoChecksFactory.getAdminRepoChecks()
                 .then(
@@ -59,6 +62,7 @@
                 .finally(function () {
                     // Either on sucess or failure, the repoChecks has been completed.
                     vm.repoChecks.completed = true;
+                    vm.repoChecks.running = false;
                 });
         }
     }

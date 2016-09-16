@@ -1,3 +1,13 @@
 h2(translate='') upgrade7.steps.backup.title
 p(translate='') upgrade7.steps.backup.description
-button.btn.btn-success.center-block.btn-lg(translate='', ng-click="upgradeBackupVm.backup.create()") upgrade7.steps.backup.form.backup
+button.btn.btn-success.center-block(
+  ng-disabled="upgradeBackupVm.backup.running",
+  ng-class="{\
+    'spinner-visible': upgradeBackupVm.backup.spinnerVisible,\
+    active: upgradeBackupVm.backup.running\
+  }",
+  ng-click="upgradeBackupVm.backup.create()"
+)
+  suse-lazy-spinner(delay="2000", active="upgradeBackupVm.backup.running",
+    visible="upgradeBackupVm.backup.spinnerVisible")
+  span(translate='') upgrade7.steps.backup.form.backup

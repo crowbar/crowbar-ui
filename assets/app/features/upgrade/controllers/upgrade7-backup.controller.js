@@ -17,11 +17,14 @@ function() {
     function Upgrade7BackupController($translate, $state, upgradeBackupFactory, $document) {
         var vm = this;
         vm.backup = {
+            running: false,
             completed: false,
-            create: createBackup
+            create: createBackup,
+            spinnerVisible: false
         };
 
         function createBackup() {
+            vm.backup.running = true;
 
             upgradeBackupFactory.create()
                 .then(
@@ -55,6 +58,7 @@ function() {
                 )
                 .finally(function () {
                     vm.backup.completed = true;
+                    vm.backup.running = false;
                 });
         }
 
