@@ -19,7 +19,8 @@ function() {
         vm.backup = {
             running: false,
             completed: false,
-            create: createBackup
+            create: createBackup,
+            spinnerVisible: false
         };
 
         function createBackup() {

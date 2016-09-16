@@ -18,6 +18,9 @@
                 delay: '@'
             },
             link: function(scope, elem) {
+                // Element should be hidden by default
+                elem.addClass('hidden');
+
                 // dummy-init optional binding values
                 scope.visible = scope.visible || false;
 
