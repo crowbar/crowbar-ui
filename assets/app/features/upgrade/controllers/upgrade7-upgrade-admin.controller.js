@@ -18,22 +18,25 @@
         vm.adminUpgrade = {
             completed: false,
             running: false,
+            spinnerVisible: false,
             beginAdminUpgrade: beginAdminUpgrade,
             // note: this is exposed in vm only to simplify testing
             checkAdminUpgrade: checkAdminUpgrade
         };
 
         function beginAdminUpgrade() {
+            vm.adminUpgrade.running = true;
+
             upgradeUpgradeAdminFactory.getAdminUpgrade()
                 .then(
                     // In case of success
                     function (/*response*/) {
-                        vm.adminUpgrade.running = true;
                         // start running checkAdminUpgrade at an interval
                         vm.adminUpgrade.checkAdminUpgrade();
                     },
                     // In case of failure
                     function (errorResponse) {
+                        vm.adminUpgrade.running = false;
                         // Expose the error list to adminUpgrade object
                         vm.adminUpgrade.errors = errorResponse.data.errors;
                     }
