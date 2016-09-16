@@ -1,5 +1,5 @@
 /*global bard $controller $httpBackend should assert upgradeRepoChecksFactory $q $rootScope */
-describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
+fdescribe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
     var controller,
         failingRepoChecks = {
             'SLES_12_SP2': false,
@@ -21,12 +21,31 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             'SUSE_Enterprise_Storage_4': true,
             'SUSE_Enterprise_Storage_4_Updates': true
         },
-        passingReposResponse = {
+        partiallyFailingRepoChecks = {
+            'SLES_12_SP2': true,
+            'SLES_12_SP2_Updates': false,
+            'SLES_OpenStack_Cloud_7': false,
+            'SLES_OpenStack_Cloud_7_Updates': true,
+            'SLE_HA_12_SP2': true,
+            'SLE_HA_12_SP2_Updates': true,
+            'SUSE_Enterprise_Storage_4': true,
+            'SUSE_Enterprise_Storage_4_Updates': true
+        },
+        failingErrors = {
+            error_message: 'Authentication failure'
+        },
+        passingReposChecksResponse = {
             data: passingRepoChecks
         },
-        failingReposResponse = {
+        failingReposChecksResponse = {
+            data: failingRepoChecks
+        },
+        partiallyFailingReposChecksResponse = {
+            data: partiallyFailingRepoChecks
+        },
+        failingResponse = {
             data: {
-                errors: failingRepoChecks
+                errors: failingErrors
             }
         };
 
@@ -72,7 +91,9 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
 
             it('should all be set to false', function () {
                 assert.isObject(controller.repoChecks.checks);
-                expect(controller.repoChecks.checks).toEqual(failingRepoChecks);
+                _.forEach(controller.repoChecks.checks, function(value) {
+                    assert.isFalse(value.status);
+                });
             });
         });
     });
@@ -82,10 +103,10 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             should.exist(controller.repoChecks.runRepoChecks);
         });
 
-        describe('when successfull', function () {
+        describe('when checks pass successfull', function () {
             beforeEach(function () {
                 bard.mockService(upgradeRepoChecksFactory, {
-                    getNodesRepoChecks: $q.when(passingReposResponse)
+                    getNodesRepoChecks: $q.when(passingReposChecksResponse)
                 });
                 controller.repoChecks.runRepoChecks();
                 $rootScope.$digest();
@@ -101,15 +122,67 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
 
             it('should update checks values to true', function () {
                 assert.isObject(controller.repoChecks.checks);
-                expect(controller.repoChecks.checks).toEqual(passingRepoChecks);
+                _.forEach(controller.repoChecks.checks, function(value) {
+                    assert.isTrue(value.status);
+                });
             });
 
         });
 
-        describe('on failure', function () {
+        describe('when checks fails', function () {
             beforeEach(function () {
                 bard.mockService(upgradeRepoChecksFactory, {
-                    getNodesRepoChecks: $q.reject(failingReposResponse)
+                    getNodesRepoChecks: $q.when(failingReposChecksResponse)
+                });
+                controller.repoChecks.runRepoChecks();
+                $rootScope.$digest();
+            });
+
+            it('should set repoChecks.completed status to true', function () {
+                assert.isTrue(controller.repoChecks.completed);
+            });
+
+            it('should update valid attribute of checks model to false', function () {
+                assert.isFalse(controller.repoChecks.valid);
+            });
+
+            it('should update checks values to false', function () {
+                assert.isObject(controller.repoChecks.checks);
+                _.forEach(controller.repoChecks.checks, function(value) {
+                    assert.isFalse(value.status);
+                });
+            });
+        });
+
+        describe('when checks partially fails', function () {
+            beforeEach(function () {
+                bard.mockService(upgradeRepoChecksFactory, {
+                    getNodesRepoChecks: $q.when(partiallyFailingReposChecksResponse)
+                });
+                controller.repoChecks.runRepoChecks();
+                $rootScope.$digest();
+            });
+
+            it('should set repoChecks.completed status to true', function () {
+                assert.isTrue(controller.repoChecks.completed);
+            });
+
+            it('should update valid attribute of checks model to false', function () {
+                assert.isFalse(controller.repoChecks.valid);
+            });
+
+            it('should update checks values to true or false as per the response', function () {
+                assert.isObject(controller.repoChecks.checks);
+                _.forEach(partiallyFailingReposChecksResponse.data, function(value, key) {
+                    expect(controller.repoChecks.checks[key].status).toEqual(value);
+                });
+            });
+        });
+
+        describe('when service call fails', function () {
+            beforeEach(function () {
+                bard.mockService(upgradeRepoChecksFactory, {
+                    getNodesRepoChecks: $q.reject(failingResponse)
                 });
                 controller.repoChecks.runRepoChecks();
                 $rootScope.$digest();
@@ -124,7 +197,7 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             });
 
             it('should expose the errors through vm.repoChecks.errors object', function () {
-                expect(controller.repoChecks.errors).toEqual(failingRepoChecks);
+                expect(controller.repoChecks.errors).toEqual(failingResponse.data.errors);
             }); 
         });
 
