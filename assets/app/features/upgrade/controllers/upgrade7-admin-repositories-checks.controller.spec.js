@@ -43,7 +43,7 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
         bard.inject('$controller', 'upgradeRepoChecksFactory', '$q', '$httpBackend', '$rootScope');
 
         //Create the controller
-        controller = $controller('Upgrade7RepositoriesCheckController');
+        controller = $controller('Upgrade7AdminRepositoriesCheckController');
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
