@@ -1,0 +1,44 @@
+.upgrade-flow .database-configuration-page {
+    overflow: hidden;
+
+    .nav-tabs > li {
+        & > a {
+            color: @nav-tab-fg;
+        }
+        &.active > a {
+            color: @active-nav-tab-fg;
+        }
+    }
+
+    .tab-content {
+        overflow: hidden;
+        padding: 22px 0px 0px;
+        .database-form {
+            .form-group {
+                margin-bottom: 17px;
+                overflow: hidden;
+                .form-control {
+                    height: 32px;
+                    max-width: 330px;
+                    padding: 6px 10px;
+                }
+                label {
+                    font-weight: normal;
+                    margin: 0px;
+                    padding: 0px 0px 4px 10px;
+                }
+                .server {
+                    float: left;
+                    margin-right: 30px;
+                    width: 330px;
+                }
+                .port {
+                    float: left;
+                    .form-control {
+                        width: 70px;
+                    }
+                }
+            }
+        }
+    }
+}

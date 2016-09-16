@@ -10,16 +10,9 @@
         padding: 0px;
 
         .row {
-            margin-left: 0px;
-            margin-right: 0px;
             @media (min-width: 1200px) {
                 height: 443px;
                 overflow: hidden;
-            }
-            .col-lg-3,
-            .col-lg-9 {
-                padding-left: 0px;
-                padding-right: 0px;
             }
         }
 
@@ -76,79 +69,28 @@
         }
 
         .upgrade-details-container {
-            padding-left: 0px;
 
             .upgrade-details {
+                padding-top: 27px;
 
                 h2 {
                     color: #3a3e40;
                     font-size: 14px;
                     font-weight: 600;
-                    margin-bottom: 20px;
-                    margin-top: 30px;
+                    margin: 0px 0px 17px;
                 }
 
                 p {
-                    margin: 0px 0px 10px;
+                    line-height: 16px;
+                    margin: 0px 0px 28px;
                 }
 
                 .admin-repositories-checks-page {
                     overflow: hidden;
-                    padding: 30px;
-
-                    h2 {
-                        margin-bottom: 20px;
-                        margin-top: 0px;
-                    }
-
-                    p {
-                        margin: 0px 0px 30px;
-                    }
 
                     .btn {
                         margin-bottom: 0px;
-                        margin-top: 10px;
-                    }
-                }
-            }
-            .database-configuration {
-                padding: 23px 10px 10px 20px;
-                overflow: hidden;
-                .nav-tabs>li>a { 
-                    color: @nav-tab-fg;
-                }
-                .nav-tabs>li.active>a { 
-                    color: @active-nav-tab-fg;
-                }
-                .tab-content {
-                    padding: 22px 0px 0px;
-                    overflow: hidden;
-                    .database-form {
-                        .form-group {
-                            margin-bottom: 17px;
-                            overflow: hidden;
-                            .form-control {
-                                max-width: 330px;
-                                height: 32px;
-                                padding: 6px 10px;
-                            }
-                            label {
-                                font-weight: normal;
-                                padding: 0px 0px 4px 10px;
-                                margin: 0;
-                            }
-                            .server {
-                                float: left;
-                                margin-right: 30px;
-                                width: 330px;
-                            }
-                            .port {
-                                float: left;
-                                .form-control {
-                                    width: 70px;
-                                }
-                            }
-                        }
+                        margin-top: 18px;
                     }
                 }
             }
@@ -235,21 +177,5 @@
 }
 
 /* End landing-page css */
-
-/* Start Prechecks and Admin repo checks status css */
-
-.text-info {
-    color: @info-text;
-}
-
-.text-danger {
-    color: @danger-text;
-}
-
-.text-success {
-    color: @success-text;
-}
-
-/* End Prechecks and Admin repo checks status css */
 
 /* End= states/upgrade/upgrade.less */
