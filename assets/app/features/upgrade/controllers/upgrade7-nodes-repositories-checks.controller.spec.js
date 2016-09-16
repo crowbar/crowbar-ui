@@ -1,5 +1,5 @@
 /*global bard $controller $httpBackend should assert upgradeRepoChecksFactory $q $rootScope */
-fdescribe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
+describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
     var controller,
         failingRepoChecks = {
             'SLES_12_SP2': false,
@@ -201,5 +201,11 @@ fdescribe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             }); 
         });
 
+        it('should leave checks values untouched', function () {
+            assert.isObject(controller.repoChecks.checks);
+            _.forEach(controller.repoChecks.checks, function(value) {
+                assert.isFalse(value.status);
+            });
+        });
     });
 });
