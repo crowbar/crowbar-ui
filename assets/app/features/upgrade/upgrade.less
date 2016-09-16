@@ -10,9 +10,16 @@
         padding: 0px;
 
         .row {
+            margin-left: 0px;
+            margin-right: 0px;
             @media (min-width: 1200px) {
                 height: 443px;
                 overflow: hidden;
+            }
+            .col-lg-3,
+            .col-lg-9 {
+                padding-left: 0px;
+                padding-right: 0px;
             }
         }
 
@@ -72,8 +79,6 @@
             padding-left: 0px;
 
             .upgrade-details {
-                margin-left: 15px;
-                margin-right: 30px;
 
                 h2 {
                     color: #3a3e40;
@@ -87,24 +92,23 @@
                     margin: 0px 0px 10px;
                 }
 
-                ul.repositories-list {
-                    margin: 30px 0px 0px 0px;
-                    padding-left: 0px;
+                .admin-repositories-checks-page {
+                    overflow: hidden;
+                    padding: 30px;
 
-                    li {
-                        font-weight: bold;
-                        list-style-type: none;
-                        margin: 5px 0px;
-
-                        span {
-                            margin-right: 8px;
-                        }
+                    h2 {
+                        margin-bottom: 20px;
+                        margin-top: 0px;
                     }
-                }
 
-                .btn {
-                    margin-bottom: 30px;
-                    margin-top: 30px;
+                    p {
+                        margin: 0px 0px 30px;
+                    }
+
+                    .btn {
+                        margin-bottom: 0px;
+                        margin-top: 10px;
+                    }
                 }
             }
         }

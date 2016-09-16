@@ -3,17 +3,17 @@
 
     /**
     * @ngdoc function
-    * @name crowbarApp.controller:Upgrade7RepositoriesCheckController
+    * @name crowbarApp.controller:Upgrade7AdminRepositoriesCheckController
     * @description
-    * # Upgrade7RepositoriesCheckController
+    * # Upgrade7AdminRepositoriesCheckController
     * This is the controller used on the Upgrade Admin Repo Checks page
     */
     angular.module('crowbarApp')
-        .controller('Upgrade7RepositoriesCheckController', Upgrade7RepositoriesCheckController);
+        .controller('Upgrade7AdminRepositoriesCheckController', Upgrade7AdminRepositoriesCheckController);
 
-    Upgrade7RepositoriesCheckController.$inject = ['$translate', 'upgradeRepoChecksFactory'];
+    Upgrade7AdminRepositoriesCheckController.$inject = ['$translate', 'upgradeRepoChecksFactory'];
     // @ngInject
-    function Upgrade7RepositoriesCheckController($translate, upgradeRepoChecksFactory) {
+    function Upgrade7AdminRepositoriesCheckController($translate, upgradeRepoChecksFactory) {
         var vm = this;
         vm.repoChecks = {
             running: false,
