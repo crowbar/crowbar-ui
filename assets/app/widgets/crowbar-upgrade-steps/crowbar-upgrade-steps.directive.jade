@@ -1,7 +1,6 @@
 ul.list-group
   li.list-group-item(ng-repeat='step in steps', ng-class='{active: step.active, "list-group-item-success": step.enabled}')
-    | {{::step.title}}
-    .pull-right
-      span.fa-fw.fa.fa-chevron-right(aria-hidden="true")
+    div.text-right
+        | {{::step.title}}
   li.list-group-item.bottom-padding
 

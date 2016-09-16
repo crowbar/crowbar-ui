@@ -1,0 +1,34 @@
+/* Start= features/upgrade/templates/upgrade7/database-configuration-page.less */
+.upgrade-flow .database-configuration-page {
+    overflow: hidden;
+
+    .nav-tabs > li {
+        & > a {
+            color: @nav-tab-fg;
+        }
+        &.active > a {
+            color: @active-nav-tab-fg;
+        }
+    }
+
+    .tab-content {
+        margin-top: 16px;
+
+        .database-form {
+            .form-group {
+                margin-bottom: 16px;
+                overflow: hidden;
+
+                label {
+                    font-weight: normal;
+                    margin-bottom: 2px;
+                }
+            }
+
+            button {
+                margin-top: 16px;
+            }
+        }
+    }
+}
+/* End= features/upgrade/templates/upgrade7/database-configuration-page.less */

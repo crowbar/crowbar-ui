@@ -139,6 +139,23 @@
                 "form": {
                     "upgrade-admin": "Upgrade Administration Server"
                 }
+            },
+            "database-configuration": {
+                "name": "",
+                "title": "Enter Credentials and/or Inofrmation to Create or Connect to an OpenStack PostgreSQL Database for the OpenStack Database Migration.",
+                "navigation-tabs": {
+                    "create-database": "Create New Database",
+                    "connect-database": "Connect to an existing Database"
+                },
+                "database-form": {
+                    "username": "Username",
+                    "password": "Password",
+                    "create-database": "Create New Database",
+                    "server": "Server",
+                    "port": "Port",
+                    "tablePrefix": "Table Prefix",
+                    "connect-database": "Connect to Database"
+                }
             }
         },
         "errors": {
