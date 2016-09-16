@@ -32,6 +32,10 @@ describe('SUSE Lazy Spinner Directive', function () {
             directiveElement = compileDirective('<suse-lazy-spinner active="testActive"></suse-lazy-spinner>');
         });
 
+        it('should be hidden by default', function () {
+            assert.isTrue(directiveElement.hasClass('hidden'));
+        });
+
         it('should contain an icon with fa-spin class', function () {
             var icons = directiveElement.find('i');
             expect(icons.length).toEqual(1);
