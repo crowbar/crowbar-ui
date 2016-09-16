@@ -182,6 +182,13 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
                 assert.isFalse(controller.repoChecks.valid);
             });
 
+            it('should leave checks values untouched', function () {
+                assert.isObject(controller.repoChecks.checks);
+                _.forEach(controller.repoChecks.checks, function(value) {
+                    assert.isFalse(value.status);
+                });
+            });
+
             it('should expose the errors through vm.repoChecks.errors object', function () {
                 expect(controller.repoChecks.errors).toEqual(failingReposResponse.data.errors);
             });
