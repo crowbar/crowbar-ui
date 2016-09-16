@@ -20,7 +20,7 @@
             password: '',
             server: '',
             port: 5432,
-            table_prefix: ''
+            tablePrefix: ''
         }
     }
 })();

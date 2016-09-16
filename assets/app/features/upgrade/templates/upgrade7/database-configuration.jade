@@ -1,49 +1,35 @@
-h2(translate='') upgrade7.steps.database-configuration.title
+.database-configuration
+  h2(translate='') upgrade7.steps.database-configuration.title
 
-uib-tabset(active='active')
-  uib-tab(index='0', heading='Create a Database')
-    form(novalidate, name='createDatabase')
-      .form-group(ng-class="{'has-warning': createDatabase.username.$error.required}")
-        .col-lg-8.col-xs-12 
-          .label-control
-            label(translate='') upgrade7.steps.database-configuration.databaseForm.username
-            span(translate='', ng-show='createDatabase.username.$error.required') - invalid characters
+  uib-tabset(active='active')
+    uib-tab(index='0', heading="{{ 'upgrade7.steps.database-configuration.navigation-tabs.create-database' | translate}}")
+      form.database-form
+        .form-group
+          label(translate='') upgrade7.steps.database-configuration.database-form.username
           input.form-control(type='text', name='username', ng-required='false', ng-model='Upgrade7DatabaseVm.databaseForm.username')
-      .form-group(ng-class="{'has-warning': createDatabase.password.$error.required}")
-        .col-lg-8.col-xs-12 
-          .label-control
-            label(translate='') upgrade7.steps.database-configuration.databaseForm.password
-            span(translate='', ng-show='createDatabase.password.$error.required') - invalid Password
+        .form-group
+          label(translate='') upgrade7.steps.database-configuration.database-form.password
           input.form-control(type='password', name='password', ng-required='false', ng-model='Upgrade7DatabaseVm.databaseForm.password')
 
-      button.btn.btn-success.pull-right.btn-lg(translate='', ng-click="Upgrade7DatabaseVm.createNewDatabase()") upgrade7.steps.database-configuration.databaseForm.create-database
+        button.btn.btn-success.pull-right.btn-lg(translate='', ng-click="Upgrade7DatabaseVm.createNewDatabase()") upgrade7.steps.database-configuration.database-form.create-database
 
-
-  uib-tab(index='1', heading='Connect to an existing Database') 
-    form
-      .form-group
-        .col-xs-8
-          .label-control
-            label(translate='') upgrade7.steps.database-configuration.databaseForm.server
-          input.form-control(type='number', name='server' required='', ng-model='Upgrade7DatabaseVm.databaseForm.server')
-        .col-xs-2
-          .label-control
-            label(translate='') upgrade7.steps.database-configuration.databaseForm.port
-          input.form-control(type='number', required='', ng-model='Upgrade7DatabaseVm.databaseForm.port')
-      .form-group
-        .col-xs-8
-          .label-control
-            label(translate='') upgrade7.steps.database-configuration.databaseForm.username
+    uib-tab(index='1', heading="{{ 'upgrade7.steps.database-configuration.navigation-tabs.connect-database' | translate}}")
+      form.database-form
+        .form-group
+          .server
+            label(translate='') upgrade7.steps.database-configuration.database-form.server
+            input.form-control(type='text', name='server' required='', ng-model='Upgrade7DatabaseVm.databaseForm.server')
+          .port
+            label(translate='') upgrade7.steps.database-configuration.database-form.port
+            input.form-control(type='text', required='', ng-model='Upgrade7DatabaseVm.databaseForm.port')
+        .form-group
+          label(translate='') upgrade7.steps.database-configuration.database-form.username
           input.form-control(type='text', required='', ng-model='Upgrade7DatabaseVm.databaseForm.username')
-      .form-group
-        .col-xs-8
-          .label-control
-            label(translate='') upgrade7.steps.database-configuration.databaseForm.password
+        .form-group
+          label(translate='') upgrade7.steps.database-configuration.database-form.password
           input.form-control(type='password', required='', ng-model='Upgrade7DatabaseVm.databaseForm.password')
-      .form-group
-        .col-xs-8
-          .label-control
-            label(translate='') upgrade7.steps.database-configuration.databaseForm.table-prefix
-          input.form-control(type='text', required='', ng-model='Upgrade7DatabaseVm.databaseForm.table_prefix')
+        .form-group
+          label(translate='') upgrade7.steps.database-configuration.database-form.tablePrefix
+          input.form-control(type='text', required='', ng-model='Upgrade7DatabaseVm.databaseForm.tablePrefix')
 
-      button.btn.btn-success.pull-right.btn-lg(translate='') upgrade7.steps.database-configuration.databaseForm.connect-database
+        button.btn.btn-success.pull-right.btn-lg(translate='') upgrade7.steps.database-configuration.database-form.connect-database

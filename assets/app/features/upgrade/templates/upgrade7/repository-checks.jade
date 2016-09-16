@@ -18,6 +18,11 @@ div.checks-container
             }")
             span(translate='upgrade7.steps.admin-repository-checks.repositories.codes.{{::checkKey}}') 
 
-    button.btn.btn-success.pull-left.btn-lg(translate='', 
+    button.btn.btn-success.pull-left.btn-lg(
         ng-disabled="upgradeAdminRepoChecksVm.repoChecks.completed && upgradeAdminRepoChecksVm.repoChecks.valid",
-        ng-click="upgradeAdminRepoChecksVm.repoChecks.runRepoChecks()") upgrade7.steps.admin-repository-checks.form.check-again
+        ng-class="{active: upgradeAdminRepoChecksVm.repoChecks.spinnerVisible}",
+        ng-click="upgradeAdminRepoChecksVm.repoChecks.runRepoChecks()"
+    )
+        suse-lazy-spinner(delay="2000", active="upgradeAdminRepoChecksVm.repoChecks.running",
+            visible="upgradeAdminRepoChecksVm.repoChecks.spinnerVisible")
+        span(translate='') upgrade7.steps.admin-repository-checks.form.check-again
