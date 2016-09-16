@@ -96,7 +96,7 @@ describe('Upgrade Flow - Upgrade Admin Server Controller', function () {
                     $rootScope.$digest();
                 });
 
-                it('should leave running at false', function () {
+                fit('should leave running at false', function () {
                     assert.isFalse(controller.adminUpgrade.running);
                 });
 
