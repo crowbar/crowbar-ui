@@ -17,6 +17,7 @@
         var vm = this;
         vm.repoChecks = {
             running: false,
+            spinnerVisible: false,
             completed: false,
             valid: false,
             checks: {
