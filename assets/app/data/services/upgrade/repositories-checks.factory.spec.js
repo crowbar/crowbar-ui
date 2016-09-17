@@ -1,4 +1,4 @@
-/*global bard $httpBackend should expect upgradeRepoChecksFactory */
+/*global bard $httpBackend should expect upgradeRepositoriesChecksFactory */
 describe('Upgrade Repo Checks Factory', function () {
 
     var mockedAdminRepoChecksData = {
@@ -23,21 +23,21 @@ describe('Upgrade Repo Checks Factory', function () {
     beforeEach(function () {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarData.upgrade');
-        bard.inject('upgradeRepoChecksFactory', '$q', '$httpBackend');
+        bard.inject('upgradeRepositoriesChecksFactory', '$q', '$httpBackend');
     });
 
     describe('when executed', function () {
 
         it('returns an object', function () {
-            should.exist(upgradeRepoChecksFactory);
+            should.exist(upgradeRepositoriesChecksFactory);
         });
 
         it('returns an object with getAdminRepoChecks function is defined', function () {
-            expect(upgradeRepoChecksFactory.getAdminRepoChecks).toEqual(jasmine.any(Function));
+            expect(upgradeRepositoriesChecksFactory.getAdminRepoChecks).toEqual(jasmine.any(Function));
         });
 
         it('returns an object with getNodesRepoChecks function is defined', function () {
-            expect(upgradeRepoChecksFactory.getNodesRepoChecks).toEqual(jasmine.any(Function));
+            expect(upgradeRepositoriesChecksFactory.getNodesRepoChecks).toEqual(jasmine.any(Function));
         });
 
         describe('when getAdminRepoChecks method is executed', function () {
@@ -46,7 +46,7 @@ describe('Upgrade Repo Checks Factory', function () {
 
                 $httpBackend.expect('GET', '/api/upgrade7/admin-repo-checks')
                     .respond(200, mockedAdminRepoChecksData);
-                adminRepoChecksPromise = upgradeRepoChecksFactory.getAdminRepoChecks();
+                adminRepoChecksPromise = upgradeRepositoriesChecksFactory.getAdminRepoChecks();
             });
 
             it('returns a promise', function () {
@@ -75,7 +75,7 @@ describe('Upgrade Repo Checks Factory', function () {
 
                 $httpBackend.expect('GET', '/api/upgrade7/nodes-repo-checks')
                     .respond(200, mockedNodesRepoChecksData);
-                nodesRepoChecksPromise = upgradeRepoChecksFactory.getNodesRepoChecks();
+                nodesRepoChecksPromise = upgradeRepositoriesChecksFactory.getNodesRepoChecks();
             });
 
             it('returns a promise', function () {

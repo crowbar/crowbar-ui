@@ -3,17 +3,17 @@
 
     /**
     * @ngdoc function
-    * @name crowbarApp.controller:Upgrade7UpgradeAdminController
+    * @name crowbarApp.controller:Upgrade7UpgradeAdministrationServerController
     * @description
-    * # Upgrade7UpgradeAdminController
+    * # Upgrade7UpgradeAdministrationServerController
     * This is the controller used on the Upgrade Admin Server page
     */
     angular.module('crowbarApp')
-        .controller('Upgrade7UpgradeAdminController', Upgrade7UpgradeAdminController);
+        .controller('Upgrade7UpgradeAdministrationServerController', Upgrade7UpgradeAdministrationServerController);
 
-    Upgrade7UpgradeAdminController.$inject = ['$timeout', 'upgradeUpgradeAdminFactory'];
+    Upgrade7UpgradeAdministrationServerController.$inject = ['$timeout', 'upgradeUpgradeAdministrationServerFactory'];
     // @ngInject
-    function Upgrade7UpgradeAdminController($timeout, upgradeUpgradeAdminFactory) {
+    function Upgrade7UpgradeAdministrationServerController($timeout, upgradeUpgradeAdministrationServerFactory) {
         var vm = this;
         vm.adminUpgrade = {
             completed: false,
@@ -27,7 +27,7 @@
         function beginAdminUpgrade() {
             vm.adminUpgrade.running = true;
 
-            upgradeUpgradeAdminFactory.getAdminUpgrade()
+            upgradeUpgradeAdministrationServerFactory.getAdminUpgrade()
                 .then(
                     // In case of success
                     function (/*response*/) {
@@ -44,7 +44,7 @@
         }
 
         function checkAdminUpgrade() {
-            upgradeUpgradeAdminFactory.getAdminUpgradeStatus()
+            upgradeUpgradeAdministrationServerFactory.getAdminUpgradeStatus()
                 .then(
                     // In case of success
                     function (response) {

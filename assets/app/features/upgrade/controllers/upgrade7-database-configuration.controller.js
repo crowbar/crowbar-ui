@@ -3,17 +3,17 @@
 
     /**
      * @ngdoc function
-     * @name crowbarApp.controller:Upgrade7DatabaseConfigController
+     * @name crowbarApp.controller:Upgrade7DatabaseConfigurationController
      * @description
-     * # Upgrade7DatabaseConfigController
+     * # Upgrade7DatabaseConfigurationController
      * This is the controller used on the Upgrade Database Configuration page
      */
     angular.module('crowbarApp')
-        .controller('Upgrade7DatabaseConfigController', Upgrade7DatabaseConfigController);
+        .controller('Upgrade7DatabaseConfigurationController', Upgrade7DatabaseConfigurationController);
 
-    Upgrade7DatabaseConfigController.$inject = [];
+    Upgrade7DatabaseConfigurationController.$inject = [];
     // @ngInject
-    function Upgrade7DatabaseConfigController() {
+    function Upgrade7DatabaseConfigurationController() {
         var vm = this;
         vm.databaseForm = {
             username: '',

@@ -1,4 +1,4 @@
-/*global bard $controller $httpBackend should assert upgradeRepoChecksFactory $q $rootScope */
+/*global bard $controller $httpBackend should assert upgradeRepositoriesChecksFactory $q $rootScope */
 describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
     var controller,
         failingRepoChecks = {
@@ -52,7 +52,7 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
-        bard.inject('$controller', 'upgradeRepoChecksFactory', '$q', '$httpBackend', '$rootScope');
+        bard.inject('$controller', 'upgradeRepositoriesChecksFactory', '$q', '$httpBackend', '$rootScope');
 
         //Create the controller
         controller = $controller('Upgrade7NodesRepositoriesCheckController');
@@ -105,7 +105,7 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
 
         describe('when checks pass successfull', function () {
             beforeEach(function () {
-                bard.mockService(upgradeRepoChecksFactory, {
+                bard.mockService(upgradeRepositoriesChecksFactory, {
                     getNodesRepoChecks: $q.when(passingReposChecksResponse)
                 });
                 controller.repoChecks.runRepoChecks();
@@ -131,7 +131,7 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
 
         describe('when checks fails', function () {
             beforeEach(function () {
-                bard.mockService(upgradeRepoChecksFactory, {
+                bard.mockService(upgradeRepositoriesChecksFactory, {
                     getNodesRepoChecks: $q.when(failingReposChecksResponse)
                 });
                 controller.repoChecks.runRepoChecks();
@@ -156,7 +156,7 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
 
         describe('when checks partially fails', function () {
             beforeEach(function () {
-                bard.mockService(upgradeRepoChecksFactory, {
+                bard.mockService(upgradeRepositoriesChecksFactory, {
                     getNodesRepoChecks: $q.when(partiallyFailingReposChecksResponse)
                 });
                 controller.repoChecks.runRepoChecks();
@@ -181,7 +181,7 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
 
         describe('when service call fails', function () {
             beforeEach(function () {
-                bard.mockService(upgradeRepoChecksFactory, {
+                bard.mockService(upgradeRepositoriesChecksFactory, {
                     getNodesRepoChecks: $q.reject(failingResponse)
                 });
                 controller.repoChecks.runRepoChecks();
