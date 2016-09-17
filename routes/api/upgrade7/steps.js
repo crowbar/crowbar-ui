@@ -12,14 +12,14 @@ var steps = [
     {
         id: 1,
         title: 'Check Administration Server Repositories',
-        state: 'upgrade7.admin-repository-checks',
+        state: 'upgrade7.administration-repository-checks',
         active: false,
         enabled: false
     },
     {
         id: 2,
         title: 'Upgrade Administration Server',
-        state: 'upgrade7.upgrade-admin',
+        state: 'upgrade7.upgrade-administration-server',
         active: false,
         enabled: false
     },
@@ -33,7 +33,7 @@ var steps = [
     {
         id: 4,
         title: 'Check Add-On & Node Repositories',
-        state: 'upgrade7.migrate-openstack-database',
+        state: 'upgrade7.nodes-repositories-checks',
         active: false,
         enabled: false
     },

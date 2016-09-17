@@ -1,4 +1,4 @@
-/*global bard should expect upgradeUpgradeAdminFactory $httpBackend */
+/*global bard should expect upgradeUpgradeAdministrationServerFactory $httpBackend */
 describe('Upgrade Upgrade Admin Factory', function () {
     var mockedStatusResponse = {
             'some_stuff': 'abc',
@@ -9,24 +9,24 @@ describe('Upgrade Upgrade Admin Factory', function () {
     beforeEach(function () {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarData.upgrade');
-        bard.inject('upgradeUpgradeAdminFactory', '$q', '$httpBackend');
+        bard.inject('upgradeUpgradeAdministrationServerFactory', '$q', '$httpBackend');
     });
 
     describe('when executed', function () {
 
         it('returns an object', function () {
-            should.exist(upgradeUpgradeAdminFactory);
+            should.exist(upgradeUpgradeAdministrationServerFactory);
         });
 
         it('returns an object with getAdminUpgrade function defined', function () {
-            expect(upgradeUpgradeAdminFactory.getAdminUpgrade).toEqual(jasmine.any(Function));
+            expect(upgradeUpgradeAdministrationServerFactory.getAdminUpgrade).toEqual(jasmine.any(Function));
         });
 
         describe('when getAdminUpgrade method is executed', function () {
             beforeEach(function () {
                 $httpBackend.expect('POST', '/api/upgrade7/admin-upgrade')
                     .respond(200, mockedStatusResponse);
-                testPromise = upgradeUpgradeAdminFactory.getAdminUpgrade();
+                testPromise = upgradeUpgradeAdministrationServerFactory.getAdminUpgrade();
             });
 
             it('returns a promise', function () {
@@ -50,14 +50,14 @@ describe('Upgrade Upgrade Admin Factory', function () {
 
 
         it('returns an object with getAdminUpgradeStatus function defined', function () {
-            expect(upgradeUpgradeAdminFactory.getAdminUpgradeStatus).toEqual(jasmine.any(Function));
+            expect(upgradeUpgradeAdministrationServerFactory.getAdminUpgradeStatus).toEqual(jasmine.any(Function));
         });
 
         describe('when getAdminUpgradeStatus method is executed', function () {
             beforeEach(function () {
                 $httpBackend.expect('GET', '/api/upgrade7/admin-upgrade')
                     .respond(200, mockedStatusResponse);
-                testPromise = upgradeUpgradeAdminFactory.getAdminUpgradeStatus();
+                testPromise = upgradeUpgradeAdministrationServerFactory.getAdminUpgradeStatus();
             });
 
             it('returns a promise', function () {

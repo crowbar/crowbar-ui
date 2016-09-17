@@ -156,6 +156,25 @@
                     "tablePrefix": "Table Prefix",
                     "connect-database": "Connect to Database"
                 }
+            },
+            "nodes-repository-checks": {
+                "title": "Add-On Products and Compute Nodes Repository Checks",
+                "description": "Please update the repository information on the CEPH and HA add-on products as well as the SUSE OpenStack Cloud 7 and SLES12 SP2 repositories used by the compute plane.",
+                "repositories": {
+                    "codes": {
+                        "SLES_12_SP2": "SUSE Linux Enterprise Server 12 SP2",
+                        "SLES_12_SP2_Updates": "SUSE Linux Enterprise Server 12 SP2 Updates",
+                        "SLES_OpenStack_Cloud_7": "SUSE Linux OpenStack Cloud 7",
+                        "SLES_OpenStack_Cloud_7_Updates": "SUSE Linux OpenStack Cloud 7 Updates",
+                        "SLE_HA_12_SP2": "SUSE Linux Enterprise 12 SP2 High Availability",
+                        "SLE_HA_12_SP2_Updates": "SUSE Linux Enterprise 12 SP2 High Availability Updates",
+                        "SUSE_Enterprise_Storage_4": "SUSE Linux Enterprise Storage 4",
+                        "SUSE_Enterprise_Storage_4_Updates": "SUSE Linux Enterprise Storage 4 Updates"
+                    }
+                },
+                "form": {
+                    "check-again": "Check"
+                }
             }
         },
         "errors": {

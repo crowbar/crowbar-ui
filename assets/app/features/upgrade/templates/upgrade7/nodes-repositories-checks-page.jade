@@ -1,0 +1,10 @@
+.nodes-repository-checks-page
+    h2(translate='') upgrade7.steps.nodes-repository-checks.title
+    p(translate='') upgrade7.steps.nodes-repository-checks.description
+
+    div.checks-container
+        crowbar-checklist(checklist='upgradeNodesRepoChecksVm.repoChecks.checks', completed='upgradeNodesRepoChecksVm.repoChecks.completed')
+
+        button.btn.btn-success.pull-left(translate='', 
+            ng-class="{disabled: upgradeNodesRepoChecksVm.repoChecks.completed && upgradeNodesRepoChecksVm.repoChecks.valid}",
+            ng-click="upgradeNodesRepoChecksVm.repoChecks.runRepoChecks()") upgrade7.steps.nodes-repository-checks.form.check-again
