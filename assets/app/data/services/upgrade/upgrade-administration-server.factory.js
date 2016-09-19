@@ -2,11 +2,11 @@
 
     angular
         .module('crowbarData.upgrade')
-        .factory('upgradeUpgradeAdminFactory', upgradeUpgradeAdminFactory);
+        .factory('upgradeUpgradeAdministrationServerFactory', upgradeUpgradeAdministrationServerFactory);
 
-    upgradeUpgradeAdminFactory.$inject = ['$q', '$http'];
+    upgradeUpgradeAdministrationServerFactory.$inject = ['$q', '$http'];
     /* @ngInject */
-    function upgradeUpgradeAdminFactory($q, $http) {
+    function upgradeUpgradeAdministrationServerFactory($q, $http) {
         return {
             getAdminUpgrade: getAdminUpgrade,
             getAdminUpgradeStatus: getAdminUpgradeStatus

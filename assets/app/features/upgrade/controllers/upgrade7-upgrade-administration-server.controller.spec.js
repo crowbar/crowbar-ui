@@ -1,5 +1,5 @@
-/*global bard $controller should $httpBackend upgradeUpgradeAdminFactory assert $q $rootScope */
-describe('Upgrade Flow - Upgrade Admin Server Controller', function () {
+/*global bard $controller should $httpBackend upgradeUpgradeAdministrationServerFactory assert $q $rootScope */
+describe('Upgrade Flow - Upgrade Administration Server Controller', function () {
     var controller,
         completedUpgradeResponse = {
             data: { completed: true }
@@ -16,12 +16,12 @@ describe('Upgrade Flow - Upgrade Admin Server Controller', function () {
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
-        bard.inject('$controller', '$q', '$httpBackend', '$rootScope', 'upgradeUpgradeAdminFactory');
+        bard.inject('$controller', '$q', '$httpBackend', '$rootScope', 'upgradeUpgradeAdministrationServerFactory');
 
         mockedTimeout = jasmine.createSpy('$timeout');
 
         //Create the controller
-        controller = $controller('Upgrade7UpgradeAdminController', { '$timeout': mockedTimeout });
+        controller = $controller('Upgrade7UpgradeAdministrationServerController', { '$timeout': mockedTimeout });
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
@@ -34,17 +34,6 @@ describe('Upgrade Flow - Upgrade Admin Server Controller', function () {
     it('should exist', function () {
         should.exist(controller);
     });
-
-/*    describe('nextStep function', function () {
-        it('should be defined', function () {});
-
-        it('should redirect the user to "Create or Connect to Database" page when admin upgrade is successfull',
-        function () {
-        });
-
-        it('should retain the user on the curent page until the admin upgrade is completed', function () {});
-    });*/
-
 
     describe('adminUpgrade model', function () {
         it('should exist', function() {
@@ -69,7 +58,7 @@ describe('Upgrade Flow - Upgrade Admin Server Controller', function () {
                 beforeEach(function () {
                     spyOn(controller.adminUpgrade, 'checkAdminUpgrade');
 
-                    bard.mockService(upgradeUpgradeAdminFactory, {
+                    bard.mockService(upgradeUpgradeAdministrationServerFactory, {
                         getAdminUpgrade: $q.when(incompleteUpgradeResponse)
                     });
                     controller.adminUpgrade.beginAdminUpgrade();
@@ -89,7 +78,7 @@ describe('Upgrade Flow - Upgrade Admin Server Controller', function () {
                 beforeEach(function () {
                     spyOn(controller.adminUpgrade, 'checkAdminUpgrade');
 
-                    bard.mockService(upgradeUpgradeAdminFactory, {
+                    bard.mockService(upgradeUpgradeAdministrationServerFactory, {
                         getAdminUpgrade: $q.reject(errorResponse)
                     });
                     controller.adminUpgrade.beginAdminUpgrade();
@@ -120,7 +109,7 @@ describe('Upgrade Flow - Upgrade Admin Server Controller', function () {
             describe('when got upgrade status from api successfully', function () {
                 describe('when received status is completed', function () {
                     beforeEach(function () {
-                        bard.mockService(upgradeUpgradeAdminFactory, {
+                        bard.mockService(upgradeUpgradeAdministrationServerFactory, {
                             getAdminUpgradeStatus: $q.when(completedUpgradeResponse)
                         });
                         controller.adminUpgrade.checkAdminUpgrade();
@@ -140,7 +129,7 @@ describe('Upgrade Flow - Upgrade Admin Server Controller', function () {
 
                 describe('when received status is not completed', function () {
                     beforeEach(function () {
-                        bard.mockService(upgradeUpgradeAdminFactory, {
+                        bard.mockService(upgradeUpgradeAdministrationServerFactory, {
                             getAdminUpgradeStatus: $q.when(incompleteUpgradeResponse)
                         });
                         controller.adminUpgrade.running = true;
@@ -162,7 +151,7 @@ describe('Upgrade Flow - Upgrade Admin Server Controller', function () {
 
             describe('when got error from api', function () {
                 beforeEach(function () {
-                    bard.mockService(upgradeUpgradeAdminFactory, {
+                    bard.mockService(upgradeUpgradeAdministrationServerFactory, {
                         getAdminUpgradeStatus: $q.reject(errorResponse)
                     });
                     controller.adminUpgrade.checkAdminUpgrade();

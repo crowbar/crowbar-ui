@@ -16,7 +16,7 @@
         $stateProvider
             .state('upgrade7-landing', {
                 url: '/upgrade7/landing',
-                templateUrl: 'app/features/upgrade/templates/upgrade7/landing.html',
+                templateUrl: 'app/features/upgrade/templates/upgrade7/landing-page.html',
                 controller: 'Upgrade7LandingController',
                 controllerAs: 'Upgrade7LandingVm'
             })
@@ -28,28 +28,40 @@
             })
             .state('upgrade7.backup', {
                 url: '/backup',
-                templateUrl: 'app/features/upgrade/templates/upgrade7/backup.html',
+                templateUrl: 'app/features/upgrade/templates/upgrade7/backup-page.html',
                 controller: 'Upgrade7BackupController',
                 controllerAs: 'upgradeBackupVm'
             })
-            .state('upgrade7.repository-checks', {
-                url: '/repository-checks',
-                templateUrl: 'app/features/upgrade/templates/upgrade7/repository-checks.html',
-                controller: 'Upgrade7RepositoriesCheckController',
+            .state('upgrade7.administration-repository-checks', {
+                url: '/administration-repositories-checks',
+                templateUrl: 'app/features/upgrade/templates/upgrade7/administration-repositories-checks-page.html',
+                controller: 'Upgrade7AdministrationRepositoriesCheckController',
                 controllerAs: 'upgradeAdminRepoChecksVm'
             })
-            .state('upgrade7.upgrade-admin', {
-                url: '/upgrade-admin',
-                templateUrl: 'app/features/upgrade/templates/upgrade7/upgrade-admin.html',
-                controller: 'Upgrade7UpgradeAdminController',
+            .state('upgrade7.upgrade-administration-server', {
+                url: '/upgrade-administration-server',
+                templateUrl: 'app/features/upgrade/templates/upgrade7/upgrade-administration-server-page.html',
+                controller: 'Upgrade7UpgradeAdministrationServerController',
                 controllerAs: 'upgradeAdminUpgradeVm'
+            })
+            .state('upgrade7.database-configuration', {
+                url: '/database-configuration',
+                templateUrl: 'app/features/upgrade/templates/upgrade7/database-configuration-page.html',
+                controller: 'Upgrade7DatabaseConfigurationController',
+                controllerAs: 'Upgrade7DatabaseVm'
+            })
+            .state('upgrade7.nodes-repositories-checks', {
+                url: '/nodes-repositories-checks',
+                templateUrl: 'app/features/upgrade/templates/upgrade7/nodes-repositories-checks-page.html',
+                controller: 'Upgrade7NodesRepositoriesCheckController',
+                controllerAs: 'upgradeNodesRepoChecksVm'
             })
             .state('upgrade7.openstack-services', {
                 url: '/openstack-services',
                 templateUrl: 'app/features/upgrade/templates/upgrade7/openstack-services.html',
                 controller: 'Upgrade7OpenStackServicesController',
                 controllerAs: 'upgradeOpenStackServicesVm'
-            })
+            })    
 
             .state('upgrade', {
                 url: '/upgrade',

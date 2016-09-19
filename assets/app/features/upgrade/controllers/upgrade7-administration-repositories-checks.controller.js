@@ -3,17 +3,18 @@
 
     /**
     * @ngdoc function
-    * @name crowbarApp.controller:Upgrade7RepositoriesCheckController
+    * @name crowbarApp.controller:Upgrade7AdministrationRepositoriesCheckController
     * @description
-    * # Upgrade7RepositoriesCheckController
-    * This is the controller used on the Upgrade Admin Repo Checks page
+    * # Upgrade7AdministrationRepositoriesCheckController
+    * This is the controller used on the Upgrade Administration Repositories Checks page
     */
     angular.module('crowbarApp')
-        .controller('Upgrade7RepositoriesCheckController', Upgrade7RepositoriesCheckController);
+        .controller('Upgrade7AdministrationRepositoriesCheckController',
+            Upgrade7AdministrationRepositoriesCheckController);
 
-    Upgrade7RepositoriesCheckController.$inject = ['$translate', 'upgradeRepoChecksFactory'];
+    Upgrade7AdministrationRepositoriesCheckController.$inject = ['$translate', 'upgradeRepositoriesChecksFactory'];
     // @ngInject
-    function Upgrade7RepositoriesCheckController($translate, upgradeRepoChecksFactory) {
+    function Upgrade7AdministrationRepositoriesCheckController($translate, upgradeRepositoriesChecksFactory) {
         var vm = this;
         vm.repoChecks = {
             running: false,
@@ -21,10 +22,22 @@
             completed: false,
             valid: false,
             checks: {
-                'SLES_12_SP2': false,
-                'SLES_12_SP2_Updates': false,
-                'SLES_OpenStack_Cloud_7': false,
-                'SLES_OpenStack_Cloud_7_Updates': false
+                'SLES_12_SP2': {
+                    status: false, 
+                    label: 'upgrade7.steps.admin-repository-checks.repositories.codes.SLES_12_SP2'
+                },
+                'SLES_12_SP2_Updates': {
+                    status: false, 
+                    label: 'upgrade7.steps.admin-repository-checks.repositories.codes.SLES_12_SP2_Updates'
+                },
+                'SLES_OpenStack_Cloud_7': {
+                    status: false, 
+                    label: 'upgrade7.steps.admin-repository-checks.repositories.codes.SLES_OpenStack_Cloud_7'
+                },
+                'SLES_OpenStack_Cloud_7_Updates': {
+                    status: false, 
+                    label: 'upgrade7.steps.admin-repository-checks.repositories.codes.SLES_OpenStack_Cloud_7_Updates'
+                }
             },
             runRepoChecks: runRepoChecks
         };
@@ -35,16 +48,20 @@
         function runRepoChecks() {
             vm.repoChecks.running = true;
 
-            upgradeRepoChecksFactory.getAdminRepoChecks()
+            upgradeRepositoriesChecksFactory.getAdminRepoChecks()
                 .then(
                     // In case of success
                     function (repoChecksResponse) {
 
-                        _.merge(vm.repoChecks.checks, repoChecksResponse.data);
+                        _.forEach(repoChecksResponse.data, function(value, key) {
+                            vm.repoChecks.checks[key].status = value;
+                        });
+
                         var repoChecksResult = true;
                         // Update prechecks status
+
                         _.forEach(vm.repoChecks.checks, function (repoStatus) {
-                            if (false === repoStatus) {
+                            if (false === repoStatus.status) {
                                 repoChecksResult = false;
                                 return false;
                             }
