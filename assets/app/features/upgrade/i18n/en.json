@@ -142,10 +142,10 @@
             },
             "database-configuration": {
                 "name": "",
-                "title": "Enter Credentials and/or Inofrmation to Create or Connect to an OpenStack PostgreSQL Database for the OpenStack Database Migration.",
+                "title": "Enter Credentials and/or Information to Create or Connect to an OpenStack PostgreSQL Database for the OpenStack Database Migration.",
                 "navigation-tabs": {
                     "create-database": "Create New Database",
-                    "connect-database": "Connect to an existing Database"
+                    "connect-database": "Connect to an Existing Database"
                 },
                 "database-form": {
                     "username": "Username",
