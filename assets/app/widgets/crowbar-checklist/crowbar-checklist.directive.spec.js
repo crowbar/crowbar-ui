@@ -83,7 +83,7 @@ describe('Crowbar Checklist Directive', function () {
                 scope.$digest();
             });
 
-            it('should have all items with class text-info and ban-circle icon', function () {
+            it('should have all items with class text-info and question-sign icon', function () {
                 var lis = directiveElement.find('li');
                 _.each(lis, function (li) {
                     var itemElement = angular.element(li)
@@ -91,7 +91,7 @@ describe('Crowbar Checklist Directive', function () {
 
                     var icons = itemElement.find('i');
                     expect(icons.length).toEqual(1);
-                    assert.isTrue(angular.element(icons[0]).hasClass('glyphicon-ban-circle'));
+                    assert.isTrue(angular.element(icons[0]).hasClass('glyphicon-question-sign'));
                 });
             });
         });
@@ -102,7 +102,7 @@ describe('Crowbar Checklist Directive', function () {
                 scope.$digest();
             });
 
-            it('should have items with class text-danger and remove-circle icon where status=false', function () {
+            it('should have items with class text-danger and minus-sign icon where status=false', function () {
                 // list of keys from scope.testChecks where status=false
                 var testKeys = ['check1', 'check3'];
 
@@ -115,12 +115,12 @@ describe('Crowbar Checklist Directive', function () {
 
                     if (_.includes(testKeys, checkKey)) {
                         assert.isTrue(itemElement.hasClass('text-danger'));
-                        assert.isTrue(angular.element(icons[0]).hasClass('glyphicon-remove-circle'));
+                        assert.isTrue(angular.element(icons[0]).hasClass('glyphicon-minus-sign'));
                     }
                 });
             });
 
-            it('should have items with class text-success and ok-circle icon where status=true', function () {
+            it('should have items with class text-success and ok-sign icon where status=true', function () {
                 // list of keys from scope.testChecks where status=true
                 var testKeys = ['check2'];
 
@@ -133,7 +133,7 @@ describe('Crowbar Checklist Directive', function () {
 
                     if (_.includes(testKeys, checkKey)) {
                         assert.isTrue(itemElement.hasClass('text-success'));
-                        assert.isTrue(angular.element(icons[0]).hasClass('glyphicon-ok-circle'));
+                        assert.isTrue(angular.element(icons[0]).hasClass('glyphicon-ok-sign'));
                     }
                 });
             });
