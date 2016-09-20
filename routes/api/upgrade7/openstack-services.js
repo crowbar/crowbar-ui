@@ -4,8 +4,7 @@ var express = require('express'),
 /* GET openStack services Checks. */
 router.get('/', function(req, res) {
     res.status(200).json({
-        'services_stop': true,
-        'heat': true,
+        'services': true,
         'backup': true
     });
 });

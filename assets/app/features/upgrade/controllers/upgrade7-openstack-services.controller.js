@@ -11,58 +11,65 @@
     angular.module('crowbarApp')
         .controller('Upgrade7OpenStackServicesController', Upgrade7OpenStackServicesController);
 
-    Upgrade7OpenStackServicesController.$inject = ['$translate', 'upgradeOpenStackServicesFactory'];
+    Upgrade7OpenStackServicesController.$inject = ['$translate', 'openStackFactory'];
     // @ngInject
-    function Upgrade7OpenStackServicesController($translate, upgradeOpenStackServicesFactory) {
+    function Upgrade7OpenStackServicesController($translate, openStackFactory) {
         var vm = this;
 
         vm.openStackServices = {
             completed: false,
             valid: false,
             checks: {
-                services_stop: false,
-                heat: false,
-                backup: false
+                services: {
+                    status: false, 
+                    label: 'upgrade7.steps.openstack-services.codes.services'
+                },
+                backup: {
+                    status: false, 
+                    label: 'upgrade7.steps.openstack-services.codes.backup'
+                }
             },
             runOpenStackServices: runOpenStackServices
         };
 
 
         /**
-         *  Validate Admin Repositories required for Cloud 7 Upgrade
+         *  Validate OpenStackServices required for Cloud 7 Upgrade
          */
         function runOpenStackServices() {
-            upgradeOpenStackServicesFactory.getOpenStackServices()
+            openStackFactory.getOpenStackServices()
                 .then(
-                    //Success handler. Al precheck passed successfully:
+                    //Success handler. Al OpenStackServices passed successfully:
                     function(openStackServicesResponse) {
 
-                        _.merge(vm.openStackServices.checks, openStackServicesResponse.data);
+                        _.forEach(openStackServicesResponse.data, function(value, key) {
+                            vm.openStackServices.checks[key].status = value;
+                        });
+
                         var openStackServicesResult = true;
-                        // Update prechecks status
+
+                        // Update openStackServices status
                         _.forEach(vm.openStackServices.checks, function (checkStatus) {
-                            if (false === checkStatus) {
+                            if (false === checkStatus.status) {
                                 openStackServicesResult = false;
                                 return false;
                             }
                         });
 
-                        // Update prechecks validity
+                        // Update openStackServices validity
                         vm.openStackServices.valid = openStackServicesResult;
                     },
                     //Failure handler:
                     function(errorOpenStackServicesResponse) {
 
-                        // Expose the error list to prechecks object
+                        // Expose the error list to openStackServices object
                         vm.openStackServices.errors = errorOpenStackServicesResponse.data.errors;
                     }
-                ).finally(
-                    function() {
-                        // Either on sucess or failure, the prechecks has been completed.
-                        vm.openStackServices.completed = true;
-                    }
-                );
+                )
+                .finally(function() {
+                    // Either on sucess or failure, the openStackServices has been completed.
+                    vm.openStackServices.completed = true;
+                });
         }
-
     }
 })();

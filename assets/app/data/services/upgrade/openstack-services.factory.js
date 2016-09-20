@@ -2,11 +2,11 @@
 
     angular
         .module('crowbarData.upgrade')
-        .factory('upgradeOpenStackServicesFactory', upgradeOpenStackServicesFactory);
+        .factory('openStackFactory', openStackFactory);
 
-    upgradeOpenStackServicesFactory.$inject = ['$q', '$http'];
+    openStackFactory.$inject = ['$q', '$http'];
     /* @ngInject */
-    function upgradeOpenStackServicesFactory($q, $http) {
+    function openStackFactory($q, $http) {
         var factory = {
             getOpenStackServices: getOpenStackServices
         };

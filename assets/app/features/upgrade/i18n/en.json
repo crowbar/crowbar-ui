@@ -133,18 +133,6 @@
                     "check-again": "Check"
                 }
             },
-            "openstack-services": {
-                "title": "Stop openStack Services and Create Backup",
-                "description": "When ready, please click below to stop all services and create a backup of the OpenStack database.",
-                "codes": {
-                    "services_stop" : "Services Stopped",
-                    "heat": "Stopping Service: Heat",
-                    "backup" : "Backup Created"
-                },                
-                "form": {
-                    "stop-services": "Stop Openstack Servers"
-                }
-            },
             "upgrade-admin": {
                 "title": "Upgrade the Administration Server",
                 "description": "The button 'Upgrade Administration Server' begins the update and upgrade process of the administration server. The SLES 12 SP1 operating system of the administration server will be upgraded to SLES 12 SP2. This might take up to half an hour so please be patient.",
@@ -186,6 +174,17 @@
                 },
                 "form": {
                     "check-again": "Check"
+                }
+            },
+            "openstack-services": {
+                "title": "Stop openStack Services and Create Backup",
+                "description": "When ready, please click below to stop all services and create a backup of the OpenStack database.",
+                "codes": {
+                    "services" : "Services Stopped",
+                    "backup" : "Backup Created"
+                },                
+                "form": {
+                    "stop-services": "Stop Openstack Servers"
                 }
             }
         },

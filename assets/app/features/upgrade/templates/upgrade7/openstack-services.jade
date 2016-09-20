@@ -3,20 +3,7 @@ p(translate='') upgrade7.steps.openstack-services.description
 
 
 button.btn.btn-success.center-block.btn-lg(translate='', 
-        ng-class="{disabled: upgradeOpenStackServicesVm.openStackServices.completed && upgradeOpenStackServicesVm.openStackServices.valid}",
-        ng-click="upgradeOpenStackServicesVm.openStackServices.runOpenStackServices()") upgrade7.steps.openstack-services.form.stop-services
+    ng-class="{disabled: upgradeOpenStackServicesVm.openStackServices.completed && upgradeOpenStackServicesVm.openStackServices.valid}",
+    ng-click="upgradeOpenStackServicesVm.openStackServices.runOpenStackServices()") upgrade7.steps.openstack-services.form.stop-services
 
-ul.repositories-list
-    li(ng-repeat="(checksKey, check) in upgradeOpenStackServicesVm.openStackServices.checks", 
-    	translate=''
-        ng-class="{\
-        	'text-info': !upgradeOpenStackServicesVm.openStackServices.completed,\
-        	'text-success': check && upgradeOpenStackServicesVm.openStackServices.completed,\
-        	'text-danger': !check && upgradeOpenStackServicesVm.openStackServices.completed\
-        }")
-        span.glyphicon(ng-class="{\
-            'glyphicon-ban-circle': !upgradeOpenStackServicesVm.openStackServices.completed,\
-            'glyphicon-ok-circle': check && upgradeOpenStackServicesVm.openStackServices.completed,\
-            'glyphicon-remove-circle': !check && upgradeOpenStackServicesVm.openStackServices.completed\
-        }")
-        span(translate='upgrade7.steps.openstack-services.codes.{{::checksKey}}') 
+crowbar-checklist(checklist='upgradeOpenStackServicesVm.openStackServices.checks', completed='upgradeOpenStackServicesVm.openStackServices.completed')
