@@ -39,6 +39,7 @@ gulp.task('default', function (callback) {
     runSequence(
         'clean',
         'build',
+        'rsync',
         'watch',
         callback
     );
