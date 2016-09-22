@@ -8,7 +8,9 @@
     /* @ngInject */
     function openStackFactory($q, $http) {
         var factory = {
-            getOpenStackServices: getOpenStackServices
+            getOpenStackServices: getOpenStackServices,
+            stopOpenstackServices: stopOpenstackServices,
+            createOpenstackBackup: createOpenstackBackup
         };
 
         return factory;
@@ -18,6 +20,26 @@
             var requestOptions = {
                 method: 'GET',
                 url: '/api/upgrade7/openstack-services'
+            };
+
+            return $http(requestOptions);
+        }
+
+        function stopOpenstackServices() {
+
+            var requestOptions = {
+                method: 'GET',
+                url: '/api/upgrade7/stop-openstack-services'
+            };
+
+            return $http(requestOptions);
+        }
+
+        function createOpenstackBackup() {
+
+            var requestOptions = {
+                method: 'GET',
+                url: '/api/upgrade7/openstack-services-backup'
             };
 
             return $http(requestOptions);

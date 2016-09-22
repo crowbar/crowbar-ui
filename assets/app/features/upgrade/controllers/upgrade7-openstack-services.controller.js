@@ -15,10 +15,12 @@
     // @ngInject
     function Upgrade7OpenStackServicesController($translate, openStackFactory) {
         var vm = this;
+            
 
         vm.openStackServices = {
             completed: false,
             valid: false,
+            stopServicesErrorMessage: false,
             checks: {
                 services: {
                     status: false, 
@@ -37,27 +39,36 @@
          *  Validate OpenStackServices required for Cloud 7 Upgrade
          */
         function runOpenStackServices() {
-            openStackFactory.getOpenStackServices()
+   
+            openStackFactory.stopOpenstackServices()
                 .then(
-                    //Success handler. Al OpenStackServices passed successfully:
+                    //Success handler. Stop all OpenStackServices successfully:
                     function(openStackServicesResponse) {
 
-                        _.forEach(openStackServicesResponse.data, function(value, key) {
-                            vm.openStackServices.checks[key].status = value;
-                        });
+                        vm.openStackServices.checks.services.status = openStackServicesResponse.data.services;
+                        
+                        if (true === vm.openStackServices.checks.services.status) {
 
-                        var openStackServicesResult = true;
+                            openStackFactory.createOpenstackBackup()
+                                .then(
+                                    //Success handler. Backup OpenStackServices successfully:
+                                    function(openStackServicesResponse) {
+                                        var ResponseData = openStackServicesResponse.data
 
-                        // Update openStackServices status
-                        _.forEach(vm.openStackServices.checks, function (checkStatus) {
-                            if (false === checkStatus.status) {
-                                openStackServicesResult = false;
-                                return false;
-                            }
-                        });
+                                        vm.openStackServices.checks.backup.status = ResponseData.backup;
+                                        vm.openStackServices.valid = vm.openStackServices.checks.backup.status;
 
-                        // Update openStackServices validity
-                        vm.openStackServices.valid = openStackServicesResult;
+                                    },
+                                    //Failure handler:
+                                    function(errorOpenStackServicesResponse) {
+
+                                        // Expose the error list to openStackServices object
+                                        vm.openStackServices.errors = errorOpenStackServicesResponse.data.errors;
+                                    }
+                                )
+                        } else { 
+                            vm.openStackServices.stopServicesErrorMessage = true;
+                        }
                     },
                     //Failure handler:
                     function(errorOpenStackServicesResponse) {
@@ -65,11 +76,25 @@
                         // Expose the error list to openStackServices object
                         vm.openStackServices.errors = errorOpenStackServicesResponse.data.errors;
                     }
-                )
-                .finally(function() {
+                ).finally(function() {
                     // Either on sucess or failure, the openStackServices has been completed.
                     vm.openStackServices.completed = true;
-                });
+
+                    var openStackServicesResult = true;
+
+                    _.forEach(vm.openStackServices.checks, function(value) {
+
+                        if (false === value.status) {
+                            openStackServicesResult = false;
+                            return false;
+                        }
+                    });
+
+                    // Update openStackServices validity
+                    vm.openStackServices.valid = openStackServicesResult;
+
+                });   
+                
         }
     }
 })();

@@ -7,3 +7,5 @@ button.btn.btn-success.center-block.btn-lg(translate='',
     ng-click="upgradeOpenStackServicesVm.openStackServices.runOpenStackServices()") upgrade7.steps.openstack-services.form.stop-services
 
 crowbar-checklist(checklist='upgradeOpenStackServicesVm.openStackServices.checks', completed='upgradeOpenStackServicesVm.openStackServices.completed')
+
+p(translate='' ng-show='upgradeOpenStackServicesVm.openStackServices.stopServicesErrorMessage') upgrade7.steps.openstack-services.stopServicesErrorMessage
