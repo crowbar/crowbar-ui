@@ -56,5 +56,8 @@ gulp.task('watch', function () {
         gulp.watch(assets + 'app/**/*.jade', ['templateCache']);
         // Watch the Index Jade file in the Assets folder
         gulp.watch(assets + 'index.jade', ['indexHtml']);
+
+        // Watch whole public for rsync
+        gulp.watch('public/**', ['rsync']);
     }
 });

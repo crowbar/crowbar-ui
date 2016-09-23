@@ -8,3 +8,4 @@ public/
 npm-debug.log
 .yo-rc.json
 assets/app/**/*.html
+cloud.conf.json

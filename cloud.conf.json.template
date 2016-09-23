@@ -1,0 +1,21 @@
+{
+    "options": {
+        "verbose": false
+    },
+    "clouds": {
+        "default": {
+            "host": "192.168.124.10"
+        },
+        "somecloud": {
+            "host": "crowbar.somecloud.example.com"
+        },
+        "natcloud1": {
+            "host": "natcloud.example.com",
+            "port": 2221
+        },
+        "natcloud2": {
+            "host": "natcloud.example.com",
+            "port": 2222
+        }
+    }
+}
