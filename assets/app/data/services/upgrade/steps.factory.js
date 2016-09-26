@@ -4,9 +4,9 @@
         .module('crowbarData.upgrade')
         .factory('upgradeStepsFactory', upgradeStepsFactory);
 
-    upgradeStepsFactory.$inject = ['$q', '$http'];
+    upgradeStepsFactory.$inject = ['$q', '$http', 'COMMON_API_V2_HEADERS'];
     /* @ngInject */
-    function upgradeStepsFactory($q, $http) {
+    function upgradeStepsFactory($q, $http, COMMON_API_V2_HEADERS) {
         var factory = {
             getAll: getStepsFactory,
             getAllStatic: function() {
@@ -62,7 +62,8 @@
 
             return $http({
                 method: 'GET',
-                url: '/api/upgrade7/steps'
+                url: '/api/upgrade7/steps',
+                headers: COMMON_API_V2_HEADERS
             });
         }
     }
