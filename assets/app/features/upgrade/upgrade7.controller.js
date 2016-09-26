@@ -23,17 +23,8 @@
         };
 
         // Get Steps list from provider
-        upgradeStepsFactory.getAll().then(
-            function(stepsResponse) {
-                vm.steps.list = stepsResponse.data;
-                refeshStepsList();
-
-            },
-            function() {
-                //console.log(errorResponse);
-
-            }
-        );
+        vm.steps.list = upgradeStepsFactory.getAll();
+        refeshStepsList();
 
         // Watch for view changes on the Step in order to update the steps list.
         $scope.$on('$viewContentLoaded', refeshStepsList);
