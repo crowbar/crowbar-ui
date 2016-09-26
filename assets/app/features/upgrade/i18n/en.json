@@ -179,11 +179,13 @@
             "openstack-services": {
                 "title": "Stop openStack Services and Create Backup",
                 "description": "When ready, please click below to stop all services and create a backup of the OpenStack database.",
-                "stopServicesErrorMessage": "Please stop services manually.",
                 "codes": {
                     "services" : "Services Stopped",
                     "backup" : "Backup Created"
-                },                
+                },
+                "errors": {
+                    "stopServicesErrorKey": "Please stop services manually."
+                },                   
                 "form": {
                     "stop-services": "Stop Openstack Servers"
                 }

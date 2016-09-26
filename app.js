@@ -36,8 +36,8 @@ app.use('/api/upgrade7/admin-repo-checks', upgrade7AdminRepoChecks);
 app.use('/api/upgrade7/admin-upgrade', upgrade7AdminUpgrade);
 app.use('/api/upgrade7/nodes-repo-checks', upgrade7NodesRepoChecks);
 app.use('/api/upgrade7/openstack-services', upgrade7OpenStackServices);
-app.use('/api/upgrade7/stop-openstack-services', upgrade7StopOpenStackServices);
-app.use('/api/upgrade7/openstack-services-backup', upgrade7OpenStackServicesBackup);
+app.use('/api/upgrade7/openstack-services/stop', upgrade7StopOpenStackServices);
+app.use('/api/upgrade7/openstack-services/backup', upgrade7OpenStackServicesBackup);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

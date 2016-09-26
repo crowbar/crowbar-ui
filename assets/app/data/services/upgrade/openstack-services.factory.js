@@ -29,7 +29,7 @@
 
             var requestOptions = {
                 method: 'GET',
-                url: '/api/upgrade7/stop-openstack-services'
+                url: '/api/upgrade7/openstack-services/stop'
             };
 
             return $http(requestOptions);
@@ -39,7 +39,7 @@
 
             var requestOptions = {
                 method: 'GET',
-                url: '/api/upgrade7/openstack-services-backup'
+                url: '/api/upgrade7/openstack-services/backup'
             };
 
             return $http(requestOptions);

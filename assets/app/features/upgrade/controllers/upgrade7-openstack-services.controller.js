@@ -20,7 +20,6 @@
         vm.openStackServices = {
             completed: false,
             valid: false,
-            stopServicesErrorMessage: false,
             checks: {
                 services: {
                     status: false, 
@@ -43,58 +42,58 @@
             openStackFactory.stopOpenstackServices()
                 .then(
                     //Success handler. Stop all OpenStackServices successfully:
-                    function(openStackServicesResponse) {
-
-                        vm.openStackServices.checks.services.status = openStackServicesResponse.data.services;
-                        
-                        if (true === vm.openStackServices.checks.services.status) {
-
-                            openStackFactory.createOpenstackBackup()
-                                .then(
-                                    //Success handler. Backup OpenStackServices successfully:
-                                    function(openStackServicesResponse) {
-                                        var ResponseData = openStackServicesResponse.data
-
-                                        vm.openStackServices.checks.backup.status = ResponseData.backup;
-                                        vm.openStackServices.valid = vm.openStackServices.checks.backup.status;
-
-                                    },
-                                    //Failure handler:
-                                    function(errorOpenStackServicesResponse) {
-
-                                        // Expose the error list to openStackServices object
-                                        vm.openStackServices.errors = errorOpenStackServicesResponse.data.errors;
-                                    }
-                                )
-                        } else { 
-                            vm.openStackServices.stopServicesErrorMessage = true;
-                        }
-                    },
+                    stopOpenstackServicesSuccess,
                     //Failure handler:
-                    function(errorOpenStackServicesResponse) {
-
-                        // Expose the error list to openStackServices object
-                        vm.openStackServices.errors = errorOpenStackServicesResponse.data.errors;
-                    }
+                    stopOpenstackServicesError
+                    
                 ).finally(function() {
                     // Either on sucess or failure, the openStackServices has been completed.
                     vm.openStackServices.completed = true;
 
-                    var openStackServicesResult = true;
-
-                    _.forEach(vm.openStackServices.checks, function(value) {
-
-                        if (false === value.status) {
-                            openStackServicesResult = false;
-                            return false;
-                        }
-                    });
-
                     // Update openStackServices validity
-                    vm.openStackServices.valid = openStackServicesResult;
+                    
 
-                });   
-                
+                });
+
+            function stopOpenstackServicesSuccess (openStackServicesResponse) {
+
+                vm.openStackServices.checks.services.status = openStackServicesResponse.data.services;
+                vm.openStackServices.valid = vm.openStackServices.checks.services.status;
+                    
+                if (true === vm.openStackServices.checks.services.status) {
+
+                    openStackFactory.createOpenstackBackup()
+                        .then(
+                            //Success handler. Backup OpenStackServices successfully:
+                            createOpenstackBackupSuccess,
+                            //Failure handler:
+                            createOpenstackBackupError
+                        ).finally(function() {
+                            vm.openStackServices.completed = true;
+                            // Update openStackServices validity
+                            vm.openStackServices.valid = vm.openStackServices.checks.backup.status;
+
+                        });
+                } 
+            }
+
+            function stopOpenstackServicesError (errorOpenStackServicesResponse) {
+
+                // Expose the error list to openStackServices object
+                vm.openStackServices.errors = errorOpenStackServicesResponse.data.errors;
+            }
+
+            function createOpenstackBackupSuccess (openStackBackupResponse) {
+                var ResponseData = openStackBackupResponse.data
+
+                vm.openStackServices.checks.backup.status = ResponseData.backup;
+            }
+
+            function createOpenstackBackupError (errorOpenStackServicesResponse) {
+
+                // Expose the error list to openStackServices object
+                vm.openStackServices.errors = errorOpenStackServicesResponse.data.errors;
+            }
         }
     }
 })();
