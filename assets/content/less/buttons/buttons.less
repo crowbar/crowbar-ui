@@ -34,7 +34,8 @@
 
     // Action on-going
     &.active[disabled],
-    &.active[disabled]:hover {
+    &.active[disabled]:hover,
+    &.active[disabled]:focus {
         background: #f3f3f3;
         border: 1px solid #cccccc;
         box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.23);
@@ -57,8 +58,10 @@
 
     &[disabled],
     &[disabled]:hover,
+    &[disabled]:focus,
     &.disabled,
-    &.disabled:hover {
+    &.disabled:hover,
+    &.disabled:focus {
         background: #f3f3f3;
         border: 1px solid #cccccc;
         box-shadow: none;
