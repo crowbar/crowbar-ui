@@ -2,7 +2,10 @@
 describe('Upgrade Backup Factory', function () {
 
     var mockedBackupFile = '--mockedBackupFile--',
-        prechecksPromise;
+        mockedCreateResponse = {
+            id: 42
+        },
+        backupPromise;
 
     beforeEach(function () {
         //Setup the module and dependencies to be used.
@@ -22,41 +25,78 @@ describe('Upgrade Backup Factory', function () {
             should.exist(upgradeBackupFactory);
         });
 
-        it('returns an object with create function is defined', function () {
+        it('returns an object with create function defined', function () {
             expect(upgradeBackupFactory.create).toEqual(jasmine.any(Function));
+        });
+
+        it('returns an object with download function defined', function () {
+            expect(upgradeBackupFactory.download).toEqual(jasmine.any(Function));
         });
 
         describe('when create method is executed', function () {
 
             beforeEach(function () {
-
-                $httpBackend.expect('POST', '/api/upgrade7/backup')
-                    .respond(200, mockedBackupFile);
-                prechecksPromise = upgradeBackupFactory.create();
+                $httpBackend.expect('POST', '/api/crowbar/backups')
+                    .respond(200, mockedCreateResponse);
+                backupPromise = upgradeBackupFactory.create();
                 $httpBackend.flush();
             });
 
             it('returns a promise', function () {
-                expect(prechecksPromise).toEqual(jasmine.any(Object));
-                expect(prechecksPromise['then']).toEqual(jasmine.any(Function));
-                expect(prechecksPromise['catch']).toEqual(jasmine.any(Function));
-                expect(prechecksPromise['finally']).toEqual(jasmine.any(Function));
-                expect(prechecksPromise['error']).toEqual(jasmine.any(Function));
-                expect(prechecksPromise['success']).toEqual(jasmine.any(Function));
+                expect(backupPromise).toEqual(jasmine.any(Object));
+                expect(backupPromise['then']).toEqual(jasmine.any(Function));
+                expect(backupPromise['catch']).toEqual(jasmine.any(Function));
+                expect(backupPromise['finally']).toEqual(jasmine.any(Function));
+                expect(backupPromise['error']).toEqual(jasmine.any(Function));
+                expect(backupPromise['success']).toEqual(jasmine.any(Function));
             });
 
-            // Prechecks success, partially passing and/or failing are handled in the controller.
-            it('when resolved, it returns the prechecks response', function () {
-                prechecksPromise.then(function (prechecksResponse) {
-                    expect(prechecksResponse.status).toEqual(200);
-                    assert.isFalse(prechecksResponse.config.cache);
-                    expect(prechecksResponse.config.responseType).toEqual('arraybuffer');
-                    expect(prechecksResponse.data).toEqual(mockedBackupFile);
+            // backup create success, partially passing and/or failing are handled in the controller.
+            it('when resolved, it returns the backup response', function () {
+                backupPromise.then(function (backupResponse) {
+                    expect(backupResponse.status).toEqual(200);
+                    expect(backupResponse.data).toEqual(mockedCreateResponse);
                 });
             });
-
         });
-        
+
+        describe('when download method is executed', function () {
+
+            beforeEach(function () {
+                $httpBackend.expect('GET', '/api/crowbar/backups/42/download')
+                    .respond(200, mockedBackupFile);
+                backupPromise = upgradeBackupFactory.download(42);
+                $httpBackend.flush();
+            });
+
+            it('returns a promise', function () {
+                expect(backupPromise).toEqual(jasmine.any(Object));
+                expect(backupPromise['then']).toEqual(jasmine.any(Function));
+                expect(backupPromise['catch']).toEqual(jasmine.any(Function));
+                expect(backupPromise['finally']).toEqual(jasmine.any(Function));
+                expect(backupPromise['error']).toEqual(jasmine.any(Function));
+                expect(backupPromise['success']).toEqual(jasmine.any(Function));
+            });
+
+            // backup download success, partially passing and/or failing are handled in the controller.
+            it('when resolved, it returns the backup response', function () {
+                backupPromise.then(function (backupResponse) {
+                    expect(backupResponse.status).toEqual(200);
+                    assert.isFalse(backupResponse.config.cache);
+                    expect(backupResponse.config.responseType).toEqual('arraybuffer');
+                    expect(backupResponse.data).toEqual(mockedBackupFile);
+                });
+            });
+        });
+
+        describe('when download method is executed without parameter', function () {
+
+            it('throws an exception', function () {
+                expect(upgradeBackupFactory.download).toThrow();
+            });
+        });
     });
+
+
 
 });
