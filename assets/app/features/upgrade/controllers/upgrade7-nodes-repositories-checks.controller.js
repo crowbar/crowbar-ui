@@ -19,7 +19,7 @@
             completed: false,
             valid: false,
             checks: {
-                'SLES_12_SP2': {
+                'os': {
                     status: false, 
                     label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SLES_12_SP2'
                 },
@@ -52,13 +52,16 @@
                     label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SUSE_Enterprise_Storage_4_Updates'
                 }
             },
-            runRepoChecks: runRepoChecks
+            runRepoChecks: runRepoChecks,
+            running: false,
+            spinnerVisible: false
         };
 
         /**
          *  Validate Nodes Repositories required for Cloud 7 Upgrade
          */
         function runRepoChecks() {
+            vm.repoChecks.running = true;
 
             upgradeRepositoriesChecksFactory.getNodesRepoChecks()
                 .then(
@@ -66,14 +69,17 @@
                     function (repoChecksResponse) {
 
                         _.forEach(repoChecksResponse.data, function(value, key) {
-                            vm.repoChecks.checks[key].status = value;
+                            // Validate we're updating a valid check from the service
+                            if (vm.repoChecks.checks.hasOwnProperty(key)) {
+                                vm.repoChecks.checks[key].status = value.available;
+                            }
                         });
 
                         var repoChecksResult = true;
                         // Update prechecks status
 
                         _.forEach(vm.repoChecks.checks, function (repoStatus) {
-                            
+
                             if (false === repoStatus.status) {
                                 repoChecksResult = false;
                                 return false;
@@ -92,6 +98,8 @@
                 .finally(function () {
                     // Either on sucess or failure, the repoChecks has been completed.
                     vm.repoChecks.completed = true;
+                    // And the spinner must be stopped and hidden
+                    vm.repoChecks.running = false;
                 });
         }
     }
