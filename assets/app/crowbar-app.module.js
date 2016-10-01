@@ -33,7 +33,7 @@
         //@todo: SOC - Store routing configurations into separate files
         function configureRouter() {
             // For any unmatched url, redirect to /upgrade/prepare
-            $urlRouterProvider.otherwise('/upgrade/prepare');
+            $urlRouterProvider.otherwise('/upgrade/landing');
         }
     }
 })(_);

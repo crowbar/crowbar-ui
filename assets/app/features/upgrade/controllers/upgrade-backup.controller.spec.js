@@ -29,7 +29,7 @@ describe('Upgrade Flow - Backup Controller', function() {
         bard.inject('$controller', '$rootScope', '$q', '$httpBackend', '$document', 'crowbarBackupFactory');
 
         //Create the controller
-        controller = $controller('Upgrade7BackupController');
+        controller = $controller('UpgradeBackupController');
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});

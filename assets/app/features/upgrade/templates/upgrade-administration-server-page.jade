@@ -1,5 +1,5 @@
-h2(translate='') upgrade7.steps.upgrade-admin.title
-p(translate='') upgrade7.steps.upgrade-admin.description
+h2(translate='') upgrade.steps.upgrade-admin.title
+p(translate='') upgrade.steps.upgrade-admin.description
 button.btn.btn-success.center-block(
     ng-click="upgradeAdminUpgradeVm.adminUpgrade.beginAdminUpgrade()",
     ng-disabled="upgradeAdminUpgradeVm.adminUpgrade.completed || upgradeAdminUpgradeVm.adminUpgrade.running",
@@ -10,4 +10,4 @@ button.btn.btn-success.center-block(
 )
     suse-lazy-spinner(delay="2000", active="upgradeAdminUpgradeVm.adminUpgrade.running",
         visible="upgradeAdminUpgradeVm.adminUpgrade.spinnerVisible")
-    span(translate='') upgrade7.steps.upgrade-admin.form.upgrade-admin
+    span(translate='') upgrade.steps.upgrade-admin.form.upgrade-admin

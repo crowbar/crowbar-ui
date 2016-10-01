@@ -3,37 +3,28 @@
 
     /**
      * @ngdoc function
-     * @name crowbarApp.upgrade.controller:UpgradeController
+     * @name crowbarApp.controller:Upgrade7Controller
      * @description
-     * # UpgradeController
-     * Controller of the crowbarApp
+     * # Upgrade7Controller
+     * This is the controller that will be used across the upgrade process.
      */
     angular.module('crowbarApp.upgrade')
-        .controller('UpgradeController', UpgradeController);
+        .controller('UpgradeController', Upgrade7Controller);
 
-    UpgradeController.$inject = ['$scope', '$translate', '$state', 'stepsFactory'];
+    Upgrade7Controller.$inject = ['$scope', '$translate', '$state', 'upgradeStepsFactory'];
     // @ngInject
-    function UpgradeController($scope, $translate, $state, stepsFactory) {
-        var vm = this,
-            steps = {
-                list: [],
-                activeStep: {},
-                nextStep: nextStep,
-                isLastStep: isLastStep
-            };
-        vm.steps = steps;
+    function Upgrade7Controller($scope, $translate, $state, upgradeStepsFactory) {
+        var vm = this;
+        vm.steps = {
+            list: [],
+            activeStep: {},
+            nextStep: nextStep,
+            isLastStep: isLastStep
+        };
 
-        stepsFactory.getAll().then(
-            function(stepsResponse) {
-                steps.list = stepsResponse.data;
-                refeshStepsList();
-
-            },
-            function() {
-            //console.log(errorResponse);
-
-            }
-        );
+        // Get Steps list from provider
+        vm.steps.list = upgradeStepsFactory.getAll();
+        refeshStepsList();
 
         // Watch for view changes on the Step in order to update the steps list.
         $scope.$on('$viewContentLoaded', refeshStepsList);
@@ -42,20 +33,20 @@
          * Refresh the list of steps and active step models
          */
         function refeshStepsList() {
-            steps.activeStep = steps.list[0];
+            vm.steps.activeStep = vm.steps.list[0];
             var currentState = $state.current.name,
                 isCompletedStep = true;
 
-            for (var i = 0; i < steps.list.length; i++) {
-                if (steps.list[i].state === currentState) {
-                    steps.activeStep = steps.list[i];
-                    steps.activeStep.active = true;
-                    steps.activeStep.enabled = isCompletedStep;
+            for (var i = 0; i < vm.steps.list.length; i++) {
+                if (vm.steps.list[i].state === currentState) {
+                    vm.steps.activeStep = vm.steps.list[i];
+                    vm.steps.activeStep.active = true;
+                    vm.steps.activeStep.enabled = isCompletedStep;
                     isCompletedStep = false;
 
                 } else {
-                    steps.list[i].active = false;
-                    steps.list[i].enabled = isCompletedStep;
+                    vm.steps.list[i].active = false;
+                    vm.steps.list[i].enabled = isCompletedStep;
                 }
             }
         }
@@ -65,7 +56,7 @@
          */
         function nextStep() {
             // Only move forward if active step isn't last step available
-            if (steps.isLastStep()) {
+            if (vm.steps.isLastStep()) {
                 return;
             }
             vm.steps.activeStep.active = false;
@@ -83,7 +74,7 @@
          * @return boolean
          */
         function isLastStep() {
-            return vm.steps.list[steps.list.length - 1] === vm.steps.activeStep;
+            return vm.steps.list[vm.steps.list.length - 1] === vm.steps.activeStep;
         }
     }
 })();

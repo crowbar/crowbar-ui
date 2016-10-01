@@ -21,7 +21,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
         mockedTimeout = jasmine.createSpy('$timeout');
 
         //Create the controller
-        controller = $controller('Upgrade7UpgradeAdministrationServerController', { '$timeout': mockedTimeout });
+        controller = $controller('UpgradeUpgradeAdministrationServerController', { '$timeout': mockedTimeout });
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
