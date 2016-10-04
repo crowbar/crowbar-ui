@@ -11,7 +11,7 @@
     angular.module('crowbarApp')
         .controller('Upgrade7OpenStackServicesController', Upgrade7OpenStackServicesController);
 
-    Upgrade7OpenStackServicesController.$inject = ['$translate', 'openStackFactory'];
+    Upgrade7OpenStackServicesController.$inject = ['$translate', 'openStackFactory', '$timeout'];
     // @ngInject
     function Upgrade7OpenStackServicesController($translate, openStackFactory) {
         var vm = this;
@@ -20,6 +20,8 @@
         vm.openStackServices = {
             completed: false,
             valid: false,
+            running: false,
+            spinnerVisible: false,
             checks: {
                 services: {
                     status: false, 
@@ -30,15 +32,16 @@
                     label: 'upgrade7.steps.openstack-services.codes.backup'
                 }
             },
-            runOpenStackServices: runOpenStackServices
+            stopOpenStackServices: stopOpenStackServices
         };
-
 
         /**
          *  Validate OpenStackServices required for Cloud 7 Upgrade
          */
-        function runOpenStackServices() {
-   
+        function stopOpenStackServices() {
+
+            vm.openStackServices.running = true;
+
             openStackFactory.stopOpenstackServices()
                 .then(
                     //Success handler. Stop all OpenStackServices successfully:
@@ -48,19 +51,16 @@
                     
                 ).finally(function() {
                     // Either on sucess or failure, the openStackServices has been completed.
-                    vm.openStackServices.completed = true;
-
-                    // Update openStackServices validity
-                    
-
+                    vm.openStackServices.completed = true;              
+                    vm.openStackServices.running = false;
                 });
 
             function stopOpenstackServicesSuccess (openStackServicesResponse) {
-
-                vm.openStackServices.checks.services.status = openStackServicesResponse.data.services;
-                vm.openStackServices.valid = vm.openStackServices.checks.services.status;
-                    
-                if (true === vm.openStackServices.checks.services.status) {
+                vm.openStackServices.checks.services.status = 
+                vm.openStackServices.valid =
+                openStackServicesResponse.data.services;
+                           
+                if (vm.openStackServices.checks.services.status) {
 
                     openStackFactory.createOpenstackBackup()
                         .then(
@@ -71,8 +71,10 @@
                         ).finally(function() {
                             vm.openStackServices.completed = true;
                             // Update openStackServices validity
+                            vm.openStackServices.running = false;
+                            
                             vm.openStackServices.valid = vm.openStackServices.checks.backup.status;
-
+                            
                         });
                 } 
             }
@@ -84,9 +86,9 @@
             }
 
             function createOpenstackBackupSuccess (openStackBackupResponse) {
-                var ResponseData = openStackBackupResponse.data
-
-                vm.openStackServices.checks.backup.status = ResponseData.backup;
+                
+                vm.openStackServices.running = true;
+                vm.openStackServices.checks.backup.status = openStackBackupResponse.data.backup;
             }
 
             function createOpenstackBackupError (errorOpenStackServicesResponse) {

@@ -24,7 +24,7 @@
 
             return $http(requestOptions);
         }
-
+        
         function stopOpenstackServices() {
 
             var requestOptions = {

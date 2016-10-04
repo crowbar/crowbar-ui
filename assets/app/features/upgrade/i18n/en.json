@@ -184,7 +184,7 @@
                     "backup" : "Backup Created"
                 },
                 "errors": {
-                    "stopServicesErrorKey": "Please stop services manually."
+                    "stop-services-error-key": "Please stop services manually."
                 },                   
                 "form": {
                     "stop-services": "Stop Openstack Servers"

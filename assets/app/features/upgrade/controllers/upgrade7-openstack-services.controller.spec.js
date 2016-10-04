@@ -83,9 +83,9 @@ describe('openStack Services Controller', function() {
         });
     });
 
-    describe('runOpenStackServices function', function () {
+    describe('stopOpenStackServices function', function () {
         it('should be defined', function () {
-            should.exist(controller.openStackServices.runOpenStackServices);
+            should.exist(controller.openStackServices.stopOpenStackServices);
         });
 
         describe('when services and backup checks pass successfull', function () {
@@ -94,7 +94,7 @@ describe('openStack Services Controller', function() {
                     stopOpenstackServices: $q.when(passingOpenStackServicesResponse),
                     createOpenstackBackup: $q.when(passingOpenStackBackupResponse)
                 });
-                controller.openStackServices.runOpenStackServices();
+                controller.openStackServices.stopOpenStackServices();
                 $rootScope.$digest();
             });
 
@@ -127,7 +127,7 @@ describe('openStack Services Controller', function() {
                     stopOpenstackServices: $q.when(passingOpenStackServicesResponse),
                     createOpenstackBackup: $q.when(failingOpenStackBackupResponse)
                 });
-                controller.openStackServices.runOpenStackServices();
+                controller.openStackServices.stopOpenStackServices();
                 $rootScope.$digest();
             });
 
@@ -159,7 +159,7 @@ describe('openStack Services Controller', function() {
                     stopOpenstackServices: $q.when(passingOpenStackServicesResponse),
                     createOpenstackBackup: $q.reject(failingResponse)
                 });
-                controller.openStackServices.runOpenStackServices();
+                controller.openStackServices.stopOpenStackServices();
                 $rootScope.$digest();
             });
 
@@ -190,7 +190,7 @@ describe('openStack Services Controller', function() {
                 bard.mockService(openStackFactory, {
                     stopOpenstackServices: $q.when(failingOpenStackServicesResponse)
                 });
-                controller.openStackServices.runOpenStackServices();
+                controller.openStackServices.stopOpenStackServices();
                 $rootScope.$digest();
             });
 
@@ -217,7 +217,7 @@ describe('openStack Services Controller', function() {
                 bard.mockService(openStackFactory, {
                     stopOpenstackServices: $q.reject(failingResponse)
                 });
-                controller.openStackServices.runOpenStackServices();
+                controller.openStackServices.stopOpenStackServices();
                 $rootScope.$digest();
             });
 
