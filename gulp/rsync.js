@@ -9,8 +9,7 @@ var gulp = require('gulp'),
     syncClouds = syncCloudConfig ? syncCloudConfig.clouds : {},
     syncCloud = syncClouds ? syncClouds[syncCloudID] : undefined,
 
-    skypeRsync = 'Skypping rsync.';
-
+    skypeRsync = 'Skipping rsync.';
 
 gulp.task('rsync', function () {
     // Skip rsync option
@@ -53,6 +52,5 @@ gulp.task('rsync', function () {
                 recursive: true,
                 silent: !syncCloudConfig.options.verbose
             }));
-
     }
 });
