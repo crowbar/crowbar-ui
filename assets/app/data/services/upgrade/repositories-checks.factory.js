@@ -29,7 +29,7 @@
 
             var requestOptions = {
                 method: 'GET',
-                url: '/api/upgrade7/nodes-repo-checks',
+                url: '/api/upgrade/repocheck',
                 headers: COMMON_API_V2_HEADERS
             };
 

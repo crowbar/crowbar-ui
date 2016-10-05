@@ -73,7 +73,7 @@ describe('Upgrade Repo Checks Factory', function () {
 
             beforeEach(function () {
 
-                $httpBackend.expect('GET', '/api/upgrade7/nodes-repo-checks')
+                $httpBackend.expect('GET', '/api/upgrade/repocheck')
                     .respond(200, mockedNodesRepoChecksData);
                 nodesRepoChecksPromise = upgradeRepositoriesChecksFactory.getNodesRepoChecks();
             });
