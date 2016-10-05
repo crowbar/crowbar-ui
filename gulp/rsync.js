@@ -52,6 +52,5 @@ gulp.task('rsync', function () {
                 recursive: true,
                 silent: !syncCloudConfig.options.verbose
             }));
-
     }
 });
