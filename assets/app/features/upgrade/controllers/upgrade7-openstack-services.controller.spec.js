@@ -68,6 +68,10 @@ describe('openStack Services Controller', function() {
             assert.isFalse(controller.openStackServices.valid);
         });
 
+        it('is not running by default', function() {
+            assert.isFalse(controller.openStackServices.running);
+        });
+
         describe('contains a collection of checks that', function () {
 
             it('should be defined', function () {
@@ -106,6 +110,10 @@ describe('openStack Services Controller', function() {
                 assert.isTrue(controller.openStackServices.valid);
             });
 
+            it('should set running to false', function () {
+                assert.isFalse(controller.openStackServices.running);
+            });
+
             it('should update services check value to true', function () {
                 assert.isTrue(controller.openStackServices.checks.services.status);   
             });
@@ -137,6 +145,10 @@ describe('openStack Services Controller', function() {
 
             it('should update valid attribute of checks model to false', function () {
                 assert.isFalse(controller.openStackServices.valid);
+            });
+
+            it('should set running to false', function () {
+                assert.isFalse(controller.openStackServices.running);
             });
 
             it('should update services check value to true', function () {
@@ -171,6 +183,10 @@ describe('openStack Services Controller', function() {
                 assert.isFalse(controller.openStackServices.valid);
             });
 
+            it('should set running to false', function () {
+                assert.isFalse(controller.openStackServices.running);
+            });
+
             it('should update services check value to true', function () {
                 assert.isTrue(controller.openStackServices.checks.services.status);   
             });
@@ -202,6 +218,10 @@ describe('openStack Services Controller', function() {
                 assert.isFalse(controller.openStackServices.valid);
             });
 
+            it('should set running to false', function () {
+                assert.isFalse(controller.openStackServices.running);
+            });
+
             it('should update checks values to false', function () {
                 assert.isFalse(controller.openStackServices.checks.services.status);
             });
@@ -227,6 +247,10 @@ describe('openStack Services Controller', function() {
 
             it('should update valid attribute of checks model to false', function () {
                 assert.isFalse(controller.openStackServices.valid);
+            });
+
+            it('should set running to false', function () {
+                assert.isFalse(controller.openStackServices.running);
             });
 
             it('should expose the errors through vm.openStackServices.errors object', function () {

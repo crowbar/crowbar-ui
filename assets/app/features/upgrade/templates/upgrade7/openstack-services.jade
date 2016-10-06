@@ -3,7 +3,7 @@ p(translate='') upgrade7.steps.openstack-services.description
 
 button.btn.btn-success.center-block(
     ng-click="upgradeOpenStackServicesVm.openStackServices.stopOpenStackServices()",
-    ng-disabled="upgradeOpenStackServicesVm.openStackServices.completed || upgradeOpenStackServicesVm.openStackServices.running",
+    ng-disabled="(upgradeOpenStackServicesVm.openStackServices.completed && upgradeOpenStackServicesVm.openStackServices.valid) || upgradeOpenStackServicesVm.openStackServices.running",
     ng-class="{\
         'spinner-visible': upgradeOpenStackServicesVm.openStackServices.spinnerVisible,\
         active: upgradeOpenStackServicesVm.openStackServices.running\
@@ -15,5 +15,3 @@ button.btn.btn-success.center-block(
     span(translate='') upgrade7.steps.openstack-services.form.stop-services
 
 crowbar-checklist(checklist='upgradeOpenStackServicesVm.openStackServices.checks', completed='upgradeOpenStackServicesVm.openStackServices.completed')
-
-p(translate='' ng-show='upgradeOpenStackServicesVm.openStackServices.completed && !upgradeOpenStackServicesVm.openStackServices.valid') upgrade7.steps.openstack-services.errors.stop-services-error-key

@@ -11,15 +11,15 @@
     angular.module('crowbarApp')
         .controller('Upgrade7OpenStackServicesController', Upgrade7OpenStackServicesController);
 
-    Upgrade7OpenStackServicesController.$inject = ['$translate', 'openStackFactory', '$timeout'];
+    Upgrade7OpenStackServicesController.$inject = ['$translate', 'openStackFactory'];
     // @ngInject
     function Upgrade7OpenStackServicesController($translate, openStackFactory) {
         var vm = this;
             
 
-        vm.openStackServices = {
-            completed: false,
+        vm.openStackServices = { 
             valid: false,
+            completed: false,
             running: false,
             spinnerVisible: false,
             checks: {
@@ -47,19 +47,14 @@
                     //Success handler. Stop all OpenStackServices successfully:
                     stopOpenstackServicesSuccess,
                     //Failure handler:
-                    stopOpenstackServicesError
-                    
-                ).finally(function() {
-                    // Either on sucess or failure, the openStackServices has been completed.
-                    vm.openStackServices.completed = true;              
-                    vm.openStackServices.running = false;
-                });
+                    stopOpenstackServicesError    
+                );
 
             function stopOpenstackServicesSuccess (openStackServicesResponse) {
-                vm.openStackServices.checks.services.status = 
-                vm.openStackServices.valid =
-                openStackServicesResponse.data.services;
-                           
+                vm.openStackServices.checks.services.status =
+                    vm.openStackServices.valid = 
+                    openStackServicesResponse.data.services;
+
                 if (vm.openStackServices.checks.services.status) {
 
                     openStackFactory.createOpenstackBackup()
@@ -76,18 +71,21 @@
                             vm.openStackServices.valid = vm.openStackServices.checks.backup.status;
                             
                         });
+                } else {
+                    vm.openStackServices.completed = true;
+                    vm.openStackServices.running = false;
                 } 
             }
 
             function stopOpenstackServicesError (errorOpenStackServicesResponse) {
-
+                vm.openStackServices.completed = true;
+                vm.openStackServices.running = false;
                 // Expose the error list to openStackServices object
                 vm.openStackServices.errors = errorOpenStackServicesResponse.data.errors;
             }
 
             function createOpenstackBackupSuccess (openStackBackupResponse) {
                 
-                vm.openStackServices.running = true;
                 vm.openStackServices.checks.backup.status = openStackBackupResponse.data.backup;
             }
 
