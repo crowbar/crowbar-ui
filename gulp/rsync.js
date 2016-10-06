@@ -9,28 +9,28 @@ var gulp = require('gulp'),
     syncClouds = syncCloudConfig ? syncCloudConfig.clouds : {},
     syncCloud = syncClouds ? syncClouds[syncCloudID] : undefined,
 
-    skipeRsync = 'Skipping rsync.';
+    skipRsync = 'Skipping rsync.';
 
 gulp.task('rsync', function () {
     // Skip rsync option
     if (noSync) {
-        gutil.log(gutil.colors.yellow(skipeRsync));
+        gutil.log(gutil.colors.yellow(skipRsync));
 
     // Missing cloud.config.json file
     } else if (!syncCloudConfig) {
-        gutil.log(gutil.colors.yellow('Configuration file cloud.config.json not found.', skipeRsync));
+        gutil.log(gutil.colors.yellow('Configuration file cloud.config.json not found.', skipRsync));
 
     // cloud.config.json file exists, but doesn't contain a 'clouds' attribute
     } else if (typeof syncCloudConfig.clouds === 'undefined') {
-        gutil.log(gutil.colors.red('Missing clouds on configuration file', skipeRsync));
+        gutil.log(gutil.colors.red('Missing clouds on configuration file', skipRsync));
 
     // The specified cloud doesn't exist in cloud.config.json file
     } else if (typeof syncCloud === 'undefined') {
-        gutil.log(gutil.colors.red('Undefined configuration for cloud: ' + syncCloudID, skipeRsync));
+        gutil.log(gutil.colors.red('Undefined configuration for cloud: ' + syncCloudID, skipRsync));
 
     // A non-string host has been specified
     } else if (typeof syncCloud.host !== 'string') {
-        gutil.log(gutil.colors.red('No valid host specified for curent cloud: ' + syncCloudID, skipeRsync));
+        gutil.log(gutil.colors.red('No valid host specified for curent cloud: ' + syncCloudID, skipRsync));
 
     } else {
         // fallback to default port if not defined
