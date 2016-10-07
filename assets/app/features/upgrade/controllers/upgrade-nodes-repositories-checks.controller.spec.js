@@ -306,7 +306,7 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             it('should update checks values to true or false as per the response', function () {
                 assert.isObject(controller.repoChecks.checks);
 
-                var langKeyPrefix = 'upgrade7.steps.nodes-repository-checks.repositories.codes.',
+                var langKeyPrefix = 'upgrade.steps.nodes-repository-checks.repositories.codes.',
                     expectedChecks = {
                         'SLES12-SP2-Pool': {
                             status: false, 

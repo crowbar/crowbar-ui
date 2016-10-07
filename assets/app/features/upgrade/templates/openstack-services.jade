@@ -1,5 +1,5 @@
-h2(translate='') upgrade7.steps.openstack-services.title
-p(translate='') upgrade7.steps.openstack-services.description
+h2(translate='') upgrade.steps.openstack-services.title
+p(translate='') upgrade.steps.openstack-services.description
 
 button.btn.btn-success.center-block(
     ng-click='upgradeOpenStackServicesVm.openStackServices.stopServices()',
@@ -11,6 +11,6 @@ button.btn.btn-success.center-block(
 )
     suse-lazy-spinner(delay='2000', active='upgradeOpenStackServicesVm.openStackServices.running',
         visible='upgradeOpenStackServicesVm.openStackServices.spinnerVisible')
-    span(translate='') upgrade7.steps.openstack-services.form.stop-services
+    span(translate='') upgrade.steps.openstack-services.form.stop-services
 
 crowbar-checklist(checklist='upgradeOpenStackServicesVm.openStackServices.checks', completed='upgradeOpenStackServicesVm.openStackServices.completed')

@@ -56,7 +56,7 @@ function() {
         }
 
         function downloadBackup(backupId) {
-            crowbarBackupFactory.getBackup(backupId)
+            crowbarBackupFactory.get(backupId)
                 .then(
                     // When Backup Data has been created successfully
                     function (response) {
