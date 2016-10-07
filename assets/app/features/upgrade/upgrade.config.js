@@ -56,6 +56,12 @@
                 controller: 'Upgrade7NodesRepositoriesCheckController',
                 controllerAs: 'upgradeNodesRepoChecksVm'
             })
+            .state('upgrade7.openstack-services', {
+                url: '/openstack-services',
+                templateUrl: 'app/features/upgrade/templates/upgrade7/openstack-services.html',
+                controller: 'Upgrade7OpenStackServicesController',
+                controllerAs: 'upgradeOpenStackServicesVm'
+            })    
 
             .state('upgrade', {
                 url: '/upgrade',

@@ -2,8 +2,15 @@
 /*global bard $controller $httpBackend should assert upgradeBackupFactory $q $rootScope $document */
 describe('Upgrade Flow - Backup Controller', function() {
     var controller,
-        mockedBackupFile = '--Mock Backup File--',
-        mockedBackupResponseHeaders = {
+        mockedErrorList = [ 1, 2, 3],
+        mockedErrorResponse = {
+            data: { errors: mockedErrorList }
+        },
+        mockedCreateResponse = {
+            data: { id: 42 }
+        },
+        mockedDownloadFile = '--Mock Backup File--',
+        mockedDownloadResponseHeaders = {
             'connection': 'keep-alive',
             'content-disposition': 'attachment; filename=S33z8qFX.jpg.zip',
             'content-type': 'application/zip',
@@ -11,15 +18,15 @@ describe('Upgrade Flow - Backup Controller', function() {
             'transfer-encoding': 'chunked',
             'x-powered-by': 'Express',
         },
-        mockedBackupResponse = {
-            data: mockedBackupFile,
+        mockedDownloadResponse = {
+            data: mockedDownloadFile,
             'headers': function() {}
         };
 
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
-        bard.inject('$controller', '$rootScope', '$q', '$httpBackend', '$document');
+        bard.inject('$controller', '$rootScope', '$q', '$httpBackend', '$document', 'upgradeBackupFactory');
 
         //Create the controller
         controller = $controller('Upgrade7BackupController');
@@ -51,13 +58,62 @@ describe('Upgrade Flow - Backup Controller', function() {
 
             it('is defined', function() {
                 should.exist(controller.backup.create);
+                expect(controller.backup.create).toEqual(jasmine.any(Function));
+            });
+
+            describe('when executed and finished with success', function () {
+                beforeEach(function () {
+                    spyOn(controller.backup, 'download');
+
+                    bard.mockService(upgradeBackupFactory, {
+                        create: $q.when(mockedCreateResponse)
+                    });
+                    controller.backup.create();
+                    $rootScope.$digest();
+                });
+
+                it('should call download function', function () {
+                    expect(controller.backup.download).toHaveBeenCalled();
+                });
+
+                it('should set running to true', function () {
+                    assert.isTrue(controller.backup.running);
+                });
+            });
+
+            describe('when executed and finished with failure', function () {
+                beforeEach(function () {
+                    spyOn(controller.backup, 'download');
+
+                    bard.mockService(upgradeBackupFactory, {
+                        create: $q.reject(mockedErrorResponse)
+                    });
+                    controller.backup.create();
+                    $rootScope.$digest();
+                });
+
+                it('should not call download function', function () {
+                    expect(controller.backup.download).not.toHaveBeenCalled();
+                });
+
+                it('should leave running at false', function () {
+                    assert.isFalse(controller.backup.running);
+                });
+
+                it('should expose the errors through adminUpgrade.errors object', function () {
+                    expect(controller.backup.errors).toEqual(mockedErrorList);
+                });
+            });
+        });
+
+        describe('download function', function() {
+
+            it('is defined', function() {
+                should.exist(controller.backup.download);
+                expect(controller.backup.download).toEqual(jasmine.any(Function));
             });
 
             describe('when executed', function () {
-
-                beforeEach(function () {
-                    bard.inject('upgradeBackupFactory', '$document');
-                });
 
                 describe('on success', function () {
                     var downloadBackupMock;
@@ -73,22 +129,22 @@ describe('Upgrade Flow - Backup Controller', function() {
                             .and.returnValue(downloadBackupMock);
 
                         // Mock the headers() method of the fake response
-                        spyOn(mockedBackupResponse, 'headers')
-                            .and.returnValue(mockedBackupResponseHeaders);
+                        spyOn(mockedDownloadResponse, 'headers')
+                            .and.returnValue(mockedDownloadResponseHeaders);
 
-                        // Mock the create create() method of the upgradeBackupFactory,
+                        // Mock the download() method of the upgradeBackupFactory,
                         // and return a custom promise instead
                         bard.mockService(upgradeBackupFactory, {
-                            create: $q.when(mockedBackupResponse)
+                            download: $q.when(mockedDownloadResponse)
                         });
 
-                        // Run the backup creation
-                        controller.backup.create();
+                        // Run the backup download
+                        controller.backup.download(42);
                         $rootScope.$digest();
                     });
 
                     it('click() method should have been triggered to download the backup', function () {
-                        assert.isTrue(upgradeBackupFactory.create.calledOnce);
+                        assert.isTrue(upgradeBackupFactory.download.calledOnce);
                         expect($document[0].createElement).toHaveBeenCalledWith('a');
                         expect(downloadBackupMock.click).toHaveBeenCalled();
                     })
@@ -100,14 +156,30 @@ describe('Upgrade Flow - Backup Controller', function() {
                     it('no error is created', function() {
                         should.not.exist(controller.backup.error);
                     });
-                    
                 });
+
                 describe('on failure', function () {
-                    
+                    beforeEach(function () {
+
+                        bard.mockService(upgradeBackupFactory, {
+                            download: $q.reject(mockedErrorResponse)
+                        });
+
+                        controller.backup.download(42);
+                        $rootScope.$digest();
+                    });
+
+                    it('changes the completed status', function() {
+                        assert.isTrue(controller.backup.completed);
+                    });
+
+                    it('should expose the errors through adminUpgrade.errors object', function () {
+                        expect(controller.backup.errors).toEqual(mockedErrorList);
+                    });
                 });
 
             });
-            
+
         });
 
     });

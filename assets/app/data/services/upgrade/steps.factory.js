@@ -54,7 +54,7 @@
                 {
                     id: 5,
                     title: 'Migrate OpenStack Database',
-                    state: 'upgrade7.migrate-openstack-database',
+                    state: 'upgrade7.openstack-services',
                     active: false,
                     enabled: false
                 },
