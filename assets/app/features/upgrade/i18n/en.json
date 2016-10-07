@@ -182,10 +182,7 @@
                 "codes": {
                     "services" : "Services Stopped",
                     "backup" : "Backup Created"
-                },
-                "errors": {
-                    "stop-services-error-key": "Please stop services manually."
-                },                   
+                },                  
                 "form": {
                     "stop-services": "Stop Openstack Servers"
                 }

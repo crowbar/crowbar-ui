@@ -1,16 +1,11 @@
 /*global bard $httpBackend should expect openStackFactory */
 describe('OpenStack Services Factory', function () {
-    var mockedOpenStackServicesPromise = {
-            'services': true,
-            'backup': true
-        },
-        mockedStopOpenStackServicesPromise = {
+    var mockedStopOpenStackServicesPromise = {
             'services': true,
         },
         mockedCreateOpenstackBackupPromise = {
             'services': true,
         },
-        openStackServicesPromise,
         stopOpenStackServicesPromise,
         createOpenstackBackupPromise;
 
@@ -26,43 +21,12 @@ describe('OpenStack Services Factory', function () {
             should.exist(openStackFactory);
         });
 
-        it('returns an object with getOpenStackServices function is defined', function () {
-            expect(openStackFactory.getOpenStackServices).toEqual(jasmine.any(Function));
-        });
-
         it('returns an object with stopOpenstackServices function is defined', function () {
             expect(openStackFactory.stopOpenstackServices).toEqual(jasmine.any(Function));
         });
 
         it('returns an object with createOpenstackBackup function is defined', function () {
             expect(openStackFactory.createOpenstackBackup).toEqual(jasmine.any(Function));
-        });
-
-        describe('when getOpenStackServices method is executed', function () {
-
-            beforeEach(function () {
-                $httpBackend.expect('GET', '/api/upgrade7/openstack-services')
-                    .respond(200, mockedOpenStackServicesPromise);
-                openStackServicesPromise = openStackFactory.getOpenStackServices();
-            });
-
-            it('returns a promise', function () {
-                expect(openStackServicesPromise).toEqual(jasmine.any(Object));
-                expect(openStackServicesPromise['then']).toEqual(jasmine.any(Function));
-                expect(openStackServicesPromise['catch']).toEqual(jasmine.any(Function));
-                expect(openStackServicesPromise['finally']).toEqual(jasmine.any(Function));
-                expect(openStackServicesPromise['error']).toEqual(jasmine.any(Function));
-                expect(openStackServicesPromise['success']).toEqual(jasmine.any(Function));
-            });
-
-            // OpenStackServices success, partially passing and/or failing are handled in the controller.
-            it('when resolved, it returns the OpenStackServices response', function () {
-                openStackServicesPromise.then(function (openstackServicesResponse) {
-                    expect(openstackServicesResponse.status).toEqual(200);
-                    expect(openstackServicesResponse.data).toEqual(mockedOpenStackServicesPromise);
-                });
-                $httpBackend.flush();
-            });
         });
 
         describe('when stopOpenstackServices method is executed', function () {
@@ -83,7 +47,7 @@ describe('OpenStack Services Factory', function () {
 
             // stopOpenStackServices success, partially passing and/or failing are handled in the controller.
             it('when resolved, it returns the stopOpenStackServices response', function () {
-                openStackServicesPromise.then(function (stopOpenstackServicesResponse) {
+                stopOpenStackServicesPromise.then(function (stopOpenstackServicesResponse) {
                     expect(stopOpenstackServicesResponse.status).toEqual(200);
                     expect(stopOpenstackServicesResponse.data).toEqual(mockedStopOpenStackServicesPromise);
                 });
@@ -108,7 +72,7 @@ describe('OpenStack Services Factory', function () {
             });
 
             it('when resolved, it returns the createOpenstackBackupServices response', function () {
-                openStackServicesPromise.then(function (createOpenstackBackupResponse) {
+                createOpenstackBackupPromise.then(function (createOpenstackBackupResponse) {
                     expect(createOpenstackBackupResponse.status).toEqual(200);
                     expect(createOpenstackBackupResponse.data).toEqual(mockedCreateOpenstackBackupPromise);
                 });

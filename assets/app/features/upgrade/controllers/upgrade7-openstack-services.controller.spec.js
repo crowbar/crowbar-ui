@@ -84,6 +84,13 @@ describe('openStack Services Controller', function() {
                     assert.isFalse(value.status);
                 });
             });
+
+            it('all should have a label set', function () {
+                assert.isObject(controller.openStackServices.checks);
+                _.forEach(controller.openStackServices.checks, function(key, value) {
+                    expect(key.label).toEqual('upgrade7.steps.openstack-services.codes.' + value);
+                });
+            });
         });
     });
 
@@ -92,7 +99,7 @@ describe('openStack Services Controller', function() {
             should.exist(controller.openStackServices.stopOpenStackServices);
         });
 
-        describe('when services and backup checks pass successfull', function () {
+        describe('when services check and backup check pass successfull', function () {
             beforeEach(function () {
                 bard.mockService(openStackFactory, {
                     stopOpenstackServices: $q.when(passingOpenStackServicesResponse),
@@ -114,6 +121,10 @@ describe('openStack Services Controller', function() {
                 assert.isFalse(controller.openStackServices.running);
             });
 
+            it('should call stopOpenstack service', function () {
+                assert.isTrue(openStackFactory.stopOpenstackServices.calledOnce);                         
+            });
+
             it('should update services check value to true', function () {
                 assert.isTrue(controller.openStackServices.checks.services.status);   
             });
@@ -127,7 +138,6 @@ describe('openStack Services Controller', function() {
             });
 
         });
-
 
         describe('when services check pass successfull and backup check fails', function () {
             beforeEach(function () {
@@ -151,6 +161,10 @@ describe('openStack Services Controller', function() {
                 assert.isFalse(controller.openStackServices.running);
             });
 
+            it('should call stopOpenstack service', function () {
+                assert.isTrue(openStackFactory.stopOpenstackServices.calledOnce);                         
+            });
+
             it('should update services check value to true', function () {
                 assert.isTrue(controller.openStackServices.checks.services.status);   
             });
@@ -159,7 +173,7 @@ describe('openStack Services Controller', function() {
                 assert.isTrue(openStackFactory.createOpenstackBackup.calledOnce);                         
             });
 
-            it('should update services check value to false', function () {
+            it('should update backup check value to false', function () {
                 assert.isFalse(controller.openStackServices.checks.backup.status);                         
             });
 
@@ -187,6 +201,10 @@ describe('openStack Services Controller', function() {
                 assert.isFalse(controller.openStackServices.running);
             });
 
+            it('should call stopOpenstack service', function () {
+                assert.isTrue(openStackFactory.stopOpenstackServices.calledOnce);                         
+            });
+
             it('should update services check value to true', function () {
                 assert.isTrue(controller.openStackServices.checks.services.status);   
             });
@@ -201,13 +219,16 @@ describe('openStack Services Controller', function() {
 
         });
 
-        describe('when services checks fails', function () {
+        describe('when services check fails', function () {
             beforeEach(function () {
+                spyOn(openStackFactory, 'createOpenstackBackup');
+
                 bard.mockService(openStackFactory, {
                     stopOpenstackServices: $q.when(failingOpenStackServicesResponse)
                 });
                 controller.openStackServices.stopOpenStackServices();
                 $rootScope.$digest();
+
             });
 
             it('should set openStackServices.completed status to true', function () {
@@ -222,18 +243,23 @@ describe('openStack Services Controller', function() {
                 assert.isFalse(controller.openStackServices.running);
             });
 
-            it('should update checks values to false', function () {
+            it('should call stopOpenstack service', function () {
+                assert.isTrue(openStackFactory.stopOpenstackServices.calledOnce);                         
+            });
+
+            it('should update services checks values to false', function () {
                 assert.isFalse(controller.openStackServices.checks.services.status);
             });
 
             it('should not call backup service', function () {
-                assert.isFalse(openStackFactory.createOpenstackBackup.calledOnce);                         
+                expect(openStackFactory.createOpenstackBackup).not.toHaveBeenCalled();                     
             });
 
         });
 
-        describe('when services service call fails', function () {
+        describe('when stopOpenstack service call fails', function () {
             beforeEach(function () {
+                spyOn(openStackFactory, 'createOpenstackBackup');
                 bard.mockService(openStackFactory, {
                     stopOpenstackServices: $q.reject(failingResponse)
                 });
@@ -251,6 +277,10 @@ describe('openStack Services Controller', function() {
 
             it('should set running to false', function () {
                 assert.isFalse(controller.openStackServices.running);
+            });
+
+            it('should not call backup service', function () {
+                expect(openStackFactory.createOpenstackBackup).not.toHaveBeenCalled();                     
             });
 
             it('should expose the errors through vm.openStackServices.errors object', function () {

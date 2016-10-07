@@ -8,22 +8,11 @@
     /* @ngInject */
     function openStackFactory($q, $http) {
         var factory = {
-            getOpenStackServices: getOpenStackServices,
             stopOpenstackServices: stopOpenstackServices,
             createOpenstackBackup: createOpenstackBackup
         };
 
         return factory;
-
-        function getOpenStackServices() {
-
-            var requestOptions = {
-                method: 'GET',
-                url: '/api/upgrade7/openstack-services'
-            };
-
-            return $http(requestOptions);
-        }
         
         function stopOpenstackServices() {
 
