@@ -1,5 +1,5 @@
-/*global bard $httpBackend should expect upgradeBackupFactory assert */
-describe('Upgrade Backup Factory', function () {
+/*global bard $httpBackend should expect crowbarBackupFactory assert */
+describe('Crowbar Backup Factory', function () {
 
     var mockedBackupFile = '--mockedBackupFile--',
         mockedCreateResponse = {
@@ -9,8 +9,8 @@ describe('Upgrade Backup Factory', function () {
 
     beforeEach(function () {
         //Setup the module and dependencies to be used.
-        bard.appModule('crowbarData.upgrade');
-        bard.inject('upgradeBackupFactory', '$q', '$httpBackend');
+        bard.appModule('suseData.crowbar');
+        bard.inject('crowbarBackupFactory', '$q', '$httpBackend', 'COMMON_API_V2_HEADERS');
     });
 
     afterEach(function() {
@@ -22,23 +22,23 @@ describe('Upgrade Backup Factory', function () {
     describe('when executed', function () {
 
         it('returns an object', function () {
-            should.exist(upgradeBackupFactory);
+            should.exist(crowbarBackupFactory);
         });
 
         it('returns an object with create function defined', function () {
-            expect(upgradeBackupFactory.create).toEqual(jasmine.any(Function));
+            expect(crowbarBackupFactory.create).toEqual(jasmine.any(Function));
         });
 
-        it('returns an object with download function defined', function () {
-            expect(upgradeBackupFactory.download).toEqual(jasmine.any(Function));
+        it('returns an object with getBackup function defined', function () {
+            expect(crowbarBackupFactory.getBackup).toEqual(jasmine.any(Function));
         });
 
         describe('when create method is executed', function () {
 
             beforeEach(function () {
-                $httpBackend.expect('POST', '/api/crowbar/backups')
+                $httpBackend.expect('POST', '/api/crowbar/backups', undefined)
                     .respond(200, mockedCreateResponse);
-                backupPromise = upgradeBackupFactory.create();
+                backupPromise = crowbarBackupFactory.create();
                 $httpBackend.flush();
             });
 
@@ -65,7 +65,7 @@ describe('Upgrade Backup Factory', function () {
             beforeEach(function () {
                 $httpBackend.expect('GET', '/api/crowbar/backups/42/download')
                     .respond(200, mockedBackupFile);
-                backupPromise = upgradeBackupFactory.download(42);
+                backupPromise = crowbarBackupFactory.getBackup(42);
                 $httpBackend.flush();
             });
 
@@ -92,7 +92,7 @@ describe('Upgrade Backup Factory', function () {
         describe('when download method is executed without parameter', function () {
 
             it('throws an exception', function () {
-                expect(upgradeBackupFactory.download).toThrow();
+                expect(crowbarBackupFactory.getBackup).toThrow();
             });
         });
     });

@@ -13,13 +13,13 @@
 
     Upgrade7NodesRepositoriesCheckController.$inject = [
         '$translate',
-        'upgradeRepositoriesChecksFactory',
+        'upgradeFactory',
         'NODES_PRODUCTS_REPO_CHECKS_MAP'
     ];
     // @ngInject
     function Upgrade7NodesRepositoriesCheckController(
         $translate,
-        upgradeRepositoriesChecksFactory,
+        upgradeFactory,
         NODES_PRODUCTS_REPO_CHECKS_MAP
     ) {
         var vm = this;
@@ -71,7 +71,7 @@
         function runRepoChecks() {
             vm.repoChecks.running = true;
 
-            upgradeRepositoriesChecksFactory.getNodesRepoChecks()
+            upgradeFactory.getNodesRepoChecks()
                 .then(
                     // In case of success
                     onSuccessGetNodesRepoChecks,

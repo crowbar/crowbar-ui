@@ -1,7 +1,7 @@
 (function() {
 
     angular
-        .module('crowbarData.upgrade')
+        .module('suseData.crowbar')
         .factory('upgradeStepsFactory', upgradeStepsFactory);
 
     upgradeStepsFactory.$inject = [];

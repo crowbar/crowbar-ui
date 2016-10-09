@@ -1,10 +1,11 @@
 var express = require('express'),
     router = express.Router();
 
-/* GET openStack services Checks. */
-router.get('/', function(req, res) {
+
+/* POST openStack services Checks. */
+router.post('/', function(req, res) {
     res.status(200).json({
-        'backup': true
+        'services': true
     });
 });
 

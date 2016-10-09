@@ -1,19 +1,24 @@
 (function() {
 
     angular
-        .module('crowbarData.upgrade')
-        .factory('upgradeBackupFactory', upgradeBackupFactory);
+        .module('suseData.crowbar')
+        .factory('crowbarBackupFactory', crowbarBackupFactory);
 
-    upgradeBackupFactory.$inject = ['$q', '$http', '$filter', 'COMMON_API_V2_HEADERS'];
+    crowbarBackupFactory.$inject = ['$q', '$http', '$filter', 'COMMON_API_V2_HEADERS'];
     /* @ngInject */
-    function upgradeBackupFactory($q, $http, $filter, COMMON_API_V2_HEADERS) {
+    function crowbarBackupFactory($q, $http, $filter, COMMON_API_V2_HEADERS) {
         var factory = {
             create: createBackup,
-            download: downloadBackup
+            getBackup: getBackup
         };
 
         return factory;
 
+        /**
+         * Create a new backup of the Administration Node
+         * 
+         * @return {Promise}
+         */
         function createBackup() {
 
             var requestOptions = {
@@ -26,7 +31,13 @@
             return $http(requestOptions);
         }
 
-        function downloadBackup(id) {
+        /**
+         * Download a specific backup based on its Id
+         *
+         * @param  {Number} Backup Id to be downloaded
+         * @return {Promise}
+         */
+        function getBackup(id) {
             // this should never happen, caller should make sure 'id' is set
             if (angular.isUndefined(id)) {
                 throw Error('downloadBackup() called without id.');

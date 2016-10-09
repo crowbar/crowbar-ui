@@ -2,7 +2,7 @@ h2(translate='') upgrade7.steps.openstack-services.title
 p(translate='') upgrade7.steps.openstack-services.description
 
 button.btn.btn-success.center-block(
-    ng-click='upgradeOpenStackServicesVm.openStackServices.stopOpenStackServices()',
+    ng-click='upgradeOpenStackServicesVm.openStackServices.stopServices()',
     ng-disabled='(upgradeOpenStackServicesVm.openStackServices.completed && upgradeOpenStackServicesVm.openStackServices.valid) || upgradeOpenStackServicesVm.openStackServices.running',
     ng-class='{\
         "spinner-visible": upgradeOpenStackServicesVm.openStackServices.spinnerVisible,\

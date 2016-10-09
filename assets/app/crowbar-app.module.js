@@ -12,7 +12,7 @@
     angular
         .module('crowbarApp', [
             'crowbarCore',
-            'crowbarData',
+            'suseData',
             'crowbarWidgets',
 
             /*

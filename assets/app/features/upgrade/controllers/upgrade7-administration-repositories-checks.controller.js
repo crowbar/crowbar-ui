@@ -12,9 +12,9 @@
         .controller('Upgrade7AdministrationRepositoriesCheckController',
             Upgrade7AdministrationRepositoriesCheckController);
 
-    Upgrade7AdministrationRepositoriesCheckController.$inject = ['$translate', 'upgradeRepositoriesChecksFactory'];
+    Upgrade7AdministrationRepositoriesCheckController.$inject = ['$translate', 'crowbarFactory'];
     // @ngInject
-    function Upgrade7AdministrationRepositoriesCheckController($translate, upgradeRepositoriesChecksFactory) {
+    function Upgrade7AdministrationRepositoriesCheckController($translate, crowbarFactory) {
         var vm = this;
         vm.repoChecks = {
             running: false,
@@ -48,7 +48,7 @@
         function runRepoChecks() {
             vm.repoChecks.running = true;
 
-            upgradeRepositoriesChecksFactory.getAdminRepoChecks()
+            crowbarFactory.getRepositoriesChecks()
                 .then(
                     // In case of success
                     function (repoChecksResponse) {

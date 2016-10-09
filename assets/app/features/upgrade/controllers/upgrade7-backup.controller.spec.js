@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-/*global bard $controller $httpBackend should assert upgradeBackupFactory $q $rootScope $document */
+/*global bard $controller $httpBackend should assert crowbarBackupFactory $q $rootScope $document */
 describe('Upgrade Flow - Backup Controller', function() {
     var controller,
         mockedErrorList = [ 1, 2, 3],
@@ -26,7 +26,7 @@ describe('Upgrade Flow - Backup Controller', function() {
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
-        bard.inject('$controller', '$rootScope', '$q', '$httpBackend', '$document', 'upgradeBackupFactory');
+        bard.inject('$controller', '$rootScope', '$q', '$httpBackend', '$document', 'crowbarBackupFactory');
 
         //Create the controller
         controller = $controller('Upgrade7BackupController');
@@ -65,7 +65,7 @@ describe('Upgrade Flow - Backup Controller', function() {
                 beforeEach(function () {
                     spyOn(controller.backup, 'download');
 
-                    bard.mockService(upgradeBackupFactory, {
+                    bard.mockService(crowbarBackupFactory, {
                         create: $q.when(mockedCreateResponse)
                     });
                     controller.backup.create();
@@ -85,8 +85,8 @@ describe('Upgrade Flow - Backup Controller', function() {
                 beforeEach(function () {
                     spyOn(controller.backup, 'download');
 
-                    bard.mockService(upgradeBackupFactory, {
-                        create: $q.reject(mockedErrorResponse)
+                    bard.mockService(crowbarBackupFactory, {
+                        create: $q.reject(mockedErrorResponse),
                     });
                     controller.backup.create();
                     $rootScope.$digest();
@@ -132,22 +132,25 @@ describe('Upgrade Flow - Backup Controller', function() {
                         spyOn(mockedDownloadResponse, 'headers')
                             .and.returnValue(mockedDownloadResponseHeaders);
 
-                        // Mock the download() method of the upgradeBackupFactory,
+                        // Mock the download() method of the crowbarBackupFactory,
                         // and return a custom promise instead
-                        bard.mockService(upgradeBackupFactory, {
-                            download: $q.when(mockedDownloadResponse)
+                        bard.mockService(crowbarBackupFactory, {
+                            getBackup: $q.when(mockedDownloadResponse)
                         });
 
-                        // Run the backup download
+                        // Run the backup getBackup function
                         controller.backup.download(42);
                         $rootScope.$digest();
                     });
 
                     it('click() method should have been triggered to download the backup', function () {
-                        assert.isTrue(upgradeBackupFactory.download.calledOnce);
                         expect($document[0].createElement).toHaveBeenCalledWith('a');
                         expect(downloadBackupMock.click).toHaveBeenCalled();
                     })
+
+                    it('crowbarBackupFactory.getBackup() has been called once', function () {
+                        assert.isTrue(crowbarBackupFactory.getBackup.calledOnce);
+                    });
 
                     it('changes the completed status', function() {
                         assert.isTrue(controller.backup.completed);
@@ -161,12 +164,16 @@ describe('Upgrade Flow - Backup Controller', function() {
                 describe('on failure', function () {
                     beforeEach(function () {
 
-                        bard.mockService(upgradeBackupFactory, {
-                            download: $q.reject(mockedErrorResponse)
+                        bard.mockService(crowbarBackupFactory, {
+                            getBackup: $q.reject(mockedErrorResponse)
                         });
 
                         controller.backup.download(42);
                         $rootScope.$digest();
+                    });
+
+                    it('crowbarBackupFactory.getBackup() has been called once', function () {
+                        assert.isTrue(crowbarBackupFactory.getBackup.calledOnce);
                     });
 
                     it('changes the completed status', function() {

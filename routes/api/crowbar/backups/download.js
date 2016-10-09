@@ -4,9 +4,9 @@ var express = require('express'),
     mime = require('mime'),
     fs = require('fs');
 
-router.post('/', function(req, res) {
+router.get('/', function(req, res) {
 
-    var file = __dirname + '/S33z8qFX.jpg.zip',
+    var file = __dirname + '/1.zip',
         filename = path.basename(file),
         mimetype = mime.lookup(file),
         filestream = fs.createReadStream(file);
