@@ -177,14 +177,14 @@
                 }
             },
             "openstack-services": {
-                "title": "Stop openStack Services and Create Backup",
+                "title": "Stop OpenStack Services and Create Backup",
                 "description": "When ready, please click below to stop all services and create a backup of the OpenStack database.",
                 "codes": {
                     "services" : "Services Stopped",
                     "backup" : "Backup Created"
-                },                  
+                },
                 "form": {
-                    "stop-services": "Stop Openstack Servers"
+                    "stop-services": "Stop OpenStack Servers"
                 }
             }
         },
