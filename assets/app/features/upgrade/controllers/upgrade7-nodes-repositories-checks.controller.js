@@ -14,15 +14,35 @@
     Upgrade7NodesRepositoriesCheckController.$inject = [
         '$translate',
         'upgradeFactory',
+        'crowbarFactory',
         'NODES_PRODUCTS_REPO_CHECKS_MAP'
     ];
     // @ngInject
     function Upgrade7NodesRepositoriesCheckController(
         $translate,
         upgradeFactory,
+        crowbarFactory,
         NODES_PRODUCTS_REPO_CHECKS_MAP
     ) {
-        var vm = this;
+        var vm = this,
+            addonsRepos = {
+                'SLE12-SP2-HA-Pool': {
+                    status: false, 
+                    label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SLE12-SP2-HA-Pool'
+                },
+                'SLE12-SP2-HA-Updates': {
+                    status: false, 
+                    label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SLE12-SP2-HA-Updates'
+                },
+                'SUSE-Enterprise-Storage-4-Pool': {
+                    status: false, 
+                    label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SUSE-Enterprise-Storage-4-Pool'
+                },
+                'SUSE-Enterprise-Storage-4-Updates': {
+                    status: false, 
+                    label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SUSE-Enterprise-Storage-4-Updates'
+                }
+            };
         vm.repoChecks = {
             completed: false,
             valid: false,
@@ -42,22 +62,6 @@
                 'SUSE-OpenStack-Cloud-7-Updates': {
                     status: false, 
                     label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SUSE-OpenStack-Cloud-7-Updates'
-                },
-                'SLE12-SP2-HA-Pool': {
-                    status: false, 
-                    label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SLE12-SP2-HA-Pool'
-                },
-                'SLE12-SP2-HA-Updates': {
-                    status: false, 
-                    label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SLE12-SP2-HA-Updates'
-                },
-                'SUSE-Enterprise-Storage-4-Pool': {
-                    status: false, 
-                    label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SUSE-Enterprise-Storage-4-Pool'
-                },
-                'SUSE-Enterprise-Storage-4-Updates': {
-                    status: false, 
-                    label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SUSE-Enterprise-Storage-4-Updates'
                 }
             },
             runRepoChecks: runRepoChecks,
@@ -65,6 +69,23 @@
             spinnerVisible: false
         };
 
+        activate();
+
+        /**
+         * Activation of the Nodes and AddOns Repository checks page
+         */
+        function activate() {
+            crowbarFactory.getEntity().then(function (entityResponse) {
+                if (! _.isEmpty(entityResponse.data.addons)) {
+                    _.forEach(entityResponse.data.addons, function (addon) {
+                        _.forEach(NODES_PRODUCTS_REPO_CHECKS_MAP[addon], function (addonRepository) {
+                            _.set(vm.repoChecks.checks, addonRepository, addonsRepos[addonRepository]);
+                        });
+
+                    });
+                }
+            });
+        }
         /**
          *  Validate Nodes Repositories required for Cloud 7 Upgrade
          */

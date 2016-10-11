@@ -1,4 +1,4 @@
-/*global bard $controller $httpBackend should assert upgradeFactory $q $rootScope */
+/*global bard $controller $httpBackend should assert upgradeFactory $q $rootScope crowbarFactory */
 describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
     var controller,
         failingRepoChecks = {
@@ -145,6 +145,15 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
         failingErrors = {
             error_message: 'Authentication failure'
         },
+        entityResponse = {
+            data: {
+                'version': '4.0',
+                'addons': [
+                    'ceph',
+                    'ha'
+                ]
+            }
+        },
         passingReposChecksResponse = {
             data: passingRepoChecks
         },
@@ -166,11 +175,16 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
         bard.inject(
             '$controller',
             'upgradeFactory',
+            'crowbarFactory',
             '$q',
             '$httpBackend',
             '$rootScope',
             'NODES_PRODUCTS_REPO_CHECKS_MAP'
         );
+
+        bard.mockService(crowbarFactory, {
+            getEntity: $q.when(entityResponse)
+        });
 
         //Create the controller
         controller = $controller('Upgrade7NodesRepositoriesCheckController');
