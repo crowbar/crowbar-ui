@@ -40,7 +40,7 @@
         function getBackup(id) {
             // this should never happen, caller should make sure 'id' is set
             if (angular.isUndefined(id)) {
-                throw Error('downloadBackup() called without id.');
+                throw Error('getBackup() called without id.');
             }
 
             var requestOptions = {

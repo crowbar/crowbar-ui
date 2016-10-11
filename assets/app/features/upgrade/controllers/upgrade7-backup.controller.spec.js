@@ -86,7 +86,7 @@ describe('Upgrade Flow - Backup Controller', function() {
                     spyOn(controller.backup, 'download');
 
                     bard.mockService(crowbarBackupFactory, {
-                        create: $q.reject(mockedErrorResponse),
+                        create: $q.reject(mockedErrorResponse)
                     });
                     controller.backup.create();
                     $rootScope.$digest();
