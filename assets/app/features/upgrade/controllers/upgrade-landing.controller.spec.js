@@ -44,7 +44,7 @@ describe('Upgrade Landing Controller', function() {
         bard.inject('$controller', '$rootScope', 'upgradeFactory', '$q', '$httpBackend');
 
         //Create the controller
-        controller = $controller('Upgrade7LandingController');
+        controller = $controller('UpgradeLandingController');
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
@@ -211,7 +211,7 @@ describe('Upgrade Landing Controller - States', function () {
 
         spyOn($state, 'go');
 
-        controller = $controller('Upgrade7LandingController');
+        controller = $controller('UpgradeLandingController');
 
     });
 
@@ -221,7 +221,7 @@ describe('Upgrade Landing Controller - States', function () {
 
         controller.beginUpgrade();
 
-        expect($state.go).toHaveBeenCalledWith('upgrade7.backup');
+        expect($state.go).toHaveBeenCalledWith('upgrade.backup');
     });
 
     it('should avoid any redirection if prechecks are not successfully validated', function() {

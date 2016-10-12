@@ -3,22 +3,22 @@
 
     /**
     * @ngdoc function
-    * @name crowbarApp.controller:Upgrade7NodesRepositoriesCheckController
+    * @name crowbarApp.controller:UpgradeNodesRepositoriesCheckController
     * @description
-    * # Upgrade7NodesRepositoriesCheckController
+    * # UpgradeNodesRepositoriesCheckController
     * This is the controller used on the Upgrade Nodes Repo Checks page
     */
     angular.module('crowbarApp')
-        .controller('Upgrade7NodesRepositoriesCheckController', Upgrade7NodesRepositoriesCheckController);
+        .controller('UpgradeNodesRepositoriesCheckController', UpgradeNodesRepositoriesCheckController);
 
-    Upgrade7NodesRepositoriesCheckController.$inject = [
+    UpgradeNodesRepositoriesCheckController.$inject = [
         '$translate',
         'upgradeFactory',
         'crowbarFactory',
         'NODES_PRODUCTS_REPO_CHECKS_MAP'
     ];
     // @ngInject
-    function Upgrade7NodesRepositoriesCheckController(
+    function UpgradeNodesRepositoriesCheckController(
         $translate,
         upgradeFactory,
         crowbarFactory,
@@ -28,19 +28,19 @@
             addonsRepos = {
                 'SLE12-SP2-HA-Pool': {
                     status: false, 
-                    label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SLE12-SP2-HA-Pool'
+                    label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SLE12-SP2-HA-Pool'
                 },
                 'SLE12-SP2-HA-Updates': {
                     status: false, 
-                    label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SLE12-SP2-HA-Updates'
+                    label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SLE12-SP2-HA-Updates'
                 },
                 'SUSE-Enterprise-Storage-4-Pool': {
                     status: false, 
-                    label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SUSE-Enterprise-Storage-4-Pool'
+                    label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SUSE-Enterprise-Storage-4-Pool'
                 },
                 'SUSE-Enterprise-Storage-4-Updates': {
                     status: false, 
-                    label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SUSE-Enterprise-Storage-4-Updates'
+                    label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SUSE-Enterprise-Storage-4-Updates'
                 }
             };
         vm.repoChecks = {
@@ -49,19 +49,19 @@
             checks: {
                 'SLES12-SP2-Pool': {
                     status: false, 
-                    label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SLES12-SP2-Pool'
+                    label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SLES12-SP2-Pool'
                 },
                 'SLES12-SP2-Updates': {
                     status: false, 
-                    label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SLES12-SP2-Updates'
+                    label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SLES12-SP2-Updates'
                 },
                 'SUSE-OpenStack-Cloud-7-Pool': {
                     status: false, 
-                    label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SUSE-OpenStack-Cloud-7-Pool'
+                    label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SUSE-OpenStack-Cloud-7-Pool'
                 },
                 'SUSE-OpenStack-Cloud-7-Updates': {
                     status: false, 
-                    label: 'upgrade7.steps.nodes-repository-checks.repositories.codes.SUSE-OpenStack-Cloud-7-Updates'
+                    label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SUSE-OpenStack-Cloud-7-Updates'
                 }
             },
             runRepoChecks: runRepoChecks,

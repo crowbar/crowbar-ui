@@ -1,0 +1,35 @@
+.upgrade-landing-page
+    h1(translate='upgrade.steps.landing.title') Suse Upgrade
+    p(translate='') upgrade.steps.landing.description
+    ul.requirements-list
+        li(translate='') upgrade.steps.landing.requirements.point1
+        li(translate='') upgrade.steps.landing.requirements.point2
+        li(translate='') upgrade.steps.landing.requirements.point3
+    
+    h2.h4(translate='') upgrade.steps.landing.prechecks.title
+    //- div.checks-container
+    .panel.panel-default
+        .panel-body
+            p(translate='') upgrade.steps.landing.prechecks.description
+            crowbar-checklist(checklist='upgradeLandingVm.prechecks.checks', completed='upgradeLandingVm.prechecks.completed') 
+    
+            button.btn.btn-success(
+                ng-disabled="(upgradeLandingVm.prechecks.completed && upgradeLandingVm.prechecks.valid) || upgradeLandingVm.prechecks.running",
+                ng-class="{\
+                    'spinner-visible': upgradeLandingVm.prechecks.spinnerVisible,\
+                    active: upgradeLandingVm.prechecks.running\
+                }",
+                ng-click="upgradeLandingVm.prechecks.runPrechecks()"
+            )
+                suse-lazy-spinner(delay="2000", active="upgradeLandingVm.prechecks.running",
+                    visible="upgradeLandingVm.prechecks.spinnerVisible")
+                span(translate='') upgrade.steps.landing.prechecks.form.check-again
+
+    .row
+        .col-sm-10.col-sm-offset-1.note-message.text-center
+            strong(translate='') upgrade.steps.landing.note
+
+    button.btn.btn-success.center-block(translate='', 
+        ng-disabled="!upgradeLandingVm.prechecks.completed || !upgradeLandingVm.prechecks.valid",
+        ng-click="upgradeLandingVm.beginUpgrade()"
+    ) upgrade.steps.landing.form.button

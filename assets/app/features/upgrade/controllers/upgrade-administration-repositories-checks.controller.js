@@ -3,18 +3,18 @@
 
     /**
     * @ngdoc function
-    * @name crowbarApp.controller:Upgrade7AdministrationRepositoriesCheckController
+    * @name crowbarApp.controller:UpgradeAdministrationRepositoriesCheckController
     * @description
-    * # Upgrade7AdministrationRepositoriesCheckController
+    * # UpgradeAdministrationRepositoriesCheckController
     * This is the controller used on the Upgrade Administration Repositories Checks page
     */
     angular.module('crowbarApp')
-        .controller('Upgrade7AdministrationRepositoriesCheckController',
-            Upgrade7AdministrationRepositoriesCheckController);
+        .controller('UpgradeAdministrationRepositoriesCheckController',
+            UpgradeAdministrationRepositoriesCheckController);
 
-    Upgrade7AdministrationRepositoriesCheckController.$inject = ['$translate', 'crowbarFactory'];
+    UpgradeAdministrationRepositoriesCheckController.$inject = ['$translate', 'crowbarFactory'];
     // @ngInject
-    function Upgrade7AdministrationRepositoriesCheckController($translate, crowbarFactory) {
+    function UpgradeAdministrationRepositoriesCheckController($translate, crowbarFactory) {
         var vm = this;
         vm.repoChecks = {
             running: false,
@@ -24,19 +24,19 @@
             checks: {
                 'SLES_12_SP2': {
                     status: false, 
-                    label: 'upgrade7.steps.admin-repository-checks.repositories.codes.SLES_12_SP2'
+                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES_12_SP2'
                 },
                 'SLES_12_SP2_Updates': {
                     status: false, 
-                    label: 'upgrade7.steps.admin-repository-checks.repositories.codes.SLES_12_SP2_Updates'
+                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES_12_SP2_Updates'
                 },
                 'SLES_OpenStack_Cloud_7': {
                     status: false, 
-                    label: 'upgrade7.steps.admin-repository-checks.repositories.codes.SLES_OpenStack_Cloud_7'
+                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES_OpenStack_Cloud_7'
                 },
                 'SLES_OpenStack_Cloud_7_Updates': {
                     status: false, 
-                    label: 'upgrade7.steps.admin-repository-checks.repositories.codes.SLES_OpenStack_Cloud_7_Updates'
+                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES_OpenStack_Cloud_7_Updates'
                 }
             },
             runRepoChecks: runRepoChecks

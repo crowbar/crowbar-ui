@@ -29,7 +29,7 @@ describe('Upgrade Flow - Backup Controller', function() {
         bard.inject('$controller', '$rootScope', '$q', '$httpBackend', '$document', 'crowbarBackupFactory');
 
         //Create the controller
-        controller = $controller('Upgrade7BackupController');
+        controller = $controller('UpgradeBackupController');
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
@@ -135,10 +135,10 @@ describe('Upgrade Flow - Backup Controller', function() {
                         // Mock the download() method of the crowbarBackupFactory,
                         // and return a custom promise instead
                         bard.mockService(crowbarBackupFactory, {
-                            getBackup: $q.when(mockedDownloadResponse)
+                            get: $q.when(mockedDownloadResponse)
                         });
 
-                        // Run the backup getBackup function
+                        // Run the backup get function
                         controller.backup.download(42);
                         $rootScope.$digest();
                     });
@@ -148,8 +148,8 @@ describe('Upgrade Flow - Backup Controller', function() {
                         expect(downloadBackupMock.click).toHaveBeenCalled();
                     })
 
-                    it('crowbarBackupFactory.getBackup() has been called once', function () {
-                        assert.isTrue(crowbarBackupFactory.getBackup.calledOnce);
+                    it('crowbarBackupFactory.get() has been called once', function () {
+                        assert.isTrue(crowbarBackupFactory.get.calledOnce);
                     });
 
                     it('changes the completed status', function() {
@@ -165,15 +165,15 @@ describe('Upgrade Flow - Backup Controller', function() {
                     beforeEach(function () {
 
                         bard.mockService(crowbarBackupFactory, {
-                            getBackup: $q.reject(mockedErrorResponse)
+                            get: $q.reject(mockedErrorResponse)
                         });
 
                         controller.backup.download(42);
                         $rootScope.$digest();
                     });
 
-                    it('crowbarBackupFactory.getBackup() has been called once', function () {
-                        assert.isTrue(crowbarBackupFactory.getBackup.calledOnce);
+                    it('crowbarBackupFactory.get() has been called once', function () {
+                        assert.isTrue(crowbarBackupFactory.get.calledOnce);
                     });
 
                     it('changes the completed status', function() {

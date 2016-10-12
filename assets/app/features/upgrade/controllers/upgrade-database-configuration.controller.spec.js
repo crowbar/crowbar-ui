@@ -10,7 +10,7 @@ describe('Upgrade Flow - Create Connect Database Controller', function () {
         bard.inject('$controller', '$q', '$httpBackend', '$rootScope');
 
         //Create the controller
-        controller = $controller('Upgrade7DatabaseConfigurationController');
+        controller = $controller('UpgradeDatabaseConfigurationController');
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});

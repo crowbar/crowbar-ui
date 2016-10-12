@@ -40,7 +40,7 @@ describe('openStack Services Controller', function() {
         bard.inject('$controller', '$rootScope', 'openstackFactory', '$q', '$httpBackend');
 
         //Create the controller
-        controller = $controller('Upgrade7OpenStackServicesController');
+        controller = $controller('UpgradeOpenStackServicesController');
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
@@ -88,7 +88,7 @@ describe('openStack Services Controller', function() {
             it('all should have a label set', function () {
                 assert.isObject(controller.openStackServices.checks);
                 _.forEach(controller.openStackServices.checks, function(key, value) {
-                    expect(key.label).toEqual('upgrade7.steps.openstack-services.codes.' + value);
+                    expect(key.label).toEqual('upgrade.steps.openstack-services.codes.' + value);
                 });
             });
         });

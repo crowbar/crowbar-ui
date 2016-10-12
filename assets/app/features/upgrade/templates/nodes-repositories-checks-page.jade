@@ -1,6 +1,6 @@
 .nodes-repository-checks-page
-    h2(translate='') upgrade7.steps.nodes-repository-checks.title
-    p(translate='') upgrade7.steps.nodes-repository-checks.description
+    h2(translate='') upgrade.steps.nodes-repository-checks.title
+    p(translate='') upgrade.steps.nodes-repository-checks.description
 
     div.checks-container
         crowbar-checklist(checklist='upgradeNodesRepoChecksVm.repoChecks.checks', completed='upgradeNodesRepoChecksVm.repoChecks.completed')
@@ -15,4 +15,4 @@
         )
             suse-lazy-spinner(delay="2000", active="upgradeNodesRepoChecksVm.repoChecks.running",
                 visible="upgradeNodesRepoChecksVm.repoChecks.spinnerVisible")
-            span(translate='') upgrade7.steps.nodes-repository-checks.form.check-again
+            span(translate='') upgrade.steps.nodes-repository-checks.form.check-again

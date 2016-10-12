@@ -1,4 +1,4 @@
-describe('Upgrade 7 Controller', function () {
+describe('Upgrade Controller', function () {
 
 
     //@TODO: Implement the following tests

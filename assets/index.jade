@@ -16,9 +16,6 @@ html(ng-app='crowbarApp')
     script(src='js/bower_components.min.js')
     script(src='app/crowbar-app.module.js')
 
-    // Templates
-    script(src='app/crowbar-app.templates.js')
-
     // Crowbar Core
     script(src='app/core/crowbar-core.module.js')
 
@@ -49,11 +46,14 @@ html(ng-app='crowbarApp')
     script(src='app/features/upgrade/upgrade.constants.js')
     script(src='app/features/upgrade/upgrade.controller.js')
     // Upgrade 7
-    script(src='app/features/upgrade/upgrade7.controller.js')
-    script(src='app/features/upgrade/controllers/upgrade7-landing.controller.js')
-    script(src='app/features/upgrade/controllers/upgrade7-backup.controller.js')
-    script(src='app/features/upgrade/controllers/upgrade7-administration-repositories-checks.controller.js')
-    script(src='app/features/upgrade/controllers/upgrade7-upgrade-administration-server.controller.js')
-    script(src='app/features/upgrade/controllers/upgrade7-database-configuration.controller.js')
-    script(src='app/features/upgrade/controllers/upgrade7-nodes-repositories-checks.controller.js')
-    script(src='app/features/upgrade/controllers/upgrade7-openstack-services.controller.js')
+    script(src='app/features/upgrade/upgrade.controller.js')
+    script(src='app/features/upgrade/controllers/upgrade-landing.controller.js')
+    script(src='app/features/upgrade/controllers/upgrade-backup.controller.js')
+    script(src='app/features/upgrade/controllers/upgrade-administration-repositories-checks.controller.js')
+    script(src='app/features/upgrade/controllers/upgrade-upgrade-administration-server.controller.js')
+    script(src='app/features/upgrade/controllers/upgrade-database-configuration.controller.js')
+    script(src='app/features/upgrade/controllers/upgrade-nodes-repositories-checks.controller.js')
+    script(src='app/features/upgrade/controllers/upgrade-openstack-services.controller.js')
+
+    // Templates
+    script(src='app/crowbar-app.templates.js')

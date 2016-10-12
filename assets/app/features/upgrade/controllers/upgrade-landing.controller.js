@@ -3,17 +3,17 @@
 
     /**
      * @ngdoc function
-     * @name crowbarApp.controller:Upgrade7LandingController
+     * @name crowbarApp.controller:UpgradeLandingController
      * @description
-     * # Upgrade7LandingController
+     * # UpgradeLandingController
      * This is the controller used on the Upgrade landing page
      */
     angular.module('crowbarApp')
-        .controller('Upgrade7LandingController', Upgrade7LandingController);
+        .controller('UpgradeLandingController', UpgradeLandingController);
 
-    Upgrade7LandingController.$inject = ['$translate', '$state', 'upgradeFactory'];
+    UpgradeLandingController.$inject = ['$translate', '$state', 'upgradeFactory'];
     // @ngInject
-    function Upgrade7LandingController($translate, $state, upgradeFactory) {
+    function UpgradeLandingController($translate, $state, upgradeFactory) {
         var vm = this;
         vm.beginUpgrade = beginUpgrade;
 
@@ -25,19 +25,19 @@
             checks: {
                 updates_installed: {
                     status: false, 
-                    label: 'upgrade7.steps.landing.prechecks.codes.updates_installed'
+                    label: 'upgrade.steps.landing.prechecks.codes.updates_installed'
                 },
                 network_sanity: {
                     status: false, 
-                    label: 'upgrade7.steps.landing.prechecks.codes.network_sanity'
+                    label: 'upgrade.steps.landing.prechecks.codes.network_sanity'
                 },
                 high_availability: {
                     status: false, 
-                    label: 'upgrade7.steps.landing.prechecks.codes.high_availability'
+                    label: 'upgrade.steps.landing.prechecks.codes.high_availability'
                 },
                 free_node_available: {
                     status: false, 
-                    label: 'upgrade7.steps.landing.prechecks.codes.free_node_available'
+                    label: 'upgrade.steps.landing.prechecks.codes.free_node_available'
                 }
             },
             runPrechecks: runPrechecks
@@ -52,7 +52,7 @@
                 return;
             }
 
-            $state.go('upgrade7.backup');
+            $state.go('upgrade.backup');
         }
 
         /**
