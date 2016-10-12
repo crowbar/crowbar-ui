@@ -24,6 +24,10 @@
             checkAdminUpgrade: checkAdminUpgrade
         };
 
+        // On page load we need to check to see if the upgrade is already running to set
+        // the button status and the update check running
+        checkAdminUpgrade();
+
         function beginAdminUpgrade() {
             vm.adminUpgrade.running = true;
 
@@ -48,21 +52,25 @@
                 .then(
                     // In case of success
                     function (response) {
-                        // TODO: update to match API
-                        vm.adminUpgrade.completed = response.data.completed;
+                        // map api response to model
+                        vm.adminUpgrade.completed = response.data.upgrade.success;
+                        vm.adminUpgrade.running = response.data.upgrade.upgrading;
                     },
                     // In case of failure
                     function (errorResponse) {
                         // Expose the error list to adminUpgrade object
+                        // TODO(itxaka): Use the proper error key from the response
                         vm.adminUpgrade.errors = errorResponse.data.errors;
                     }
                 ).finally(
                     function () {
                         // schedule another check if not completed yet
-                        if (!vm.adminUpgrade.completed) {
+                        if (!vm.adminUpgrade.completed && vm.adminUpgrade.running) {
                             $timeout(vm.adminUpgrade.checkAdminUpgrade, 1000); // TODO: make the interval a constant
-                        } else {
-                            vm.adminUpgrade.running = false;
+                        } else if (vm.adminUpgrade.completed && !vm.adminUpgrade.running) {
+                            // TODO(itxaka): can translations be done from here instead so
+                            // we can update the button text for better UX?
+                            vm.finish_text = 'Upgrade done!'
                         }
                     }
                 );

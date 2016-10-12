@@ -10,4 +10,4 @@ button.btn.btn-success.center-block(
 )
     suse-lazy-spinner(delay="2000", active="upgradeAdminUpgradeVm.adminUpgrade.running",
         visible="upgradeAdminUpgradeVm.adminUpgrade.spinnerVisible")
-    span(translate='') upgrade.steps.upgrade-admin.form.upgrade-admin
+    span(translate='', ng-bind="upgradeAdminUpgradeVm.finish_text") upgrade.steps.upgrade-admin.form.upgrade-admin

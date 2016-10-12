@@ -2,12 +2,36 @@
 describe('Upgrade Flow - Upgrade Administration Server Controller', function () {
     var controller,
         completedUpgradeResponse = {
-            data: { completed: true }
+            data: {
+                version: '3.0',
+                addons: [],
+                upgrade: {
+                    upgrading: false,
+                    success: true,
+                    failed: false}
+            }
         },
         incompleteUpgradeResponse = {
-            data: { completed: false }
+            data: {
+                version: '3.0',
+                addons: [],
+                upgrade: {
+                    upgrading: true,
+                    success: false,
+                    failed: false}
+            }
+        },
+        initialResponse = {
+            version: '3.0',
+            addons: [],
+            upgrade: {
+                upgrading: false,
+                success: false,
+                failed: false
+            }
         },
         errorList = ['1', '2', '3'],
+        // TODO(itxaka): change this to the proper response from the API
         errorResponse = {
             data: { errors: errorList }
         },
@@ -25,6 +49,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
+        $httpBackend.expectGET('/api/crowbar/upgrade').respond(initialResponse);
         $httpBackend.flush();
     });
 
