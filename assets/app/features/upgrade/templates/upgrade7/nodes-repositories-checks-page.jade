@@ -5,6 +5,14 @@
     div.checks-container
         crowbar-checklist(checklist='upgradeNodesRepoChecksVm.repoChecks.checks', completed='upgradeNodesRepoChecksVm.repoChecks.completed')
 
-        button.btn.btn-success.pull-left(translate='', 
-            ng-class="{disabled: upgradeNodesRepoChecksVm.repoChecks.completed && upgradeNodesRepoChecksVm.repoChecks.valid}",
-            ng-click="upgradeNodesRepoChecksVm.repoChecks.runRepoChecks()") upgrade7.steps.nodes-repository-checks.form.check-again
+        button.btn.btn-success.pull-left(
+            ng-click="upgradeNodesRepoChecksVm.repoChecks.runRepoChecks()"
+            ng-disabled="(upgradeNodesRepoChecksVm.repoChecks.completed && upgradeNodesRepoChecksVm.repoChecks.valid) || upgradeNodesRepoChecksVm.repoChecks.running",
+            ng-class="{\
+                'spinner-visible': upgradeNodesRepoChecksVm.repoChecks.spinnerVisible,\
+                active: upgradeNodesRepoChecksVm.repoChecks.running\
+            }",
+        )
+            suse-lazy-spinner(delay="2000", active="upgradeNodesRepoChecksVm.repoChecks.running",
+                visible="upgradeNodesRepoChecksVm.repoChecks.spinnerVisible")
+            span(translate='') upgrade7.steps.nodes-repository-checks.form.check-again

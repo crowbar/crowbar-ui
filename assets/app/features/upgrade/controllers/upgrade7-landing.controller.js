@@ -11,9 +11,9 @@
     angular.module('crowbarApp')
         .controller('Upgrade7LandingController', Upgrade7LandingController);
 
-    Upgrade7LandingController.$inject = ['$translate', '$state', 'upgradePrechecksFactory'];
+    Upgrade7LandingController.$inject = ['$translate', '$state', 'upgradeFactory'];
     // @ngInject
-    function Upgrade7LandingController($translate, $state, upgradePrechecksFactory) {
+    function Upgrade7LandingController($translate, $state, upgradeFactory) {
         var vm = this;
         vm.beginUpgrade = beginUpgrade;
 
@@ -61,8 +61,8 @@
         function runPrechecks() {
             vm.prechecks.running = true;
 
-            upgradePrechecksFactory
-                .getAll()
+            upgradeFactory
+                .getPreliminaryChecks()
                 .then(
                     //Success handler. Al precheck passed successfully:
                     function(prechecksResponse) { 

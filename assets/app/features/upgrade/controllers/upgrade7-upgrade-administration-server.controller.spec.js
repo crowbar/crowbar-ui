@@ -1,4 +1,4 @@
-/*global bard $controller should $httpBackend upgradeUpgradeAdministrationServerFactory assert $q $rootScope */
+/*global bard $controller should $httpBackend crowbarFactory assert $q $rootScope */
 describe('Upgrade Flow - Upgrade Administration Server Controller', function () {
     var controller,
         completedUpgradeResponse = {
@@ -16,7 +16,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
-        bard.inject('$controller', '$q', '$httpBackend', '$rootScope', 'upgradeUpgradeAdministrationServerFactory');
+        bard.inject('$controller', '$q', '$httpBackend', '$rootScope', 'crowbarFactory');
 
         mockedTimeout = jasmine.createSpy('$timeout');
 
@@ -58,8 +58,8 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
                 beforeEach(function () {
                     spyOn(controller.adminUpgrade, 'checkAdminUpgrade');
 
-                    bard.mockService(upgradeUpgradeAdministrationServerFactory, {
-                        getAdminUpgrade: $q.when(incompleteUpgradeResponse)
+                    bard.mockService(crowbarFactory, {
+                        upgrade: $q.when(incompleteUpgradeResponse)
                     });
                     controller.adminUpgrade.beginAdminUpgrade();
                     $rootScope.$digest();
@@ -78,8 +78,8 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
                 beforeEach(function () {
                     spyOn(controller.adminUpgrade, 'checkAdminUpgrade');
 
-                    bard.mockService(upgradeUpgradeAdministrationServerFactory, {
-                        getAdminUpgrade: $q.reject(errorResponse)
+                    bard.mockService(crowbarFactory, {
+                        upgrade: $q.reject(errorResponse)
                     });
                     controller.adminUpgrade.beginAdminUpgrade();
                     $rootScope.$digest();
@@ -109,8 +109,8 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
             describe('when got upgrade status from api successfully', function () {
                 describe('when received status is completed', function () {
                     beforeEach(function () {
-                        bard.mockService(upgradeUpgradeAdministrationServerFactory, {
-                            getAdminUpgradeStatus: $q.when(completedUpgradeResponse)
+                        bard.mockService(crowbarFactory, {
+                            getUpgradeStatus: $q.when(completedUpgradeResponse)
                         });
                         controller.adminUpgrade.checkAdminUpgrade();
                         $rootScope.$digest();
@@ -129,8 +129,8 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
 
                 describe('when received status is not completed', function () {
                     beforeEach(function () {
-                        bard.mockService(upgradeUpgradeAdministrationServerFactory, {
-                            getAdminUpgradeStatus: $q.when(incompleteUpgradeResponse)
+                        bard.mockService(crowbarFactory, {
+                            getUpgradeStatus: $q.when(incompleteUpgradeResponse)
                         });
                         controller.adminUpgrade.running = true;
                         controller.adminUpgrade.checkAdminUpgrade();
@@ -151,8 +151,8 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
 
             describe('when got error from api', function () {
                 beforeEach(function () {
-                    bard.mockService(upgradeUpgradeAdministrationServerFactory, {
-                        getAdminUpgradeStatus: $q.reject(errorResponse)
+                    bard.mockService(crowbarFactory, {
+                        getUpgradeStatus: $q.reject(errorResponse)
                     });
                     controller.adminUpgrade.checkAdminUpgrade();
                     $rootScope.$digest();

@@ -12,9 +12,9 @@ function() {
     angular.module('crowbarApp')
         .controller('Upgrade7BackupController', Upgrade7BackupController);
 
-    Upgrade7BackupController.$inject = ['$translate', '$state', 'upgradeBackupFactory', '$document'];
+    Upgrade7BackupController.$inject = ['$translate', '$state', 'crowbarBackupFactory', '$document'];
     // @ngInject
-    function Upgrade7BackupController($translate, $state, upgradeBackupFactory, $document) {
+    function Upgrade7BackupController($translate, $state, crowbarBackupFactory, $document) {
         var vm = this;
         vm.backup = {
             running: false,
@@ -27,7 +27,7 @@ function() {
         function createBackup() {
             vm.backup.running = true;
 
-            upgradeBackupFactory.create()
+            crowbarBackupFactory.create()
                 .then(
                     function (response) {
                         // the ID should always be returned in a successfull response
@@ -56,7 +56,7 @@ function() {
         }
 
         function downloadBackup(backupId) {
-            upgradeBackupFactory.download(backupId)
+            crowbarBackupFactory.getBackup(backupId)
                 .then(
                     // When Backup Data has been created successfully
                     function (response) {

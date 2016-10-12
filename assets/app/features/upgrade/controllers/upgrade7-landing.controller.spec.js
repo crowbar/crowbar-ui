@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-/*global bard $controller $httpBackend should assert upgradePrechecksFactory $q $rootScope module $state */
+/*global bard $controller $httpBackend should assert upgradeFactory $q $rootScope module $state */
 describe('Upgrade Landing Controller', function() {
     var controller,
         passingChecks = {
@@ -41,7 +41,7 @@ describe('Upgrade Landing Controller', function() {
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
-        bard.inject('$controller', '$rootScope', 'upgradePrechecksFactory', '$q', '$httpBackend');
+        bard.inject('$controller', '$rootScope', 'upgradeFactory', '$q', '$httpBackend');
 
         //Create the controller
         controller = $controller('Upgrade7LandingController');
@@ -101,8 +101,8 @@ describe('Upgrade Landing Controller', function() {
 
             describe('when checks pass successfully', function () {
                 beforeEach(function () {
-                    bard.mockService(upgradePrechecksFactory, {
-                        getAll: $q.when(passingChecksResponse)
+                    bard.mockService(upgradeFactory, {
+                        getPreliminaryChecks: $q.when(passingChecksResponse)
                     });
                     controller.prechecks.runPrechecks();
                     $rootScope.$digest();
@@ -126,8 +126,8 @@ describe('Upgrade Landing Controller', function() {
 
             describe('when checks fails', function () {
                 beforeEach(function () {
-                    bard.mockService(upgradePrechecksFactory, {
-                        getAll: $q.when(failingChecksResponse)
+                    bard.mockService(upgradeFactory, {
+                        getPreliminaryChecks: $q.when(failingChecksResponse)
                     });
                     controller.prechecks.runPrechecks();
                     $rootScope.$digest();
@@ -151,8 +151,8 @@ describe('Upgrade Landing Controller', function() {
 
             describe('when checks partially fails', function () {
                 beforeEach(function () {
-                    bard.mockService(upgradePrechecksFactory, {
-                        getAll: $q.when(partiallyFailingChecksResponse)
+                    bard.mockService(upgradeFactory, {
+                        getPreliminaryChecks: $q.when(partiallyFailingChecksResponse)
                     });
                     controller.prechecks.runPrechecks();
                     $rootScope.$digest();
@@ -176,8 +176,8 @@ describe('Upgrade Landing Controller', function() {
 
             describe('when service call fails', function () {
                 beforeEach(function () {
-                    bard.mockService(upgradePrechecksFactory, {
-                        getAll: $q.reject(failingResponse)
+                    bard.mockService(upgradeFactory, {
+                        getPreliminaryChecks: $q.reject(failingResponse)
                     });
                     controller.prechecks.runPrechecks();
                     $rootScope.$digest();

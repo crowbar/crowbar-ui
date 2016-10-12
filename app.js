@@ -6,15 +6,15 @@ var express = require('express'),
 
     //Routes
     index = require('./routes/index'),
-    steps = require('./routes/api/steps'),
-    upgrade7Steps = require('./routes/api/upgrade7/steps'),
-    upgrade7Prechecks = require('./routes/api/upgrade7/prechecks'),
-    upgrade7Backup = require('./routes/api/upgrade7/backup'),
-    upgrade7AdminRepoChecks = require('./routes/api/upgrade7/admin-repo-checks'),
-    upgrade7AdminUpgrade = require('./routes/api/upgrade7/admin-upgrade'),
-    upgrade7NodesRepoChecks = require('./routes/api/upgrade7/nodes-repo-checks'),
-    upgrade7StopOpenStackServices = require('./routes/api/upgrade7/stop-openstack-services'),
-    upgrade7OpenStackServicesBackup = require('./routes/api/upgrade7/openstack-services-backup'),
+    crowbarEntity = require('./routes/api/crowbar/entity'),
+    crowbarBackupCreate = require('./routes/api/crowbar/backups/create'),
+    crowbarBackupDownload =  require('./routes/api/crowbar/backups/download'),
+    crowbarRepocheck = require('./routes/api/crowbar/repocheck'),
+    crowbarUpgrade = require('./routes/api/crowbar/upgrade'),
+    upgradeRepocheck = require('./routes/api/upgrade/repocheck'),
+    upgradePrechecks = require('./routes/api/upgrade/prechecks'),
+    openstackServices = require('./routes/api/openstack/services'),
+    openstackBackup = require('./routes/api/openstack/backup'),
 
     app = express();
 
@@ -27,15 +27,17 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/api/steps', steps);
-app.use('/api/upgrade7/steps', upgrade7Steps);
-app.use('/api/upgrade7/prechecks', upgrade7Prechecks);
-app.use('/api/upgrade7/backup', upgrade7Backup);
-app.use('/api/upgrade7/admin-repo-checks', upgrade7AdminRepoChecks);
-app.use('/api/upgrade7/admin-upgrade', upgrade7AdminUpgrade);
-app.use('/api/upgrade7/nodes-repo-checks', upgrade7NodesRepoChecks);
-app.use('/api/upgrade7/openstack-services/stop', upgrade7StopOpenStackServices);
-app.use('/api/upgrade7/openstack-services/backup', upgrade7OpenStackServicesBackup);
+app.use('/api/crowbar', crowbarEntity);
+app.use('/api/crowbar/backups', crowbarBackupCreate);
+app.use('/api/crowbar/backups/\*/download', crowbarBackupDownload);
+app.use('/api/crowbar/repocheck', crowbarRepocheck);
+app.use('/api/crowbar/upgrade', crowbarUpgrade);
+app.use('/api/upgrade/prechecks', upgradePrechecks);
+app.use('/api/upgrade/repocheck', upgradeRepocheck);
+app.use('/api/openstack/services', openstackServices);
+app.use('/api/openstack/backup', openstackBackup);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

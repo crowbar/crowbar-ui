@@ -1,11 +1,14 @@
 var express = require('express'),
     router = express.Router();
 
-
-/* GET openStack services Checks. */
+/* GET crowbar entity. */
 router.get('/', function(req, res) {
     res.status(200).json({
-        'services': true
+        'version': '4.0',
+        'addons': [
+            'ceph',
+            'ha'
+        ]
     });
 });
 

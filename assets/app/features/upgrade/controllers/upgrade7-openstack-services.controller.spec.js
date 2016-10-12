@@ -1,4 +1,4 @@
-/*global bard $controller $httpBackend should assert openStackFactory $q $rootScope */
+/*global bard $controller $httpBackend should assert openstackFactory $q $rootScope */
 describe('openStack Services Controller', function() {
     var controller,
         passingOpenStackServices = {
@@ -16,16 +16,16 @@ describe('openStack Services Controller', function() {
         failingErrors = {
             error_message: 'Authentication failure'
         },
-        passingOpenStackServicesResponse = {
+        passingServicesResponse = {
             data: passingOpenStackServices
         },
         failingOpenStackServicesResponse = {
             data: failingOpenStackServices
         },
-        passingOpenStackBackupResponse = {
+        passingBackupResponse = {
             data: passingOpenStackBackup
         },
-        failingOpenStackBackupResponse = {
+        failingBackupResponse = {
             data: failingOpenStackBackup
         },
         failingResponse = {
@@ -37,7 +37,7 @@ describe('openStack Services Controller', function() {
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
-        bard.inject('$controller', '$rootScope', 'openStackFactory', '$q', '$httpBackend');
+        bard.inject('$controller', '$rootScope', 'openstackFactory', '$q', '$httpBackend');
 
         //Create the controller
         controller = $controller('Upgrade7OpenStackServicesController');
@@ -92,201 +92,201 @@ describe('openStack Services Controller', function() {
                 });
             });
         });
-    });
 
-    describe('stopOpenStackServices function', function () {
-        it('should be defined', function () {
-            should.exist(controller.openStackServices.stopOpenStackServices);
-        });
+        describe('stopServices function', function () {
+            it('should be defined', function () {
+                should.exist(controller.openStackServices.stopServices);
+            });
 
-        describe('when services check and backup check pass successfull', function () {
-            beforeEach(function () {
-                bard.mockService(openStackFactory, {
-                    stopOpenstackServices: $q.when(passingOpenStackServicesResponse),
-                    createOpenstackBackup: $q.when(passingOpenStackBackupResponse)
+            describe('when services check and backup check pass successfully', function () {
+                beforeEach(function () {
+                    bard.mockService(openstackFactory, {
+                        stopServices: $q.when(passingServicesResponse),
+                        createBackup: $q.when(passingBackupResponse)
+                    });
+                    controller.openStackServices.stopServices();
+                    $rootScope.$digest();
                 });
-                controller.openStackServices.stopOpenStackServices();
-                $rootScope.$digest();
-            });
 
-            it('should set openStackServices.completed status to true', function () {
-                assert.isTrue(controller.openStackServices.completed);
-            });
-
-            it('should update valid attribute of checks model to true', function () {
-                assert.isTrue(controller.openStackServices.valid);
-            });
-
-            it('should set running to false', function () {
-                assert.isFalse(controller.openStackServices.running);
-            });
-
-            it('should call stopOpenstack service', function () {
-                assert.isTrue(openStackFactory.stopOpenstackServices.calledOnce);                         
-            });
-
-            it('should update services check value to true', function () {
-                assert.isTrue(controller.openStackServices.checks.services.status);   
-            });
-
-            it('should call backup service', function () {
-                assert.isTrue(openStackFactory.createOpenstackBackup.calledOnce);                         
-            });
-
-            it('should update backup check value to true', function () {
-                assert.isTrue(controller.openStackServices.checks.backup.status);                         
-            });
-
-        });
-
-        describe('when services check pass successfull and backup check fails', function () {
-            beforeEach(function () {
-                bard.mockService(openStackFactory, {
-                    stopOpenstackServices: $q.when(passingOpenStackServicesResponse),
-                    createOpenstackBackup: $q.when(failingOpenStackBackupResponse)
+                it('should set openStackServices.completed status to true', function () {
+                    assert.isTrue(controller.openStackServices.completed);
                 });
-                controller.openStackServices.stopOpenStackServices();
-                $rootScope.$digest();
-            });
 
-            it('should set openStackServices.completed status to true', function () {
-                assert.isTrue(controller.openStackServices.completed);
-            });
-
-            it('should update valid attribute of checks model to false', function () {
-                assert.isFalse(controller.openStackServices.valid);
-            });
-
-            it('should set running to false', function () {
-                assert.isFalse(controller.openStackServices.running);
-            });
-
-            it('should call stopOpenstack service', function () {
-                assert.isTrue(openStackFactory.stopOpenstackServices.calledOnce);                         
-            });
-
-            it('should update services check value to true', function () {
-                assert.isTrue(controller.openStackServices.checks.services.status);   
-            });
-
-            it('should call backup service', function () {
-                assert.isTrue(openStackFactory.createOpenstackBackup.calledOnce);                         
-            });
-
-            it('should update backup check value to false', function () {
-                assert.isFalse(controller.openStackServices.checks.backup.status);                         
-            });
-
-        });
-
-        describe('when services check pass successfull and backup service call fails', function () {
-            beforeEach(function () {
-                bard.mockService(openStackFactory, {
-                    stopOpenstackServices: $q.when(passingOpenStackServicesResponse),
-                    createOpenstackBackup: $q.reject(failingResponse)
+                it('should update valid attribute of checks model to true', function () {
+                    assert.isTrue(controller.openStackServices.valid);
                 });
-                controller.openStackServices.stopOpenStackServices();
-                $rootScope.$digest();
-            });
 
-            it('should set openStackServices.completed status to true', function () {
-                assert.isTrue(controller.openStackServices.completed);
-            });
-
-            it('should update valid attribute of checks model to false', function () {
-                assert.isFalse(controller.openStackServices.valid);
-            });
-
-            it('should set running to false', function () {
-                assert.isFalse(controller.openStackServices.running);
-            });
-
-            it('should call stopOpenstack service', function () {
-                assert.isTrue(openStackFactory.stopOpenstackServices.calledOnce);                         
-            });
-
-            it('should update services check value to true', function () {
-                assert.isTrue(controller.openStackServices.checks.services.status);   
-            });
-
-            it('should call backup service', function () {
-                assert.isTrue(openStackFactory.createOpenstackBackup.calledOnce);                         
-            });
-
-            it('should expose the errors through vm.openStackServices.errors object', function () {
-                expect(controller.openStackServices.errors).toEqual(failingResponse.data.errors);
-            });
-
-        });
-
-        describe('when services check fails', function () {
-            beforeEach(function () {
-                spyOn(openStackFactory, 'createOpenstackBackup');
-
-                bard.mockService(openStackFactory, {
-                    stopOpenstackServices: $q.when(failingOpenStackServicesResponse)
+                it('should set running to false', function () {
+                    assert.isFalse(controller.openStackServices.running);
                 });
-                controller.openStackServices.stopOpenStackServices();
-                $rootScope.$digest();
 
-            });
-
-            it('should set openStackServices.completed status to true', function () {
-                assert.isTrue(controller.openStackServices.completed);
-            });
-
-            it('should update valid attribute of checks model to false', function () {
-                assert.isFalse(controller.openStackServices.valid);
-            });
-
-            it('should set running to false', function () {
-                assert.isFalse(controller.openStackServices.running);
-            });
-
-            it('should call stopOpenstack service', function () {
-                assert.isTrue(openStackFactory.stopOpenstackServices.calledOnce);                         
-            });
-
-            it('should update services checks values to false', function () {
-                assert.isFalse(controller.openStackServices.checks.services.status);
-            });
-
-            it('should not call backup service', function () {
-                expect(openStackFactory.createOpenstackBackup).not.toHaveBeenCalled();                     
-            });
-
-        });
-
-        describe('when stopOpenstack service call fails', function () {
-            beforeEach(function () {
-                spyOn(openStackFactory, 'createOpenstackBackup');
-                bard.mockService(openStackFactory, {
-                    stopOpenstackServices: $q.reject(failingResponse)
+                it('should call stopOpenstack service', function () {
+                    assert.isTrue(openstackFactory.stopServices.calledOnce);                         
                 });
-                controller.openStackServices.stopOpenStackServices();
-                $rootScope.$digest();
+
+                it('should update services check value to true', function () {
+                    assert.isTrue(controller.openStackServices.checks.services.status);   
+                });
+
+                it('should call backup service', function () {
+                    assert.isTrue(openstackFactory.createBackup.calledOnce);                         
+                });
+
+                it('should update backup check value to true', function () {
+                    assert.isTrue(controller.openStackServices.checks.backup.status);                         
+                });
+
             });
 
-            it('should set openStackServices.completed status to true', function () {
-                assert.isTrue(controller.openStackServices.completed);
+            describe('when services check pass successfull and backup check fails', function () {
+                beforeEach(function () {
+                    bard.mockService(openstackFactory, {
+                        stopServices: $q.when(passingServicesResponse),
+                        createBackup: $q.when(failingBackupResponse)
+                    });
+                    controller.openStackServices.stopServices();
+                    $rootScope.$digest();
+                });
+
+                it('should set openStackServices.completed status to true', function () {
+                    assert.isTrue(controller.openStackServices.completed);
+                });
+
+                it('should update valid attribute of checks model to false', function () {
+                    assert.isFalse(controller.openStackServices.valid);
+                });
+
+                it('should set running to false', function () {
+                    assert.isFalse(controller.openStackServices.running);
+                });
+
+                it('should call stopOpenstack service', function () {
+                    assert.isTrue(openstackFactory.stopServices.calledOnce);                         
+                });
+
+                it('should update services check value to true', function () {
+                    assert.isTrue(controller.openStackServices.checks.services.status);   
+                });
+
+                it('should call backup service', function () {
+                    assert.isTrue(openstackFactory.createBackup.calledOnce);                         
+                });
+
+                it('should update backup check value to false', function () {
+                    assert.isFalse(controller.openStackServices.checks.backup.status);                         
+                });
+
             });
 
-            it('should update valid attribute of checks model to false', function () {
-                assert.isFalse(controller.openStackServices.valid);
+            describe('when services check pass successfull and backup service call fails', function () {
+                beforeEach(function () {
+                    bard.mockService(openstackFactory, {
+                        stopServices: $q.when(passingServicesResponse),
+                        createBackup: $q.reject(failingResponse)
+                    });
+                    controller.openStackServices.stopServices();
+                    $rootScope.$digest();
+                });
+
+                it('should set openStackServices.completed status to true', function () {
+                    assert.isTrue(controller.openStackServices.completed);
+                });
+
+                it('should update valid attribute of checks model to false', function () {
+                    assert.isFalse(controller.openStackServices.valid);
+                });
+
+                it('should set running to false', function () {
+                    assert.isFalse(controller.openStackServices.running);
+                });
+
+                it('should call stopOpenstack service', function () {
+                    assert.isTrue(openstackFactory.stopServices.calledOnce);                         
+                });
+
+                it('should update services check value to true', function () {
+                    assert.isTrue(controller.openStackServices.checks.services.status);   
+                });
+
+                it('should call backup service', function () {
+                    assert.isTrue(openstackFactory.createBackup.calledOnce);                         
+                });
+
+                it('should expose the errors through vm.openStackServices.errors object', function () {
+                    expect(controller.openStackServices.errors).toEqual(failingResponse.data.errors);
+                });
+
             });
 
-            it('should set running to false', function () {
-                assert.isFalse(controller.openStackServices.running);
+            describe('when services check fails', function () {
+                beforeEach(function () {
+                    spyOn(openstackFactory, 'createBackup');
+
+                    bard.mockService(openstackFactory, {
+                        stopServices: $q.when(failingOpenStackServicesResponse)
+                    });
+                    controller.openStackServices.stopServices();
+                    $rootScope.$digest();
+
+                });
+
+                it('should set openStackServices.completed status to true', function () {
+                    assert.isTrue(controller.openStackServices.completed);
+                });
+
+                it('should update valid attribute of checks model to false', function () {
+                    assert.isFalse(controller.openStackServices.valid);
+                });
+
+                it('should set running to false', function () {
+                    assert.isFalse(controller.openStackServices.running);
+                });
+
+                it('should call stopOpenstack service', function () {
+                    assert.isTrue(openstackFactory.stopServices.calledOnce);                         
+                });
+
+                it('should update services checks values to false', function () {
+                    assert.isFalse(controller.openStackServices.checks.services.status);
+                });
+
+                it('should not call backup service', function () {
+                    expect(openstackFactory.createBackup).not.toHaveBeenCalled();                     
+                });
+
             });
 
-            it('should not call backup service', function () {
-                expect(openStackFactory.createOpenstackBackup).not.toHaveBeenCalled();                     
-            });
+            describe('when stopOpenstack service call fails', function () {
+                beforeEach(function () {
+                    spyOn(openstackFactory, 'createBackup');
+                    bard.mockService(openstackFactory, {
+                        stopServices: $q.reject(failingResponse)
+                    });
+                    controller.openStackServices.stopServices();
+                    $rootScope.$digest();
+                });
 
-            it('should expose the errors through vm.openStackServices.errors object', function () {
-                expect(controller.openStackServices.errors).toEqual(failingResponse.data.errors);
-            });
+                it('should set openStackServices.completed status to true', function () {
+                    assert.isTrue(controller.openStackServices.completed);
+                });
 
+                it('should update valid attribute of checks model to false', function () {
+                    assert.isFalse(controller.openStackServices.valid);
+                });
+
+                it('should set running to false', function () {
+                    assert.isFalse(controller.openStackServices.running);
+                });
+
+                it('should not call backup service', function () {
+                    expect(openstackFactory.createBackup).not.toHaveBeenCalled();                     
+                });
+
+                it('should expose the errors through vm.openStackServices.errors object', function () {
+                    expect(controller.openStackServices.errors).toEqual(failingResponse.data.errors);
+                });
+
+            });
         });
 
     });

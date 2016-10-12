@@ -1,38 +1,158 @@
-/*global bard $controller $httpBackend should assert upgradeRepositoriesChecksFactory $q $rootScope */
+/*global bard $controller $httpBackend should assert upgradeFactory $q $rootScope crowbarFactory */
 describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
     var controller,
         failingRepoChecks = {
-            'SLES_12_SP2': false,
-            'SLES_12_SP2_Updates': false,
-            'SLES_OpenStack_Cloud_7': false,
-            'SLES_OpenStack_Cloud_7_Updates': false,
-            'SLE_HA_12_SP2': false,
-            'SLE_HA_12_SP2_Updates': false,
-            'SUSE_Enterprise_Storage_4': false,
-            'SUSE_Enterprise_Storage_4_Updates': false
+            'ceph': {
+                'available': false,
+                'repos': {
+                    'missing': {
+                        'x86_64': [
+                            'SUSE-Enterprise-Storage-4-Pool',
+                            'SUSE-Enterprise-Storage-4-Updates'
+                        ]
+                    },
+                    'inactive': {
+                        'x86_64': [
+                            'SUSE-Enterprise-Storage-4-Pool',
+                            'SUSE-Enterprise-Storage-4-Updates'
+                        ]
+                    }
+                }
+            },
+            'ha': {
+                'available': false,
+                'repos': {
+                    'missing': {
+                        'x86_64': [
+                            'SLE12-SP2-HA-Pool',
+                            'SLE12-SP2-HA-Updates'
+                        ]
+                    },
+                    'inactive': {
+                        'x86_64': [
+                            'SLE12-SP2-HA-Pool',
+                            'SLE12-SP2-HA-Updates'
+                        ]
+                    }
+                }
+            },
+            'os': {
+                'available': false,
+                'repos': {
+                    'missing': {
+                        'x86_64': [
+                            'SLES12-SP2-Pool',
+                            'SLES12-SP2-Updates'
+                        ]
+                    },
+                    'inactive': {
+                        'x86_64': [
+                            'SLES12-SP2-Pool',
+                            'SLES12-SP2-Updates'
+                        ]
+                    }
+                }
+            },
+            'openstack': {
+                'available': false,
+                'repos': {
+                    'missing': {
+                        'x86_64': [
+                            'SUSE-OpenStack-Cloud-7-Pool',
+                            'SUSE-OpenStack-Cloud-7-Updates'
+                        ]
+                    },
+                    'inactive': {
+                        'x86_64': [
+                            'SUSE-OpenStack-Cloud-7-Pool',
+                            'SUSE-OpenStack-Cloud-7-Updates'
+                        ]
+                    }
+                }
+            }
         },
         passingRepoChecks = {
-            'SLES_12_SP2': true,
-            'SLES_12_SP2_Updates': true,
-            'SLES_OpenStack_Cloud_7': true,
-            'SLES_OpenStack_Cloud_7_Updates': true,
-            'SLE_HA_12_SP2': true,
-            'SLE_HA_12_SP2_Updates': true,
-            'SUSE_Enterprise_Storage_4': true,
-            'SUSE_Enterprise_Storage_4_Updates': true
+            'ceph': {
+                'available': true,
+                'repos': {}
+            },
+            'ha': {
+                'available': true,
+                'repos': {}
+            },
+            'os': {
+                'available': true,
+                'repos': {}
+            },
+            'openstack': {
+                'available': true,
+                'repos': {}
+            }
         },
         partiallyFailingRepoChecks = {
-            'SLES_12_SP2': true,
-            'SLES_12_SP2_Updates': false,
-            'SLES_OpenStack_Cloud_7': false,
-            'SLES_OpenStack_Cloud_7_Updates': true,
-            'SLE_HA_12_SP2': true,
-            'SLE_HA_12_SP2_Updates': true,
-            'SUSE_Enterprise_Storage_4': true,
-            'SUSE_Enterprise_Storage_4_Updates': true
+            'ceph': {
+                'available': false,
+                'repos': {
+                    'missing': {
+                        'x86_64': [
+                            'SUSE-Enterprise-Storage-4-Updates'
+                        ]
+                    },
+                    'inactive': {
+                        'x86_64': [
+                            'SUSE-Enterprise-Storage-4-Updates'
+                        ]
+                    }
+                }
+            },
+            'ha': {
+                'available': false,
+                'repos': {
+                    'missing': {
+                        'x86_64': [
+                            'SLE12-SP2-HA-Pool',
+                            'SLE12-SP2-HA-Updates'
+                        ]
+                    },
+                    'inactive': {
+                        'x86_64': [
+                            'SLE12-SP2-HA-Pool',
+                            'SLE12-SP2-HA-Updates'
+                        ]
+                    }
+                }
+            },
+            'os': {
+                'available': false,
+                'repos': {
+                    'missing': {
+                        'x86_64': [
+                            'SLES12-SP2-Pool'
+                        ]
+                    },
+                    'inactive': {
+                        'x86_64': [
+                            'SLES12-SP2-Pool'
+                        ]
+                    }
+                }
+            },
+            'openstack': {
+                'available': true,
+                'repos': {}
+            }
         },
         failingErrors = {
             error_message: 'Authentication failure'
+        },
+        entityResponse = {
+            data: {
+                'version': '4.0',
+                'addons': [
+                    'ceph',
+                    'ha'
+                ]
+            }
         },
         passingReposChecksResponse = {
             data: passingRepoChecks
@@ -52,7 +172,19 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
-        bard.inject('$controller', 'upgradeRepositoriesChecksFactory', '$q', '$httpBackend', '$rootScope');
+        bard.inject(
+            '$controller',
+            'upgradeFactory',
+            'crowbarFactory',
+            '$q',
+            '$httpBackend',
+            '$rootScope',
+            'NODES_PRODUCTS_REPO_CHECKS_MAP'
+        );
+
+        bard.mockService(crowbarFactory, {
+            getEntity: $q.when(entityResponse)
+        });
 
         //Create the controller
         controller = $controller('Upgrade7NodesRepositoriesCheckController');
@@ -105,7 +237,7 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
 
         describe('when checks pass successfull', function () {
             beforeEach(function () {
-                bard.mockService(upgradeRepositoriesChecksFactory, {
+                bard.mockService(upgradeFactory, {
                     getNodesRepoChecks: $q.when(passingReposChecksResponse)
                 });
                 controller.repoChecks.runRepoChecks();
@@ -131,7 +263,7 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
 
         describe('when checks fails', function () {
             beforeEach(function () {
-                bard.mockService(upgradeRepositoriesChecksFactory, {
+                bard.mockService(upgradeFactory, {
                     getNodesRepoChecks: $q.when(failingReposChecksResponse)
                 });
                 controller.repoChecks.runRepoChecks();
@@ -156,7 +288,7 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
 
         describe('when checks partially fails', function () {
             beforeEach(function () {
-                bard.mockService(upgradeRepositoriesChecksFactory, {
+                bard.mockService(upgradeFactory, {
                     getNodesRepoChecks: $q.when(partiallyFailingReposChecksResponse)
                 });
                 controller.repoChecks.runRepoChecks();
@@ -173,15 +305,50 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
 
             it('should update checks values to true or false as per the response', function () {
                 assert.isObject(controller.repoChecks.checks);
-                _.forEach(partiallyFailingReposChecksResponse.data, function(value, key) {
-                    expect(controller.repoChecks.checks[key].status).toEqual(value);
-                });
+
+                var langKeyPrefix = 'upgrade7.steps.nodes-repository-checks.repositories.codes.',
+                    expectedChecks = {
+                        'SLES12-SP2-Pool': {
+                            status: false, 
+                            label: langKeyPrefix + 'SLES12-SP2-Pool'
+                        },
+                        'SLES12-SP2-Updates': {
+                            status: true, 
+                            label: langKeyPrefix + 'SLES12-SP2-Updates'
+                        },
+                        'SUSE-OpenStack-Cloud-7-Pool': {
+                            status: true, 
+                            label: langKeyPrefix + 'SUSE-OpenStack-Cloud-7-Pool'
+                        },
+                        'SUSE-OpenStack-Cloud-7-Updates': {
+                            status: true, 
+                            label: langKeyPrefix + 'SUSE-OpenStack-Cloud-7-Updates'
+                        },
+                        'SLE12-SP2-HA-Pool': {
+                            status: false, 
+                            label: langKeyPrefix + 'SLE12-SP2-HA-Pool'
+                        },
+                        'SLE12-SP2-HA-Updates': {
+                            status: false, 
+                            label: langKeyPrefix + 'SLE12-SP2-HA-Updates'
+                        },
+                        'SUSE-Enterprise-Storage-4-Pool': {
+                            status: true, 
+                            label: langKeyPrefix + 'SUSE-Enterprise-Storage-4-Pool'
+                        },
+                        'SUSE-Enterprise-Storage-4-Updates': {
+                            status: false, 
+                            label: langKeyPrefix + 'SUSE-Enterprise-Storage-4-Updates'
+                        }
+                    };
+                expect(controller.repoChecks.checks).toEqual(expectedChecks);
+
             });
         });
 
         describe('when service call fails', function () {
             beforeEach(function () {
-                bard.mockService(upgradeRepositoriesChecksFactory, {
+                bard.mockService(upgradeFactory, {
                     getNodesRepoChecks: $q.reject(failingResponse)
                 });
                 controller.repoChecks.runRepoChecks();
