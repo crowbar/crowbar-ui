@@ -29,8 +29,8 @@ describe('Crowbar Backup Factory', function () {
             expect(crowbarBackupFactory.create).toEqual(jasmine.any(Function));
         });
 
-        it('returns an object with getBackup function defined', function () {
-            expect(crowbarBackupFactory.getBackup).toEqual(jasmine.any(Function));
+        it('returns an object with get function defined', function () {
+            expect(crowbarBackupFactory.get).toEqual(jasmine.any(Function));
         });
 
         describe('when create method is executed', function () {
@@ -65,7 +65,7 @@ describe('Crowbar Backup Factory', function () {
             beforeEach(function () {
                 $httpBackend.expect('GET', '/api/crowbar/backups/42/download')
                     .respond(200, mockedBackupFile);
-                backupPromise = crowbarBackupFactory.getBackup(42);
+                backupPromise = crowbarBackupFactory.get(42);
                 $httpBackend.flush();
             });
 
@@ -92,7 +92,7 @@ describe('Crowbar Backup Factory', function () {
         describe('when download method is executed without parameter', function () {
 
             it('throws an exception', function () {
-                expect(crowbarBackupFactory.getBackup).toThrow();
+                expect(crowbarBackupFactory.get).toThrow();
             });
         });
     });

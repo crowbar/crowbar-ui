@@ -9,7 +9,7 @@
     function crowbarBackupFactory($q, $http, $filter, COMMON_API_V2_HEADERS) {
         var factory = {
             create: createBackup,
-            getBackup: getBackup
+            get: getBackup
         };
 
         return factory;
