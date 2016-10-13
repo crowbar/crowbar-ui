@@ -3,16 +3,18 @@
 
     /**
     * @ngdoc function
-    * @name crowbarApp.upgrade.controller:UpgradeNodesController
+    * @name crowbarApp.controller:UpgradeNodesController
     * @description
     * # UpgradeNodesController
-    * This is the controller used on the Upgrade Nodes step
+    * This is the controller used on the Stop OpenStack Services page
     */
-    angular.module('crowbarApp.upgrade')
+    angular.module('crowbarApp')
         .controller('UpgradeNodesController', UpgradeNodesController);
 
     UpgradeNodesController.$inject = [];
     // @ngInject
     function UpgradeNodesController() {
+
+            
     }
 })();
