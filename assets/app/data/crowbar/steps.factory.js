@@ -61,7 +61,7 @@
                 {
                     id: 6,
                     title: 'Upgrade Nodes & Reapply Barclamps',
-                    state: 'upgrade.finish-upgrade',
+                    state: 'upgrade.upgrade-nodes',
                     active: false,
                     enabled: false
                 }
