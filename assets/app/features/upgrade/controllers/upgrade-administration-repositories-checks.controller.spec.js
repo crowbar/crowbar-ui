@@ -2,22 +2,28 @@
 describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
     var controller,
         passingRepoChecks = {
-            SLES_12_SP2: true,
-            SLES_12_SP2_Updates: true,
-            SLES_OpenStack_Cloud_7: true,
-            SLES_OpenStack_Cloud_7_Updates: true
+            os: {
+                available: true
+            },
+            openstack: {
+                available: true
+            }
         },
         failingRepoChecks = {
-            SLES_12_SP2: false,
-            SLES_12_SP2_Updates: false,
-            SLES_OpenStack_Cloud_7: false,
-            SLES_OpenStack_Cloud_7_Updates: false
+            os: {
+                available: false
+            },
+            openstack: {
+                available: false
+            }
         },
         partiallyFailingRepoChecks = {
-            SLES_12_SP2: true,
-            SLES_12_SP2_Updates: true,
-            SLES_OpenStack_Cloud_7: false,
-            SLES_OpenStack_Cloud_7_Updates: false
+            os: {
+                available: true
+            },
+            openstack: {
+                available: false
+            }
         },
         failingErrors = {
             error_message: 'Authentication failure'
@@ -40,7 +46,7 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
-        bard.inject('$controller', 'crowbarFactory', '$q', '$httpBackend', '$rootScope');
+        bard.inject('$controller', 'crowbarFactory', '$q', '$httpBackend', '$rootScope', 'ADMIN_REPO_CHECKS_MAP');
 
         //Create the controller
         controller = $controller('UpgradeAdministrationRepositoriesCheckController');
@@ -159,8 +165,13 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
 
             it('should update checks values to true or false as per the response', function () {
                 assert.isObject(controller.repoChecks.checks);
-                _.forEach(partiallyFailingChecksResponse.data, function(value, key) {
-                    expect(controller.repoChecks.checks[key].status).toEqual(value);
+                /* eslint-disable no-undef */
+                _.forEach(ADMIN_REPO_CHECKS_MAP, function(repos, type) {
+                /* eslint-enable no-undef */
+                    _.forEach(repos, function(repo) {
+                        expect(controller.repoChecks.checks[repo].status)
+                            .toEqual(partiallyFailingChecksResponse.data[type]['available'])
+                    });
                 });
             });
         });

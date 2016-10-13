@@ -7,5 +7,9 @@
             'ha': ['SLE12-SP2-HA-Pool', 'SLE12-SP2-HA-Updates'],
             'openstack': ['SUSE-OpenStack-Cloud-7-Pool', 'SUSE-OpenStack-Cloud-7-Updates'],
             'ceph': ['SUSE-Enterprise-Storage-4-Pool', 'SUSE-Enterprise-Storage-4-Updates']
+        })
+        .constant('ADMIN_REPO_CHECKS_MAP', {
+            'os': ['SLES-12-SP2', 'SLES-12-SP2-Updates'],
+            'openstack': ['SLES-OpenStack-Cloud-7','SLES-OpenStack-Cloud-7-Updates']
         });
 })();

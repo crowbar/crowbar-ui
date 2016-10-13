@@ -1,14 +1,35 @@
 var express = require('express'),
     router = express.Router();
+var repo_correct = false;
 
 /* GET Admin Repo Checks. */
 router.get('/', function(req, res) {
-    res.status(200).json({
-        'SLES_12_SP2': true,
-        'SLES_12_SP2_Updates': true,
-        'SLES_OpenStack_Cloud_7': true,
-        'SLES_OpenStack_Cloud_7_Updates': true
-    });
+    var data = {
+        'os': {
+            'available': true,
+            'repos': {}
+        },
+        'cloud': {
+            'available': false,
+            'repos': {
+                'x86_64': {
+                    'missing': [
+                        'SUSE OpenStack Cloud 7',
+                        'SUSE OpenStack Cloud 7 Updates'
+                    ]
+                }
+            }
+        }
+    };
+
+    if (repo_correct) {
+        data['cloud'] = {
+            'available': true,
+            'repos': {}
+        }
+    }
+    repo_correct = !repo_correct;
+    res.status(200).json(data);
 });
 
 module.exports = router;
