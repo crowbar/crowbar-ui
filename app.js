@@ -7,14 +7,14 @@ var express = require('express'),
     //Routes
     index = require('./routes/index'),
     crowbarEntity = require('./routes/api/crowbar/entity'),
-    crowbarBackupCreate = require('./routes/api/crowbar/backups/create'),
-    crowbarBackupDownload =  require('./routes/api/crowbar/backups/download'),
     crowbarRepocheck = require('./routes/api/crowbar/repocheck'),
     crowbarUpgrade = require('./routes/api/crowbar/upgrade'),
     upgradeRepocheck = require('./routes/api/upgrade/repocheck'),
     upgradePrechecks = require('./routes/api/upgrade/prechecks'),
     openstackServices = require('./routes/api/openstack/services'),
     openstackBackup = require('./routes/api/openstack/backup'),
+    utilsBackupCreate = require('./routes/utils/backups/create'),
+    utilsBackupDownload =  require('./routes/utils/backups/download'),
 
     app = express();
 
@@ -28,14 +28,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/api/crowbar', crowbarEntity);
-app.use('/api/crowbar/backups', crowbarBackupCreate);
-app.use('/api/crowbar/backups/\*/download', crowbarBackupDownload);
 app.use('/api/crowbar/repocheck', crowbarRepocheck);
 app.use('/api/crowbar/upgrade', crowbarUpgrade);
 app.use('/api/upgrade/prechecks', upgradePrechecks);
 app.use('/api/upgrade/repocheck', upgradeRepocheck);
 app.use('/api/openstack/services', openstackServices);
 app.use('/api/openstack/backup', openstackBackup);
+app.use('/utils/backups', utilsBackupCreate);
+app.use('/utils/backups/\*/download', utilsBackupDownload);
 
 
 
