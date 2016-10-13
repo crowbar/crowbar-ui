@@ -9,6 +9,7 @@ module.exports = {
         'max-len': ['error', 120],
         'complexity': ['error', {'max': 20}],
         'eol-last': 'error',
+        'no-trailing-spaces': 'error',
         'curly': 'error'
     }
 }

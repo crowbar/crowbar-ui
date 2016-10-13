@@ -39,7 +39,7 @@
                 "name": "",
                 "title": "Upgrading to SUSE OpenStack Cloud 7 requires software repositories for SLES12 SP2 and SUSE OpenStack Cloud 7.",
                 "description": "Update the URLs of the following software repositories and click 'Check' to verify the repositories are available. When all repositories have been verified click on 'Next' to proceed.",
-                "repositories": { 
+                "repositories": {
                     "codes": {
                         "SLES_12_SP2": "SUSE Linux Enterprise 12 SP2",
                         "SLES_12_SP2_Updates": "SUSE Linux Enterprise 12 SP2 Updates",

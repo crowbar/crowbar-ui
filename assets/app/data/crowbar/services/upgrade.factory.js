@@ -17,7 +17,7 @@
 
         /**
          * Get the preliminary checks required to start the upgrade process
-         * 
+         *
          * @return {Promise}
          */
         function getPreliminaryChecks() {
@@ -34,7 +34,7 @@
         /**
          * Prepare nodes for upgrade. This will change the Nodes status to 'upgrade', so no further changes
          * can be applied to them until the upgrade is either completed or canceled.
-         * 
+         *
          * @return {Promise}
          */
         function prepareNodes() {
@@ -51,7 +51,7 @@
         /**
          * Get the Repositories checks for the Nodes to be upgraded.
          * (These results doesn't include Administration Server repositories)
-         * 
+         *
          * @return {Promise}
          */
         function getNodesRepoChecks() {

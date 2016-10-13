@@ -37,7 +37,7 @@ gulp.task('eslint-node', function () {
 gulp.task('lesslint', function() {
     return gulp.src('assets/**/*.less')
         .pipe(lesshint({
-            // Options 
+            // Options
             // configPath: ""
         }))
         .pipe(lesshint.reporter());

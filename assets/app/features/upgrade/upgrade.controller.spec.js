@@ -1,6 +1,5 @@
 describe('Upgrade Controller', function () {
 
-
     //@TODO: Implement the following tests
     describe('cancelUpgrade function', function () {
         it('should be defined', function () {});

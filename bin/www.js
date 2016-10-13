@@ -28,7 +28,7 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 /**
- * Opens the browser 
+ * Opens the browser
  */
 open('http://localhost:' + port);
 

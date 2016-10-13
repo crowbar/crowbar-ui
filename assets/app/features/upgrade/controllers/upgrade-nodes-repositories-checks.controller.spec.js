@@ -309,35 +309,35 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
                 var langKeyPrefix = 'upgrade.steps.nodes-repository-checks.repositories.codes.',
                     expectedChecks = {
                         'SLES12-SP2-Pool': {
-                            status: false, 
+                            status: false,
                             label: langKeyPrefix + 'SLES12-SP2-Pool'
                         },
                         'SLES12-SP2-Updates': {
-                            status: true, 
+                            status: true,
                             label: langKeyPrefix + 'SLES12-SP2-Updates'
                         },
                         'SUSE-OpenStack-Cloud-7-Pool': {
-                            status: true, 
+                            status: true,
                             label: langKeyPrefix + 'SUSE-OpenStack-Cloud-7-Pool'
                         },
                         'SUSE-OpenStack-Cloud-7-Updates': {
-                            status: true, 
+                            status: true,
                             label: langKeyPrefix + 'SUSE-OpenStack-Cloud-7-Updates'
                         },
                         'SLE12-SP2-HA-Pool': {
-                            status: false, 
+                            status: false,
                             label: langKeyPrefix + 'SLE12-SP2-HA-Pool'
                         },
                         'SLE12-SP2-HA-Updates': {
-                            status: false, 
+                            status: false,
                             label: langKeyPrefix + 'SLE12-SP2-HA-Updates'
                         },
                         'SUSE-Enterprise-Storage-4-Pool': {
-                            status: true, 
+                            status: true,
                             label: langKeyPrefix + 'SUSE-Enterprise-Storage-4-Pool'
                         },
                         'SUSE-Enterprise-Storage-4-Updates': {
-                            status: false, 
+                            status: false,
                             label: langKeyPrefix + 'SUSE-Enterprise-Storage-4-Updates'
                         }
                     };
@@ -365,7 +365,7 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
 
             it('should expose the errors through vm.repoChecks.errors object', function () {
                 expect(controller.repoChecks.errors).toEqual(failingResponse.data.errors);
-            }); 
+            });
         });
 
         it('should leave checks values untouched', function () {

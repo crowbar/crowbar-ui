@@ -120,7 +120,7 @@ describe('Upgrade Landing Controller', function() {
                     assert.isObject(controller.prechecks.checks);
                     _.forEach(controller.prechecks.checks, function(value) {
                         assert.isTrue(value.status);
-                    });  
+                    });
                 });
             });
 
@@ -145,7 +145,7 @@ describe('Upgrade Landing Controller', function() {
                     assert.isObject(controller.prechecks.checks);
                     _.forEach(controller.prechecks.checks, function(value) {
                         assert.isFalse(value.status);
-                    });  
+                    });
                 });
             });
 
@@ -167,7 +167,7 @@ describe('Upgrade Landing Controller', function() {
                 });
 
                 it('should update checks values to true or false as per the response', function () {
-                    assert.isObject(controller.prechecks.checks);   
+                    assert.isObject(controller.prechecks.checks);
                     _.forEach(partiallyFailingChecksResponse.data, function(value, key) {
                         expect(controller.prechecks.checks[key].status).toEqual(value);
                     });
