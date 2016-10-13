@@ -8,7 +8,8 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
                 upgrade: {
                     upgrading: false,
                     success: true,
-                    failed: false}
+                    failed: false
+                }
             }
         },
         incompleteUpgradeResponse = {
@@ -18,7 +19,8 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
                 upgrade: {
                     upgrading: true,
                     success: false,
-                    failed: false}
+                    failed: false
+                }
             }
         },
         initialResponse = {

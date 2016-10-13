@@ -24,9 +24,13 @@
             checkAdminUpgrade: checkAdminUpgrade
         };
 
-        // On page load we need to check to see if the upgrade is already running to set
-        // the button status and the update check running
-        checkAdminUpgrade();
+        activate();
+
+        function activate() {
+            // On page load we need to check to see if the upgrade is already running to set
+            // the button status and the update check running
+            checkAdminUpgrade();
+        }
 
         function beginAdminUpgrade() {
             vm.adminUpgrade.running = true;
@@ -67,10 +71,6 @@
                         // schedule another check if not completed yet
                         if (!vm.adminUpgrade.completed && vm.adminUpgrade.running) {
                             $timeout(vm.adminUpgrade.checkAdminUpgrade, 1000); // TODO: make the interval a constant
-                        } else if (vm.adminUpgrade.completed && !vm.adminUpgrade.running) {
-                            // TODO(itxaka): can translations be done from here instead so
-                            // we can update the button text for better UX?
-                            vm.finish_text = 'Upgrade done!'
                         }
                     }
                 );
