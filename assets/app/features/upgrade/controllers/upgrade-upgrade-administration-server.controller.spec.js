@@ -42,7 +42,10 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
-        bard.inject('$controller', '$q', '$httpBackend', '$rootScope', 'crowbarFactory');
+        bard.inject(
+            '$controller', '$q', '$httpBackend', '$rootScope',
+            'crowbarFactory', 'ADMIN_UPGRADE_TIMEOUT_INTERVAL'
+        );
 
         mockedTimeout = jasmine.createSpy('$timeout');
 
@@ -170,8 +173,11 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
                         assert.isFalse(controller.adminUpgrade.completed);
                     });
                     it('should schedule another check', function () {
-                        // TODO: remove magic number (1000)?!
-                        expect(mockedTimeout).toHaveBeenCalledWith(controller.adminUpgrade.checkAdminUpgrade, 1000);
+                        /* eslint-disable no-undef */
+                        expect(mockedTimeout).toHaveBeenCalledWith(
+                            controller.adminUpgrade.checkAdminUpgrade, ADMIN_UPGRADE_TIMEOUT_INTERVAL
+                        );
+                        /* eslint-enable no-undef */
                     });
                 });
             });
