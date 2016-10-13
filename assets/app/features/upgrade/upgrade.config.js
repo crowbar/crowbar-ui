@@ -61,6 +61,12 @@
                 templateUrl: 'app/features/upgrade/templates/openstack-services.html',
                 controller: 'UpgradeOpenStackServicesController',
                 controllerAs: 'upgradeOpenStackServicesVm'
+            })
+            .state('upgrade.upgrade-nodes', {
+                url: '/upgrade-nodes',
+                templateUrl: 'app/features/upgrade/templates/upgrade-nodes-page.html',
+                controller: 'UpgradeNodesController',
+                controllerAs: 'upgradeNodesVm'
             });
 
         /**
