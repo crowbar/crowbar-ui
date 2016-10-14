@@ -106,6 +106,17 @@
                 }
             }
         },
+        "steps-key": {
+            "codes": {
+                "backup": "Download Backup of Administration Server",
+                "administration-repositories-checks": "Check Administration Server Repositories",
+                "upgrade-administration-server": "Upgrade Administration Server",
+                "database-configuration": "Connect or Create OpenStack Database",
+                "nodes-repositories-checks": "Check Add-On & Node Repositories",
+                "openstack-services": "Backup OpenStack Database",
+                "upgrade-nodes": "Upgrade Nodes & Reapply Barclamps"
+            }
+        },
         "errors": {
         }
     }
