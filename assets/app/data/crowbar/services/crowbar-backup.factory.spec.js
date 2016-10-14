@@ -36,7 +36,7 @@ describe('Crowbar Backup Factory', function () {
         describe('when create method is executed', function () {
 
             beforeEach(function () {
-                $httpBackend.expect('POST', '/api/crowbar/backups', undefined)
+                $httpBackend.expect('POST', '/utils/backups', undefined)
                     .respond(200, mockedCreateResponse);
                 backupPromise = crowbarBackupFactory.create();
                 $httpBackend.flush();
@@ -63,7 +63,7 @@ describe('Crowbar Backup Factory', function () {
         describe('when download method is executed', function () {
 
             beforeEach(function () {
-                $httpBackend.expect('GET', '/api/crowbar/backups/42/download')
+                $httpBackend.expect('GET', '/utils/backups/42/download')
                     .respond(200, mockedBackupFile);
                 backupPromise = crowbarBackupFactory.get(42);
                 $httpBackend.flush();
