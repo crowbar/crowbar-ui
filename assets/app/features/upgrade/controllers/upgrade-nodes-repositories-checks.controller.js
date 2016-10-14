@@ -15,14 +15,14 @@
         '$translate',
         'upgradeFactory',
         'crowbarFactory',
-        'NODES_PRODUCTS_REPO_CHECKS_MAP'
+        'PRODUCTS_REPO_CHECKS_MAP'
     ];
     // @ngInject
     function UpgradeNodesRepositoriesCheckController(
         $translate,
         upgradeFactory,
         crowbarFactory,
-        NODES_PRODUCTS_REPO_CHECKS_MAP
+        PRODUCTS_REPO_CHECKS_MAP
     ) {
         var vm = this,
             addonsRepos = {
@@ -78,7 +78,7 @@
             crowbarFactory.getEntity().then(function (entityResponse) {
                 if (! _.isEmpty(entityResponse.data.addons)) {
                     _.forEach(entityResponse.data.addons, function (addon) {
-                        _.forEach(NODES_PRODUCTS_REPO_CHECKS_MAP[addon], function (addonRepository) {
+                        _.forEach(PRODUCTS_REPO_CHECKS_MAP[addon], function (addonRepository) {
                             _.set(vm.repoChecks.checks, addonRepository, addonsRepos[addonRepository]);
                         });
 
@@ -119,10 +119,10 @@
             _.forEach(repoChecksResponse.data, function(productValue, productKey) {
 
                 // Validate a valid check from the service is being updated
-                if (NODES_PRODUCTS_REPO_CHECKS_MAP.hasOwnProperty(productKey)) {
+                if (PRODUCTS_REPO_CHECKS_MAP.hasOwnProperty(productKey)) {
 
                     // Iterate through the repositories list for the product
-                    _.forEach(NODES_PRODUCTS_REPO_CHECKS_MAP[productKey], function (repoName) {
+                    _.forEach(PRODUCTS_REPO_CHECKS_MAP[productKey], function (repoName) {
 
                         // If the product is available, then its related repositories should be displayed as passing
                         if (productValue.available) {
