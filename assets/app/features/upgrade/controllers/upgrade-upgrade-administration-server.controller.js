@@ -11,9 +11,11 @@
     angular.module('crowbarApp')
         .controller('UpgradeUpgradeAdministrationServerController', UpgradeUpgradeAdministrationServerController);
 
-    UpgradeUpgradeAdministrationServerController.$inject = ['$timeout', 'crowbarFactory'];
+    UpgradeUpgradeAdministrationServerController.$inject = [
+        '$timeout', 'crowbarFactory', 'ADMIN_UPGRADE_TIMEOUT_INTERVAL'
+    ];
     // @ngInject
-    function UpgradeUpgradeAdministrationServerController($timeout, crowbarFactory) {
+    function UpgradeUpgradeAdministrationServerController($timeout, crowbarFactory, ADMIN_UPGRADE_TIMEOUT_INTERVAL) {
         var vm = this;
         vm.adminUpgrade = {
             completed: false,
@@ -23,6 +25,16 @@
             // note: this is exposed in vm only to simplify testing
             checkAdminUpgrade: checkAdminUpgrade
         };
+
+        activate();
+
+        function activate() {
+            // On page load we need to check to see if the upgrade is already running to set
+            // the button status and the update check running
+            // TODO(itxaka): Not tested yet, tests should be done as part of card:
+            // https://trello.com/c/5fXGm1a7/45-2-27-restore-last-step
+            checkAdminUpgrade();
+        }
 
         function beginAdminUpgrade() {
             vm.adminUpgrade.running = true;
@@ -48,21 +60,22 @@
                 .then(
                     // In case of success
                     function (response) {
-                        // TODO: update to match API
-                        vm.adminUpgrade.completed = response.data.completed;
+                        // map api response to model
+                        vm.adminUpgrade.completed = response.data.upgrade.success;
+                        vm.adminUpgrade.running = response.data.upgrade.upgrading;
                     },
                     // In case of failure
                     function (errorResponse) {
                         // Expose the error list to adminUpgrade object
+                        // TODO(itxaka): Use the proper error key from the response when this is done
+                        // https://trello.com/c/chzg85j4/142-3-s49p7-error-reporting-on-crowbar-level
                         vm.adminUpgrade.errors = errorResponse.data.errors;
                     }
                 ).finally(
                     function () {
                         // schedule another check if not completed yet
-                        if (!vm.adminUpgrade.completed) {
-                            $timeout(vm.adminUpgrade.checkAdminUpgrade, 1000); // TODO: make the interval a constant
-                        } else {
-                            vm.adminUpgrade.running = false;
+                        if (!vm.adminUpgrade.completed && vm.adminUpgrade.running) {
+                            $timeout(vm.adminUpgrade.checkAdminUpgrade, ADMIN_UPGRADE_TIMEOUT_INTERVAL);
                         }
                     }
                 );
