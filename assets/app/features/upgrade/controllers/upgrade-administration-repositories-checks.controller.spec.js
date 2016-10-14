@@ -137,7 +137,7 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
                 _.forEach(controller.repoChecks.checks, function(value) {
                     assert.isFalse(value.status);
                 });
-            }); 
+            });
         });
 
         describe('when checks partially fails', function () {
@@ -158,11 +158,11 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
             });
 
             it('should update checks values to true or false as per the response', function () {
-                assert.isObject(controller.repoChecks.checks);   
+                assert.isObject(controller.repoChecks.checks);
                 _.forEach(partiallyFailingChecksResponse.data, function(value, key) {
                     expect(controller.repoChecks.checks[key].status).toEqual(value);
                 });
-            }); 
+            });
         });
 
         describe('when service call fails', function () {

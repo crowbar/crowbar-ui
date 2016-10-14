@@ -144,7 +144,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
                     });
                     it('should schedule another check', function () {
                         // TODO: remove magic number (1000)?!
-                        expect(mockedTimeout).toHaveBeenCalledWith(controller.adminUpgrade.checkAdminUpgrade, 1000); 
+                        expect(mockedTimeout).toHaveBeenCalledWith(controller.adminUpgrade.checkAdminUpgrade, 1000);
                     });
                 });
             });

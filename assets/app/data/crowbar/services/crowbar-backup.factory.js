@@ -16,7 +16,7 @@
 
         /**
          * Create a new backup of the Administration Node
-         * 
+         *
          * @return {Promise}
          */
         function createBackup() {

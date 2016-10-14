@@ -13,10 +13,10 @@
         };
 
         return factory;
-        
+
         /**
          * Stop all openstack services
-         * 
+         *
          * @return {Promise}
          */
         function stopServices() {
@@ -32,7 +32,7 @@
 
         /**
          * Create Openstack Database Backup
-         * 
+         *
          * @return {Promise}
          */
         function createBackup() {

@@ -23,19 +23,19 @@
             valid: false,
             checks: {
                 'SLES_12_SP2': {
-                    status: false, 
+                    status: false,
                     label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES_12_SP2'
                 },
                 'SLES_12_SP2_Updates': {
-                    status: false, 
+                    status: false,
                     label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES_12_SP2_Updates'
                 },
                 'SLES_OpenStack_Cloud_7': {
-                    status: false, 
+                    status: false,
                     label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES_OpenStack_Cloud_7'
                 },
                 'SLES_OpenStack_Cloud_7_Updates': {
-                    status: false, 
+                    status: false,
                     label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES_OpenStack_Cloud_7_Updates'
                 }
             },

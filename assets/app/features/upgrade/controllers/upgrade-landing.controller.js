@@ -24,19 +24,19 @@
             spinnerVisible: false,
             checks: {
                 updates_installed: {
-                    status: false, 
+                    status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.updates_installed'
                 },
                 network_sanity: {
-                    status: false, 
+                    status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.network_sanity'
                 },
                 high_availability: {
-                    status: false, 
+                    status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.high_availability'
                 },
                 free_node_available: {
-                    status: false, 
+                    status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.free_node_available'
                 }
             },
@@ -65,7 +65,7 @@
                 .getPreliminaryChecks()
                 .then(
                     //Success handler. Al precheck passed successfully:
-                    function(prechecksResponse) { 
+                    function(prechecksResponse) {
 
                         _.forEach(prechecksResponse.data, function(value, key) {
                             vm.prechecks.checks[key].status = value;
@@ -75,7 +75,7 @@
                         // Update prechecks status
 
                         _.forEach(vm.prechecks.checks, function (checkStatus) {
-                            
+
                             if (false === checkStatus.status) {
                                 prechecksResult = false;
                                 return false;
@@ -83,7 +83,6 @@
 
                         });
 
-                        
                         // Update prechecks validity
                         vm.prechecks.valid = prechecksResult;
                     },

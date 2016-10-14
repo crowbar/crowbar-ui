@@ -53,7 +53,7 @@ describe('Upgrade Flow - Create Connect Database Controller', function () {
         should.exist(controller.databaseForm.tablePrefix);
         expect(controller.databaseForm.tablePrefix).toEqual('');
     });
-        
+
     it('should display "Username" field', function () {});
 
     it('username should be required field', function () {});
