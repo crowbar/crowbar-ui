@@ -1,4 +1,4 @@
-/*global bard $controller $httpBackend should assert crowbarFactory $q $rootScope */
+/*global bard $controller $httpBackend should assert crowbarFactory $q $rootScope PRODUCTS_REPO_CHECKS_MAP*/
 describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
     var controller,
         passingRepoChecks = {
@@ -46,7 +46,10 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
-        bard.inject('$controller', 'crowbarFactory', '$q', '$httpBackend', '$rootScope', 'ADMIN_REPO_CHECKS_MAP');
+        bard.inject(
+            '$controller', 'crowbarFactory', '$q', '$httpBackend',
+            '$rootScope', 'PRODUCTS_REPO_CHECKS_MAP'
+        );
 
         //Create the controller
         controller = $controller('UpgradeAdministrationRepositoriesCheckController');
@@ -165,13 +168,14 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
 
             it('should update checks values to true or false as per the response', function () {
                 assert.isObject(controller.repoChecks.checks);
-                /* eslint-disable no-undef */
-                _.forEach(ADMIN_REPO_CHECKS_MAP, function(repos, type) {
-                /* eslint-enable no-undef */
-                    _.forEach(repos, function(repo) {
-                        expect(controller.repoChecks.checks[repo].status)
-                            .toEqual(partiallyFailingChecksResponse.data[type]['available'])
-                    });
+                _.forEach(PRODUCTS_REPO_CHECKS_MAP, function(repos, type) {
+                    // Admin repochecks only checks for os or openstack repos
+                    if (type == 'os' || type == 'openstack') {
+                        _.forEach(repos, function (repo) {
+                            expect(controller.repoChecks.checks[repo].status)
+                                .toEqual(partiallyFailingChecksResponse.data[type].available)
+                        });
+                    }
                 });
             });
         });

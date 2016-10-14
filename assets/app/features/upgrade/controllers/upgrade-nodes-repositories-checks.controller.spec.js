@@ -179,7 +179,7 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             '$q',
             '$httpBackend',
             '$rootScope',
-            'NODES_PRODUCTS_REPO_CHECKS_MAP'
+            'PRODUCTS_REPO_CHECKS_MAP'
         );
 
         bard.mockService(crowbarFactory, {

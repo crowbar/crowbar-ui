@@ -13,10 +13,12 @@
             UpgradeAdministrationRepositoriesCheckController);
 
     UpgradeAdministrationRepositoriesCheckController.$inject = [
-        '$translate', 'crowbarFactory', 'ADMIN_REPO_CHECKS_MAP'
+        '$translate', 'crowbarFactory', 'PRODUCTS_REPO_CHECKS_MAP'
     ];
     // @ngInject
-    function UpgradeAdministrationRepositoriesCheckController($translate, crowbarFactory, ADMIN_REPO_CHECKS_MAP) {
+    function UpgradeAdministrationRepositoriesCheckController(
+        $translate, crowbarFactory, PRODUCTS_REPO_CHECKS_MAP
+    ) {
         var vm = this;
         vm.repoChecks = {
             running: false,
@@ -24,21 +26,21 @@
             completed: false,
             valid: false,
             checks: {
-                'SLES-12-SP2': {
+                'SLES12-SP2-Pool': {
                     status: false,
-                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES_12_SP2'
+                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES12-SP2-Pool'
                 },
-                'SLES-12-SP2-Updates': {
+                'SLES12-SP2-Updates': {
                     status: false,
-                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES_12_SP2_Updates'
+                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES12-SP2-Updates'
                 },
-                'SLES-OpenStack-Cloud-7': {
+                'SUSE-OpenStack-Cloud-7-Pool': {
                     status: false,
-                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES_OpenStack_Cloud_7'
+                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SUSE-OpenStack-Cloud-7-Pool'
                 },
-                'SLES-OpenStack-Cloud-7-Updates': {
+                'SUSE-OpenStack-Cloud-7-Updates': {
                     status: false,
-                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES_OpenStack_Cloud_7_Updates'
+                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SUSE-OpenStack-Cloud-7-Updates'
                 }
             },
             runRepoChecks: runRepoChecks
@@ -55,10 +57,13 @@
                     // In case of success
                     function (repoChecksResponse) {
                         // Iterate over our map
-                        _.forEach(ADMIN_REPO_CHECKS_MAP, function (repos, type) {
-                            _.forEach(repos, function(repo) {
-                                vm.repoChecks.checks[repo].status = repoChecksResponse.data[type]['available']
-                            });
+                        _.forEach(PRODUCTS_REPO_CHECKS_MAP, function (repos, type) {
+                            // Admin repochecks only checks for os or openstack repos
+                            if(type == 'os' || type == 'openstack') {
+                                _.forEach(repos, function(repo) {
+                                    vm.repoChecks.checks[repo].status = repoChecksResponse.data[type].available
+                                });
+                            }
                         });
                         // Iterate over the checks to determine the validity of the step
                         vm.repoChecks.valid = Object.keys(vm.repoChecks.checks).every(function(k) {

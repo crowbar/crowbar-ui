@@ -1,6 +1,6 @@
 var express = require('express'),
-    router = express.Router();
-var repo_correct = false;
+    router = express.Router(),
+    repo_correct = false;
 
 /* GET Admin Repo Checks. */
 router.get('/', function(req, res) {
@@ -9,7 +9,7 @@ router.get('/', function(req, res) {
             'available': true,
             'repos': {}
         },
-        'cloud': {
+        'openstack': {
             'available': false,
             'repos': {
                 'x86_64': {
@@ -23,7 +23,7 @@ router.get('/', function(req, res) {
     };
 
     if (repo_correct) {
-        data['cloud'] = {
+        data['openstack'] = {
             'available': true,
             'repos': {}
         }
