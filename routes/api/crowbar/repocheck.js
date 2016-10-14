@@ -14,8 +14,8 @@ router.get('/', function(req, res) {
             'repos': {
                 'x86_64': {
                     'missing': [
-                        'SUSE OpenStack Cloud 7',
-                        'SUSE OpenStack Cloud 7 Updates'
+                        'SUSE-OpenStack-Cloud-7-Pool',
+                        'SUSE-OpenStack-Cloud-7-Updates'
                     ]
                 }
             }
