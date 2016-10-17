@@ -39,7 +39,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
         },
         mockedTimeout;
 
-    beforeEach(function() {
+    function createcontroller() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
         bard.inject(
@@ -56,36 +56,74 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
         $httpBackend.expectGET('/api/crowbar/upgrade').respond(initialResponse);
         $httpBackend.flush();
-    });
+        return controller;
+    }
 
     // Verify no unexpected http call has been made
     bard.verifyNoOutstandingHttpRequests();
 
     it('should exist', function () {
+        controller = createcontroller();
         should.exist(controller);
     });
 
     describe('adminUpgrade model', function () {
         it('should exist', function() {
+            controller = createcontroller();
             should.exist(controller.adminUpgrade);
         });
 
         it('is not completed by default', function() {
+            controller = createcontroller();
             assert.isFalse(controller.adminUpgrade.completed);
         });
 
         it('is not running by default', function() {
+            controller = createcontroller();
             assert.isFalse(controller.adminUpgrade.running);
+        });
+
+        describe('on controller creation', function () {
+            afterEach(function () {
+               // reset the initialResponse to the default values
+                initialResponse.upgrade = {
+                    upgrading: false,
+                    success: false,
+                    failed: false
+                }
+            });
+
+            it('should have default state if upgrade is not running/complete', function () {
+                controller = createcontroller();
+                assert.isFalse(controller.adminUpgrade.completed);
+                assert.isFalse(controller.adminUpgrade.running);
+            });
+
+            it('should set running to true if the upgrade is running', function () {
+                initialResponse.upgrade.upgrading = true;
+                controller = createcontroller();
+                assert.isFalse(controller.adminUpgrade.completed);
+                assert.isTrue(controller.adminUpgrade.running);
+            });
+
+            it('should set completed to true if upgrade is completed', function () {
+                initialResponse.upgrade.success = true;
+                controller = createcontroller();
+                assert.isTrue(controller.adminUpgrade.completed);
+                assert.isFalse(controller.adminUpgrade.running);
+            })
         });
 
         describe('beginAdminUpgrade function', function () {
             it('should be defined', function () {
+                controller = createcontroller();
                 should.exist(controller.adminUpgrade.beginAdminUpgrade);
                 expect(controller.adminUpgrade.beginAdminUpgrade).toEqual(jasmine.any(Function));
             });
 
             describe('when upgrade is started successfully', function () {
                 beforeEach(function () {
+                    controller = createcontroller();
                     spyOn(controller.adminUpgrade, 'checkAdminUpgrade');
 
                     bard.mockService(crowbarFactory, {
@@ -106,6 +144,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
 
             describe('when starting upgrade failed', function () {
                 beforeEach(function () {
+                    controller = createcontroller();
                     spyOn(controller.adminUpgrade, 'checkAdminUpgrade');
 
                     bard.mockService(crowbarFactory, {
@@ -132,6 +171,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
 
         describe('checkAdminUpgrade function', function () {
             it('should be defined', function () {
+                controller = createcontroller();
                 should.exist(controller.adminUpgrade.checkAdminUpgrade);
                 expect(controller.adminUpgrade.checkAdminUpgrade).toEqual(jasmine.any(Function));
             });
@@ -139,6 +179,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
             describe('when got upgrade status from api successfully', function () {
                 describe('when received status is completed', function () {
                     beforeEach(function () {
+                        controller = createcontroller();
                         bard.mockService(crowbarFactory, {
                             getUpgradeStatus: $q.when(completedUpgradeResponse)
                         });
@@ -159,6 +200,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
 
                 describe('when received status is not completed', function () {
                     beforeEach(function () {
+                        controller = createcontroller();
                         bard.mockService(crowbarFactory, {
                             getUpgradeStatus: $q.when(incompleteUpgradeResponse)
                         });
@@ -184,6 +226,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
 
             describe('when got error from api', function () {
                 beforeEach(function () {
+                    controller = createcontroller();
                     bard.mockService(crowbarFactory, {
                         getUpgradeStatus: $q.reject(errorResponse)
                     });
