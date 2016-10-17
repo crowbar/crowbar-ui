@@ -41,6 +41,13 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
             data: {
                 errors: failingErrors
             }
+        },
+        upgradeVm = {
+            steps: {
+                activeStep: {
+                    finished: false
+                }
+            }
         };
 
     beforeEach(function() {
@@ -50,9 +57,9 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
             '$controller', 'crowbarFactory', '$q', '$httpBackend',
             '$rootScope', 'PRODUCTS_REPO_CHECKS_MAP'
         );
-
+        $rootScope.upgradeVm = upgradeVm;
         //Create the controller
-        controller = $controller('UpgradeAdministrationRepositoriesCheckController');
+        controller = $controller('UpgradeAdministrationRepositoriesCheckController', {$scope: $rootScope});
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});

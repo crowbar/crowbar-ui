@@ -59,6 +59,10 @@
             if (vm.steps.isLastStep()) {
                 return;
             }
+            // Prevent clicking if steps is not finished
+            if (!vm.steps.activeStep.finished) {
+                return;
+            }
             vm.steps.activeStep.active = false;
             vm.steps.activeStep.enabled = true;
 

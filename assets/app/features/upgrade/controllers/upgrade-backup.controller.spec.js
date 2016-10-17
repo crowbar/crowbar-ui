@@ -21,15 +21,22 @@ describe('Upgrade Flow - Backup Controller', function() {
         mockedDownloadResponse = {
             data: mockedDownloadFile,
             'headers': function() {}
+        },
+        upgradeVm = {
+            steps: {
+                activeStep: {
+                    finished: false
+                }
+            }
         };
 
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
         bard.inject('$controller', '$rootScope', '$q', '$httpBackend', '$document', 'crowbarBackupFactory');
-
+        $rootScope.upgradeVm = upgradeVm;
         //Create the controller
-        controller = $controller('UpgradeBackupController');
+        controller = $controller('UpgradeBackupController', {$scope: $rootScope});
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
