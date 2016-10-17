@@ -14,7 +14,5 @@
     UpgradeNodesController.$inject = [];
     // @ngInject
     function UpgradeNodesController() {
-
-            
     }
 })();
