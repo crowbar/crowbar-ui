@@ -2,6 +2,7 @@
 /*global bard $controller $httpBackend should assert crowbarBackupFactory $q $rootScope $document */
 describe('Upgrade Flow - Backup Controller', function() {
     var controller,
+        scope,
         mockedErrorList = [ 1, 2, 3],
         mockedErrorResponse = {
             data: { errors: mockedErrorList }
@@ -34,9 +35,12 @@ describe('Upgrade Flow - Backup Controller', function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
         bard.inject('$controller', '$rootScope', '$q', '$httpBackend', '$document', 'crowbarBackupFactory');
-        $rootScope.upgradeVm = upgradeVm;
+
+        scope = $rootScope.$new();
+        scope.upgradeVm = upgradeVm;
+
         //Create the controller
-        controller = $controller('UpgradeBackupController', {$scope: $rootScope});
+        controller = $controller('UpgradeBackupController', {$scope: scope});
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
@@ -153,7 +157,7 @@ describe('Upgrade Flow - Backup Controller', function() {
                     it('click() method should have been triggered to download the backup', function () {
                         expect($document[0].createElement).toHaveBeenCalledWith('a');
                         expect(downloadBackupMock.click).toHaveBeenCalled();
-                    })
+                    });
 
                     it('crowbarBackupFactory.get() has been called once', function () {
                         assert.isTrue(crowbarBackupFactory.get.calledOnce);

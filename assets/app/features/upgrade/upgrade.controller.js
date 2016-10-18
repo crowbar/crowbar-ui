@@ -56,13 +56,11 @@
          */
         function nextStep() {
             // Only move forward if active step isn't last step available
-            if (vm.steps.isLastStep()) {
+            // or the step is not finished
+            if (vm.steps.isLastStep() || !vm.steps.activeStep.finished) {
                 return;
             }
-            // Prevent clicking if steps is not finished
-            if (!vm.steps.activeStep.finished) {
-                return;
-            }
+
             vm.steps.activeStep.active = false;
             vm.steps.activeStep.enabled = true;
 

@@ -1,6 +1,7 @@
 /*global bard $controller $httpBackend should assert openstackFactory $q $rootScope */
 describe('openStack Services Controller', function() {
     var controller,
+        scope,
         passingOpenStackServices = {
             'services': true,
         },
@@ -32,6 +33,13 @@ describe('openStack Services Controller', function() {
             data: {
                 errors: failingErrors
             }
+        },
+        upgradeVm = {
+            steps: {
+                activeStep: {
+                    finished: false
+                }
+            }
         };
 
     beforeEach(function() {
@@ -39,8 +47,11 @@ describe('openStack Services Controller', function() {
         bard.appModule('crowbarApp');
         bard.inject('$controller', '$rootScope', 'openstackFactory', '$q', '$httpBackend');
 
+        scope = $rootScope.$new();
+        scope.upgradeVm = upgradeVm;
+
         //Create the controller
-        controller = $controller('UpgradeOpenStackServicesController');
+        controller = $controller('UpgradeOpenStackServicesController', {$scope: scope});
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});

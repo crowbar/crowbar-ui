@@ -1,7 +1,7 @@
 button.btn.btn-default.pull-left(type='button')
   span(aria-hidden="true")
   | Cancel Upgrade
-button.btn.btn-success.pull-right(type='button', ng-click="steps.nextStep()", ng-if="!steps.isLastStep()", ng-class="{disabled : steps.activeStep.finished != true   }")
+button.btn.btn-success.pull-right(type='button', ng-click="steps.nextStep()", ng-if="!steps.isLastStep()", ng-disabled="steps.activeStep.finished != true")
   span(aria-hidden="true")
   | Next
 button.btn.btn-success.disabled.pull-right(type='button', ng-click="steps.nextStep()", ng-if="steps.isLastStep()")

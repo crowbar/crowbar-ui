@@ -11,9 +11,9 @@
     angular.module('crowbarApp')
         .controller('UpgradeOpenStackServicesController', UpgradeOpenStackServicesController);
 
-    UpgradeOpenStackServicesController.$inject = ['$translate', 'openstackFactory'];
+    UpgradeOpenStackServicesController.$inject = ['$translate', 'openstackFactory', '$scope'];
     // @ngInject
-    function UpgradeOpenStackServicesController($translate, openstackFactory) {
+    function UpgradeOpenStackServicesController($translate, openstackFactory, $scope) {
         var vm = this;
 
         vm.openStackServices = {
@@ -67,6 +67,7 @@
                             vm.openStackServices.running = false;
 
                             vm.openStackServices.valid = vm.openStackServices.checks.backup.status;
+                            $scope.upgradeVm.steps.activeStep.finished =  vm.openStackServices.valid;
                         });
                 } else {
                     vm.openStackServices.completed = true;

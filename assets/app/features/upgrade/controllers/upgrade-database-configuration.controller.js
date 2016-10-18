@@ -11,9 +11,9 @@
     angular.module('crowbarApp')
         .controller('UpgradeDatabaseConfigurationController', UpgradeDatabaseConfigurationController);
 
-    UpgradeDatabaseConfigurationController.$inject = [];
+    UpgradeDatabaseConfigurationController.$inject = ['$scope'];
     // @ngInject
-    function UpgradeDatabaseConfigurationController() {
+    function UpgradeDatabaseConfigurationController($scope) {
         var vm = this;
         vm.databaseForm = {
             username: '',
@@ -21,6 +21,8 @@
             server: '',
             port: 5432,
             tablePrefix: ''
-        }
+        };
+        // Temporary to allow the next button
+        $scope.upgradeVm.steps.activeStep.finished = true;
     }
 })();

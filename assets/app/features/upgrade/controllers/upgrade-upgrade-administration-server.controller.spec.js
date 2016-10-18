@@ -1,6 +1,7 @@
 /*global bard $controller should $httpBackend crowbarFactory assert $q $rootScope */
 describe('Upgrade Flow - Upgrade Administration Server Controller', function () {
     var controller,
+        scope,
         completedUpgradeResponse = {
             data: {
                 version: '3.0',
@@ -37,7 +38,14 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
         errorResponse = {
             data: { errors: errorList }
         },
-        mockedTimeout;
+        mockedTimeout,
+        upgradeVm = {
+            steps: {
+                activeStep: {
+                    finished: false
+                }
+            }
+        };
 
     beforeEach(function() {
         //Setup the module and dependencies to be used.
@@ -49,8 +57,12 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
 
         mockedTimeout = jasmine.createSpy('$timeout');
 
+        scope = $rootScope.$new();
+        scope.upgradeVm = upgradeVm;
+
         //Create the controller
-        controller = $controller('UpgradeUpgradeAdministrationServerController', { '$timeout': mockedTimeout });
+        controller = $controller('UpgradeUpgradeAdministrationServerController',
+          { '$timeout': mockedTimeout, $scope: scope });
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
