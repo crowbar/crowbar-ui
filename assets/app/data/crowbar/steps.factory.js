@@ -20,10 +20,8 @@
                 isCompletedStep = true;
 
             for (var i = 0; i < factory.steps.length; i++) {
-                /**
-                Update factory steps.active and steps.enabled to ture,
-                if the steps.state is equal to the current state
-                */
+
+                 //Update active and enabled properties to true for the current state
                 if (factory.steps[i].state === currentState) {
                     // Update factory.activeStep with the active step object
                     factory.activeStep = factory.steps[i];
@@ -32,6 +30,7 @@
                     isCompletedStep = false;
 
                 } else {
+                    // The rest of the steps should not be active
                     factory.steps[i].active = false;
                     factory.steps[i].enabled = isCompletedStep;
                 }
