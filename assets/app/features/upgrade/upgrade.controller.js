@@ -17,39 +17,16 @@
         var vm = this;
         vm.steps = {
             list: [],
-            activeStep: {},
             nextStep: nextStep,
             isLastStep: isLastStep
         };
 
         // Get Steps list from provider
-        vm.steps.list = upgradeStepsFactory.getAll();
-        refeshStepsList();
+        vm.steps.list = upgradeStepsFactory.steps;
+        upgradeStepsFactory.refeshStepsList();
 
         // Watch for view changes on the Step in order to update the steps list.
-        $scope.$on('$viewContentLoaded', refeshStepsList);
-
-        /**
-         * Refresh the list of steps and active step models
-         */
-        function refeshStepsList() {
-            vm.steps.activeStep = vm.steps.list[0];
-            var currentState = $state.current.name,
-                isCompletedStep = true;
-
-            for (var i = 0; i < vm.steps.list.length; i++) {
-                if (vm.steps.list[i].state === currentState) {
-                    vm.steps.activeStep = vm.steps.list[i];
-                    vm.steps.activeStep.active = true;
-                    vm.steps.activeStep.enabled = isCompletedStep;
-                    isCompletedStep = false;
-
-                } else {
-                    vm.steps.list[i].active = false;
-                    vm.steps.list[i].enabled = isCompletedStep;
-                }
-            }
-        }
+        $scope.$on('$viewContentLoaded', upgradeStepsFactory.refeshStepsList);
 
         /**
          * Move to the next available Step
@@ -59,14 +36,9 @@
             if (vm.steps.isLastStep()) {
                 return;
             }
-            vm.steps.activeStep.active = false;
-            vm.steps.activeStep.enabled = true;
-
-            vm.steps.activeStep = vm.steps.list[vm.steps.activeStep.id + 1];
-            vm.steps.activeStep.active = true;
-            vm.steps.activeStep.enabled = true;
-
-            $state.go(vm.steps.activeStep.state);
+            
+            upgradeStepsFactory.activeStep = vm.steps.list[upgradeStepsFactory.activeStep.id + 1];
+            $state.go(upgradeStepsFactory.activeStep.state);
         }
 
         /**
@@ -74,7 +46,7 @@
          * @return boolean
          */
         function isLastStep() {
-            return vm.steps.list[vm.steps.list.length - 1] === vm.steps.activeStep;
+            return vm.steps.list[vm.steps.list.length - 1] === upgradeStepsFactory.activeStep;
         }
     }
 })();
