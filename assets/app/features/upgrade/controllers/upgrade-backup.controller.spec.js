@@ -114,14 +114,63 @@ describe('Upgrade Flow - Backup Controller', function() {
             });
 
             describe('when executed', function () {
-
-                describe('on success', function () {
+                describe('on success with wrong file headers', function () {
                     var downloadBackupMock;
 
                     beforeEach(function () {
 
                         // Mock the click() method of a fake downloadBackup element
                         downloadBackupMock = $document[0].createElement('a')
+                        spyOn(downloadBackupMock, 'click');
+
+                        // Mock the createElement() method of $document[0]
+                        spyOn($document[0], 'createElement')
+                            .and.returnValue(downloadBackupMock);
+
+                        // Mock the headers() method of the fake response
+                        spyOn(mockedDownloadResponse, 'headers')
+                            .and.returnValue({});
+
+                        // Mock the download() method of the crowbarBackupFactory,
+                        // and return a custom promise instead
+                        bard.mockService(crowbarBackupFactory, {
+                            get: $q.when(mockedDownloadResponse)
+                        });
+
+                        // Run the backup get function
+                        controller.backup.download(42);
+                        $rootScope.$digest();
+                    });
+
+                    it('click() method should have been triggered to download the backup', function () {
+                        expect($document[0].createElement).toHaveBeenCalledWith('a');
+                        expect(downloadBackupMock.click).toHaveBeenCalled();
+                        expect(downloadBackupMock.click.calls.count()).toBe(1);
+                    });
+
+                    it('crowbarBackupFactory.get() has been called once', function () {
+                        assert.isTrue(crowbarBackupFactory.get.calledOnce);
+                    });
+
+                    it('changes the completed status', function() {
+                        assert.isTrue(controller.backup.completed);
+                    });
+
+                    it('no error is created', function() {
+                        should.not.exist(controller.backup.error);
+                    });
+
+                    it('uses the default name for the file', function () {
+                        expect(downloadBackupMock.download).toEqual('crowbarBackup');
+                    })
+                });
+                describe('on success', function () {
+                    var downloadBackupMock;
+
+                    beforeEach(function () {
+
+                        // Mock the click() method of a fake downloadBackup element
+                        downloadBackupMock = $document[0].createElement('a');
                         spyOn(downloadBackupMock, 'click');
 
                         // Mock the createElement() method of $document[0]
@@ -146,7 +195,7 @@ describe('Upgrade Flow - Backup Controller', function() {
                     it('click() method should have been triggered to download the backup', function () {
                         expect($document[0].createElement).toHaveBeenCalledWith('a');
                         expect(downloadBackupMock.click).toHaveBeenCalled();
-                    })
+                    });
 
                     it('crowbarBackupFactory.get() has been called once', function () {
                         assert.isTrue(crowbarBackupFactory.get.calledOnce);
@@ -159,6 +208,10 @@ describe('Upgrade Flow - Backup Controller', function() {
                     it('no error is created', function() {
                         should.not.exist(controller.backup.error);
                     });
+
+                    it('does not use the default name for the file', function () {
+                        expect(downloadBackupMock.download).not.toEqual('crowbarBackup');
+                    })
                 });
 
                 describe('on failure', function () {
