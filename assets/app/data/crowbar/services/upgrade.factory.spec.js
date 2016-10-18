@@ -118,7 +118,7 @@ describe('Upgrade Factory', function () {
             });
 
         });
-        
+
     });
 
 });

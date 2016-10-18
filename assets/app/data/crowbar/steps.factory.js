@@ -15,16 +15,14 @@
 
         return factory;
 
-
         function refeshStepsList() {
             var currentState = $state.current.name,
                 isCompletedStep = true;
 
             for (var i = 0; i < factory.steps.length; i++) {
-
-                /** 
-                Update factory steps.active and steps.enabled to ture, 
-                if the steps.state is equal to the current state 
+                /**
+                Update factory steps.active and steps.enabled to ture,
+                if the steps.state is equal to the current state
                 */
                 if (factory.steps[i].state === currentState) {
                     // Update factory.activeStep with the active step object

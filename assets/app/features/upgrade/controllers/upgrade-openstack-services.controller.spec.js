@@ -121,19 +121,19 @@ describe('openStack Services Controller', function() {
                 });
 
                 it('should call stopOpenstack service', function () {
-                    assert.isTrue(openstackFactory.stopServices.calledOnce);                         
+                    assert.isTrue(openstackFactory.stopServices.calledOnce);
                 });
 
                 it('should update services check value to true', function () {
-                    assert.isTrue(controller.openStackServices.checks.services.status);   
+                    assert.isTrue(controller.openStackServices.checks.services.status);
                 });
 
                 it('should call backup service', function () {
-                    assert.isTrue(openstackFactory.createBackup.calledOnce);                         
+                    assert.isTrue(openstackFactory.createBackup.calledOnce);
                 });
 
                 it('should update backup check value to true', function () {
-                    assert.isTrue(controller.openStackServices.checks.backup.status);                         
+                    assert.isTrue(controller.openStackServices.checks.backup.status);
                 });
 
             });
@@ -161,19 +161,19 @@ describe('openStack Services Controller', function() {
                 });
 
                 it('should call stopOpenstack service', function () {
-                    assert.isTrue(openstackFactory.stopServices.calledOnce);                         
+                    assert.isTrue(openstackFactory.stopServices.calledOnce);
                 });
 
                 it('should update services check value to true', function () {
-                    assert.isTrue(controller.openStackServices.checks.services.status);   
+                    assert.isTrue(controller.openStackServices.checks.services.status);
                 });
 
                 it('should call backup service', function () {
-                    assert.isTrue(openstackFactory.createBackup.calledOnce);                         
+                    assert.isTrue(openstackFactory.createBackup.calledOnce);
                 });
 
                 it('should update backup check value to false', function () {
-                    assert.isFalse(controller.openStackServices.checks.backup.status);                         
+                    assert.isFalse(controller.openStackServices.checks.backup.status);
                 });
 
             });
@@ -201,15 +201,15 @@ describe('openStack Services Controller', function() {
                 });
 
                 it('should call stopOpenstack service', function () {
-                    assert.isTrue(openstackFactory.stopServices.calledOnce);                         
+                    assert.isTrue(openstackFactory.stopServices.calledOnce);
                 });
 
                 it('should update services check value to true', function () {
-                    assert.isTrue(controller.openStackServices.checks.services.status);   
+                    assert.isTrue(controller.openStackServices.checks.services.status);
                 });
 
                 it('should call backup service', function () {
-                    assert.isTrue(openstackFactory.createBackup.calledOnce);                         
+                    assert.isTrue(openstackFactory.createBackup.calledOnce);
                 });
 
                 it('should expose the errors through vm.openStackServices.errors object', function () {
@@ -243,7 +243,7 @@ describe('openStack Services Controller', function() {
                 });
 
                 it('should call stopOpenstack service', function () {
-                    assert.isTrue(openstackFactory.stopServices.calledOnce);                         
+                    assert.isTrue(openstackFactory.stopServices.calledOnce);
                 });
 
                 it('should update services checks values to false', function () {
@@ -251,7 +251,7 @@ describe('openStack Services Controller', function() {
                 });
 
                 it('should not call backup service', function () {
-                    expect(openstackFactory.createBackup).not.toHaveBeenCalled();                     
+                    expect(openstackFactory.createBackup).not.toHaveBeenCalled();
                 });
 
             });
@@ -279,7 +279,7 @@ describe('openStack Services Controller', function() {
                 });
 
                 it('should not call backup service', function () {
-                    expect(openstackFactory.createBackup).not.toHaveBeenCalled();                     
+                    expect(openstackFactory.createBackup).not.toHaveBeenCalled();
                 });
 
                 it('should expose the errors through vm.openStackServices.errors object', function () {

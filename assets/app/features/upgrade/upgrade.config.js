@@ -5,7 +5,6 @@
         .module('crowbarApp.upgrade')
         .config(configuration);
 
-     
     configuration.$inject = ['$stateProvider', '$urlRouterProvider', '$translateProvider'];
     // @ngInject
     function configuration($stateProvider, $urlRouterProvider, $translateProvider) {

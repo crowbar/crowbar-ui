@@ -36,7 +36,6 @@
             if (vm.steps.isLastStep()) {
                 return;
             }
-            
             upgradeStepsFactory.activeStep = vm.steps.list[upgradeStepsFactory.activeStep.id + 1];
             $state.go(upgradeStepsFactory.activeStep.state);
         }

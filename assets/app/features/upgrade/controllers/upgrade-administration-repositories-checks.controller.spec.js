@@ -1,23 +1,29 @@
-/*global bard $controller $httpBackend should assert crowbarFactory $q $rootScope */
+/*global bard $controller $httpBackend should assert crowbarFactory $q $rootScope PRODUCTS_REPO_CHECKS_MAP*/
 describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
     var controller,
         passingRepoChecks = {
-            SLES_12_SP2: true,
-            SLES_12_SP2_Updates: true,
-            SLES_OpenStack_Cloud_7: true,
-            SLES_OpenStack_Cloud_7_Updates: true
+            os: {
+                available: true
+            },
+            openstack: {
+                available: true
+            }
         },
         failingRepoChecks = {
-            SLES_12_SP2: false,
-            SLES_12_SP2_Updates: false,
-            SLES_OpenStack_Cloud_7: false,
-            SLES_OpenStack_Cloud_7_Updates: false
+            os: {
+                available: false
+            },
+            openstack: {
+                available: false
+            }
         },
         partiallyFailingRepoChecks = {
-            SLES_12_SP2: true,
-            SLES_12_SP2_Updates: true,
-            SLES_OpenStack_Cloud_7: false,
-            SLES_OpenStack_Cloud_7_Updates: false
+            os: {
+                available: true
+            },
+            openstack: {
+                available: false
+            }
         },
         failingErrors = {
             error_message: 'Authentication failure'
@@ -40,7 +46,10 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
-        bard.inject('$controller', 'crowbarFactory', '$q', '$httpBackend', '$rootScope');
+        bard.inject(
+            '$controller', 'crowbarFactory', '$q', '$httpBackend',
+            '$rootScope', 'PRODUCTS_REPO_CHECKS_MAP'
+        );
 
         //Create the controller
         controller = $controller('UpgradeAdministrationRepositoriesCheckController');
@@ -137,7 +146,7 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
                 _.forEach(controller.repoChecks.checks, function(value) {
                     assert.isFalse(value.status);
                 });
-            }); 
+            });
         });
 
         describe('when checks partially fails', function () {
@@ -158,11 +167,17 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
             });
 
             it('should update checks values to true or false as per the response', function () {
-                assert.isObject(controller.repoChecks.checks);   
-                _.forEach(partiallyFailingChecksResponse.data, function(value, key) {
-                    expect(controller.repoChecks.checks[key].status).toEqual(value);
+                assert.isObject(controller.repoChecks.checks);
+                _.forEach(PRODUCTS_REPO_CHECKS_MAP, function(repos, type) {
+                    // Admin repochecks only checks for os or openstack repos
+                    if (type == 'os' || type == 'openstack') {
+                        _.forEach(repos, function (repo) {
+                            expect(controller.repoChecks.checks[repo].status)
+                                .toEqual(partiallyFailingChecksResponse.data[type].available)
+                        });
+                    }
                 });
-            }); 
+            });
         });
 
         describe('when service call fails', function () {

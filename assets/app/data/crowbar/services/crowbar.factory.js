@@ -18,7 +18,7 @@
 
         /**
          * Get Crowbar Entity
-         * 
+         *
          * @return {Promise}
          */
         function getEntity() {
@@ -34,7 +34,7 @@
 
         /**
          * Get Administration repositories checks (Operative System and Open Stack)
-         * 
+         *
          * @return {Promise}
          */
         function getRepositoriesChecks() {
@@ -51,7 +51,7 @@
 
         /**
          * Trigger the Upgrade process on the Adinistration Node (Crowbar) from Cloud6 to Cloud7
-         * 
+         *
          * @return {Promise}
          */
         function upgrade() {
@@ -67,7 +67,7 @@
 
         /**
          * Get the upgrade status of the Administration Node (Crowbar)
-         * 
+         *
          * @return {Promise}
          */
         function getUpgradeStatus() {

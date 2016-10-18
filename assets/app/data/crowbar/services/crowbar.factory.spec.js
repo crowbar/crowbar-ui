@@ -153,7 +153,7 @@ describe('Crowbar Factory', function () {
             });
 
         });
-        
+
     });
 
 });

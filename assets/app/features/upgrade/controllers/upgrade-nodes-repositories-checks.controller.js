@@ -15,31 +15,31 @@
         '$translate',
         'upgradeFactory',
         'crowbarFactory',
-        'NODES_PRODUCTS_REPO_CHECKS_MAP'
+        'PRODUCTS_REPO_CHECKS_MAP'
     ];
     // @ngInject
     function UpgradeNodesRepositoriesCheckController(
         $translate,
         upgradeFactory,
         crowbarFactory,
-        NODES_PRODUCTS_REPO_CHECKS_MAP
+        PRODUCTS_REPO_CHECKS_MAP
     ) {
         var vm = this,
             addonsRepos = {
                 'SLE12-SP2-HA-Pool': {
-                    status: false, 
+                    status: false,
                     label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SLE12-SP2-HA-Pool'
                 },
                 'SLE12-SP2-HA-Updates': {
-                    status: false, 
+                    status: false,
                     label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SLE12-SP2-HA-Updates'
                 },
                 'SUSE-Enterprise-Storage-4-Pool': {
-                    status: false, 
+                    status: false,
                     label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SUSE-Enterprise-Storage-4-Pool'
                 },
                 'SUSE-Enterprise-Storage-4-Updates': {
-                    status: false, 
+                    status: false,
                     label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SUSE-Enterprise-Storage-4-Updates'
                 }
             };
@@ -48,19 +48,19 @@
             valid: false,
             checks: {
                 'SLES12-SP2-Pool': {
-                    status: false, 
+                    status: false,
                     label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SLES12-SP2-Pool'
                 },
                 'SLES12-SP2-Updates': {
-                    status: false, 
+                    status: false,
                     label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SLES12-SP2-Updates'
                 },
                 'SUSE-OpenStack-Cloud-7-Pool': {
-                    status: false, 
+                    status: false,
                     label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SUSE-OpenStack-Cloud-7-Pool'
                 },
                 'SUSE-OpenStack-Cloud-7-Updates': {
-                    status: false, 
+                    status: false,
                     label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SUSE-OpenStack-Cloud-7-Updates'
                 }
             },
@@ -78,7 +78,7 @@
             crowbarFactory.getEntity().then(function (entityResponse) {
                 if (! _.isEmpty(entityResponse.data.addons)) {
                     _.forEach(entityResponse.data.addons, function (addon) {
-                        _.forEach(NODES_PRODUCTS_REPO_CHECKS_MAP[addon], function (addonRepository) {
+                        _.forEach(PRODUCTS_REPO_CHECKS_MAP[addon], function (addonRepository) {
                             _.set(vm.repoChecks.checks, addonRepository, addonsRepos[addonRepository]);
                         });
 
@@ -119,10 +119,10 @@
             _.forEach(repoChecksResponse.data, function(productValue, productKey) {
 
                 // Validate a valid check from the service is being updated
-                if (NODES_PRODUCTS_REPO_CHECKS_MAP.hasOwnProperty(productKey)) {
+                if (PRODUCTS_REPO_CHECKS_MAP.hasOwnProperty(productKey)) {
 
                     // Iterate through the repositories list for the product
-                    _.forEach(NODES_PRODUCTS_REPO_CHECKS_MAP[productKey], function (repoName) {
+                    _.forEach(PRODUCTS_REPO_CHECKS_MAP[productKey], function (repoName) {
 
                         // If the product is available, then its related repositories should be displayed as passing
                         if (productValue.available) {
@@ -131,7 +131,7 @@
                         // If not, each/all failing repositories must be identified and marked as failing
                         } else {
 
-                            /* 
+                            /*
                              * If an empty repos details are provided by the service,
                              * add all related repositories as to the failing repositories collection.
                              */
@@ -139,7 +139,7 @@
 
                                 failingRepositories.push(repoName);
 
-                            /* 
+                            /*
                              * If the repos details are provided by the service,
                              * iterate through the repository problems, repository architectures and repositories list
                              */

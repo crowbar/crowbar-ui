@@ -12,9 +12,13 @@
         .controller('UpgradeAdministrationRepositoriesCheckController',
             UpgradeAdministrationRepositoriesCheckController);
 
-    UpgradeAdministrationRepositoriesCheckController.$inject = ['$translate', 'crowbarFactory'];
+    UpgradeAdministrationRepositoriesCheckController.$inject = [
+        '$translate', 'crowbarFactory', 'PRODUCTS_REPO_CHECKS_MAP'
+    ];
     // @ngInject
-    function UpgradeAdministrationRepositoriesCheckController($translate, crowbarFactory) {
+    function UpgradeAdministrationRepositoriesCheckController(
+        $translate, crowbarFactory, PRODUCTS_REPO_CHECKS_MAP
+    ) {
         var vm = this;
         vm.repoChecks = {
             running: false,
@@ -22,21 +26,21 @@
             completed: false,
             valid: false,
             checks: {
-                'SLES_12_SP2': {
-                    status: false, 
-                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES_12_SP2'
+                'SLES12-SP2-Pool': {
+                    status: false,
+                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES12-SP2-Pool'
                 },
-                'SLES_12_SP2_Updates': {
-                    status: false, 
-                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES_12_SP2_Updates'
+                'SLES12-SP2-Updates': {
+                    status: false,
+                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES12-SP2-Updates'
                 },
-                'SLES_OpenStack_Cloud_7': {
-                    status: false, 
-                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES_OpenStack_Cloud_7'
+                'SUSE-OpenStack-Cloud-7-Pool': {
+                    status: false,
+                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SUSE-OpenStack-Cloud-7-Pool'
                 },
-                'SLES_OpenStack_Cloud_7_Updates': {
-                    status: false, 
-                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES_OpenStack_Cloud_7_Updates'
+                'SUSE-OpenStack-Cloud-7-Updates': {
+                    status: false,
+                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SUSE-OpenStack-Cloud-7-Updates'
                 }
             },
             runRepoChecks: runRepoChecks
@@ -52,27 +56,25 @@
                 .then(
                     // In case of success
                     function (repoChecksResponse) {
-
-                        _.forEach(repoChecksResponse.data, function(value, key) {
-                            vm.repoChecks.checks[key].status = value;
-                        });
-
-                        var repoChecksResult = true;
-                        // Update prechecks status
-
-                        _.forEach(vm.repoChecks.checks, function (repoStatus) {
-                            if (false === repoStatus.status) {
-                                repoChecksResult = false;
-                                return false;
+                        // Iterate over our map
+                        _.forEach(PRODUCTS_REPO_CHECKS_MAP, function (repos, type) {
+                            // Admin repochecks only checks for os or openstack repos
+                            if(type == 'os' || type == 'openstack') {
+                                _.forEach(repos, function(repo) {
+                                    vm.repoChecks.checks[repo].status = repoChecksResponse.data[type].available
+                                });
                             }
                         });
-
-                        // Update prechecks validity
-                        vm.repoChecks.valid = repoChecksResult;
+                        // Iterate over the checks to determine the validity of the step
+                        vm.repoChecks.valid = Object.keys(vm.repoChecks.checks).every(function(k) {
+                            return vm.repoChecks.checks[k].status === true
+                        });
                     },
                     // In case of failure
                     function (errorRepoChecksResponse) {
                         // Expose the error list to repoChecks object
+                        // TODO(itxaka): Check the proper error response when the card is done
+                        // https://trello.com/c/chzg85j4/142-3-s49p7-error-reporting-on-crowbar-level
                         vm.repoChecks.errors = errorRepoChecksResponse.data.errors;
                     }
                 )
