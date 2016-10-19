@@ -280,6 +280,9 @@ describe('Upgrade Landing Controller - States', function () {
         $httpBackend.flush();
     });
 
+    // Verify no unexpected http call has been made
+    bard.verifyNoOutstandingHttpRequests();
+
     it('Begin Upgrade button should redirect the user to /backup when clicked', function() {
         controller.prechecks.completed = true;
         controller.prechecks.valid = true;

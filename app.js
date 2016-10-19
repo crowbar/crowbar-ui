@@ -11,6 +11,7 @@ var express = require('express'),
     crowbarUpgrade = require('./routes/api/crowbar/upgrade'),
     upgradeRepocheck = require('./routes/api/upgrade/repocheck'),
     upgradePrechecks = require('./routes/api/upgrade/prechecks'),
+    upgradePrepare = require('./routes/api/upgrade/prepare'),
     openstackServices = require('./routes/api/openstack/services'),
     openstackBackup = require('./routes/api/openstack/backup'),
     utilsBackupCreate = require('./routes/utils/backups/create'),
@@ -32,6 +33,7 @@ app.use('/api/crowbar/repocheck', crowbarRepocheck);
 app.use('/api/crowbar/upgrade', crowbarUpgrade);
 app.use('/api/upgrade/prechecks', upgradePrechecks);
 app.use('/api/upgrade/repocheck', upgradeRepocheck);
+app.use('/api/upgrade/prepare', upgradePrepare);
 app.use('/api/openstack/services', openstackServices);
 app.use('/api/openstack/backup', openstackBackup);
 app.use('/utils/backups', utilsBackupCreate);
