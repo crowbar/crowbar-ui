@@ -3,17 +3,17 @@
 
     /**
      * @ngdoc function
-     * @name crowbarApp.controller:Upgrade7Controller
+     * @name crowbarApp.controller:UpgradeController
      * @description
-     * # Upgrade7Controller
+     * # UpgradeController
      * This is the controller that will be used across the upgrade process.
      */
     angular.module('crowbarApp.upgrade')
-        .controller('UpgradeController', Upgrade7Controller);
+        .controller('UpgradeController', UpgradeController);
 
-    Upgrade7Controller.$inject = ['$scope', '$translate', '$state', 'upgradeStepsFactory'];
+    UpgradeController.$inject = ['$scope', '$translate', '$state', 'upgradeStepsFactory'];
     // @ngInject
-    function Upgrade7Controller($scope, $translate, $state, upgradeStepsFactory) {
+    function UpgradeController($scope, $translate, $state, upgradeStepsFactory) {
         var vm = this;
         vm.steps = {
             list: [],
