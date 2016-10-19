@@ -25,7 +25,7 @@ describe('Upgrade Controller', function () {
         });
 
         // set current state
-        $state.current  = {name: 'test1', id: 0, active: true, state: 'state1'};
+        $state.current  = {name: 'state1', id: 0, active: true};
         scope = $rootScope.$new();
 
         //Create the controller
@@ -47,6 +47,12 @@ describe('Upgrade Controller', function () {
 
         it('should have a step list', function() {
             should.exist(controller.steps.list);
+        });
+
+        it('should have the default activeStep', function () {
+            should.exist(controller.steps.activeStep);
+            expect(controller.steps.activeStep.enabled).toBe(true);
+            expect(controller.steps.activeStep.id).toEqual(0);
         });
 
         describe('nextStep function', function () {
@@ -84,18 +90,13 @@ describe('Upgrade Controller', function () {
             });
 
             it('after moving to last step should return true', function () {
-                expect(controller.steps.activeStep.id).toEqual(0);
-                for (var i = 0; i < (stepsList.length - 1); i++) {
-                    controller.steps.nextStep();
-                }
-                expect(controller.steps.activeStep.id).toEqual(lastStep.id);
+                // set current and activeStep to the last one
+                $state.current = lastStep;
+                controller.steps.activeStep = lastStep;
                 assert.isTrue(controller.steps.isLastStep());
             })
         });
 
-        xdescribe('refeshStepsList function', function () {
-
-        })
     });
 
     //@TODO: Implement the following tests
