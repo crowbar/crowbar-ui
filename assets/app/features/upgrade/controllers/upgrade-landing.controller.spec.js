@@ -1,24 +1,27 @@
 /* jshint -W117, -W030 */
-/*global bard $controller $httpBackend should assert upgradeFactory $q $rootScope module $state */
+/*global bard $controller $httpBackend should assert upgradeFactory crowbarFactory $q $rootScope module $state */
 describe('Upgrade Landing Controller', function() {
     var controller,
         passingChecks = {
-            updates_installed: true,
-            network_sanity: true,
-            high_availability: true,
-            free_node_available: true
+            maintenance_updates_installed: { required: true, passed: true },
+            network_checks: { required: true, passed: true },
+            clusters_healthy: { required: true, passed: true },
+            ceph_healthy: { required: true, passed: true },
+            compute_resources_available: { required: false, passed: true }
         },
         failingChecks = {
-            updates_installed: false,
-            network_sanity: false,
-            high_availability: false,
-            free_node_available: false
+            maintenance_updates_installed: { required: true, passed: false },
+            network_checks: { required: true, passed: false },
+            clusters_healthy: { required: true, passed: false },
+            ceph_healthy: { required: true, passed: false },
+            compute_resources_available: { required: false, passed: false }
         },
         partiallyFailingChecks = {
-            updates_installed: true,
-            network_sanity: true,
-            high_availability: false,
-            free_node_available: false
+            maintenance_updates_installed: { required: true, passed: true },
+            network_checks: { required: true, passed: true },
+            clusters_healthy: { required: true, passed: false },
+            ceph_healthy: { required: true, passed: true },
+            compute_resources_available: { required: false, passed: false }
         },
         failingErrors = {
             error_message: 'Authentication failure'
@@ -36,12 +39,29 @@ describe('Upgrade Landing Controller', function() {
             data: {
                 errors: failingErrors
             }
-        };
+        },
+        entityResponseWithAddons = {
+            data: {
+                addons: ['ha', 'ceph']
+            }
+        },
+        entityResponseWithoutAddons = {
+            data: {
+                addons: []
+            }
+        },
+        activeEntityResponse;
 
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
-        bard.inject('$controller', '$rootScope', 'upgradeFactory', '$q', '$httpBackend');
+        bard.inject('$controller', '$rootScope', 'upgradeFactory', 'crowbarFactory', '$q', '$httpBackend');
+
+        // mock crowbarEntity with different response using an additional variable
+        activeEntityResponse = entityResponseWithAddons;
+        bard.mockService(crowbarFactory, {
+            getEntity: $q.when(activeEntityResponse)
+        });
 
         //Create the controller
         controller = $controller('UpgradeLandingController');
@@ -49,7 +69,6 @@ describe('Upgrade Landing Controller', function() {
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
         $httpBackend.flush();
-
     });
 
     // Verify no unexpected http call has been made
@@ -90,6 +109,35 @@ describe('Upgrade Landing Controller', function() {
                 _.forEach(controller.prechecks.checks, function(value) {
                     assert.isFalse(value.status);
                 });
+            });
+
+            it('should contain checks for addons', function () {
+                expect(controller.prechecks.checks).toEqual(
+                    jasmine.objectContaining({
+                        'clusters_healthy': jasmine.objectContaining({
+                            status: jasmine.any(Boolean),
+                            label: 'upgrade.steps.landing.prechecks.codes.high_availability'
+                        }),
+                        'ceph_healthy': jasmine.objectContaining({
+                            status: jasmine.any(Boolean),
+                            label: 'upgrade.steps.landing.prechecks.codes.storage'
+                        })
+                    }));
+            });
+        });
+
+        describe('with no addons installed', function () {
+            beforeEach(function () {
+                activeEntityResponse = entityResponseWithoutAddons;
+                controller = $controller('UpgradeLandingController');
+            });
+
+            it('should not contain checks for addons', function () {
+                expect(controller.prechecks.checks).not.toEqual(
+                    jasmine.objectContaining({
+                        'clusters_healthy': jasmine.anything(),
+                        'ceph_healthy': jasmine.anything()
+                    }));
             });
         });
 
@@ -141,10 +189,10 @@ describe('Upgrade Landing Controller', function() {
                     assert.isFalse(controller.prechecks.valid);
                 });
 
-                it('should update checks values to false', function () {
+                it('should update required checks values to false', function () {
                     assert.isObject(controller.prechecks.checks);
                     _.forEach(controller.prechecks.checks, function(value) {
-                        assert.isFalse(value.status);
+                        assert.isFalse(value.status && value.required);
                     });
                 });
             });
@@ -169,7 +217,7 @@ describe('Upgrade Landing Controller', function() {
                 it('should update checks values to true or false as per the response', function () {
                     assert.isObject(controller.prechecks.checks);
                     _.forEach(partiallyFailingChecksResponse.data, function(value, key) {
-                        expect(controller.prechecks.checks[key].status).toEqual(value);
+                        expect(controller.prechecks.checks[key].status).toEqual(value.passed || !value.required);
                     });
                 });
             });
@@ -203,23 +251,45 @@ describe('Upgrade Landing Controller', function() {
 // Bardjs' appModule() cannot be used to test States and states transitions
 // @see: https://github.com/wardbell/bardjs#dont-use-appmodule-when-testing-routes
 describe('Upgrade Landing Controller - States', function () {
-    var controller;
+    var controller,
+        entityResponseWithoutAddons = {
+            data: {
+                addons: []
+            }
+        };
+
     // inject the services using Angular "underscore wrapping"
     beforeEach(function () {
         module('crowbarApp');
-        bard.inject('$state', '$controller');
+        bard.inject('$state', '$httpBackend', '$controller', '$rootScope', '$q', 'upgradeFactory', 'crowbarFactory');
 
         spyOn($state, 'go');
 
+        bard.mockService(upgradeFactory, {
+            prepareNodes: $q.when()
+        });
+
+        bard.mockService(crowbarFactory, {
+            getEntity: $q.when(entityResponseWithoutAddons)
+        });
+
         controller = $controller('UpgradeLandingController');
 
+        //Mock requests that are expected to be made
+        $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
+        $httpBackend.flush();
     });
+
+    // Verify no unexpected http call has been made
+    bard.verifyNoOutstandingHttpRequests();
 
     it('Begin Upgrade button should redirect the user to /backup when clicked', function() {
         controller.prechecks.completed = true;
         controller.prechecks.valid = true;
 
         controller.beginUpgrade();
+
+        $rootScope.$digest();
 
         expect($state.go).toHaveBeenCalledWith('upgrade.backup');
     });
