@@ -3,7 +3,7 @@
 
     angular
         .module('crowbarWidgets')
-        .directive('crowbarUpgradeSteps', [crowbarUpgradeSteps]);
+        .directive('crowbarUpgradeSteps', crowbarUpgradeSteps);
 
     function crowbarUpgradeSteps() {
         return {

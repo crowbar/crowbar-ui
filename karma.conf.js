@@ -54,7 +54,10 @@ module.exports = function(config) {
             reporters:[
                 {type: 'html', dir:'coverage/'},
                 {type: 'text-summary'}
-            ]
+            ],
+            instrumenterOptions: {
+                istanbul: { noCompact: true }
+            }
         },
 
         // test results reporter to use
