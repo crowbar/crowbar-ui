@@ -1,9 +1,6 @@
 // Determine wether of not coverage preprocessor should be used
-var isCoverageMode = function () {
-    return (process.argv.some(function (argument) {
-        return argument === '--coverage';
-    }));
-};
+var gutil = require('gulp-util'),
+    isCoverageMode = gutil.env.hasOwnProperty('coverage');
 
 // Karma configuration
 // Generated on Thu Aug 04 2016 14:03:14 GMT+0200 (CEST)
@@ -100,7 +97,7 @@ module.exports = function(config) {
 
 
     // Coverage report will be generated
-    if (isCoverageMode()) {
+    if (isCoverageMode) {
         config.set({
             preprocessors: {
                 // source files, that you wanna generate coverage for
