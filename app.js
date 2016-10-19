@@ -7,7 +7,7 @@ var express = require('express'),
     //Routes
     index = require('./routes/index'),
     crowbarEntity = require('./routes/api/crowbar/entity'),
-    crowbarRepocheck = require('./routes/api/crowbar/repocheck'),
+    crowbarRepocheck = require('./routes/api/upgrade/adminrepocheck'),
     crowbarUpgrade = require('./routes/api/crowbar/upgrade'),
     upgradeRepocheck = require('./routes/api/upgrade/repocheck'),
     upgradePrechecks = require('./routes/api/upgrade/prechecks'),
@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/api/crowbar', crowbarEntity);
-app.use('/api/crowbar/repocheck', crowbarRepocheck);
+app.use('/api/upgrade/adminrepocheck', crowbarRepocheck);
 app.use('/api/crowbar/upgrade', crowbarUpgrade);
 app.use('/api/upgrade/prechecks', upgradePrechecks);
 app.use('/api/upgrade/repocheck', upgradeRepocheck);

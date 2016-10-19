@@ -71,7 +71,7 @@ describe('Crowbar Factory', function () {
 
             beforeEach(function () {
 
-                $httpBackend.expectGET('/api/crowbar/repocheck', COMMON_API_V2_HEADERS)
+                $httpBackend.expectGET('/api/upgrade/adminrepocheck', COMMON_API_V2_HEADERS)
                     .respond(200, mockedRepositoriesChecksData);
                 repositoriesChecksPromise = crowbarFactory.getRepositoriesChecks();
             });

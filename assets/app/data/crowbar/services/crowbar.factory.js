@@ -41,7 +41,7 @@
 
             var requestOptions = {
                 method: 'GET',
-                url: '/api/crowbar/repocheck',
+                url: '/api/upgrade/adminrepocheck',
                 headers: COMMON_API_V2_HEADERS
             };
 
