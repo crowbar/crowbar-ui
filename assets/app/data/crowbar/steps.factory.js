@@ -10,10 +10,19 @@
         var factory = {
             steps: initialSteps(),
             activeStep: {},
-            refeshStepsList: refeshStepsList
+            refeshStepsList: refeshStepsList,
+            setCurrentStepCompleted: setCurrentStepCompleted,
+            stepFinished: stepFinished
         };
 
         return factory;
+
+        function stepFinished() {
+            return factory.activeStep.finished;
+        }
+        function setCurrentStepCompleted() {
+            factory.activeStep.finished = true;
+        }
 
         function refeshStepsList() {
             var currentState = $state.current.name,
@@ -44,49 +53,56 @@
                     title: 'upgrade.steps-key.codes.backup',
                     state: 'upgrade.backup',
                     active: false,
-                    enabled: false
+                    enabled: false,
+                    finished: false
                 },
                 {
                     id: 1,
                     title: 'upgrade.steps-key.codes.administration-repositories-checks',
                     state: 'upgrade.administration-repository-checks',
                     active: false,
-                    enabled: false
+                    enabled: false,
+                    finished: false
                 },
                 {
                     id: 2,
                     title: 'upgrade.steps-key.codes.upgrade-administration-server',
                     state: 'upgrade.upgrade-administration-server',
                     active: false,
-                    enabled: false
+                    enabled: false,
+                    finished: false
                 },
                 {
                     id: 3,
                     title: 'upgrade.steps-key.codes.database-configuration',
                     state: 'upgrade.database-configuration',
                     active: false,
-                    enabled: false
+                    enabled: false,
+                    finished: false
                 },
                 {
                     id: 4,
                     title: 'upgrade.steps-key.codes.nodes-repositories-checks',
                     state: 'upgrade.nodes-repositories-checks',
                     active: false,
-                    enabled: false
+                    enabled: false,
+                    finished: false
                 },
                 {
                     id: 5,
                     title: 'upgrade.steps-key.codes.openstack-services',
                     state: 'upgrade.openstack-services',
                     active: false,
-                    enabled: false
+                    enabled: false,
+                    finished: false
                 },
                 {
                     id: 6,
                     title: 'upgrade.steps-key.codes.upgrade-nodes',
                     state: 'upgrade.upgrade-nodes',
                     active: false,
-                    enabled: false
+                    enabled: false,
+                    finished: false
                 }
             ];
         }

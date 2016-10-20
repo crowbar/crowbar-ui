@@ -12,9 +12,15 @@ function() {
     angular.module('crowbarApp')
         .controller('UpgradeBackupController', UpgradeBackupController);
 
-    UpgradeBackupController.$inject = ['$translate', '$state', 'crowbarBackupFactory', '$document'];
+    UpgradeBackupController.$inject = [
+        '$translate',
+        '$state',
+        'crowbarBackupFactory',
+        '$document',
+        'upgradeStepsFactory'
+    ];
     // @ngInject
-    function UpgradeBackupController($translate, $state, crowbarBackupFactory, $document) {
+    function UpgradeBackupController($translate, $state, crowbarBackupFactory, $document, upgradeStepsFactory) {
         var vm = this;
         vm.backup = {
             running: false,
@@ -89,6 +95,7 @@ function() {
                 .finally(function () {
                     vm.backup.running = false;
                     vm.backup.completed = true;
+                    upgradeStepsFactory.setCurrentStepCompleted()
                 });
         }
 
