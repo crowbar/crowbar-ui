@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www.js",
-    "test": "./node_modules/karma/bin/karma start karma.conf.js --single-run --browsers PhantomJS",
+    "test": "./node_modules/karma/bin/karma start karma.conf.js --single-run --browsers PhantomJS --coverage",
     "run-lints": "gulp lints"
   },
   "pre-commit": [
