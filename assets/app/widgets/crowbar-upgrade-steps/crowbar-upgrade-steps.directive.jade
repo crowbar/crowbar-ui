@@ -1,6 +1,5 @@
 ul.list-group
-  li.list-group-item(ng-repeat='step in steps', ng-class='{active: step.active, "list-group-item-success": step.enabled}')
-    div.text-right
-        | {{::step.title}}
-  li.list-group-item.bottom-padding
-
+    li.list-group-item(ng-repeat='step in steps', ng-class='{active: step.active, "list-group-item-success": step.enabled}')
+        div.text-right
+            span(translate='{{::step.title}}')
+    li.list-group-item.bottom-padding

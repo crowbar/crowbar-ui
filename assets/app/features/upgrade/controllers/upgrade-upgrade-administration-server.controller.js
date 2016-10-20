@@ -12,10 +12,15 @@
         .controller('UpgradeUpgradeAdministrationServerController', UpgradeUpgradeAdministrationServerController);
 
     UpgradeUpgradeAdministrationServerController.$inject = [
-        '$timeout', 'crowbarFactory', 'ADMIN_UPGRADE_TIMEOUT_INTERVAL'
+        '$timeout', 'crowbarFactory', 'ADMIN_UPGRADE_TIMEOUT_INTERVAL', 'upgradeStepsFactory'
     ];
     // @ngInject
-    function UpgradeUpgradeAdministrationServerController($timeout, crowbarFactory, ADMIN_UPGRADE_TIMEOUT_INTERVAL) {
+    function UpgradeUpgradeAdministrationServerController(
+      $timeout,
+      crowbarFactory,
+      ADMIN_UPGRADE_TIMEOUT_INTERVAL,
+      upgradeStepsFactory
+    ) {
         var vm = this;
         vm.adminUpgrade = {
             completed: false,
@@ -76,6 +81,10 @@
                         // schedule another check if not completed yet
                         if (!vm.adminUpgrade.completed && vm.adminUpgrade.running) {
                             $timeout(vm.adminUpgrade.checkAdminUpgrade, ADMIN_UPGRADE_TIMEOUT_INTERVAL);
+                        }
+                        // If the upgrade was completed set the step to completed
+                        if (vm.adminUpgrade.completed) {
+                            upgradeStepsFactory.setCurrentStepCompleted();
                         }
                     }
                 );
