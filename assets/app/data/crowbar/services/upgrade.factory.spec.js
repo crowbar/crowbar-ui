@@ -14,6 +14,7 @@ describe('Upgrade Factory', function () {
         prepareNodesPromise,
         nodesRepoChecksPromise,
         statusPromise,
+        cancelUpgradePromise,
         backupPromise;
 
     beforeEach(function () {
@@ -222,6 +223,32 @@ describe('Upgrade Factory', function () {
                     expect(backupResponse.status).toEqual(200);
                     expect(backupResponse.data).toEqual(mockedCreateAdminBackupResponse);
                 });
+            });
+        });
+
+        describe('when cancelUpgrade method is executed', function () {
+
+            beforeEach(function () {
+
+                $httpBackend.expectPOST('/api/upgrade/cancel', null, COMMON_API_V2_HEADERS)
+                    .respond(200);
+                cancelUpgradePromise = upgradeFactory.cancelUpgrade();
+            });
+
+            it('returns a promise', function () {
+                expect(prepareNodesPromise).toEqual(jasmine.any(Object));
+                expect(prepareNodesPromise['then']).toEqual(jasmine.any(Function));
+                expect(prepareNodesPromise['catch']).toEqual(jasmine.any(Function));
+                expect(prepareNodesPromise['finally']).toEqual(jasmine.any(Function));
+                expect(prepareNodesPromise['error']).toEqual(jasmine.any(Function));
+                expect(prepareNodesPromise['success']).toEqual(jasmine.any(Function));
+            });
+
+            it('when resolved, it returns the cancelUpgrade response', function () {
+                cancelUpgradePromise.then(function (response) {
+                    expect(response.status).toEqual(200);
+                });
+                $httpBackend.flush();
             });
         });
     });
