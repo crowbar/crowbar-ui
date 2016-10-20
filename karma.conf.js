@@ -1,3 +1,7 @@
+// Determine wether of not coverage preprocessor should be used
+var gutil = require('gulp-util'),
+    isCoverageMode = gutil.env.hasOwnProperty('coverage');
+
 // Karma configuration
 // Generated on Thu Aug 04 2016 14:03:14 GMT+0200 (CEST)
 
@@ -32,10 +36,6 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            // source files, that you wanna generate coverage for
-            // do not include tests or libraries
-            // (these files will be instrumented by Istanbul)
-            'assets/app/**/*.js': ['coverage']
         },
 
         // optionally, configure the reporter
@@ -63,7 +63,7 @@ module.exports = function(config) {
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress', 'coverage'],
+        reporters: ['progress'],
 
 
         // web server port
@@ -96,5 +96,47 @@ module.exports = function(config) {
         // Concurrency level
         // how many browser should be started simultaneous
         concurrency: Infinity
-    })
+    });
+
+
+    // Coverage report will be generated
+    if (isCoverageMode) {
+        config.set({
+            preprocessors: {
+                // source files, that you wanna generate coverage for
+                // do not include tests or libraries
+                // (these files will be instrumented by Istanbul)
+                'assets/app/**/*.js': ['coverage']
+            },
+
+            // optionally, configure the reporter
+            coverageReporter: {
+                type : 'html',
+                dir : 'coverage/',
+                check: {
+                    global: {
+                        statements: 80,
+                        branches: 80,
+                        functions: 80,
+                        lines: 80
+                    }
+                },
+                includeAllSources: true,
+                reporters:[
+                    {type: 'html', dir:'coverage/'},
+                    {type: 'text-summary'}
+                ],
+                instrumenterOptions: {
+                    istanbul: { noCompact: true }
+                }
+            },
+
+            // test results reporter to use
+            // possible values: 'dots', 'progress'
+            // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+            reporters: ['progress', 'coverage']
+
+        });
+
+    }
 }

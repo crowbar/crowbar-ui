@@ -11,10 +11,27 @@
     angular.module('crowbarApp')
         .controller('UpgradeLandingController', UpgradeLandingController);
 
-    UpgradeLandingController.$inject = ['$translate', '$state', 'upgradeFactory'];
+    UpgradeLandingController.$inject = [
+        '$translate',
+        '$state',
+        'upgradeFactory',
+        'crowbarFactory',
+        'ADDONS_PRECHECK_MAP'
+    ];
     // @ngInject
-    function UpgradeLandingController($translate, $state, upgradeFactory) {
-        var vm = this;
+    function UpgradeLandingController($translate, $state, upgradeFactory, crowbarFactory, ADDONS_PRECHECK_MAP) {
+        var vm = this,
+            optionalPrechecks = {
+                ceph_healthy: {
+                    status: false,
+                    label: 'upgrade.steps.landing.prechecks.codes.storage'
+                },
+                clusters_healthy: {
+                    status: false,
+                    label: 'upgrade.steps.landing.prechecks.codes.high_availability'
+                }
+            };
+
         vm.beginUpgrade = beginUpgrade;
 
         vm.prechecks = {
@@ -23,25 +40,36 @@
             valid: false,
             spinnerVisible: false,
             checks: {
-                updates_installed: {
+                maintenance_updates_installed: {
                     status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.updates_installed'
                 },
-                network_sanity: {
+                network_checks: {
                     status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.network_sanity'
                 },
-                high_availability: {
-                    status: false,
-                    label: 'upgrade.steps.landing.prechecks.codes.high_availability'
-                },
-                free_node_available: {
+                compute_resources_available: {
                     status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.free_node_available'
                 }
             },
             runPrechecks: runPrechecks
         };
+
+        activate();
+
+        /**
+         * Check installed add-ons on page load.
+         */
+        function activate() {
+            crowbarFactory.getEntity().then(function (response) {
+                _.forEach(response.data.addons, function (addon) {
+                    _.forEach(ADDONS_PRECHECK_MAP[addon], function (precheck) {
+                        vm.prechecks.checks[precheck] = optionalPrechecks[precheck];
+                    });
+                });
+            });
+        }
 
         /**
          * Move to the next available Step
@@ -52,7 +80,15 @@
                 return;
             }
 
-            $state.go('upgrade.backup');
+            upgradeFactory.prepareNodes().then(
+                function (/* response */) {
+                    $state.go('upgrade.backup');
+                },
+                function (errorResponse) {
+                    // Expose the error list to prechecks object
+                    vm.prechecks.errors = errorResponse.data.errors;
+                }
+            );
         }
 
         /**
@@ -65,32 +101,31 @@
                 .getPreliminaryChecks()
                 .then(
                     //Success handler. Al precheck passed successfully:
-                    function(prechecksResponse) {
+                    function(response) {
 
-                        _.forEach(prechecksResponse.data, function(value, key) {
-                            vm.prechecks.checks[key].status = value;
+                        _.forEach(response.data, function(value, key) {
+                            // TODO: handle required vs not-required checks properly in the new design
+                            vm.prechecks.checks[key].status = value.passed || !value.required;
+                            vm.prechecks.checks[key].required = value.required;
                         });
 
                         var prechecksResult = true;
+
                         // Update prechecks status
-
                         _.forEach(vm.prechecks.checks, function (checkStatus) {
-
-                            if (false === checkStatus.status) {
+                            if (!checkStatus.status) {
                                 prechecksResult = false;
                                 return false;
                             }
-
                         });
 
                         // Update prechecks validity
                         vm.prechecks.valid = prechecksResult;
                     },
                     //Failure handler:
-                    function(errorPrechecksResponse) {
-
+                    function(errorResponse) {
                         // Expose the error list to prechecks object
-                        vm.prechecks.errors = errorPrechecksResponse.data.errors;
+                        vm.prechecks.errors = errorResponse.data.errors;
                     }
                 ).finally(
                     function() {

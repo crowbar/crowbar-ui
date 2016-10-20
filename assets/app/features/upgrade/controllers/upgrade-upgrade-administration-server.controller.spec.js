@@ -52,6 +52,13 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
         //Create the controller
         controller = $controller('UpgradeUpgradeAdministrationServerController', { '$timeout': mockedTimeout });
 
+        // reset the initialResponse to the default values
+        initialResponse.upgrade = {
+            upgrading: false,
+            success: false,
+            failed: false
+        };
+
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
         $httpBackend.expectGET('/api/crowbar/upgrade').respond(initialResponse);
@@ -63,6 +70,31 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
 
     it('should exist', function () {
         should.exist(controller);
+    });
+
+    describe('on controller creation', function () {
+
+        it('should set running to true if the upgrade is running', function () {
+            initialResponse.upgrade.upgrading = true;
+            // recreate the controller so it can pick our modified initialResponse
+            controller = $controller('UpgradeUpgradeAdministrationServerController');
+            // expect the call
+            $httpBackend.expectGET('/api/crowbar/upgrade').respond(initialResponse);
+            // resolve all http calls
+            $httpBackend.flush();
+            // initial model should have changed based on the initialization response
+            assert.isFalse(controller.adminUpgrade.completed);
+            assert.isTrue(controller.adminUpgrade.running);
+        });
+
+        it('should set completed to true if upgrade is completed', function () {
+            initialResponse.upgrade.success = true;
+            controller = $controller('UpgradeUpgradeAdministrationServerController');
+            $httpBackend.expectGET('/api/crowbar/upgrade').respond(initialResponse);
+            $httpBackend.flush();
+            assert.isTrue(controller.adminUpgrade.completed);
+            assert.isFalse(controller.adminUpgrade.running);
+        });
     });
 
     describe('adminUpgrade model', function () {

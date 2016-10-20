@@ -8,5 +8,9 @@
             'openstack': ['SUSE-OpenStack-Cloud-7-Pool', 'SUSE-OpenStack-Cloud-7-Updates'],
             'ceph': ['SUSE-Enterprise-Storage-4-Pool', 'SUSE-Enterprise-Storage-4-Updates']
         })
+        .constant('ADDONS_PRECHECK_MAP', {
+            'ha': ['clusters_healthy'],
+            'ceph': ['ceph_healthy']
+        })
         .constant('ADMIN_UPGRADE_TIMEOUT_INTERVAL', 1000);
 })();

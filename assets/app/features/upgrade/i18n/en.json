@@ -23,6 +23,7 @@
                         "updates_installed": "Maintenance Updates to SLES SP1",
                         "network_sanity": "Cloud Health",
                         "high_availability": "High Availability Health",
+                        "storage": "Storage Health",
                         "free_node_available": "Free node available"
                     }
                 }
