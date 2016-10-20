@@ -15,14 +15,16 @@
         '$translate',
         'upgradeFactory',
         'crowbarFactory',
-        'PRODUCTS_REPO_CHECKS_MAP'
+        'PRODUCTS_REPO_CHECKS_MAP',
+        '$scope'
     ];
     // @ngInject
     function UpgradeNodesRepositoriesCheckController(
         $translate,
         upgradeFactory,
         crowbarFactory,
-        PRODUCTS_REPO_CHECKS_MAP
+        PRODUCTS_REPO_CHECKS_MAP,
+        $scope
     ) {
         var vm = this,
             addonsRepos = {
@@ -173,6 +175,7 @@
 
             // Update the vm valid attribute (Used by the view to enable/disable the check button)
             vm.repoChecks.valid = repoChecksResult;
+            $scope.upgradeVm.steps.activeStep.finished = vm.repoChecks.valid;
         }
     }
 })();

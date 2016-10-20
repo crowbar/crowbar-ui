@@ -1,6 +1,7 @@
 /*global bard $controller $httpBackend should assert crowbarFactory $q $rootScope PRODUCTS_REPO_CHECKS_MAP*/
 describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
     var controller,
+        scope,
         passingRepoChecks = {
             os: {
                 available: true
@@ -41,6 +42,13 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
             data: {
                 errors: failingErrors
             }
+        },
+        upgradeVm = {
+            steps: {
+                activeStep: {
+                    finished: false
+                }
+            }
         };
 
     beforeEach(function() {
@@ -50,9 +58,10 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
             '$controller', 'crowbarFactory', '$q', '$httpBackend',
             '$rootScope', 'PRODUCTS_REPO_CHECKS_MAP'
         );
-
+        scope = $rootScope.$new();
+        scope.upgradeVm = upgradeVm;
         //Create the controller
-        controller = $controller('UpgradeAdministrationRepositoriesCheckController');
+        controller = $controller('UpgradeAdministrationRepositoriesCheckController', {$scope: scope});
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});

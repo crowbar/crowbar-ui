@@ -13,11 +13,11 @@
             UpgradeAdministrationRepositoriesCheckController);
 
     UpgradeAdministrationRepositoriesCheckController.$inject = [
-        '$translate', 'crowbarFactory', 'PRODUCTS_REPO_CHECKS_MAP'
+        '$translate', 'crowbarFactory', 'PRODUCTS_REPO_CHECKS_MAP', '$scope'
     ];
     // @ngInject
     function UpgradeAdministrationRepositoriesCheckController(
-        $translate, crowbarFactory, PRODUCTS_REPO_CHECKS_MAP
+        $translate, crowbarFactory, PRODUCTS_REPO_CHECKS_MAP, $scope
     ) {
         var vm = this;
         vm.repoChecks = {
@@ -69,6 +69,8 @@
                         vm.repoChecks.valid = Object.keys(vm.repoChecks.checks).every(function(k) {
                             return vm.repoChecks.checks[k].status === true
                         });
+                        // Enable next button if all the checks pass
+                        $scope.upgradeVm.steps.activeStep.finished = vm.repoChecks.valid;
                     },
                     // In case of failure
                     function (errorRepoChecksResponse) {

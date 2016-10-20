@@ -21,42 +21,48 @@
                     title: 'Download Backup of Administration Server',
                     state: 'upgrade.backup',
                     active: false,
-                    enabled: false
+                    enabled: false,
+                    finished: false
                 },
                 {
                     id: 1,
                     title: 'Check Administration Server Repositories',
                     state: 'upgrade.administration-repository-checks',
                     active: false,
-                    enabled: false
+                    enabled: false,
+                    finished: false
                 },
                 {
                     id: 2,
                     title: 'Upgrade Administration Server',
                     state: 'upgrade.upgrade-administration-server',
                     active: false,
-                    enabled: false
+                    enabled: false,
+                    finished: false
                 },
                 {
                     id: 3,
                     title: 'Connect or Create OpenStack Database',
                     state: 'upgrade.database-configuration',
                     active: false,
-                    enabled: false
+                    enabled: false,
+                    finished: false
                 },
                 {
                     id: 4,
                     title: 'Check Add-On & Node Repositories',
                     state: 'upgrade.nodes-repositories-checks',
                     active: false,
-                    enabled: false
+                    enabled: false,
+                    finished: false
                 },
                 {
                     id: 5,
                     title: 'Backup OpenStack Database',
                     state: 'upgrade.openstack-services',
                     active: false,
-                    enabled: false
+                    enabled: false,
+                    finished: false
                 },
                 {
                     id: 6,

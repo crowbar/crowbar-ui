@@ -12,9 +12,9 @@ function() {
     angular.module('crowbarApp')
         .controller('UpgradeBackupController', UpgradeBackupController);
 
-    UpgradeBackupController.$inject = ['$translate', '$state', 'crowbarBackupFactory', '$document'];
+    UpgradeBackupController.$inject = ['$translate', '$state', 'crowbarBackupFactory', '$document', '$scope'];
     // @ngInject
-    function UpgradeBackupController($translate, $state, crowbarBackupFactory, $document) {
+    function UpgradeBackupController($translate, $state, crowbarBackupFactory, $document, $scope) {
         var vm = this;
         vm.backup = {
             running: false,
@@ -80,6 +80,7 @@ function() {
 
                         // Trigger the download
                         backupElement.click();
+                        $scope.upgradeVm.steps.activeStep.finished = true;
                     },
                     // In case of download error
                     function (errorResponse) {

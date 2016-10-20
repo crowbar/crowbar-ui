@@ -2,6 +2,7 @@
 /*global bard $controller $httpBackend should assert crowbarBackupFactory $q $rootScope $document */
 describe('Upgrade Flow - Backup Controller', function() {
     var controller,
+        scope,
         mockedErrorList = [ 1, 2, 3],
         mockedErrorResponse = {
             data: { errors: mockedErrorList }
@@ -21,6 +22,13 @@ describe('Upgrade Flow - Backup Controller', function() {
         mockedDownloadResponse = {
             data: mockedDownloadFile,
             'headers': function() {}
+        },
+        upgradeVm = {
+            steps: {
+                activeStep: {
+                    finished: false
+                }
+            }
         };
 
     beforeEach(function() {
@@ -28,8 +36,11 @@ describe('Upgrade Flow - Backup Controller', function() {
         bard.appModule('crowbarApp');
         bard.inject('$controller', '$rootScope', '$q', '$httpBackend', '$document', 'crowbarBackupFactory');
 
+        scope = $rootScope.$new();
+        scope.upgradeVm = upgradeVm;
+
         //Create the controller
-        controller = $controller('UpgradeBackupController');
+        controller = $controller('UpgradeBackupController', {$scope: scope});
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});

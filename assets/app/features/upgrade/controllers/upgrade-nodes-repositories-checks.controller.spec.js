@@ -1,6 +1,7 @@
 /*global bard $controller $httpBackend should assert upgradeFactory $q $rootScope crowbarFactory */
 describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
     var controller,
+        scope,
         failingRepoChecks = {
             'ceph': {
                 'available': false,
@@ -167,6 +168,13 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             data: {
                 errors: failingErrors
             }
+        },
+        upgradeVm = {
+            steps: {
+                activeStep: {
+                    finished: false
+                }
+            }
         };
 
     beforeEach(function() {
@@ -186,8 +194,11 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             getEntity: $q.when(entityResponse)
         });
 
+        scope = $rootScope.$new();
+        scope.upgradeVm = upgradeVm;
+
         //Create the controller
-        controller = $controller('UpgradeNodesRepositoriesCheckController');
+        controller = $controller('UpgradeNodesRepositoriesCheckController', {$scope: scope});
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});

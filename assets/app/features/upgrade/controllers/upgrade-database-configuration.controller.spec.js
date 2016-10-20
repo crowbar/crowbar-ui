@@ -1,16 +1,27 @@
-/*global bard $controller should $httpBackend */
+/*global bard $controller should $httpBackend $rootScope */
 describe('Upgrade Flow - Create Connect Database Controller', function () {
     // @ToDo Need to implement unit test, check below card
     // https://trello.com/c/w4ZiBPUh/30-3-16-create-connect-crowbar-db-ui-story-2-page-and-navigation
-    var controller;
+    var controller,
+        scope,
+        upgradeVm = {
+            steps: {
+                activeStep: {
+                    finished: false
+                }
+            }
+        };
 
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp');
         bard.inject('$controller', '$q', '$httpBackend', '$rootScope');
 
+        scope = $rootScope.$new();
+        scope.upgradeVm = upgradeVm;
+
         //Create the controller
-        controller = $controller('UpgradeDatabaseConfigurationController');
+        controller = $controller('UpgradeDatabaseConfigurationController', {$scope: scope});
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
