@@ -103,24 +103,13 @@
                     //Success handler. Al precheck passed successfully:
                     function(response) {
 
-                        _.forEach(response.data, function(value, key) {
-                            // TODO: handle required vs not-required checks properly in the new design
-                            vm.prechecks.checks[key].status = value.passed || !value.required;
-                            vm.prechecks.checks[key].required = value.required;
-                        });
-
-                        var prechecksResult = true;
-
-                        // Update prechecks status
-                        _.forEach(vm.prechecks.checks, function (checkStatus) {
-                            if (!checkStatus.status) {
-                                prechecksResult = false;
-                                return false;
-                            }
+                        _.forEach(response.data.checks, function(value, key) {
+                            vm.prechecks.checks[key].status = value.passed;
                         });
 
                         // Update prechecks validity
-                        vm.prechecks.valid = prechecksResult;
+                        // TODO: handle disruptive vs non-disruptive properly in the new design
+                        vm.prechecks.valid = (response.data.best_method != 'none');
                     },
                     //Failure handler:
                     function(errorResponse) {
