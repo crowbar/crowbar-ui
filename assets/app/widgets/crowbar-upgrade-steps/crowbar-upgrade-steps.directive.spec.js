@@ -19,11 +19,9 @@ describe('Crowbar Upgrade Steps Directive', function () {
         scope = $rootScope.$new();
         scope.stepsList = [{
             active: false,
-            enabled: false,
             title: 'step-1'
         }, {
             active: false,
-            enabled: false,
             title: 'step-2'
         }];
     });
@@ -93,7 +91,7 @@ describe('Crowbar Upgrade Steps Directive', function () {
             assert.isTrue(angular.element(listItems[0]).hasClass('active'));
         });
 
-        it('the second step remains not avtivated', function () {
+        it('the second step remains not highlighted', function () {
             assert.isFalse(angular.element(listItems[1]).hasClass('active'));
         });
     });
