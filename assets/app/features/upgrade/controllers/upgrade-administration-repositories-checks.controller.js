@@ -13,11 +13,11 @@
             UpgradeAdministrationRepositoriesCheckController);
 
     UpgradeAdministrationRepositoriesCheckController.$inject = [
-        '$translate', 'crowbarFactory', 'PRODUCTS_REPO_CHECKS_MAP'
+        '$translate', 'upgradeFactory', 'PRODUCTS_REPO_CHECKS_MAP'
     ];
     // @ngInject
     function UpgradeAdministrationRepositoriesCheckController(
-        $translate, crowbarFactory, PRODUCTS_REPO_CHECKS_MAP
+        $translate, upgradeFactory, PRODUCTS_REPO_CHECKS_MAP
     ) {
         var vm = this;
         vm.repoChecks = {
@@ -52,7 +52,7 @@
         function runRepoChecks() {
             vm.repoChecks.running = true;
 
-            crowbarFactory.getRepositoriesChecks()
+            upgradeFactory.getRepositoriesChecks()
                 .then(
                     // In case of success
                     function (repoChecksResponse) {
