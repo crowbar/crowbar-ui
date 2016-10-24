@@ -4,7 +4,9 @@ describe('Upgrade Factory', function () {
     var mockedPreliminaryChecksData = '--mockedNodesRepoChecksData--',
         mockedPrepareNodesData = '--mockedNodesRepoChecksData--',
         mockedNodesRepoChecksData = '--mockedNodesRepoChecksData--',
+        mockedRepositoriesChecksData = '--mockedRepositoriesChecksData--',
         preliminaryChecksPromise,
+        repositoriesChecksPromise,
         prepareNodesPromise,
         nodesRepoChecksPromise;
 
@@ -30,6 +32,10 @@ describe('Upgrade Factory', function () {
 
         it('returns an object with getNodesRepoChecks function defined', function () {
             expect(upgradeFactory.getNodesRepoChecks).toEqual(jasmine.any(Function));
+        });
+
+        it('returns an object with getRepositoriesChecks function is defined', function () {
+            expect(upgradeFactory.getRepositoriesChecks).toEqual(jasmine.any(Function));
         });
 
         describe('when getPreliminaryChecks method is executed', function () {
@@ -119,6 +125,34 @@ describe('Upgrade Factory', function () {
 
         });
 
+        describe('when getRepositoriesChecks method is executed', function () {
+
+            beforeEach(function () {
+
+                $httpBackend.expectGET('/api/upgrade/adminrepocheck', COMMON_API_V2_HEADERS)
+                    .respond(200, mockedRepositoriesChecksData);
+                repositoriesChecksPromise = upgradeFactory.getRepositoriesChecks();
+            });
+
+            it('returns a promise', function () {
+                expect(repositoriesChecksPromise).toEqual(jasmine.any(Object));
+                expect(repositoriesChecksPromise['then']).toEqual(jasmine.any(Function));
+                expect(repositoriesChecksPromise['catch']).toEqual(jasmine.any(Function));
+                expect(repositoriesChecksPromise['finally']).toEqual(jasmine.any(Function));
+                expect(repositoriesChecksPromise['error']).toEqual(jasmine.any(Function));
+                expect(repositoriesChecksPromise['success']).toEqual(jasmine.any(Function));
+            });
+
+            // getRepositoriesChecks success, partially passing and/or failing are handled in the controller.
+            it('when resolved, it returns the Repositories Checks response', function () {
+                repositoriesChecksPromise.then(function (repositoriesChecksResponse) {
+                    expect(repositoriesChecksResponse.status).toEqual(200);
+                    expect(repositoriesChecksResponse.data).toEqual(mockedRepositoriesChecksData);
+                });
+                $httpBackend.flush();
+            });
+
+        });
     });
 
 });

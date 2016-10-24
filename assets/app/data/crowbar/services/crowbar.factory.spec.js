@@ -2,11 +2,9 @@
 describe('Crowbar Factory', function () {
 
     var mockedCrowbarEntityData = '--mockedCrowbarEntityData--',
-        mockedRepositoriesChecksData = '--mockedRepositoriesChecksData--',
         mockedUpgradeData = '--mockedUpgradeData--',
         mockedUpgradeStatusData = '--mockedUpgradeStatusData--',
         crowbarEntityPromise,
-        repositoriesChecksPromise,
         upgradePromise,
         upgradeStatusPromise;
 
@@ -24,10 +22,6 @@ describe('Crowbar Factory', function () {
 
         it('returns an object with getEntity function is defined', function () {
             expect(crowbarFactory.getEntity).toEqual(jasmine.any(Function));
-        });
-
-        it('returns an object with getRepositoriesChecks function is defined', function () {
-            expect(crowbarFactory.getRepositoriesChecks).toEqual(jasmine.any(Function));
         });
 
         it('returns an object with upgrade function is defined', function () {
@@ -61,35 +55,6 @@ describe('Crowbar Factory', function () {
                 crowbarEntityPromise.then(function (getEntityResponse) {
                     expect(getEntityResponse.status).toEqual(200);
                     expect(getEntityResponse.data).toEqual(mockedCrowbarEntityData);
-                });
-                $httpBackend.flush();
-            });
-
-        });
-
-        describe('when getRepositoriesChecks method is executed', function () {
-
-            beforeEach(function () {
-
-                $httpBackend.expectGET('/api/crowbar/repocheck', COMMON_API_V2_HEADERS)
-                    .respond(200, mockedRepositoriesChecksData);
-                repositoriesChecksPromise = crowbarFactory.getRepositoriesChecks();
-            });
-
-            it('returns a promise', function () {
-                expect(repositoriesChecksPromise).toEqual(jasmine.any(Object));
-                expect(repositoriesChecksPromise['then']).toEqual(jasmine.any(Function));
-                expect(repositoriesChecksPromise['catch']).toEqual(jasmine.any(Function));
-                expect(repositoriesChecksPromise['finally']).toEqual(jasmine.any(Function));
-                expect(repositoriesChecksPromise['error']).toEqual(jasmine.any(Function));
-                expect(repositoriesChecksPromise['success']).toEqual(jasmine.any(Function));
-            });
-
-            // getRepositoriesChecks success, partially passing and/or failing are handled in the controller.
-            it('when resolved, it returns the Repositories Checks response', function () {
-                repositoriesChecksPromise.then(function (repositoriesChecksResponse) {
-                    expect(repositoriesChecksResponse.status).toEqual(200);
-                    expect(repositoriesChecksResponse.data).toEqual(mockedRepositoriesChecksData);
                 });
                 $httpBackend.flush();
             });

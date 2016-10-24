@@ -9,7 +9,6 @@
     function crowbarFactory($q, $http, COMMON_API_V2_HEADERS) {
         var factory = {
             getEntity: getEntity,
-            getRepositoriesChecks: getRepositoriesChecks,
             upgrade: upgrade,
             getUpgradeStatus: getUpgradeStatus
         };
@@ -30,23 +29,6 @@
             };
 
             return $http(requestOptions);
-        }
-
-        /**
-         * Get Administration repositories checks (Operative System and Open Stack)
-         *
-         * @return {Promise}
-         */
-        function getRepositoriesChecks() {
-
-            var requestOptions = {
-                method: 'GET',
-                url: '/api/crowbar/repocheck',
-                headers: COMMON_API_V2_HEADERS
-            };
-
-            return $http(requestOptions);
-
         }
 
         /**

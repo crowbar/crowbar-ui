@@ -10,7 +10,8 @@
         var factory = {
             getPreliminaryChecks: getPreliminaryChecks,
             prepareNodes: prepareNodes,
-            getNodesRepoChecks: getNodesRepoChecks
+            getNodesRepoChecks: getNodesRepoChecks,
+            getRepositoriesChecks: getRepositoriesChecks
         };
 
         return factory;
@@ -63,6 +64,23 @@
             };
 
             return $http(requestOptions);
+        }
+
+         /**
+         * Get Administration repositories checks (Operative System and Open Stack)
+         *
+         * @return {Promise}
+         */
+        function getRepositoriesChecks() {
+
+            var requestOptions = {
+                method: 'GET',
+                url: '/api/upgrade/adminrepocheck',
+                headers: COMMON_API_V2_HEADERS
+            };
+
+            return $http(requestOptions);
+
         }
     }
 })();
