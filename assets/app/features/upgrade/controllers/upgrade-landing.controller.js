@@ -104,7 +104,10 @@
                     function(response) {
 
                         _.forEach(response.data.checks, function(value, key) {
-                            vm.prechecks.checks[key].status = value.passed;
+                            // skip unknown checks returned from backend
+                            if (key in vm.prechecks.checks) {
+                                vm.prechecks.checks[key].status = value.passed;
+                            }
                         });
 
                         // Update prechecks validity
