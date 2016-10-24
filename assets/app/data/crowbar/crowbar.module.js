@@ -1,5 +1,5 @@
 (function () {
     'use strict';
 
-    angular.module('suseData.crowbar', []);
+    angular.module('suseData.crowbar', ['ui.router']);
 })();

@@ -3,12 +3,12 @@
 
     /**
     * @ngdoc function
-    * @name crowbarApp.controller:UpgradeNodesRepositoriesCheckController
+    * @name crowbarApp.upgrade.controller:UpgradeNodesRepositoriesCheckController
     * @description
     * # UpgradeNodesRepositoriesCheckController
     * This is the controller used on the Upgrade Nodes Repo Checks page
     */
-    angular.module('crowbarApp')
+    angular.module('crowbarApp.upgrade')
         .controller('UpgradeNodesRepositoriesCheckController', UpgradeNodesRepositoriesCheckController);
 
     UpgradeNodesRepositoriesCheckController.$inject = [

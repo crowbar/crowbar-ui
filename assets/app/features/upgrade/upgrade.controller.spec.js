@@ -5,7 +5,7 @@ describe('Upgrade Controller', function () {
 
     beforeEach(function() {
         //Setup the module and dependencies to be used.
-        bard.appModule('crowbarApp');
+        bard.appModule('crowbarApp.upgrade');
         bard.inject(
             '$controller', 'upgradeStepsFactory', '$httpBackend',
             '$rootScope', '$state'

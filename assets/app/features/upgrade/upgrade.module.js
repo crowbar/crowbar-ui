@@ -2,5 +2,5 @@
     'use strict';
 
     angular
-        .module('crowbarApp.upgrade', []);
+        .module('crowbarApp.upgrade', ['ui.router', 'pascalprecht.translate', 'suseData']);
 })();

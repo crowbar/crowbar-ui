@@ -1,7 +1,7 @@
 (function() {
 
     angular
-        .module('suseData.crowbar')
+        .module('crowbarApp.upgrade')
         .factory('upgradeStepsFactory', upgradeStepsFactory);
 
     upgradeStepsFactory.$inject = ['$state'];

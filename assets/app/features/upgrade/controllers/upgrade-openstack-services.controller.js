@@ -3,12 +3,12 @@
 
     /**
     * @ngdoc function
-    * @name crowbarApp.controller:UpgradeOpenStackServicesController
+    * @name crowbarApp.upgrade.controller:UpgradeOpenStackServicesController
     * @description
     * # UpgradeOpenStackServicesController
     * This is the controller used on the Stop OpenStack Services page
     */
-    angular.module('crowbarApp')
+    angular.module('crowbarApp.upgrade')
         .controller('UpgradeOpenStackServicesController', UpgradeOpenStackServicesController);
 
     UpgradeOpenStackServicesController.$inject = ['$translate', 'openstackFactory'];

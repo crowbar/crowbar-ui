@@ -3,12 +3,12 @@
 
     /**
     * @ngdoc function
-    * @name crowbarApp.controller:UpgradeAdministrationRepositoriesCheckController
+    * @name crowbarApp.upgrade.controller:UpgradeAdministrationRepositoriesCheckController
     * @description
     * # UpgradeAdministrationRepositoriesCheckController
     * This is the controller used on the Upgrade Administration Repositories Checks page
     */
-    angular.module('crowbarApp')
+    angular.module('crowbarApp.upgrade')
         .controller('UpgradeAdministrationRepositoriesCheckController',
             UpgradeAdministrationRepositoriesCheckController);
 

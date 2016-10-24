@@ -41,7 +41,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
 
     beforeEach(function() {
         //Setup the module and dependencies to be used.
-        bard.appModule('crowbarApp');
+        bard.appModule('crowbarApp.upgrade');
         bard.inject(
             '$controller', '$q', '$httpBackend', '$rootScope',
             'crowbarFactory', 'ADMIN_UPGRADE_TIMEOUT_INTERVAL'

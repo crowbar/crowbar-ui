@@ -3,12 +3,12 @@
 
     /**
     * @ngdoc function
-    * @name crowbarApp.controller:UpgradeUpgradeAdministrationServerController
+    * @name crowbarApp.upgrade.controller:UpgradeUpgradeAdministrationServerController
     * @description
     * # UpgradeUpgradeAdministrationServerController
     * This is the controller used on the Upgrade Admin Server page
     */
-    angular.module('crowbarApp')
+    angular.module('crowbarApp.upgrade')
         .controller('UpgradeUpgradeAdministrationServerController', UpgradeUpgradeAdministrationServerController);
 
     UpgradeUpgradeAdministrationServerController.$inject = [

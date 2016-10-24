@@ -3,12 +3,12 @@
 
     /**
      * @ngdoc function
-     * @name crowbarApp.controller:UpgradeLandingController
+     * @name crowbarApp.upgrade.controller:UpgradeLandingController
      * @description
      * # UpgradeLandingController
      * This is the controller used on the Upgrade landing page
      */
-    angular.module('crowbarApp')
+    angular.module('crowbarApp.upgrade')
         .controller('UpgradeLandingController', UpgradeLandingController);
 
     UpgradeLandingController.$inject = [

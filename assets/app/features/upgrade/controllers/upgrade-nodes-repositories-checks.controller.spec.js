@@ -171,7 +171,7 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
 
     beforeEach(function() {
         //Setup the module and dependencies to be used.
-        bard.appModule('crowbarApp');
+        bard.appModule('crowbarApp.upgrade');
         bard.inject(
             '$controller',
             'upgradeFactory',

@@ -1,5 +1,5 @@
-/*global bard should assert expect upgradeStepsFactory */
-fdescribe('Stepes Factory', function () {
+/*global bard should assert expect upgradeStepsFactory module $state*/
+describe('Stepes Factory', function () {
     var mockedInitialSteps = [
         {
             id: 0,
@@ -47,7 +47,7 @@ fdescribe('Stepes Factory', function () {
 
     beforeEach(function () {
         //Setup the module and dependencies to be used.
-        bard.appModule('suseData.crowbar');
+        module('crowbarApp.upgrade');
         bard.inject('upgradeStepsFactory', '$state');
 
     });
@@ -78,18 +78,36 @@ fdescribe('Stepes Factory', function () {
 
         describe('refeshStepsList function', function () {
 
-            it('should update the activeStep model with the current step', function () {
-                // Given - Preconditions (set the current $state to "upgrade.backup".)
+            _.forEach(mockedInitialSteps, function (step, stepIndex) {
+                it('should update the activeStep model with the current step: ' + step.state, function () {
+                    // Given - Preconditions (set the current $state to "upgrade.backup".)
+                    $state.current.name = step.state;
 
-                // When - Run the refreshStepsList() function
+                    // When - Run the refeshStepsList() function
+                    upgradeStepsFactory.refeshStepsList();
 
-                // Then - upgradeStepsFactory.activeStep is set to Backup
+                    // Then - upgradeStepsFactory.activeStep is set to Backup
+                    expect(upgradeStepsFactory.activeStep).toEqual(upgradeStepsFactory.steps[stepIndex]);
+                });
             });
 
-            it('it should highlight the current step in the list', function () {
-            });
+            _.forEach(mockedInitialSteps, function (mockedStep) {
+                it('it should activate only the current step' + mockedStep.state + ' in the list', function () {
+                    // Given - Preconditions
+                    $state.current.name = mockedStep.state;
 
-            it('it should leave all the other states as not active', function () {
+                    // When - Run the refeshStepsList() function
+                    upgradeStepsFactory.refeshStepsList();
+
+                    // Then - upgradeStepsFactory.steps is updated
+                    _.forEach(upgradeStepsFactory.steps, function (step) {
+                        if (step.state === mockedStep.state) {
+                            assert.isTrue(step.active);
+                        } else {
+                            assert.isFalse(step.active);
+                        }
+                    });
+                });
             });
 
         });

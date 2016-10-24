@@ -45,7 +45,7 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
 
     beforeEach(function() {
         //Setup the module and dependencies to be used.
-        bard.appModule('crowbarApp');
+        bard.appModule('crowbarApp.upgrade');
         bard.inject(
             '$controller', 'crowbarFactory', '$q', '$httpBackend',
             '$rootScope', 'PRODUCTS_REPO_CHECKS_MAP'
