@@ -1,4 +1,4 @@
-button.btn.btn-default.pull-left(type='button', ng-click="upgradeNavVm.cancelUpgrade()")
+button.btn.btn-default.pull-left(type='button', ng-click="onCancel()")
   span(aria-hidden="true")
   | Cancel Upgrade
 button.btn.btn-success.pull-right(type='button', ng-click="steps.nextStep()", ng-if="!steps.isLastStep()", ng-disabled="!steps.isCurrentStepCompleted()" )
