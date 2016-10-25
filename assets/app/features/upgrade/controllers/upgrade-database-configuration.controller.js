@@ -38,7 +38,6 @@
         function createServer() {
             vm.errors = [];
             vm.running = true;
-            vm.spinnerVisible = true;
             upgradeFactory.createNewDatabaseServer(vm.databaseForm)
                 .then(
                     // success
@@ -58,7 +57,6 @@
         function connectServer() {
             vm.errors = [];
             vm.running = true;
-            vm.spinnerVisible = true;
             upgradeFactory.connectDatabaseServer(vm.databaseForm)
                 .then(
                     // success
