@@ -4,12 +4,12 @@ function() {
 
     /**
      * @ngdoc function
-     * @name crowbarApp.controller:UpgradeBackupController
+     * @name crowbarApp.upgrade.controller:UpgradeBackupController
      * @description
      * # UpgradeBackupController
      * This is the controller used on the Upgrade backup page
      */
-    angular.module('crowbarApp')
+    angular.module('crowbarApp.upgrade')
         .controller('UpgradeBackupController', UpgradeBackupController);
 
     UpgradeBackupController.$inject = ['$translate', '$state', 'crowbarBackupFactory', '$document'];

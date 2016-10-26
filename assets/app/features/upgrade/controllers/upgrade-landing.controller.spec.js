@@ -54,7 +54,7 @@ describe('Upgrade Landing Controller', function() {
 
     beforeEach(function() {
         //Setup the module and dependencies to be used.
-        bard.appModule('crowbarApp');
+        bard.appModule('crowbarApp.upgrade');
         bard.inject('$controller', '$rootScope', 'upgradeFactory', 'crowbarFactory', '$q', '$httpBackend');
 
         // mock crowbarEntity with different response using an additional variable
@@ -260,7 +260,7 @@ describe('Upgrade Landing Controller - States', function () {
 
     // inject the services using Angular "underscore wrapping"
     beforeEach(function () {
-        module('crowbarApp');
+        module('crowbarApp.upgrade');
         bard.inject('$state', '$httpBackend', '$controller', '$rootScope', '$q', 'upgradeFactory', 'crowbarFactory');
 
         spyOn($state, 'go');

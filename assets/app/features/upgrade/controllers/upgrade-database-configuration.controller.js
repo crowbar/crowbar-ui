@@ -3,12 +3,12 @@
 
     /**
      * @ngdoc function
-     * @name crowbarApp.controller:UpgradeDatabaseConfigurationController
+     * @name crowbarApp.upgrade.controller:UpgradeDatabaseConfigurationController
      * @description
      * # UpgradeDatabaseConfigurationController
      * This is the controller used on the Upgrade Database Configuration page
      */
-    angular.module('crowbarApp')
+    angular.module('crowbarApp.upgrade')
         .controller('UpgradeDatabaseConfigurationController', UpgradeDatabaseConfigurationController);
 
     UpgradeDatabaseConfigurationController.$inject = [];
