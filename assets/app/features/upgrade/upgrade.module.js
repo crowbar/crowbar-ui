@@ -2,5 +2,5 @@
     'use strict';
 
     angular
-        .module('crowbarApp.upgrade', ['ui.router', 'pascalprecht.translate', 'suseData']);
+        .module('crowbarApp.upgrade', ['ui.router', 'ngFileSaver', 'pascalprecht.translate', 'suseData']);
 })();

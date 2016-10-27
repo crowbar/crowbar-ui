@@ -24,6 +24,7 @@
     "angular-translate": "^2.11.0",
     "angular-ui-router": "^0.3.1",
     "angular-loading-bar": "^0.9.0",
+    "angular-file-saver": "^1.1.2",
     "bootstrap": "^3.3.6",
     "angular-bootstrap": "^2.0.1",
     "font-awesome": "^4.6.3",
