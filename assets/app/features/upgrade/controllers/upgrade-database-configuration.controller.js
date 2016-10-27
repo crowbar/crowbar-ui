@@ -11,9 +11,9 @@
     angular.module('crowbarApp.upgrade')
         .controller('UpgradeDatabaseConfigurationController', UpgradeDatabaseConfigurationController);
 
-    UpgradeDatabaseConfigurationController.$inject = [];
+    UpgradeDatabaseConfigurationController.$inject = ['upgradeStepsFactory'];
     // @ngInject
-    function UpgradeDatabaseConfigurationController() {
+    function UpgradeDatabaseConfigurationController(upgradeStepsFactory) {
         var vm = this;
         vm.databaseForm = {
             username: '',
@@ -21,6 +21,10 @@
             server: '',
             port: 5432,
             tablePrefix: ''
-        }
+        };
+        // Set the current step as completed by default to enable the next button
+        // TODO(itxaka): remove this when we have the proper workflow for this step
+        upgradeStepsFactory.setCurrentStepCompleted();
+
     }
 })();
