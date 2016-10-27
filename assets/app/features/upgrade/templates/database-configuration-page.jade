@@ -5,7 +5,7 @@
         li.list-group-item(ng-repeat='error in upgradeDatabaseVm.errors') {{ error }}
 
     uib-tabset(active='active')
-        uib-tab(index='0', heading="{{'upgrade.steps.database-configuration.navigation-tabs.create-server' | translate}}")
+        uib-tab(index='0', heading="{{'upgrade.steps.database-configuration.navigation-tabs.create-database' | translate}}")
             form.database-form.new(name="newForm")
                 .row
                     .col-md-8
@@ -28,9 +28,9 @@
                             suse-lazy-spinner(delay="2000", active="upgradeDatabaseVm.running",
                                 visible="upgradeDatabaseVm.spinnerVisible"
                             )
-                            span(translate='') upgrade.steps.database-configuration.database-form.create-server
+                            span(translate='') upgrade.steps.database-configuration.database-form.create-database
 
-        uib-tab(index='1', heading="{{'upgrade.steps.database-configuration.navigation-tabs.connect-server' | translate}}")
+        uib-tab(index='1', heading="{{'upgrade.steps.database-configuration.navigation-tabs.connect-database' | translate}}")
             form.database-form.existing(name="existingForm")
                 .row
                     .col-md-8
@@ -62,4 +62,4 @@
                             suse-lazy-spinner(delay="2000", active="upgradeDatabaseVm.running",
                                 visible="upgradeDatabaseVm.spinnerVisible"
                             )
-                            span(translate='') upgrade.steps.database-configuration.database-form.connect-server
+                            span(translate='') upgrade.steps.database-configuration.database-form.connect-database

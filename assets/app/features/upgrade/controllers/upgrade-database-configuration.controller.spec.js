@@ -1,4 +1,4 @@
-/*global bard $controller should $httpBackend upgradeFactory $rootScope $q*/
+/*global bard $controller should $httpBackend upgradeFactory $rootScope $q chai*/
 describe('Upgrade Flow - Create Connect Database Controller', function () {
     // @ToDo Need to implement unit test, check below card
     // https://trello.com/c/w4ZiBPUh/30-3-16-create-connect-crowbar-db-ui-story-2-page-and-navigation
@@ -116,7 +116,7 @@ describe('Upgrade Flow - Create Connect Database Controller', function () {
             });
 
             it('errors should be empty', function () {
-                expect(controller.errors).toEqual([]);
+                chai.expect(controller.errors).to.be.empty;
             })
 
         });
@@ -136,7 +136,7 @@ describe('Upgrade Flow - Create Connect Database Controller', function () {
             });
 
             it('should fill the errors with the error messages', function () {
-                expect(controller.errors).not.toEqual([]);
+                chai.expect(controller.errors).not.to.be.empty;
                 expect(controller.errors).toContain(failedResponse.data.crowbar_init.body.error)
             })
         })
@@ -165,7 +165,7 @@ describe('Upgrade Flow - Create Connect Database Controller', function () {
             });
 
             it('errors should be empty', function () {
-                expect(controller.errors).toEqual([]);
+                chai.expect(controller.errors).to.be.empty;
             })
 
         });
@@ -186,7 +186,7 @@ describe('Upgrade Flow - Create Connect Database Controller', function () {
             });
 
             it('should fill the errors with the error messages', function () {
-                expect(controller.errors).not.toEqual([]);
+                chai.expect(controller.errors).not.to.be.empty;
                 expect(controller.errors).toContain(failedResponse.data.crowbar_init.body.error)
             })
         })
