@@ -28,7 +28,7 @@
             var requestOptions = {
                 method: 'GET',
                 cache: false,
-                responseType: 'arraybuffer',
+                responseType: 'blob',
                 url: '/utils/backups/' + id + '/download',
                 // this is not strictly needed here, but can be left for consistency
                 headers: COMMON_API_V1_HEADERS

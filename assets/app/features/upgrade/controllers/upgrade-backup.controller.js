@@ -81,14 +81,9 @@ function() {
                         var headers = response.headers(),
 
                             // Get the filename from the headers or default to "crowbarBackup"
-                            filename = extractFilename(headers) || 'crowbarBackup',
+                            filename = extractFilename(headers) || 'crowbarBackup';
 
-                            // Determine the content type from the header
-                            contentType = headers['content-type'],
-
-                            backupBlob = new Blob([response.data], {type: contentType});
-
-                        FileSaver.saveAs(backupBlob, filename)
+                        FileSaver.saveAs(response.data, filename)
                     },
                     // In case of download error
                     function (errorResponse) {
