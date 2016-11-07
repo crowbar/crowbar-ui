@@ -30,8 +30,7 @@ function() {
         $document,
         upgradeStepsFactory,
         upgradeFactory,
-        FileSaver,
-        Blob
+        FileSaver
     ) {
         var vm = this;
         vm.backup = {

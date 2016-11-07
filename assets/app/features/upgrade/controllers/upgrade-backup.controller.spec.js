@@ -10,9 +10,10 @@ describe('Upgrade Flow - Backup Controller', function() {
             data: { id: 42 }
         },
         mockedDownloadFile = '--Mock Backup File--',
+        mockedFileName = 'S33z8qFX.jpg.zip',
         mockedDownloadResponseHeaders = {
             'connection': 'keep-alive',
-            'content-disposition': 'attachment; filename=S33z8qFX.jpg.zip',
+            'content-disposition': 'attachment; filename=' + mockedFileName,
             'content-type': 'application/zip',
             'date': 'Thu, 25 Aug 2016 11:07:32 GMT',
             'transfer-encoding': 'chunked',
@@ -156,7 +157,7 @@ describe('Upgrade Flow - Backup Controller', function() {
                         should.not.exist(controller.backup.error);
                     });
 
-                    it('uses the default name for the file', function () {
+                    it('calls saveAs with data received from the service and default filename', function () {
                         expect(FileSaver.saveAs).toHaveBeenCalledWith(
                           mockedDownloadResponse.data, 'crowbarBackup'
                         );
@@ -194,9 +195,9 @@ describe('Upgrade Flow - Backup Controller', function() {
                         should.not.exist(controller.backup.error);
                     });
 
-                    it('does not use the default name for the file', function () {
-                        expect(FileSaver.saveAs).not.toHaveBeenCalledWith(
-                          mockedDownloadResponse.data, 'crowbarBackup'
+                    it('calls saveAs with data received from the service and filename from header', function () {
+                        expect(FileSaver.saveAs).toHaveBeenCalledWith(
+                          mockedDownloadResponse.data, mockedFileName
                         );
                     })
                 });
