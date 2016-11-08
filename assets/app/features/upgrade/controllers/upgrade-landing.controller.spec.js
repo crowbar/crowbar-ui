@@ -27,13 +27,13 @@ describe('Upgrade Landing Controller', function() {
             error_message: 'Authentication failure'
         },
         passingChecksResponse = {
-            data: passingChecks
+            data: { checks: passingChecks, best_method: 'non-disruptive' }
         },
         failingChecksResponse = {
-            data: failingChecks
+            data: { checks: failingChecks, best_method: 'none' }
         },
         partiallyFailingChecksResponse = {
-            data: partiallyFailingChecks
+            data: { checks: partiallyFailingChecks, best_method: 'disruptive' }
         },
         failingResponse = {
             data: {
@@ -197,7 +197,7 @@ describe('Upgrade Landing Controller', function() {
                 });
             });
 
-            describe('when checks partially fails', function () {
+            describe('when checks partially fail', function () {
                 beforeEach(function () {
                     bard.mockService(upgradeFactory, {
                         getPreliminaryChecks: $q.when(partiallyFailingChecksResponse)
@@ -210,14 +210,14 @@ describe('Upgrade Landing Controller', function() {
                     assert.isTrue(controller.prechecks.completed);
                 });
 
-                it('should update valid attribute of checks model to false', function () {
-                    assert.isFalse(controller.prechecks.valid);
+                it('should update valid attribute of checks model to true (disruptive only)', function () {
+                    assert.isTrue(controller.prechecks.valid);
                 });
 
                 it('should update checks values to true or false as per the response', function () {
                     assert.isObject(controller.prechecks.checks);
-                    _.forEach(partiallyFailingChecksResponse.data, function(value, key) {
-                        expect(controller.prechecks.checks[key].status).toEqual(value.passed || !value.required);
+                    _.forEach(partiallyFailingChecksResponse.data.checks, function(value, key) {
+                        expect(controller.prechecks.checks[key].status).toEqual(value.passed);
                     });
                 });
             });

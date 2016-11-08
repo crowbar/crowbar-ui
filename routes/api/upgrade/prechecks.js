@@ -11,11 +11,14 @@ router.get('/', function(req, res) {
     } else {
         // fail some checks first, then succeed on second call
         res.status(200).json({
-            'maintenance_updates_installed': { required: true, passed: true },
-            'network_checks': { required: true, passed: checksPass },
-            'clusters_healthy': { required: true, passed: true },
-            'ceph_healthy': { required: true, passed: checksPass },
-            'compute_resources_available': { required: false, passed: true }
+            'checks': {
+                'maintenance_updates_installed': { required: true, passed: true },
+                'network_checks': { required: true, passed: checksPass },
+                'clusters_healthy': { required: true, passed: true },
+                'ceph_healthy': { required: true, passed: checksPass },
+                'compute_resources_available': { required: false, passed: true }
+            },
+            'best_method': checksPass ? 'non-disruptive' : 'none'
         });
     }
     checksPass = true;
