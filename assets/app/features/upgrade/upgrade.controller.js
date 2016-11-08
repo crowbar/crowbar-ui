@@ -18,7 +18,8 @@
         vm.steps = {
             list: [],
             nextStep: nextStep,
-            isLastStep: isLastStep
+            isLastStep: isLastStep,
+            isCurrentStepCompleted: upgradeStepsFactory.isCurrentStepCompleted
         };
 
         // Get Steps list from provider

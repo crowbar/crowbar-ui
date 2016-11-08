@@ -13,11 +13,11 @@
             UpgradeAdministrationRepositoriesCheckController);
 
     UpgradeAdministrationRepositoriesCheckController.$inject = [
-        '$translate', 'upgradeFactory', 'PRODUCTS_REPO_CHECKS_MAP'
+        '$translate', 'upgradeFactory', 'PRODUCTS_REPO_CHECKS_MAP', 'upgradeStepsFactory'
     ];
     // @ngInject
     function UpgradeAdministrationRepositoriesCheckController(
-        $translate, upgradeFactory, PRODUCTS_REPO_CHECKS_MAP
+        $translate, upgradeFactory, PRODUCTS_REPO_CHECKS_MAP, upgradeStepsFactory
     ) {
         var vm = this;
         vm.repoChecks = {
@@ -69,6 +69,11 @@
                         vm.repoChecks.valid = Object.keys(vm.repoChecks.checks).every(function(k) {
                             return vm.repoChecks.checks[k].status === true
                         });
+
+                        // if all the repos are ok, complete the step
+                        if (vm.repoChecks.valid) {
+                            upgradeStepsFactory.setCurrentStepCompleted();
+                        }
                     },
                     // In case of failure
                     function (errorRepoChecksResponse) {
