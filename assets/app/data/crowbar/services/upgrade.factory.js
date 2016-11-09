@@ -11,7 +11,8 @@
             getPreliminaryChecks: getPreliminaryChecks,
             prepareNodes: prepareNodes,
             getNodesRepoChecks: getNodesRepoChecks,
-            getRepositoriesChecks: getRepositoriesChecks
+            getRepositoriesChecks: getRepositoriesChecks,
+            getStatus: getStatus
         };
 
         return factory;
@@ -81,6 +82,22 @@
 
             return $http(requestOptions);
 
+        }
+
+        /**
+         * Get the overall upgrade status
+         *
+         * @return {Promise}
+         */
+        function getStatus() {
+
+            var requestOptions = {
+                method: 'GET',
+                url: '/api/upgrade',
+                headers: COMMON_API_V2_HEADERS
+            };
+
+            return $http(requestOptions);
         }
     }
 })();

@@ -12,12 +12,13 @@
         .controller('UpgradeUpgradeAdministrationServerController', UpgradeUpgradeAdministrationServerController);
 
     UpgradeUpgradeAdministrationServerController.$inject = [
-        '$timeout', 'crowbarFactory', 'ADMIN_UPGRADE_TIMEOUT_INTERVAL', 'upgradeStepsFactory'
+        '$timeout', 'crowbarFactory', 'upgradeFactory', 'ADMIN_UPGRADE_TIMEOUT_INTERVAL', 'upgradeStepsFactory'
     ];
     // @ngInject
     function UpgradeUpgradeAdministrationServerController(
       $timeout,
       crowbarFactory,
+      upgradeFactory,
       ADMIN_UPGRADE_TIMEOUT_INTERVAL,
       upgradeStepsFactory
     ) {
@@ -61,13 +62,13 @@
         }
 
         function checkAdminUpgrade() {
-            crowbarFactory.getUpgradeStatus()
+            upgradeFactory.getStatus()
                 .then(
                     // In case of success
                     function (response) {
                         // map api response to model
-                        vm.adminUpgrade.completed = response.data.upgrade.success;
-                        vm.adminUpgrade.running = response.data.upgrade.upgrading;
+                        vm.adminUpgrade.completed = response.data.steps.admin_upgrade.status === 'passed';
+                        vm.adminUpgrade.running = response.data.steps.admin_upgrade.status === 'running';
                     },
                     // In case of failure
                     function (errorResponse) {
