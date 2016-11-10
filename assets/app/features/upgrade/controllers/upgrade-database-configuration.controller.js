@@ -18,12 +18,9 @@
         vm.databaseForm = {
             username: '',
             password: '',
-            server: '',
+            host: '',
             port: 5432
         };
-        // Set the current step as completed by default to enable the next button
-        // TODO(itxaka): remove this when we have the proper workflow for this step
-        upgradeStepsFactory.setCurrentStepCompleted();
 
         vm.running = false;
         vm.spinnerVisible = false;
@@ -43,6 +40,7 @@
                     // success
                     function (/*response*/) {
                         vm.completed = true;
+                        upgradeStepsFactory.setCurrentStepCompleted();
                     },
                     // error
                     function (errorResponse) {
@@ -62,6 +60,7 @@
                     // success
                     function (/*response*/) {
                         vm.completed = true;
+                        upgradeStepsFactory.setCurrentStepCompleted();
                     },
                     // error
                     function (errorResponse) {

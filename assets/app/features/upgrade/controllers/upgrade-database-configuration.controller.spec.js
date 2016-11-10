@@ -74,9 +74,9 @@ describe('Upgrade Flow - Create Connect Database Controller', function () {
         expect(controller.databaseForm.password).toEqual('');
     });
 
-    it('should have empty "server" field', function () {
-        should.exist(controller.databaseForm.server);
-        expect(controller.databaseForm.server).toEqual('');
+    it('should have empty "host" field', function () {
+        should.exist(controller.databaseForm.host);
+        expect(controller.databaseForm.host).toEqual('');
     });
 
     it('should have "port" field with default value 5432 ', function () {
