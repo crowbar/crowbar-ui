@@ -38,7 +38,7 @@ app.use('/api/upgrade/repocheck', upgradeRepocheck);
 app.use('/api/upgrade/prepare', upgradePrepare);
 app.use('/api/openstack/services', openstackServices);
 app.use('/api/openstack/backup', openstackBackup);
-app.use('/utils/backups', utilsBackupCreate);
+app.use('/api/upgrade/adminbackup', utilsBackupCreate);
 app.use('/utils/backups/\*/download', utilsBackupDownload);
 
 

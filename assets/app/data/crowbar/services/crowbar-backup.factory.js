@@ -4,9 +4,9 @@
         .module('suseData.crowbar')
         .factory('crowbarBackupFactory', crowbarBackupFactory);
 
-    crowbarBackupFactory.$inject = ['$q', '$http', '$filter', 'COMMON_API_V1_HEADERS'];
+    crowbarBackupFactory.$inject = ['$q', '$http', '$filter', 'COMMON_API_V1_HEADERS', 'COMMON_API_V2_HEADERS'];
     /* @ngInject */
-    function crowbarBackupFactory($q, $http, $filter, COMMON_API_V1_HEADERS) {
+    function crowbarBackupFactory($q, $http, $filter, COMMON_API_V1_HEADERS, COMMON_API_V2_HEADERS) {
         var factory = {
             create: createBackup,
             get: getBackup
@@ -23,9 +23,9 @@
 
             var requestOptions = {
                 method: 'POST',
-                url: '/utils/backups',
-                data: { name: 'upgrade-backup-' + $filter('date')(new Date, 'yyyyMMddHHmmss') },
-                headers: COMMON_API_V1_HEADERS
+                url: '/api/upgrade/adminbackup',
+                data: { backup: { name: 'upgrade-backup-' + $filter('date')(new Date, 'yyyyMMddHHmmss') } },
+                headers: COMMON_API_V2_HEADERS
             };
 
             return $http(requestOptions);

@@ -1,4 +1,4 @@
-/*global bard $httpBackend should expect crowbarBackupFactory assert */
+/*global bard $httpBackend should expect crowbarBackupFactory assert COMMON_API_V2_HEADERS */
 describe('Crowbar Backup Factory', function () {
 
     var mockedBackupFile = '--mockedBackupFile--',
@@ -36,7 +36,8 @@ describe('Crowbar Backup Factory', function () {
         describe('when create method is executed', function () {
 
             beforeEach(function () {
-                $httpBackend.expect('POST', '/utils/backups', undefined)
+                $httpBackend.expect('POST', '/api/upgrade/adminbackup', undefined, function (headers) {
+                    return headers.Accept === COMMON_API_V2_HEADERS.Accept })
                     .respond(200, mockedCreateResponse);
                 backupPromise = crowbarBackupFactory.create();
                 $httpBackend.flush();
