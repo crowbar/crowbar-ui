@@ -1,5 +1,6 @@
 /* jshint -W117, -W030 */
-/*global bard $controller $httpBackend should assert upgradeFactory crowbarFactory $q $rootScope module $state */
+/*global bard $controller $httpBackend should assert upgradeFactory upgradeStatusFactory
+  crowbarFactory $q $rootScope module $state */
 describe('Upgrade Landing Controller', function() {
     var controller,
         passingChecks = {
@@ -256,22 +257,22 @@ describe('Upgrade Landing Controller - States', function () {
             data: {
                 addons: []
             }
-        };
+        },
+        successResponse = {},
+        errorResponse = { data: {} };
 
     // inject the services using Angular "underscore wrapping"
     beforeEach(function () {
         module('crowbarApp.upgrade');
-        bard.inject('$state', '$httpBackend', '$controller', '$rootScope', '$q', 'upgradeFactory', 'crowbarFactory');
+        bard.inject('$state', '$httpBackend', '$controller', '$rootScope', '$q', 'upgradeFactory',
+                    'upgradeStatusFactory', 'crowbarFactory');
 
         spyOn($state, 'go');
-
-        bard.mockService(upgradeFactory, {
-            prepareNodes: $q.when()
-        });
 
         bard.mockService(crowbarFactory, {
             getEntity: $q.when(entityResponseWithoutAddons)
         });
+
 
         controller = $controller('UpgradeLandingController');
 
@@ -283,23 +284,99 @@ describe('Upgrade Landing Controller - States', function () {
     // Verify no unexpected http call has been made
     bard.verifyNoOutstandingHttpRequests();
 
-    it('Begin Upgrade button should redirect the user to /backup when clicked', function() {
-        controller.prechecks.completed = true;
-        controller.prechecks.valid = true;
-
-        controller.beginUpgrade();
-
-        $rootScope.$digest();
-
-        expect($state.go).toHaveBeenCalledWith('upgrade.backup');
-    });
-
     it('should avoid any redirection if prechecks are not successfully validated', function() {
         controller.prechecks.completed = false;
         controller.prechecks.valid = false;
 
         controller.beginUpgrade();
-
         expect($state.go).not.toHaveBeenCalled();
+    });
+
+    describe('when node prepare starts successfully', function () {
+        beforeEach(function () {
+            bard.mockService(upgradeFactory, {
+                prepareNodes: $q.when()
+            });
+
+            spyOn(upgradeStatusFactory, 'waitForStepToEnd');
+
+            controller.prechecks.completed = true;
+            controller.prechecks.valid = true;
+
+            controller.beginUpgrade();
+
+            $rootScope.$digest();
+        });
+
+        it('should start polling for status', function () {
+            expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalled();
+        });
+    });
+
+    describe('when node prepare start fails', function () {
+        beforeEach(function () {
+            bard.mockService(upgradeFactory, {
+                prepareNodes: $q.reject(errorResponse)
+            });
+
+            spyOn(upgradeStatusFactory, 'waitForStepToEnd');
+
+            controller.prechecks.completed = true;
+            controller.prechecks.valid = true;
+
+            controller.beginUpgrade();
+
+            $rootScope.$digest();
+        });
+
+        it('should not start polling for status', function () {
+            expect(upgradeStatusFactory.waitForStepToEnd).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('when polling is finished successfully', function () {
+        beforeEach(function () {
+            bard.mockService(upgradeFactory, {
+                prepareNodes: $q.when()
+            });
+
+            bard.mockService(upgradeStatusFactory, {
+                waitForStepToEnd: function (step, onSuccess/*, onError, interval*/) { onSuccess(successResponse); }
+            });
+
+            controller.prechecks.completed = true;
+            controller.prechecks.valid = true;
+
+            controller.beginUpgrade();
+
+            $rootScope.$digest();
+        });
+
+        it('user should be redirected to backup page', function() {
+            expect($state.go).toHaveBeenCalledWith('upgrade.backup');
+        });
+    });
+
+    describe('when polling is finished with an error', function () {
+        beforeEach(function () {
+            bard.mockService(upgradeFactory, {
+                prepareNodes: $q.when()
+            });
+
+            bard.mockService(upgradeStatusFactory, {
+                waitForStepToEnd: function (step, onSuccess, onError/*, interval*/) { onError(errorResponse); }
+            });
+
+            controller.prechecks.completed = true;
+            controller.prechecks.valid = true;
+
+            controller.beginUpgrade();
+
+            $rootScope.$digest();
+        });
+
+        it('user should not be redirected to backup page', function() {
+            expect($state.go).not.toHaveBeenCalled();
+        });
     });
 });

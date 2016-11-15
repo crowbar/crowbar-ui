@@ -15,11 +15,21 @@
         '$translate',
         '$state',
         'upgradeFactory',
+        'upgradeStatusFactory',
         'crowbarFactory',
-        'ADDONS_PRECHECK_MAP'
+        'ADDONS_PRECHECK_MAP',
+        'PREPARE_TIMEOUT_INTERVAL'
     ];
     // @ngInject
-    function UpgradeLandingController($translate, $state, upgradeFactory, crowbarFactory, ADDONS_PRECHECK_MAP) {
+    function UpgradeLandingController(
+        $translate,
+        $state,
+        upgradeFactory,
+        upgradeStatusFactory,
+        crowbarFactory,
+        ADDONS_PRECHECK_MAP,
+        PREPARE_TIMEOUT_INTERVAL
+    ) {
         var vm = this,
             optionalPrechecks = {
                 ceph_healthy: {
@@ -56,6 +66,11 @@
             runPrechecks: runPrechecks
         };
 
+        vm.prepare = {
+            running: false,
+            spinnerVisible: false
+        };
+
         activate();
 
         /**
@@ -82,7 +97,20 @@
 
             upgradeFactory.prepareNodes().then(
                 function (/* response */) {
-                    $state.go('upgrade.backup');
+                    vm.prepare.running = true;
+                    upgradeStatusFactory.waitForStepToEnd(
+                        'upgrade_prepare',
+                        function (/*response*/) {
+                            vm.prepare.running = false;
+                            $state.go('upgrade.backup');
+                        },
+                        function (errorResponse) {
+                            vm.prepare.running = false;
+                            // Expose the error list to prechecks object
+                            vm.prechecks.errors = errorResponse.data.errors;
+                        },
+                        PREPARE_TIMEOUT_INTERVAL
+                    );
                 },
                 function (errorResponse) {
                     // Expose the error list to prechecks object

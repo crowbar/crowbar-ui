@@ -29,7 +29,11 @@
         .col-sm-10.col-sm-offset-1.note-message.text-center
             strong(translate='') upgrade.steps.landing.note
 
-    button.btn.btn-success.center-block(translate='',
-        ng-disabled="!upgradeLandingVm.prechecks.completed || !upgradeLandingVm.prechecks.valid",
+    button.btn.btn-success.center-block(
+        ng-disabled="!upgradeLandingVm.prechecks.completed || !upgradeLandingVm.prechecks.valid || upgradeLandingVm.prepare.running",
+        ng-class="{'spinner-visible': upgradeLandingVm.prepare.spinnerVisible, active: upgradeLandingVm.prepare.running}",
         ng-click="upgradeLandingVm.beginUpgrade()"
-    ) upgrade.steps.landing.form.button
+    )
+        suse-lazy-spinner(delay="2000", active="upgradeLandingVm.prepare.running",
+            visible="upgradeLandingVm.prepare.spinnerVisible")
+        span(translate='') upgrade.steps.landing.form.button
