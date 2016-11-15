@@ -1,5 +1,10 @@
 {
     "upgrade": {
+        "nav": {
+            "cancel": "Cancel Upgrade",
+            "next": "Next",
+            "last": "Upgrading Nodes..."
+        },
         "steps": {
             "landing": {
                 "title": "SUSE OpenStack Cloud Upgrade",
