@@ -13,5 +13,6 @@
             'ceph': ['ceph_healthy']
         })
         .constant('PREPARE_TIMEOUT_INTERVAL', 1000)
-        .constant('ADMIN_UPGRADE_TIMEOUT_INTERVAL', 1000);
+        .constant('ADMIN_UPGRADE_ALLOWED_DOWNTIME', 30 * 60 * 1000)
+        .constant('ADMIN_UPGRADE_TIMEOUT_INTERVAL', 5000);
 })();

@@ -13,7 +13,7 @@
 
     UpgradeUpgradeAdministrationServerController.$inject = [
         '$timeout', 'crowbarFactory', 'upgradeStatusFactory',
-        'ADMIN_UPGRADE_TIMEOUT_INTERVAL',
+        'ADMIN_UPGRADE_TIMEOUT_INTERVAL', 'ADMIN_UPGRADE_ALLOWED_DOWNTIME',
         'upgradeFactory', 'upgradeStepsFactory'
     ];
     // @ngInject
@@ -76,7 +76,8 @@
                                 // https://trello.com/c/chzg85j4/142-3-s49p7-error-reporting-on-crowbar-level
                                 vm.adminUpgrade.errors = errorResponse.data.errors;
                             },
-                            ADMIN_UPGRADE_TIMEOUT_INTERVAL
+                            ADMIN_UPGRADE_TIMEOUT_INTERVAL,
+                            ADMIN_UPGRADE_ALLOWED_DOWNTIME
                         );
                     },
                     // In case of failure

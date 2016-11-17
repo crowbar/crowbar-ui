@@ -26,7 +26,8 @@
          *     allowance is common for whole call so if there are multiple short unavailability
          *     periods, the total time (sum) is checked.
          */
-        function waitForStepToEnd(step, onSuccess, onError, pollingInterval) {
+        function waitForStepToEnd(step, onSuccess, onError, pollingInterval, allowedDowntimeLeft) {
+            allowedDowntimeLeft = angular.isDefined(allowedDowntimeLeft) ? allowedDowntimeLeft : 0;
             upgradeFactory.getStatus()
                 .then(
                     function (response) {
@@ -35,12 +36,26 @@
                         } else {
                             // schedule another check
                             $timeout(function () {
-                                factory.waitForStepToEnd(step, onSuccess, onError, pollingInterval);
+                                factory.waitForStepToEnd(
+                                    step, onSuccess, onError,
+                                    pollingInterval, allowedDowntimeLeft
+                                );
                             }, pollingInterval);
                         }
                     },
                     function (errorResponse) {
-                        onError(errorResponse);
+                        // stop polling and run error callback if we ran out of allowed downtime
+                        if (allowedDowntimeLeft <= 0) {
+                            onError(errorResponse);
+                        } else {
+                            // schedule another check but with less downtime allowance
+                            $timeout(function () {
+                                factory.waitForStepToEnd(
+                                    step, onSuccess, onError,
+                                    pollingInterval, allowedDowntimeLeft - pollingInterval
+                                );
+                            }, pollingInterval);
+                        }
                     }
                 );
         }

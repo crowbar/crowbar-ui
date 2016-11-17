@@ -5,12 +5,17 @@ var errors = ['001', '002', '003'];
 
 var status_counter = -1,
     tested_step = 'admin_upgrade',
+    simulate_temporary_downtime = true,
     status = {
         current_step: 'upgrade_prechecks',
         substep: null,
         current_node: null,
         steps: {
             upgrade_prechecks: {
+                status: 'pending',
+                errors: {}
+            },
+            upgrade_prepare: {
                 status: 'pending',
                 errors: {}
             },
@@ -62,8 +67,10 @@ router.get('/', function(req, res) {
         case 0:
             return 'pending';
         case 1:
+            return 'running';
         case 2:
         case 3:
+            return simulate_temporary_downtime ? null : 'running';
         case 4:
             return 'running';
         case 5:
@@ -75,9 +82,20 @@ router.get('/', function(req, res) {
         res.status(500).json({'errors': errors});
     } else {
         status.current_step = tested_step;
+        for (var step in status.steps) {
+            if (step == tested_step) {
+                break;
+            }
+            status.steps[step].status = 'passed';
+        }
         status.steps[tested_step].status = testedStatus();
 
-        res.status(200).json(status);
+        // simulated failure
+        if (status.steps[tested_step].status) {
+            res.status(200).json(status);
+        } else {
+            res.status(502).end();
+        }
     }
 });
 
