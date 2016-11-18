@@ -5,10 +5,12 @@ describe('Upgrade Factory', function () {
         mockedPrepareNodesData = '--mockedNodesRepoChecksData--',
         mockedNodesRepoChecksData = '--mockedNodesRepoChecksData--',
         mockedRepositoriesChecksData = '--mockedRepositoriesChecksData--',
+        mockedStatusData = '--mockedStatusData--',
         preliminaryChecksPromise,
         repositoriesChecksPromise,
         prepareNodesPromise,
-        nodesRepoChecksPromise;
+        nodesRepoChecksPromise,
+        statusPromise;
 
     beforeEach(function () {
         //Setup the module and dependencies to be used.
@@ -148,6 +150,35 @@ describe('Upgrade Factory', function () {
                 repositoriesChecksPromise.then(function (repositoriesChecksResponse) {
                     expect(repositoriesChecksResponse.status).toEqual(200);
                     expect(repositoriesChecksResponse.data).toEqual(mockedRepositoriesChecksData);
+                });
+                $httpBackend.flush();
+            });
+
+        });
+
+        describe('when getStatus method is executed', function () {
+
+            beforeEach(function () {
+
+                $httpBackend.expectGET('/api/upgrade', COMMON_API_V2_HEADERS)
+                    .respond(200, mockedStatusData);
+                statusPromise = upgradeFactory.getStatus();
+            });
+
+            it('returns a promise', function () {
+                expect(statusPromise).toEqual(jasmine.any(Object));
+                expect(statusPromise['then']).toEqual(jasmine.any(Function));
+                expect(statusPromise['catch']).toEqual(jasmine.any(Function));
+                expect(statusPromise['finally']).toEqual(jasmine.any(Function));
+                expect(statusPromise['error']).toEqual(jasmine.any(Function));
+                expect(statusPromise['success']).toEqual(jasmine.any(Function));
+            });
+
+            // getStatus success, partially passing and/or failing are handled in the controller.
+            it('when resolved, it returns the upgrade status response', function () {
+                statusPromise.then(function (response) {
+                    expect(response.status).toEqual(200);
+                    expect(response.data).toEqual(mockedStatusData);
                 });
                 $httpBackend.flush();
             });
