@@ -48,6 +48,8 @@
                         vm.adminUpgrade.completed = response.data.steps.admin_upgrade.status == 'passed';
                         if (vm.adminUpgrade.completed) {
                             upgradeStepsFactory.setCurrentStepCompleted();
+                        } else if (vm.adminUpgrade.running) {
+                            waitForUpgradeToEnd();
                         }
                     },
                     function (/*errorResponse*/) {
@@ -63,22 +65,7 @@
                     // In case of success
                     function (/*response*/) {
                         vm.adminUpgrade.running = true;
-                        upgradeStatusFactory.waitForStepToEnd(
-                            'admin_upgrade',
-                            function (/*response*/) {
-                                vm.adminUpgrade.running = false;
-                                vm.adminUpgrade.completed = true;
-                                upgradeStepsFactory.setCurrentStepCompleted();
-                            },
-                            function (errorResponse) {
-                                vm.adminUpgrade.running = false;
-                                // TODO(itxaka): Use the proper error key from the response when this is done
-                                // https://trello.com/c/chzg85j4/142-3-s49p7-error-reporting-on-crowbar-level
-                                vm.adminUpgrade.errors = errorResponse.data.errors;
-                            },
-                            ADMIN_UPGRADE_TIMEOUT_INTERVAL,
-                            ADMIN_UPGRADE_ALLOWED_DOWNTIME
-                        );
+                        waitForUpgradeToEnd();
                     },
                     // In case of failure
                     function (errorResponse) {
@@ -87,6 +74,25 @@
                         vm.adminUpgrade.errors = errorResponse.data.errors;
                     }
                 );
+        }
+
+        function waitForUpgradeToEnd() {
+            upgradeStatusFactory.waitForStepToEnd(
+                'admin_upgrade',
+                function (/*response*/) {
+                    vm.adminUpgrade.running = false;
+                    vm.adminUpgrade.completed = true;
+                    upgradeStepsFactory.setCurrentStepCompleted();
+                },
+                function (errorResponse) {
+                    vm.adminUpgrade.running = false;
+                    // TODO(itxaka): Use the proper error key from the response when this is done
+                    // https://trello.com/c/chzg85j4/142-3-s49p7-error-reporting-on-crowbar-level
+                    vm.adminUpgrade.errors = errorResponse.data.errors;
+                },
+                ADMIN_UPGRADE_TIMEOUT_INTERVAL,
+                ADMIN_UPGRADE_ALLOWED_DOWNTIME
+            );
         }
 
     }
