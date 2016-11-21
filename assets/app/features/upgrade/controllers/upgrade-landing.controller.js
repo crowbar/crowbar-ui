@@ -18,7 +18,8 @@
         'upgradeStatusFactory',
         'crowbarFactory',
         'ADDONS_PRECHECK_MAP',
-        'PREPARE_TIMEOUT_INTERVAL'
+        'PREPARE_TIMEOUT_INTERVAL',
+        'UPGRADE_STEPS',
     ];
     // @ngInject
     function UpgradeLandingController(
@@ -28,7 +29,8 @@
         upgradeStatusFactory,
         crowbarFactory,
         ADDONS_PRECHECK_MAP,
-        PREPARE_TIMEOUT_INTERVAL
+        PREPARE_TIMEOUT_INTERVAL,
+        UPGRADE_STEPS
     ) {
         var vm = this,
             optionalPrechecks = {
@@ -99,7 +101,7 @@
                 function (/* response */) {
                     vm.prepare.running = true;
                     upgradeStatusFactory.waitForStepToEnd(
-                        'upgrade_prepare',
+                        UPGRADE_STEPS.upgrade_prepare,
                         function (/*response*/) {
                             vm.prepare.running = false;
                             $state.go('upgrade.backup');
