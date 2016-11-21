@@ -6,11 +6,15 @@ describe('Upgrade Factory', function () {
         mockedNodesRepoChecksData = '--mockedNodesRepoChecksData--',
         mockedRepositoriesChecksData = '--mockedRepositoriesChecksData--',
         mockedStatusData = '--mockedStatusData--',
+        mockedCreateAdminBackupResponse = {
+            id: 42
+        },
         preliminaryChecksPromise,
         repositoriesChecksPromise,
         prepareNodesPromise,
         nodesRepoChecksPromise,
-        statusPromise;
+        statusPromise,
+        backupPromise;
 
     beforeEach(function () {
         //Setup the module and dependencies to be used.
@@ -38,6 +42,14 @@ describe('Upgrade Factory', function () {
 
         it('returns an object with getRepositoriesChecks function is defined', function () {
             expect(upgradeFactory.getRepositoriesChecks).toEqual(jasmine.any(Function));
+        });
+
+        it('returns an object with getStatus function is defined', function () {
+            expect(upgradeFactory.getStatus).toEqual(jasmine.any(Function));
+        });
+
+        it('returns an object with createAdminBackup function is defined', function () {
+            expect(upgradeFactory.createAdminBackup).toEqual(jasmine.any(Function));
         });
 
         describe('when getPreliminaryChecks method is executed', function () {
@@ -183,6 +195,34 @@ describe('Upgrade Factory', function () {
                 $httpBackend.flush();
             });
 
+        });
+
+        describe('when createAdminBackup method is executed', function () {
+
+            beforeEach(function () {
+                $httpBackend.expect('POST', '/api/upgrade/adminbackup', undefined, function (headers) {
+                    return headers.Accept === COMMON_API_V2_HEADERS.Accept })
+                    .respond(200, mockedCreateAdminBackupResponse);
+                backupPromise = upgradeFactory.createAdminBackup();
+                $httpBackend.flush();
+            });
+
+            it('returns a promise', function () {
+                expect(backupPromise).toEqual(jasmine.any(Object));
+                expect(backupPromise['then']).toEqual(jasmine.any(Function));
+                expect(backupPromise['catch']).toEqual(jasmine.any(Function));
+                expect(backupPromise['finally']).toEqual(jasmine.any(Function));
+                expect(backupPromise['error']).toEqual(jasmine.any(Function));
+                expect(backupPromise['success']).toEqual(jasmine.any(Function));
+            });
+
+            // backup create success, partially passing and/or failing are handled in the controller.
+            it('when resolved, it returns the backup response', function () {
+                backupPromise.then(function (backupResponse) {
+                    expect(backupResponse.status).toEqual(200);
+                    expect(backupResponse.data).toEqual(mockedCreateAdminBackupResponse);
+                });
+            });
         });
     });
 
