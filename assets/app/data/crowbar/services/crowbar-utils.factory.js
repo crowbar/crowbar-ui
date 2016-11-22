@@ -2,34 +2,16 @@
 
     angular
         .module('suseData.crowbar')
-        .factory('crowbarBackupFactory', crowbarBackupFactory);
+        .factory('crowbarUtilsFactory', crowbarUtilsFactory);
 
-    crowbarBackupFactory.$inject = ['$q', '$http', '$filter', 'COMMON_API_V1_HEADERS'];
+    crowbarUtilsFactory.$inject = ['$q', '$http', 'COMMON_API_V1_HEADERS'];
     /* @ngInject */
-    function crowbarBackupFactory($q, $http, $filter, COMMON_API_V1_HEADERS) {
+    function crowbarUtilsFactory($q, $http, COMMON_API_V1_HEADERS) {
         var factory = {
-            create: createBackup,
-            get: getBackup
+            getAdminBackup: getAdminBackup
         };
 
         return factory;
-
-        /**
-         * Create a new backup of the Administration Node
-         *
-         * @return {Promise}
-         */
-        function createBackup() {
-
-            var requestOptions = {
-                method: 'POST',
-                url: '/utils/backups',
-                data: { name: 'upgrade-backup-' + $filter('date')(new Date, 'yyyyMMddHHmmss') },
-                headers: COMMON_API_V1_HEADERS
-            };
-
-            return $http(requestOptions);
-        }
 
         /**
          * Download a specific backup based on its Id
@@ -37,10 +19,10 @@
          * @param  {Number} Backup Id to be downloaded
          * @return {Promise}
          */
-        function getBackup(id) {
+        function getAdminBackup(id) {
             // this should never happen, caller should make sure 'id' is set
             if (angular.isUndefined(id)) {
-                throw Error('getBackup() called without id.');
+                throw Error('getAdminBackup() called without id.');
             }
 
             var requestOptions = {

@@ -15,12 +15,20 @@ function() {
     UpgradeBackupController.$inject = [
         '$translate',
         '$state',
-        'crowbarBackupFactory',
+        'crowbarUtilsFactory',
         '$document',
-        'upgradeStepsFactory'
+        'upgradeStepsFactory',
+        'upgradeFactory'
     ];
     // @ngInject
-    function UpgradeBackupController($translate, $state, crowbarBackupFactory, $document, upgradeStepsFactory) {
+    function UpgradeBackupController(
+        $translate,
+        $state,
+        crowbarUtilsFactory,
+        $document,
+        upgradeStepsFactory,
+        upgradeFactory
+    ) {
         var vm = this;
         vm.backup = {
             running: false,
@@ -33,7 +41,7 @@ function() {
         function createBackup() {
             vm.backup.running = true;
 
-            crowbarBackupFactory.create()
+            upgradeFactory.createAdminBackup()
                 .then(
                     function (response) {
                         // the ID should always be returned in a successfull response
@@ -62,7 +70,7 @@ function() {
         }
 
         function downloadBackup(backupId) {
-            crowbarBackupFactory.get(backupId)
+            crowbarUtilsFactory.getAdminBackup(backupId)
                 .then(
                     // When Backup Data has been created successfully
                     function (response) {

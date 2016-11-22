@@ -4,15 +4,16 @@
         .module('suseData.crowbar')
         .factory('upgradeFactory', upgradeFactory);
 
-    upgradeFactory.$inject = ['$q', '$http', 'COMMON_API_V2_HEADERS'];
+    upgradeFactory.$inject = ['$q', '$http', '$filter', 'COMMON_API_V2_HEADERS'];
     /* @ngInject */
-    function upgradeFactory($q, $http, COMMON_API_V2_HEADERS) {
+    function upgradeFactory($q, $http, $filter, COMMON_API_V2_HEADERS) {
         var factory = {
             getPreliminaryChecks: getPreliminaryChecks,
             prepareNodes: prepareNodes,
             getNodesRepoChecks: getNodesRepoChecks,
             getRepositoriesChecks: getRepositoriesChecks,
-            getStatus: getStatus
+            getStatus: getStatus,
+            createAdminBackup: createAdminBackup
         };
 
         return factory;
@@ -94,6 +95,23 @@
             var requestOptions = {
                 method: 'GET',
                 url: '/api/upgrade',
+                headers: COMMON_API_V2_HEADERS
+            };
+
+            return $http(requestOptions);
+        }
+
+        /**
+         * Create a new backup of the Administration Node
+         *
+         * @return {Promise}
+         */
+        function createAdminBackup() {
+
+            var requestOptions = {
+                method: 'POST',
+                url: '/api/upgrade/adminbackup',
+                data: { backup: { name: 'upgrade-backup-' + $filter('date')(new Date, 'yyyyMMddHHmmss') } },
                 headers: COMMON_API_V2_HEADERS
             };
 

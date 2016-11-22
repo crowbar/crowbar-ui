@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-/*global bard $controller $httpBackend should assert crowbarBackupFactory $q $rootScope $document */
+/*global bard $controller $httpBackend should assert crowbarUtilsFactory $q $rootScope $document upgradeFactory */
 describe('Upgrade Flow - Backup Controller', function() {
     var controller,
         mockedErrorList = [ 1, 2, 3],
@@ -26,7 +26,15 @@ describe('Upgrade Flow - Backup Controller', function() {
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp.upgrade');
-        bard.inject('$controller', '$rootScope', '$q', '$httpBackend', '$document', 'crowbarBackupFactory');
+        bard.inject(
+            '$controller',
+            '$rootScope',
+            '$q',
+            '$httpBackend',
+            '$document',
+            'upgradeFactory',
+            'crowbarUtilsFactory'
+        );
 
         //Create the controller
         controller = $controller('UpgradeBackupController');
@@ -65,8 +73,8 @@ describe('Upgrade Flow - Backup Controller', function() {
                 beforeEach(function () {
                     spyOn(controller.backup, 'download');
 
-                    bard.mockService(crowbarBackupFactory, {
-                        create: $q.when(mockedCreateResponse)
+                    bard.mockService(upgradeFactory, {
+                        createAdminBackup: $q.when(mockedCreateResponse)
                     });
                     controller.backup.create();
                     $rootScope.$digest();
@@ -85,8 +93,8 @@ describe('Upgrade Flow - Backup Controller', function() {
                 beforeEach(function () {
                     spyOn(controller.backup, 'download');
 
-                    bard.mockService(crowbarBackupFactory, {
-                        create: $q.reject(mockedErrorResponse)
+                    bard.mockService(upgradeFactory, {
+                        createAdminBackup: $q.reject(mockedErrorResponse)
                     });
                     controller.backup.create();
                     $rootScope.$digest();
@@ -131,10 +139,10 @@ describe('Upgrade Flow - Backup Controller', function() {
                         spyOn(mockedDownloadResponse, 'headers')
                             .and.returnValue({});
 
-                        // Mock the download() method of the crowbarBackupFactory,
+                        // Mock the download() method of the crowbarUtilsFactory,
                         // and return a custom promise instead
-                        bard.mockService(crowbarBackupFactory, {
-                            get: $q.when(mockedDownloadResponse)
+                        bard.mockService(crowbarUtilsFactory, {
+                            getAdminBackup: $q.when(mockedDownloadResponse)
                         });
 
                         // Run the backup get function
@@ -148,8 +156,8 @@ describe('Upgrade Flow - Backup Controller', function() {
                         expect(downloadBackupMock.click.calls.count()).toBe(1);
                     });
 
-                    it('crowbarBackupFactory.get() has been called once', function () {
-                        assert.isTrue(crowbarBackupFactory.get.calledOnce);
+                    it('crowbarUtilsFactory.getAdminBackup() has been called once', function () {
+                        assert.isTrue(crowbarUtilsFactory.getAdminBackup.calledOnce);
                     });
 
                     it('changes the completed status', function() {
@@ -181,10 +189,10 @@ describe('Upgrade Flow - Backup Controller', function() {
                         spyOn(mockedDownloadResponse, 'headers')
                             .and.returnValue(mockedDownloadResponseHeaders);
 
-                        // Mock the download() method of the crowbarBackupFactory,
+                        // Mock the download() method of the crowbarUtilsFactory,
                         // and return a custom promise instead
-                        bard.mockService(crowbarBackupFactory, {
-                            get: $q.when(mockedDownloadResponse)
+                        bard.mockService(crowbarUtilsFactory, {
+                            getAdminBackup: $q.when(mockedDownloadResponse)
                         });
 
                         // Run the backup get function
@@ -197,8 +205,8 @@ describe('Upgrade Flow - Backup Controller', function() {
                         expect(downloadBackupMock.click).toHaveBeenCalled();
                     });
 
-                    it('crowbarBackupFactory.get() has been called once', function () {
-                        assert.isTrue(crowbarBackupFactory.get.calledOnce);
+                    it('crowbarUtilsFactory.getAdminBackup() has been called once', function () {
+                        assert.isTrue(crowbarUtilsFactory.getAdminBackup.calledOnce);
                     });
 
                     it('changes the completed status', function() {
@@ -217,16 +225,16 @@ describe('Upgrade Flow - Backup Controller', function() {
                 describe('on failure', function () {
                     beforeEach(function () {
 
-                        bard.mockService(crowbarBackupFactory, {
-                            get: $q.reject(mockedErrorResponse)
+                        bard.mockService(crowbarUtilsFactory, {
+                            getAdminBackup: $q.reject(mockedErrorResponse)
                         });
 
                         controller.backup.download(42);
                         $rootScope.$digest();
                     });
 
-                    it('crowbarBackupFactory.get() has been called once', function () {
-                        assert.isTrue(crowbarBackupFactory.get.calledOnce);
+                    it('crowbarUtilsFactory.getAdminBackup() has been called once', function () {
+                        assert.isTrue(crowbarUtilsFactory.getAdminBackup.calledOnce);
                     });
 
                     it('changes the completed status', function() {
