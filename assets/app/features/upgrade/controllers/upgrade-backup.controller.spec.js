@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-/*global bard $controller $httpBackend should assert crowbarUtilsFactory $q $rootScope $document upgradeFactory */
+/*global bard $controller $httpBackend should assert $q $rootScope upgradeFactory Blob FileSaver crowbarUtilsFactory */
 describe('Upgrade Flow - Backup Controller', function() {
     var controller,
         mockedErrorList = [ 1, 2, 3],
@@ -10,16 +10,17 @@ describe('Upgrade Flow - Backup Controller', function() {
             data: { id: 42 }
         },
         mockedDownloadFile = '--Mock Backup File--',
+        mockedFileName = 'S33z8qFX.jpg.zip',
         mockedDownloadResponseHeaders = {
             'connection': 'keep-alive',
-            'content-disposition': 'attachment; filename=S33z8qFX.jpg.zip',
+            'content-disposition': 'attachment; filename=' + mockedFileName,
             'content-type': 'application/zip',
             'date': 'Thu, 25 Aug 2016 11:07:32 GMT',
             'transfer-encoding': 'chunked',
-            'x-powered-by': 'Express',
+            'x-powered-by': 'Express'
         },
         mockedDownloadResponse = {
-            data: mockedDownloadFile,
+            data: new Blob([mockedDownloadFile]),
             'headers': function() {}
         };
 
@@ -31,9 +32,9 @@ describe('Upgrade Flow - Backup Controller', function() {
             '$rootScope',
             '$q',
             '$httpBackend',
-            '$document',
             'upgradeFactory',
-            'crowbarUtilsFactory'
+            'crowbarUtilsFactory',
+            'FileSaver'
         );
 
         //Create the controller
@@ -123,17 +124,10 @@ describe('Upgrade Flow - Backup Controller', function() {
 
             describe('when executed', function () {
                 describe('on success with wrong file headers', function () {
-                    var downloadBackupMock;
 
                     beforeEach(function () {
 
-                        // Mock the click() method of a fake downloadBackup element
-                        downloadBackupMock = $document[0].createElement('a')
-                        spyOn(downloadBackupMock, 'click');
-
-                        // Mock the createElement() method of $document[0]
-                        spyOn($document[0], 'createElement')
-                            .and.returnValue(downloadBackupMock);
+                        spyOn(FileSaver, 'saveAs');
 
                         // Mock the headers() method of the fake response
                         spyOn(mockedDownloadResponse, 'headers')
@@ -150,12 +144,6 @@ describe('Upgrade Flow - Backup Controller', function() {
                         $rootScope.$digest();
                     });
 
-                    it('click() method should have been triggered to download the backup', function () {
-                        expect($document[0].createElement).toHaveBeenCalledWith('a');
-                        expect(downloadBackupMock.click).toHaveBeenCalled();
-                        expect(downloadBackupMock.click.calls.count()).toBe(1);
-                    });
-
                     it('crowbarUtilsFactory.getAdminBackup() has been called once', function () {
                         assert.isTrue(crowbarUtilsFactory.getAdminBackup.calledOnce);
                     });
@@ -168,22 +156,16 @@ describe('Upgrade Flow - Backup Controller', function() {
                         should.not.exist(controller.backup.error);
                     });
 
-                    it('uses the default name for the file', function () {
-                        expect(downloadBackupMock.download).toEqual('crowbarBackup');
+                    it('calls saveAs with data received from the service and default filename', function () {
+                        expect(FileSaver.saveAs).toHaveBeenCalledWith(
+                          mockedDownloadResponse.data, 'crowbarBackup'
+                        );
                     })
                 });
                 describe('on success', function () {
-                    var downloadBackupMock;
 
                     beforeEach(function () {
-
-                        // Mock the click() method of a fake downloadBackup element
-                        downloadBackupMock = $document[0].createElement('a');
-                        spyOn(downloadBackupMock, 'click');
-
-                        // Mock the createElement() method of $document[0]
-                        spyOn($document[0], 'createElement')
-                            .and.returnValue(downloadBackupMock);
+                        spyOn(FileSaver, 'saveAs');
 
                         // Mock the headers() method of the fake response
                         spyOn(mockedDownloadResponse, 'headers')
@@ -200,11 +182,6 @@ describe('Upgrade Flow - Backup Controller', function() {
                         $rootScope.$digest();
                     });
 
-                    it('click() method should have been triggered to download the backup', function () {
-                        expect($document[0].createElement).toHaveBeenCalledWith('a');
-                        expect(downloadBackupMock.click).toHaveBeenCalled();
-                    });
-
                     it('crowbarUtilsFactory.getAdminBackup() has been called once', function () {
                         assert.isTrue(crowbarUtilsFactory.getAdminBackup.calledOnce);
                     });
@@ -217,8 +194,10 @@ describe('Upgrade Flow - Backup Controller', function() {
                         should.not.exist(controller.backup.error);
                     });
 
-                    it('does not use the default name for the file', function () {
-                        expect(downloadBackupMock.download).not.toEqual('crowbarBackup');
+                    it('calls saveAs with data received from the service and filename from header', function () {
+                        expect(FileSaver.saveAs).toHaveBeenCalledWith(
+                          mockedDownloadResponse.data, mockedFileName
+                        );
                     })
                 });
 

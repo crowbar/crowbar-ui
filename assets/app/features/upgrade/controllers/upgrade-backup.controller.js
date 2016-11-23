@@ -1,4 +1,4 @@
-(/*global Blob URL */
+(/*global */
 function() {
     'use strict';
 
@@ -18,7 +18,9 @@ function() {
         'crowbarUtilsFactory',
         '$document',
         'upgradeStepsFactory',
-        'upgradeFactory'
+        'upgradeFactory',
+        'FileSaver',
+        'Blob'
     ];
     // @ngInject
     function UpgradeBackupController(
@@ -27,7 +29,8 @@ function() {
         crowbarUtilsFactory,
         $document,
         upgradeStepsFactory,
-        upgradeFactory
+        upgradeFactory,
+        FileSaver
     ) {
         var vm = this;
         vm.backup = {
@@ -77,23 +80,9 @@ function() {
                         var headers = response.headers(),
 
                             // Get the filename from the headers or default to "crowbarBackup"
-                            filename = extractFilename(headers) || 'crowbarBackup',
+                            filename = extractFilename(headers) || 'crowbarBackup';
 
-                            // Determine the content type from the header
-                            contentType = headers['content-type'],
-
-                            backupBlob = new Blob([response.data], {type: contentType}),
-                            backupObjectUrl = URL.createObjectURL(backupBlob),
-
-                            // Create download a DOM element
-                            backupElement = $document[0].createElement('a');
-
-                        // Set anchor properties
-                        backupElement.href = backupObjectUrl;
-                        backupElement.download = filename;
-
-                        // Trigger the download
-                        backupElement.click();
+                        FileSaver.saveAs(response.data, filename)
                     },
                     // In case of download error
                     function (errorResponse) {
