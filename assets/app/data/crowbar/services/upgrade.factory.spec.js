@@ -114,7 +114,7 @@ describe('Upgrade Factory', function () {
 
             beforeEach(function () {
 
-                $httpBackend.expectGET('/api/upgrade/repocheck', COMMON_API_V2_HEADERS)
+                $httpBackend.expectGET('/api/upgrade/noderepocheck', COMMON_API_V2_HEADERS)
                     .respond(200, mockedNodesRepoChecksData);
                 nodesRepoChecksPromise = upgradeFactory.getNodesRepoChecks();
             });

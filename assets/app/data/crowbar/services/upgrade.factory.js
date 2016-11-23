@@ -61,7 +61,7 @@
 
             var requestOptions = {
                 method: 'GET',
-                url: '/api/upgrade/repocheck',
+                url: '/api/upgrade/noderepocheck',
                 headers: COMMON_API_V2_HEADERS
             };
 
