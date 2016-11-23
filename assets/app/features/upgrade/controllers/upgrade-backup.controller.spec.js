@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-/*global bard $controller $httpBackend should assert crowbarBackupFactory $q $rootScope $document upgradeFactory Blob FileSaver */
+/*global bard $controller $httpBackend should assert $q $rootScope upgradeFactory Blob FileSaver crowbarUtilsFactory */
 describe('Upgrade Flow - Backup Controller', function() {
     var controller,
         mockedErrorList = [ 1, 2, 3],
@@ -17,7 +17,7 @@ describe('Upgrade Flow - Backup Controller', function() {
             'content-type': 'application/zip',
             'date': 'Thu, 25 Aug 2016 11:07:32 GMT',
             'transfer-encoding': 'chunked',
-            'x-powered-by': 'Express',
+            'x-powered-by': 'Express'
         },
         mockedDownloadResponse = {
             data: new Blob([mockedDownloadFile]),
@@ -32,7 +32,6 @@ describe('Upgrade Flow - Backup Controller', function() {
             '$rootScope',
             '$q',
             '$httpBackend',
-            '$document',
             'upgradeFactory',
             'crowbarUtilsFactory',
             'FileSaver'
@@ -145,8 +144,8 @@ describe('Upgrade Flow - Backup Controller', function() {
                         $rootScope.$digest();
                     });
 
-                    it('crowbarBackupFactory.get() has been called once', function () {
-                        assert.isTrue(crowbarBackupFactory.get.calledOnce);
+                    it('crowbarUtilsFactory.getAdminBackup() has been called once', function () {
+                        assert.isTrue(crowbarUtilsFactory.getAdminBackup.calledOnce);
                     });
 
                     it('changes the completed status', function() {
@@ -183,8 +182,8 @@ describe('Upgrade Flow - Backup Controller', function() {
                         $rootScope.$digest();
                     });
 
-                    it('crowbarBackupFactory.get() has been called once', function () {
-                        assert.isTrue(crowbarBackupFactory.get.calledOnce);
+                    it('crowbarUtilsFactory.getAdminBackup() has been called once', function () {
+                        assert.isTrue(crowbarUtilsFactory.getAdminBackup.calledOnce);
                     });
 
                     it('changes the completed status', function() {

@@ -49,7 +49,7 @@ describe('Crowbar Utils Factory', function () {
                 backupPromise.then(function (backupResponse) {
                     expect(backupResponse.status).toEqual(200);
                     assert.isFalse(backupResponse.config.cache);
-                    expect(backupResponse.config.responseType).toEqual('arraybuffer');
+                    expect(backupResponse.config.responseType).toEqual('blob');
                     expect(backupResponse.data).toEqual(mockedBackupFile);
                 });
             });
