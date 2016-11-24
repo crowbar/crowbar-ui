@@ -87,7 +87,7 @@
         }
 
         /**
-        * Install, configure a new database server on the administration server and use it
+        * Install and configure a new database server on the administration server and use it
         * for the migration
         * @return: {Promise}
         */
