@@ -1,4 +1,4 @@
-/*global bard $controller $httpBackend should assert upgradeStepsFactory $rootScope*/
+/*global bard $controller $httpBackend should assert upgradeStepsFactory $rootScope $state*/
 describe('Upgrade Controller', function () {
     var controller,
         controllerScope;
@@ -13,8 +13,18 @@ describe('Upgrade Controller', function () {
 
         controllerScope = $rootScope.$new();
 
+        //Mock the $state service
+        bard.mockService($state, {
+            go : true
+        });
+
+        //Spy on the go function
+        spyOn($state, 'go');
+
+        $state.current = {id: 0, name: 'upgrade.backup', state: 'upgrade.backup'};
+
         //spy on the refeshStepsList function
-        spyOn(upgradeStepsFactory, 'refeshStepsList');
+        spyOn(upgradeStepsFactory, 'refeshStepsList').and.callThrough();
 
         //Create the controller
         controller = $controller('UpgradeController', {'$scope': controllerScope});
@@ -44,14 +54,51 @@ describe('Upgrade Controller', function () {
             should.exist(controller.steps);
         });
 
-        it('should contains a nextStep function ', function() {
-            should.exist(controller.steps.nextStep);
-            expect(controller.steps.nextStep).toEqual(jasmine.any(Function));
+        describe('nextStep function', function () {
+            it('should exist', function () {
+                should.exist(controller.steps.nextStep);
+                expect(controller.steps.nextStep).toEqual(jasmine.any(Function));
+            });
+
+            it('when called it should move to the next step', function () {
+                expect($state.current.id).toBe(0);
+                // calculate the next step in the list
+                var nextStep = (controller.steps.list[upgradeStepsFactory.activeStep.id + 1]).state;
+                controller.steps.nextStep();
+                expect($state.go).toHaveBeenCalledWith(nextStep);
+            });
+
+            it('when called in the last step it should not change steps', function () {
+                // set the last step in the list as current
+                $state.current = {id: 0, name: 'upgrade.upgrade-nodes', state: 'upgrade.upgrade-nodes'};
+                // refresh the list so it sets it as active
+                upgradeStepsFactory.refeshStepsList();
+                controller.steps.nextStep();
+                // should have not called the state.go
+                expect($state.go).not.toHaveBeenCalled();
+
+            });
         });
 
-        it('should contains an isLastStep function ', function() {
-            should.exist(controller.steps.isLastStep);
-            expect(controller.steps.isLastStep).toEqual(jasmine.any(Function));
+        describe('isLastStep function', function () {
+            it('should exist', function () {
+                should.exist(controller.steps.isLastStep);
+                expect(controller.steps.isLastStep).toEqual(jasmine.any(Function));
+            });
+
+            it('when called on the first step it should return false', function () {
+                // set the first step in the list as current
+                $state.current = {id: 0, name: 'upgrade.backup', state: 'upgrade.backup'};
+                expect(controller.steps.isLastStep()).toBe(false);
+            });
+
+            it('when called on the last step it should return true', function () {
+                // set the last step in the list as current
+                $state.current = {id: 0, name: 'upgrade.upgrade-nodes', state: 'upgrade.upgrade-nodes'};
+                // refresh the list so it sets it as active
+                upgradeStepsFactory.refeshStepsList();
+                expect(controller.steps.isLastStep()).toBe(true);
+            });
         });
 
         describe('contains an Array list that', function () {
