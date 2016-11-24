@@ -1,5 +1,5 @@
-/* global bard $controller should $httpBackend upgradeFactory crowbarFactory
- assert $q $rootScope ADMIN_UPGRADE_TIMEOUT_INTERVAL */
+/* global bard $controller should $httpBackend upgradeStatusFactory
+   upgradeFactory crowbarFactory assert $q $rootScope */
 describe('Upgrade Flow - Upgrade Administration Server Controller', function () {
     var controller,
         completedUpgradeResponseData = {
@@ -143,18 +143,15 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
                 }
             }
         },
-        activeStatusResponse = { data: null },
-        mockedTimeout;
+        activeStatusResponse = { data: null };
 
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp.upgrade');
         bard.inject(
             '$controller', '$q', '$httpBackend', '$rootScope',
-            'crowbarFactory', 'upgradeFactory', 'ADMIN_UPGRADE_TIMEOUT_INTERVAL'
+            'crowbarFactory', 'upgradeFactory', 'upgradeStatusFactory'
         );
-
-        mockedTimeout = jasmine.createSpy('$timeout');
 
         // reset the active response to the default values
         activeStatusResponse.data = initialResponseData;
@@ -163,7 +160,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
         });
 
         //Create the controller
-        controller = $controller('UpgradeUpgradeAdministrationServerController', { '$timeout': mockedTimeout });
+        controller = $controller('UpgradeUpgradeAdministrationServerController');
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
@@ -218,7 +215,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
 
             describe('when upgrade is started successfully', function () {
                 beforeEach(function () {
-                    spyOn(controller.adminUpgrade, 'checkAdminUpgrade');
+                    spyOn(upgradeStatusFactory, 'waitForStepToEnd');
 
                     bard.mockService(crowbarFactory, {
                         upgrade: $q.when({})
@@ -231,59 +228,8 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
                     assert.isTrue(controller.adminUpgrade.running);
                 });
 
-                it('should call checkAdminUpgrade() to start polling', function () {
-                    expect(controller.adminUpgrade.checkAdminUpgrade).toHaveBeenCalledTimes(1);
-                });
-            });
-
-
-        });
-
-        describe('checkAdminUpgrade function', function () {
-            it('should be defined', function () {
-                should.exist(controller.adminUpgrade.checkAdminUpgrade);
-                expect(controller.adminUpgrade.checkAdminUpgrade).toEqual(jasmine.any(Function));
-            });
-
-            describe('when got upgrade status from api successfully', function () {
-                describe('when received status is completed', function () {
-                    beforeEach(function () {
-                        activeStatusResponse.data = completedUpgradeResponseData;
-
-                        controller.adminUpgrade.checkAdminUpgrade();
-                        $rootScope.$digest();
-                    });
-
-                    it('should set running attribute of adminUpgrade model to false', function () {
-                        assert.isFalse(controller.adminUpgrade.running);
-                    });
-                    it('should set completed flag to true', function () {
-                        assert.isTrue(controller.adminUpgrade.completed);
-                    });
-                    it('should not schedule another check', function () {
-                        expect(mockedTimeout).not.toHaveBeenCalled();
-                    });
-                });
-
-                describe('when received status is not completed', function () {
-                    beforeEach(function () {
-                        activeStatusResponse.data = incompleteUpgradeResponseData;
-
-                        controller.adminUpgrade.running = true;
-                        controller.adminUpgrade.checkAdminUpgrade();
-                        $rootScope.$digest();
-                    });
-                    it('should keep running flag set to true', function () {
-                        assert.isTrue(controller.adminUpgrade.running);
-                    });
-                    it('should keep completed flag set to false', function () {
-                        assert.isFalse(controller.adminUpgrade.completed);
-                    });
-                    it('should schedule another check', function () {
-                        expect(mockedTimeout).toHaveBeenCalledWith(
-                            controller.adminUpgrade.checkAdminUpgrade, ADMIN_UPGRADE_TIMEOUT_INTERVAL
-                        );
-                    });
+                it('should call waitForStepToEnd() to start polling', function () {
+                    expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledTimes(1);
                 });
             });
         });
@@ -303,7 +249,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller - errors', fun
         bard.appModule('crowbarApp.upgrade');
         bard.inject(
             '$controller', '$q', '$httpBackend', '$rootScope',
-            'crowbarFactory', 'upgradeFactory', 'ADMIN_UPGRADE_TIMEOUT_INTERVAL'
+            'crowbarFactory', 'upgradeFactory', 'upgradeStatusFactory'
         );
 
         bard.mockService(upgradeFactory, {
@@ -325,7 +271,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller - errors', fun
         describe('beginAdminUpgrade function', function () {
             describe('when starting upgrade failed', function () {
                 beforeEach(function () {
-                    spyOn(controller.adminUpgrade, 'checkAdminUpgrade');
+                    spyOn(upgradeStatusFactory, 'waitForStepToEnd');
 
                     bard.mockService(crowbarFactory, {
                         upgrade: $q.reject(errorResponse)
@@ -338,23 +284,10 @@ describe('Upgrade Flow - Upgrade Administration Server Controller - errors', fun
                     assert.isFalse(controller.adminUpgrade.running);
                 });
 
-                it('should not call checkAdminUpgrade()', function () {
-                    expect(controller.adminUpgrade.checkAdminUpgrade).not.toHaveBeenCalled();
+                it('should not call waitForStepToEnd()', function () {
+                    expect(upgradeStatusFactory.waitForStepToEnd).not.toHaveBeenCalled();
                 });
 
-                it('should expose the errors through adminUpgrade.errors object', function () {
-                    expect(controller.adminUpgrade.errors).toEqual(errorList);
-                });
-            });
-        });
-
-        describe('checkAdminUpgrade function', function () {
-
-            describe('when got error from api', function () {
-                beforeEach(function () {
-                    controller.adminUpgrade.checkAdminUpgrade();
-                    $rootScope.$digest();
-                });
                 it('should expose the errors through adminUpgrade.errors object', function () {
                     expect(controller.adminUpgrade.errors).toEqual(errorList);
                 });

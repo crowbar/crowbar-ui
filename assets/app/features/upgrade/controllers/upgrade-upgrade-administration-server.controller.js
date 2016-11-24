@@ -12,14 +12,20 @@
         .controller('UpgradeUpgradeAdministrationServerController', UpgradeUpgradeAdministrationServerController);
 
     UpgradeUpgradeAdministrationServerController.$inject = [
-        '$timeout', 'crowbarFactory', 'upgradeFactory', 'ADMIN_UPGRADE_TIMEOUT_INTERVAL', 'upgradeStepsFactory'
+        '$timeout', 'crowbarFactory', 'upgradeStatusFactory',
+        'ADMIN_UPGRADE_TIMEOUT_INTERVAL', 'ADMIN_UPGRADE_ALLOWED_DOWNTIME',
+        'UPGRADE_STEPS', 'STEP_STATES', 'upgradeFactory', 'upgradeStepsFactory'
     ];
     // @ngInject
     function UpgradeUpgradeAdministrationServerController(
       $timeout,
       crowbarFactory,
-      upgradeFactory,
+      upgradeStatusFactory,
       ADMIN_UPGRADE_TIMEOUT_INTERVAL,
+      ADMIN_UPGRADE_ALLOWED_DOWNTIME,
+      UPGRADE_STEPS,
+      STEP_STATES,
+      upgradeFactory,
       upgradeStepsFactory
     ) {
         var vm = this;
@@ -28,8 +34,6 @@
             running: false,
             spinnerVisible: false,
             beginAdminUpgrade: beginAdminUpgrade,
-            // note: this is exposed in vm only to simplify testing
-            checkAdminUpgrade: checkAdminUpgrade
         };
 
         activate();
@@ -39,7 +43,20 @@
             // the button status and the update check running
             // TODO(itxaka): Not tested yet, tests should be done as part of card:
             // https://trello.com/c/5fXGm1a7/45-2-27-restore-last-step
-            checkAdminUpgrade();
+            upgradeFactory.getStatus()
+                .then(
+                    function (response) {
+                        vm.adminUpgrade.running = response.data.steps.admin_upgrade.status == STEP_STATES.running;
+                        vm.adminUpgrade.completed = response.data.steps.admin_upgrade.status == STEP_STATES.passed;
+                        if (vm.adminUpgrade.completed) {
+                            upgradeStepsFactory.setCurrentStepCompleted();
+                        } else if (vm.adminUpgrade.running) {
+                            waitForUpgradeToEnd();
+                        }
+                    },
+                    function (/*errorResponse*/) {
+                    }
+                );
         }
 
         function beginAdminUpgrade() {
@@ -49,8 +66,8 @@
                 .then(
                     // In case of success
                     function (/*response*/) {
-                        // start running checkAdminUpgrade at an interval
-                        vm.adminUpgrade.checkAdminUpgrade();
+                        vm.adminUpgrade.running = true;
+                        waitForUpgradeToEnd();
                     },
                     // In case of failure
                     function (errorResponse) {
@@ -61,34 +78,24 @@
                 );
         }
 
-        function checkAdminUpgrade() {
-            upgradeFactory.getStatus()
-                .then(
-                    // In case of success
-                    function (response) {
-                        // map api response to model
-                        vm.adminUpgrade.completed = response.data.steps.admin_upgrade.status === 'passed';
-                        vm.adminUpgrade.running = response.data.steps.admin_upgrade.status === 'running';
-                    },
-                    // In case of failure
-                    function (errorResponse) {
-                        // Expose the error list to adminUpgrade object
-                        // TODO(itxaka): Use the proper error key from the response when this is done
-                        // https://trello.com/c/chzg85j4/142-3-s49p7-error-reporting-on-crowbar-level
-                        vm.adminUpgrade.errors = errorResponse.data.errors;
-                    }
-                ).finally(
-                    function () {
-                        // schedule another check if not completed yet
-                        if (!vm.adminUpgrade.completed && vm.adminUpgrade.running) {
-                            $timeout(vm.adminUpgrade.checkAdminUpgrade, ADMIN_UPGRADE_TIMEOUT_INTERVAL);
-                        }
-                        // If the upgrade was completed set the step to completed
-                        if (vm.adminUpgrade.completed) {
-                            upgradeStepsFactory.setCurrentStepCompleted();
-                        }
-                    }
-                );
+        function waitForUpgradeToEnd() {
+            upgradeStatusFactory.waitForStepToEnd(
+                UPGRADE_STEPS.admin_upgrade,
+                function (/*response*/) {
+                    vm.adminUpgrade.running = false;
+                    vm.adminUpgrade.completed = true;
+                    upgradeStepsFactory.setCurrentStepCompleted();
+                },
+                function (errorResponse) {
+                    vm.adminUpgrade.running = false;
+                    // TODO(itxaka): Use the proper error key from the response when this is done
+                    // https://trello.com/c/chzg85j4/142-3-s49p7-error-reporting-on-crowbar-level
+                    vm.adminUpgrade.errors = errorResponse.data.errors;
+                },
+                ADMIN_UPGRADE_TIMEOUT_INTERVAL,
+                ADMIN_UPGRADE_ALLOWED_DOWNTIME
+            );
         }
+
     }
 })();
