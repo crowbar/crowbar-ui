@@ -13,7 +13,9 @@
             getNodesRepoChecks: getNodesRepoChecks,
             getRepositoriesChecks: getRepositoriesChecks,
             getStatus: getStatus,
-            createAdminBackup: createAdminBackup
+            createAdminBackup: createAdminBackup,
+            createNewDatabaseServer: createNewDatabaseServer,
+            connectDatabaseServer: connectDatabaseServer,
         };
 
         return factory;
@@ -82,7 +84,37 @@
             };
 
             return $http(requestOptions);
+        }
 
+        /**
+        * Install and configure a new database server on the administration server and use it
+        * for the migration
+        * @return: {Promise}
+        */
+        function createNewDatabaseServer(data) {
+            var requestOptions = {
+                method: 'POST',
+                url: '/api/upgrade/new',
+                headers: COMMON_API_V2_HEADERS,
+                data: data
+            };
+
+            return $http(requestOptions)
+        }
+
+        /**
+        * Configure and migrate to an existing database server
+        * @return: {Promise}
+        */
+        function connectDatabaseServer(data) {
+            var requestOptions = {
+                method: 'POST',
+                url: '/api/upgrade/connect',
+                headers: COMMON_API_V2_HEADERS,
+                data: data
+            };
+
+            return $http(requestOptions)
         }
 
         /**
