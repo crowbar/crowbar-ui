@@ -1,7 +1,6 @@
 var express = require('express'),
-    router = express.Router();
-
-var responseOk = {
+    router = express.Router(),
+    responseOk = {
         'database_setup': {
             'success': true
         },
@@ -34,10 +33,7 @@ var responseOk = {
     },
     responseFailDatabase = {
         'database_setup': {
-            'success': false,
-            'body': {
-                'error': 'Could not connect to database server'
-            }
+            'success': true
         },
         'database_migration': {
             'success': true
@@ -46,7 +42,10 @@ var responseOk = {
             'success': true
         },
         'crowbar_init': {
-            'success': true
+            'success': false,
+            'body': {
+                'error': 'crowbar_init: Failed to stop crowbar-init.service'
+            }
         }
     };
 

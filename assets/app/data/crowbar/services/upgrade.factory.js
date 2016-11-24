@@ -87,7 +87,8 @@
         }
 
         /**
-        * Install, configure and migrate a new database server on the administration server
+        * Install, configure a new database server on the administration server and use it
+        * for the migration
         * @return: {Promise}
         */
         function createNewDatabaseServer(data) {
@@ -102,7 +103,7 @@
         }
 
         /**
-        * Configure and migrato to an existing database server
+        * Configure and migrate to an existing database server
         * @return: {Promise}
         */
         function connectDatabaseServer(data) {
