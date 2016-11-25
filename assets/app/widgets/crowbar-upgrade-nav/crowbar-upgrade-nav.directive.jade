@@ -1,9 +1,9 @@
 button.btn.btn-default.pull-left(type='button')
   span(aria-hidden="true")
   | Cancel Upgrade
-button.btn.btn-success.pull-right(type='button', ng-click="steps.nextStep()", ng-if="!steps.isLastStep()", ng-disabled="!steps.isCurrentStepCompleted()" )
+button.btn.btn-primary.pull-right(type='button', ng-click="steps.nextStep()", ng-if="!steps.isLastStep()", ng-disabled="!steps.isCurrentStepCompleted()" )
   span(aria-hidden="true")
   | Next
-button.btn.btn-success.disabled.pull-right(type='button', ng-click="steps.nextStep()", ng-if="steps.isLastStep()")
+button.btn.btn-primary.disabled.pull-right(type='button', ng-click="steps.nextStep()", ng-if="steps.isLastStep()")
   span.fa-fw.fa-spinner.fa.fa-spin(aria-hidden="true")
   | Upgrading Nodes...
