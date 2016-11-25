@@ -45,54 +45,40 @@
                     //Success handler. Stop all OpenStackServices successfully:
                     stopServicesSuccess,
                     //Failure handler:
-                    stopServicesError
+                    onAnyError
                 );
 
-            function stopServicesSuccess (openStackServicesResponse) {
-                vm.openStackServices.checks.services.status =
-                    vm.openStackServices.valid =
-                    openStackServicesResponse.data.services;
+            function stopServicesSuccess () {
+                vm.openStackServices.checks.services.status = true;
 
-                if (vm.openStackServices.checks.services.status) {
-
-                    openstackFactory.createBackup()
-                        .then(
-                            //Success handler. Backup OpenStackServices successfully:
-                            createBackupSuccess,
-                            //Failure handler:
-                            createBackupError
-                        ).finally(function() {
-                            vm.openStackServices.completed = true;
-                            // Update openStackServices validity
-                            vm.openStackServices.running = false;
-
-                            vm.openStackServices.valid = vm.openStackServices.checks.backup.status;
-                            // if the backup has finished set the step to complete
-                            if (vm.openStackServices.valid) {
-                                upgradeStepsFactory.setCurrentStepCompleted()
-                            }
-                        });
-                } else {
-                    vm.openStackServices.completed = true;
-                    vm.openStackServices.running = false;
-                }
+                openstackFactory.createBackup()
+                    .then(
+                        //Success handler. Backup OpenStackServices successfully:
+                        createBackupSuccess,
+                        //Failure handler:
+                        onAnyError
+                    ).finally(function() {
+                        vm.openStackServices.completed = true;
+                        vm.openStackServices.running = false;
+                        // if the backup has finished set the step to complete
+                        if (vm.openStackServices.valid) {
+                            upgradeStepsFactory.setCurrentStepCompleted()
+                        }
+                    });
             }
 
-            function stopServicesError (errorOpenStackServicesResponse) {
+            function onAnyError () {
                 vm.openStackServices.completed = true;
                 vm.openStackServices.running = false;
-                // Expose the error list to openStackServices object
-                vm.openStackServices.errors = errorOpenStackServicesResponse.data.errors;
+                // Failsafe, it should always stay false until the last success
+                vm.openStackServices.valid = false;
             }
 
-            function createBackupSuccess (openStackBackupResponse) {
-                vm.openStackServices.checks.backup.status = openStackBackupResponse.data.backup;
+            function createBackupSuccess () {
+                vm.openStackServices.checks.backup.status = true;
+                vm.openStackServices.valid = true;
             }
 
-            function createBackupError (errorOpenStackServicesResponse) {
-                // Expose the error list to openStackServices object
-                vm.openStackServices.errors = errorOpenStackServicesResponse.data.errors;
-            }
         }
     }
 })();

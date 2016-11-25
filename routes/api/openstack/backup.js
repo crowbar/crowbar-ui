@@ -1,11 +1,15 @@
 var express = require('express'),
-    router = express.Router();
+    router = express.Router(),
+    callNumber = -1;
 
 /* POST openStack services Checks. */
 router.post('/', function(req, res) {
-    res.status(200).json({
-        'backup': true
-    });
+    callNumber += 1;
+    if (callNumber > 0) {
+        res.status(200).send();
+    } else {
+        res.status(500).send();
+    }
 });
 
 module.exports = router;
