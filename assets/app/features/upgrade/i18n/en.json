@@ -119,5 +119,10 @@
         },
         "errors": {
         }
+    },
+    "footer": {
+        "product": "SUSE OpenStack Cloud ",
+        "suse": " SUSE",
+        "provided-by": " - provided by "
     }
 }
