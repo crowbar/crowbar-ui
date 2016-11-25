@@ -11,9 +11,9 @@
     angular.module('crowbarApp.upgrade')
         .controller('UpgradeController', UpgradeController);
 
-    UpgradeController.$inject = ['$scope', '$translate', '$state', 'upgradeStepsFactory'];
+    UpgradeController.$inject = ['$scope', '$translate', '$state', 'upgradeStepsFactory', 'upgradeFactory'];
     // @ngInject
-    function UpgradeController($scope, $translate, $state, upgradeStepsFactory) {
+    function UpgradeController($scope, $translate, $state, upgradeStepsFactory, upgradeFactory) {
         var vm = this;
         vm.steps = {
             list: [],
@@ -21,6 +21,8 @@
             isLastStep: isLastStep,
             isCurrentStepCompleted: upgradeStepsFactory.isCurrentStepCompleted
         };
+
+        vm.cancelUpgrade = cancelUpgrade;
 
         // Get Steps list from provider
         vm.steps.list = upgradeStepsFactory.steps;
@@ -47,6 +49,16 @@
          */
         function isLastStep() {
             return vm.steps.list[vm.steps.list.length - 1] === upgradeStepsFactory.activeStep;
+        }
+
+        /**
+         * Trigger cancellation of the upgrade process and go back to landing page
+         */
+        function cancelUpgrade() {
+            upgradeFactory.cancelUpgrade().then(function(/* response */) {
+                // TODO(skazi): in final solution this should redirect to crowbar dashboard
+                $state.go('upgrade-landing');
+            });
         }
     }
 })();

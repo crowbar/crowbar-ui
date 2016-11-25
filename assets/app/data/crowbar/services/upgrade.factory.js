@@ -16,6 +16,7 @@
             createAdminBackup: createAdminBackup,
             createNewDatabaseServer: createNewDatabaseServer,
             connectDatabaseServer: connectDatabaseServer,
+            cancelUpgrade: cancelUpgrade,
         };
 
         return factory;
@@ -144,6 +145,22 @@
                 method: 'POST',
                 url: '/api/upgrade/adminbackup',
                 data: { backup: { name: 'upgrade-backup-' + $filter('date')(new Date, 'yyyyMMddHHmmss') } },
+                headers: COMMON_API_V2_HEADERS
+            };
+
+            return $http(requestOptions);
+        }
+
+        /**
+         * Trigger cancelation of upgrade process.
+         *
+         * @return {Promise}
+         */
+        function cancelUpgrade() {
+
+            var requestOptions = {
+                method: 'POST',
+                url: '/api/upgrade/cancel',
                 headers: COMMON_API_V2_HEADERS
             };
 

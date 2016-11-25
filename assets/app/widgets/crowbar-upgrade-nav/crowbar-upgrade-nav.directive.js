@@ -10,7 +10,8 @@
             restrict: 'E',
             templateUrl: 'app/widgets/crowbar-upgrade-nav/crowbar-upgrade-nav.directive.html',
             scope: {
-                steps: '='
+                steps: '=',
+                onCancel: '&'
             }
         };
     }

@@ -6,4 +6,4 @@
       .col-lg-9.upgrade-details-container
         div.upgrade-details(ui-view='')
   .panel-footer
-    crowbar-upgrade-nav.clearfix(steps='upgradeVm.steps')
+    crowbar-upgrade-nav.clearfix(steps='upgradeVm.steps', on-cancel='upgradeVm.cancelUpgrade()')
