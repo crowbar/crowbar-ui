@@ -11,9 +11,14 @@
     angular.module('crowbarApp.upgrade')
         .controller('UpgradeOpenStackServicesController', UpgradeOpenStackServicesController);
 
-    UpgradeOpenStackServicesController.$inject = ['$translate', 'openstackFactory', 'upgradeStepsFactory'];
+    UpgradeOpenStackServicesController.$inject = [
+        '$translate',
+        'openstackFactory',
+        'upgradeFactory',
+        'upgradeStepsFactory'
+    ];
     // @ngInject
-    function UpgradeOpenStackServicesController($translate, openstackFactory, upgradeStepsFactory) {
+    function UpgradeOpenStackServicesController($translate, openstackFactory, upgradeFactory, upgradeStepsFactory) {
         var vm = this;
 
         vm.openStackServices = {
@@ -40,7 +45,7 @@
         function stopServices() {
             vm.openStackServices.running = true;
 
-            openstackFactory.stopServices()
+            upgradeFactory.stopServices()
                 .then(
                     //Success handler. Stop all OpenStackServices successfully:
                     stopServicesSuccess,
@@ -48,10 +53,9 @@
                     stopServicesError
                 );
 
-            function stopServicesSuccess (openStackServicesResponse) {
+            function stopServicesSuccess () {
                 vm.openStackServices.checks.services.status =
-                    vm.openStackServices.valid =
-                    openStackServicesResponse.data.services;
+                    vm.openStackServices.valid = true;
 
                 if (vm.openStackServices.checks.services.status) {
 
