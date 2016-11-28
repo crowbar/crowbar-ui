@@ -71,8 +71,8 @@ describe('Upgrade Controller', function () {
             it('when called in the last step it should not change steps', function () {
                 // set the last step in the list as current
                 $state.current = {id: 0, name: 'upgrade.upgrade-nodes', state: 'upgrade.upgrade-nodes'};
-                // refresh the list so it sets it as active
-                upgradeStepsFactory.refeshStepsList();
+                // set last step as active
+                upgradeStepsFactory.activeStep = upgradeStepsFactory.steps[upgradeStepsFactory.steps.length - 1];
                 controller.steps.nextStep();
                 // should have not called the state.go
                 expect($state.go).not.toHaveBeenCalled();
@@ -95,8 +95,8 @@ describe('Upgrade Controller', function () {
             it('when called on the last step it should return true', function () {
                 // set the last step in the list as current
                 $state.current = {id: 0, name: 'upgrade.upgrade-nodes', state: 'upgrade.upgrade-nodes'};
-                // refresh the list so it sets it as active
-                upgradeStepsFactory.refeshStepsList();
+                // set last step as active
+                upgradeStepsFactory.activeStep = upgradeStepsFactory.steps[upgradeStepsFactory.steps.length - 1];
                 expect(controller.steps.isLastStep()).toBe(true);
             });
         });
