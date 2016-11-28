@@ -1,7 +1,30 @@
 # Welcome to Crowbar Angular Prototype
 [![Build Status](https://travis-ci.org/crowbar/crowbar-ui.svg?branch=master)](https://travis-ci.org/crowbar/crowbar-ui)
 
-##### First steps to have the app running locally for PRODUCTION ENV only:
+### Setting up a development environment with Docker
+
+This is an optional way to develop on `crowbar-ui` within a contained environment. The main benefit is to have some reusable and host-independent environment to develop on.
+
+1. make sure `docker` is installed and the `docker` daemon is running.
+
+   for installation details see: https://docs.docker.com/engine/installation/
+2. build the image from the [Dockerfile](Dockerfile):
+  ```
+  docker build -t crowbar-ui .
+  ```
+3. run the container (`pwd` should be your git clone):
+  ```
+  docker run -d --name "crowbar-ui_container" -v $(pwd)/assets:/crowbar-ui/assets -v $(pwd)/routes:/crowbar-ui/routes -p 3000:3000 crowbar-ui
+  ```
+4. work on the assets folder in your local git clone and the changes will be immediately visible in the browser.
+   also if you are changing the `./routes` directory the server inside the container gets restarted by `nodemon`
+
+#### Running the test suite inside the container
+```
+docker exec -ti crowbar-ui_container npm test
+```
+
+### First steps to have the app running locally for PRODUCTION ENV only:
 
 1 - Clone the app from GitHub:
 
