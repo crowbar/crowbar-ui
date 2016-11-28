@@ -126,8 +126,6 @@
         }
     },
     "footer": {
-        "product": "SUSE OpenStack Cloud ",
-        "suse": " SUSE",
-        "provided-by": " - provided by "
+        "text": "SUSE OpenStack Cloud - provided by SUSE"
     }
 }
