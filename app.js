@@ -37,7 +37,7 @@ app.use('/api/upgrade/adminrepocheck', crowbarRepocheck);
 app.use('/api/crowbar/upgrade', crowbarUpgrade);
 app.use('/api/upgrade', upgrade);
 app.use('/api/upgrade/prechecks', upgradePrechecks);
-app.use('/api/upgrade/repocheck', upgradeRepocheck);
+app.use('/api/upgrade/noderepocheck', upgradeRepocheck);
 app.use('/api/upgrade/prepare', upgradePrepare);
 app.use('/api/upgrade/new', upgradeNew);
 app.use('/api/upgrade/connect', upgradeConnect);
