@@ -15,6 +15,7 @@ var express = require('express'),
     upgradePrepare = require('./routes/api/upgrade/prepare'),
     upgradeNew =  require('./routes/api/upgrade/new'),
     upgradeConnect =  require('./routes/api/upgrade/connect'),
+    upgradeCancel = require('./routes/api/upgrade/cancel'),
     openstackServices = require('./routes/api/openstack/services'),
     openstackBackup = require('./routes/api/openstack/backup'),
     utilsBackupCreate = require('./routes/utils/backups/create'),
@@ -40,6 +41,7 @@ app.use('/api/upgrade/repocheck', upgradeRepocheck);
 app.use('/api/upgrade/prepare', upgradePrepare);
 app.use('/api/upgrade/new', upgradeNew);
 app.use('/api/upgrade/connect', upgradeConnect);
+app.use('/api/upgrade/cancel', upgradeCancel);
 app.use('/api/openstack/services', openstackServices);
 app.use('/api/openstack/backup', openstackBackup);
 app.use('/api/upgrade/adminbackup', utilsBackupCreate);
