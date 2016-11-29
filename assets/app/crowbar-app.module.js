@@ -21,6 +21,7 @@
             'crowbarApp.upgrade'
         ])
         .config(configuration)
+        .run(run)
         // lodash support
         .constant('_', _);
 
@@ -35,5 +36,28 @@
             // For any unmatched url, redirect to /upgrade/prepare
             $urlRouterProvider.otherwise('/upgrade/landing');
         }
+    }
+
+    run.$inject = ['$rootScope', '$state', 'upgradeFactory', 'upgradeStepsFactory'];
+
+    function run($rootScope, $state, upgradeFactory, upgradeStepsFactory) {
+        var cleanup = $rootScope.$on('$stateChangeStart',
+                function(event, toState/*, toParams, fromState, fromParams*/) {
+                    upgradeFactory.getStatus()
+                        .then(
+                            function (response) {
+                                var expectedState = upgradeStepsFactory.lastStateForRestore(response.data);
+
+                                if (toState.name !== expectedState) {
+                                    event.preventDefault();
+                                    $state.go(expectedState)
+                                        .then(function () { upgradeStepsFactory.refeshStepsList(); });
+                                }
+                            },
+                            function (/*errorResponse*/) {
+                            }
+                        );
+                });
+        $rootScope.$on('$destroy', cleanup);
     }
 })(_);

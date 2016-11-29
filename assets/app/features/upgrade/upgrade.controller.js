@@ -11,9 +11,19 @@
     angular.module('crowbarApp.upgrade')
         .controller('UpgradeController', UpgradeController);
 
-    UpgradeController.$inject = ['$scope', '$translate', '$state', 'upgradeStepsFactory', 'upgradeFactory'];
+    UpgradeController.$inject = [
+        '$scope', '$translate', '$state', 'upgradeStepsFactory',
+        'upgradeFactory', 'UPGRADE_LAST_STATE_KEY'
+    ];
     // @ngInject
-    function UpgradeController($scope, $translate, $state, upgradeStepsFactory, upgradeFactory) {
+    function UpgradeController(
+        $scope,
+        $translate,
+        $state,
+        upgradeStepsFactory,
+        upgradeFactory,
+        UPGRADE_LAST_STATE_KEY
+    ) {
         var vm = this;
         vm.steps = {
             list: [],
@@ -40,7 +50,11 @@
                 return;
             }
 
-            $state.go(vm.steps.list[upgradeStepsFactory.activeStep.id + 1].state);
+            var nextState = vm.steps.list[upgradeStepsFactory.activeStep.id + 1].state;
+            // save new state in local storage for proper "restore last step" handling
+            localStorage.setItem(UPGRADE_LAST_STATE_KEY, nextState);
+
+            $state.go(nextState);
         }
 
         /**
@@ -56,6 +70,8 @@
          */
         function cancelUpgrade() {
             upgradeFactory.cancelUpgrade().then(function(/* response */) {
+                // clear last page seen by the user
+                localStorage.removeItem(UPGRADE_LAST_STATE_KEY);
                 // TODO(skazi): in final solution this should redirect to crowbar dashboard
                 $state.go('upgrade-landing');
             });
