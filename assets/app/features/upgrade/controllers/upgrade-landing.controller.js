@@ -20,6 +20,7 @@
         'ADDONS_PRECHECK_MAP',
         'PREPARE_TIMEOUT_INTERVAL',
         'UPGRADE_STEPS',
+        'STEP_STATES'
     ];
     // @ngInject
     function UpgradeLandingController(
@@ -30,7 +31,8 @@
         crowbarFactory,
         ADDONS_PRECHECK_MAP,
         PREPARE_TIMEOUT_INTERVAL,
-        UPGRADE_STEPS
+        UPGRADE_STEPS,
+        STEP_STATES
     ) {
         var vm = this,
             optionalPrechecks = {
@@ -86,6 +88,24 @@
                     });
                 });
             });
+
+            // adjust UI state to backend status
+            upgradeFactory.getStatus()
+                .then(
+                    function (response) {
+                        // skz: This part is disabled on purpose. There's no easy way to restore complete checks state
+                        // without running the checks again so it's better to leave this to the user.
+                        //vm.prechecks.running = response.data.steps.upgrade_prechecks.status === STEP_STATES.running;
+                        //vm.prechecks.completed = response.data.steps.upgrade_prechecks.status === STEP_STATES.passed;
+
+                        vm.prepare.running = response.data.steps.upgrade_prepare.status === STEP_STATES.running;
+                        vm.prepare.completed = response.data.steps.upgrade_prepare.status === STEP_STATES.passed;
+
+                        if (vm.prepare.running) {
+                            waitForPrepareToEnd();
+                        }
+                    }
+                );
         }
 
         /**
@@ -100,24 +120,28 @@
             upgradeFactory.prepareNodes().then(
                 function (/* response */) {
                     vm.prepare.running = true;
-                    upgradeStatusFactory.waitForStepToEnd(
-                        UPGRADE_STEPS.upgrade_prepare,
-                        function (/*response*/) {
-                            vm.prepare.running = false;
-                            $state.go('upgrade.backup');
-                        },
-                        function (errorResponse) {
-                            vm.prepare.running = false;
-                            // Expose the error list to prechecks object
-                            vm.prechecks.errors = errorResponse.data.errors;
-                        },
-                        PREPARE_TIMEOUT_INTERVAL
-                    );
+                    waitForPrepareToEnd();
                 },
                 function (errorResponse) {
                     // Expose the error list to prechecks object
                     vm.prechecks.errors = errorResponse.data.errors;
                 }
+            );
+        }
+
+        function waitForPrepareToEnd() {
+            upgradeStatusFactory.waitForStepToEnd(
+                UPGRADE_STEPS.upgrade_prepare,
+                function (/*response*/) {
+                    vm.prepare.running = false;
+                    $state.go('upgrade.backup');
+                },
+                function (errorResponse) {
+                    vm.prepare.running = false;
+                    // Expose the error list to prechecks object
+                    vm.prechecks.errors = errorResponse.data.errors;
+                },
+                PREPARE_TIMEOUT_INTERVAL
             );
         }
 
