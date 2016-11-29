@@ -124,5 +124,8 @@
         },
         "errors": {
         }
+    },
+    "footer": {
+        "text": "SUSE OpenStack Cloud - provided by SUSE"
     }
 }
