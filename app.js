@@ -10,7 +10,7 @@ var express = require('express'),
     crowbarRepocheck = require('./routes/api/upgrade/adminrepocheck'),
     crowbarUpgrade = require('./routes/api/crowbar/upgrade'),
     upgrade = require('./routes/api/upgrade'),
-    upgradeRepocheck = require('./routes/api/upgrade/repocheck'),
+    upgradeNodeRepocheck = require('./routes/api/upgrade/noderepocheck'),
     upgradePrechecks = require('./routes/api/upgrade/prechecks'),
     upgradePrepare = require('./routes/api/upgrade/prepare'),
     upgradeNew =  require('./routes/api/upgrade/new'),
@@ -37,7 +37,7 @@ app.use('/api/upgrade/adminrepocheck', crowbarRepocheck);
 app.use('/api/crowbar/upgrade', crowbarUpgrade);
 app.use('/api/upgrade', upgrade);
 app.use('/api/upgrade/prechecks', upgradePrechecks);
-app.use('/api/upgrade/repocheck', upgradeRepocheck);
+app.use('/api/upgrade/noderepocheck', upgradeNodeRepocheck);
 app.use('/api/upgrade/prepare', upgradePrepare);
 app.use('/api/upgrade/new', upgradeNew);
 app.use('/api/upgrade/connect', upgradeConnect);
