@@ -20,6 +20,7 @@
         'ADDONS_PRECHECK_MAP',
         'PREPARE_TIMEOUT_INTERVAL',
         'UPGRADE_STEPS',
+        'UPGRADE_MODES'
     ];
     // @ngInject
     function UpgradeLandingController(
@@ -30,7 +31,8 @@
         crowbarFactory,
         ADDONS_PRECHECK_MAP,
         PREPARE_TIMEOUT_INTERVAL,
-        UPGRADE_STEPS
+        UPGRADE_STEPS,
+        UPGRADE_MODES
     ) {
         var vm = this,
             optionalPrechecks = {
@@ -45,6 +47,7 @@
             };
 
         vm.beginUpgrade = beginUpgrade;
+        vm.continueNormal = continueNormal;
 
         vm.prechecks = {
             running: false,
@@ -66,6 +69,12 @@
                 }
             },
             runPrechecks: runPrechecks
+        };
+
+        vm.mode = {
+            active: false,
+            type: false,
+            valid: false
         };
 
         vm.prepare = {
@@ -136,24 +145,42 @@
          * Pre validation checks
          */
         function runPrechecks() {
+            // Clean other checks in case we re-run the prechecks
+            vm.mode.valid = false;
+            vm.mode.type = false;
+            vm.mode.active = false;
             vm.prechecks.running = true;
 
             upgradeFactory
                 .getPreliminaryChecks()
                 .then(
-                    //Success handler. Al precheck passed successfully:
+                    //Success handler. All precheck passed successfully:
                     function(response) {
+                        // Store the upgrade best method
+                        vm.mode.type = response.data.best_method;
 
-                        _.forEach(response.data.checks, function(value, key) {
+                        var checksValidity = [];
+
+                        _.forEach(response.data.checks, function(check, checkKey) {
                             // skip unknown checks returned from backend
-                            if (key in vm.prechecks.checks) {
-                                vm.prechecks.checks[key].status = value.passed;
+                            if (checkKey in vm.prechecks.checks) {
+                                vm.prechecks.checks[checkKey].status = check.passed;
+                                if (check.required) {
+                                    checksValidity.push(check.passed)
+                                }
                             }
                         });
 
-                        // Update prechecks validity
-                        // TODO: handle disruptive vs non-disruptive properly in the new design
-                        vm.prechecks.valid = (response.data.best_method != 'none');
+                        vm.prechecks.valid = checksValidity.every(function (checkPassed) {
+                            return checkPassed;
+                        });
+
+                        // If all prechecks are ok, move to the next step
+                        if (vm.prechecks.valid) {
+                            // Store the upgrade best method
+                            vm.mode.type = response.data.best_method;
+                            updateMode();
+                        }
                     },
                     //Failure handler:
                     function(errorResponse) {
@@ -168,6 +195,22 @@
                     }
                 );
 
+        }
+        /**
+        * Sets the type of mode depending on the api response
+        */
+        function updateMode() {
+            vm.mode.active = true;
+            if (vm.mode.type === UPGRADE_MODES.nondisruptive) {
+                vm.mode.valid = true;
+            }
+        }
+
+        /**
+        * Sets the mode to valid when the continue button is clicked
+        */
+        function continueNormal() {
+            vm.mode.valid = true;
         }
     }
 })();

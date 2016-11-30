@@ -1,40 +1,13 @@
 .upgrade-landing-page
-    h1(translate='upgrade.steps.landing.title') Suse Upgrade
-    p(translate='') upgrade.steps.landing.description
-    ul.requirements-list
-        li(translate='') upgrade.steps.landing.requirements.point1
-        li(translate='') upgrade.steps.landing.requirements.point2
-        li(translate='') upgrade.steps.landing.requirements.point3
-
-    h2.h4(translate='') upgrade.steps.landing.prechecks.title
-    //- div.checks-container
-    .panel.panel-default
-        .panel-body
-            p(translate='') upgrade.steps.landing.prechecks.description
-            crowbar-checklist(checklist='upgradeLandingVm.prechecks.checks', completed='upgradeLandingVm.prechecks.completed')
-
-            button.btn.btn-success(
-                ng-disabled="(upgradeLandingVm.prechecks.completed && upgradeLandingVm.prechecks.valid) || \
-                    upgradeLandingVm.prechecks.running || upgradeLandingVm.prepare.running",
-                ng-class="{\
-                    'spinner-visible': upgradeLandingVm.prechecks.spinnerVisible,\
-                    active: upgradeLandingVm.prechecks.running\
-                }",
-                ng-click="upgradeLandingVm.prechecks.runPrechecks()"
-            )
-                suse-lazy-spinner(delay="2000", active="upgradeLandingVm.prechecks.running",
-                    visible="upgradeLandingVm.prechecks.spinnerVisible")
-                span(translate='') upgrade.steps.landing.prechecks.form.check-again
-
     .row
-        .col-sm-10.col-sm-offset-1.note-message.text-center
-            strong(translate='') upgrade.steps.landing.note
-
-    button.btn.btn-success.center-block(
-        ng-disabled="!upgradeLandingVm.prechecks.completed || !upgradeLandingVm.prechecks.valid || upgradeLandingVm.prepare.running",
-        ng-class="{'spinner-visible': upgradeLandingVm.prepare.spinnerVisible, active: upgradeLandingVm.prepare.running}",
-        ng-click="upgradeLandingVm.beginUpgrade()"
-    )
-        suse-lazy-spinner(delay="2000", active="upgradeLandingVm.prepare.running",
-            visible="upgradeLandingVm.prepare.spinnerVisible")
-        span(translate='') upgrade.steps.landing.form.button
+        .col-md-6
+            .row
+                .col-md-12
+                    include landing-page_step1.partial.jade
+                .col-md-12.hidden-xs.hidden-sm
+                    include landing-page_step3.partial.jade
+        .col-md-6
+            include landing-page_step2.partial.jade
+    .row.hidden-md.hidden-lg
+        .col-md-6
+            include landing-page_step3.partial.jade

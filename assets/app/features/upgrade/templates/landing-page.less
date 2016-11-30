@@ -4,14 +4,12 @@
     border: 0px;
     box-shadow: none;
 
-    h1 {
-        color: @panel-heading-fg;
-        font-size: 19px;
-        margin: 0px 0px 25px;
-    }
+    .step-title {
+        margin-bottom: 15px;
 
-    .h4 {
-        margin-bottom: 27px;
+        crowbar-circle {
+            margin-right: 15px;
+        }
     }
 
     p {
@@ -28,12 +26,21 @@
         }
     }
 
-    .panel {
-        margin-bottom: 27px;
+    .prechecks,
+    .mode,
+    .upgrade {
+        color: #5f5f5f;
+        margin-top: 25px;
 
-        .panel-body {
-            padding: 26px 30px 30px;
+        &.active {
+            color: #0d2c40;
         }
+    }
+
+    .mode button {
+        margin-bottom: 20px;
+        /* This removes the generic button margin to align it properly*/
+        margin-top: 0px;
     }
 
     .btn {
