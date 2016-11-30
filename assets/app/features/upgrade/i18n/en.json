@@ -19,8 +19,8 @@
                     "button": "Begin Upgrade"
                 },
                 "prechecks": {
-                    "title": "Preliminary checks:",
-                    "description": "Pre-requirements to update SUSE OpenStack Cloud from version 6 to 7:",
+                    "title": "Preliminary Checks",
+                    "description": "Run the checks below to check if your cloud is prepared for upgrade",
                     "form": {
                         "check-again": "Check"
                     },
@@ -30,6 +30,24 @@
                         "high_availability": "High Availability Health",
                         "storage": "Storage Health",
                         "free_node_available": "Free node available"
+                    }
+                },
+                "upgrade": {
+                    "title": "Begin Upgrade",
+                    "description": "Click on \"Begin Upgrade\" below to start the upgrade process.",
+                    "button": "Begin Upgrade"
+                },
+                "mode": {
+                    "title": "Upgrade Mode",
+                    "description": "After all checks are successful the upgrade mode will be shown here...",
+                    "normal_mode": {
+                        "title": "Your cloud is now prepared to begin the upgrade process in normal mode",
+                        "button": "Proceed in normal mode",
+                        "description": "Long description here"
+                    },
+                    "nondisruptive_mode": {
+                        "title": "Your cloud is now prepared to begin the upgrade process in non-disruptive mode",
+                        "description": "Long description here"
                     }
                 }
             },
