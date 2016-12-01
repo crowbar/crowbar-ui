@@ -5,31 +5,43 @@
     font-size: 14px;
     padding-left: 29px;
     padding-right: 31px;
+    text-shadow: none;
 
     &:hover {
         box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.23);
     }
 
-    // Blue button
-    &.btn-primary,
-    &.btn-primary:hover {
-        background: #65a6de;
-        border: 1px solid #5a93c4;
+    // Full Green button
+    &.btn-primary {
+        background: #00c081;
+        border: 1px solid #16996e;
+
+        &:hover {
+            background: #00c17f;
+            border: 1px solid #069a6d;
+        }
     }
 
-    // Green button
-    &.btn-success,
-    &.btn-success:hover {
-        background: #80c235;
-        border: 1px solid #72ab31;
+    // Empty Green button
+    &.btn-success {
+        background: #eeeeee;
+        border: 1px solid #00c081;
+        color: #00c081;
+
+        &:hover {
+            background: #eeeeee;
+            border: 1px solid #00c17f;
+        }
     }
 
     // Grey button
-    &.btn-default,
-    &.btn-default:hover {
+    &.btn-default {
         background: #eeeeee;
-        border: 1px solid #b4babe;
-        color: #3a3e40;
+        color: #0d2c40;
+
+        &:hover {
+            border: 1px solid #b4babe;
+        }
     }
 
     // Action on-going
@@ -63,7 +75,7 @@
     &.disabled:hover,
     &.disabled:focus {
         background: #f3f3f3;
-        border: 1px solid #cccccc;
+        border: 1px solid #969797;
         box-shadow: none;
         color: #969797;
     }
