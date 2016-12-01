@@ -2,7 +2,7 @@
     .row
         .col-md-6
             .prechecks.pull-left
-                circle-button(display=1)
+                crowbar-circle 1
                 h2.h4.text-center(translate='') upgrade.steps.landing.prechecks.title
 
                 p(translate='') upgrade.steps.landing.prechecks.description
@@ -21,9 +21,7 @@
                     span(translate='') upgrade.steps.landing.prechecks.form.check-again
 
             .upgrade.pull-left
-                circle-button(
-                    display=3
-                )
+                crowbar-circle 3
                 h2.h4.text-center(translate='') upgrade.steps.landing.upgrade.title
                 p(translate='') upgrade.steps.landing.upgrade.description
                 button.btn.btn-success(
@@ -36,8 +34,6 @@
                     span(translate='') upgrade.steps.landing.form.button
         .col-md-6
             .mode.pull-left
-                circle-button(
-                    display=2
-                )
+                crowbar-circle 2
                 h2.h4.text-center(translate='') upgrade.steps.landing.mode.title
                 p(translate='') upgrade.steps.landing.mode.description

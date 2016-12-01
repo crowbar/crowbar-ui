@@ -8,7 +8,7 @@
     function circleButton() {
         return {
             restrict: 'E',
-            templateUrl: 'app/widgets/circle-button/circle-button.directive.html',
+            templateUrl: 'app/widgets/crowbar-circle/crowbar-circle.directive.html',
             scope: {
                 display: '='
             }
