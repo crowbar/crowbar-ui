@@ -1,7 +1,7 @@
 .upgrade-landing-page
     .row
         .col-md-6
-            .prechecks
+            .prechecks.pull-left
                 circle-button(display=1)
                 h2.h4.text-center(translate='') upgrade.steps.landing.prechecks.title
                 p(translate='') upgrade.steps.landing.prechecks.description
@@ -19,18 +19,18 @@
                     visible="upgradeLandingVm.prechecks.spinnerVisible")
                     span(translate='') upgrade.steps.landing.prechecks.form.check-again
 
-            .upgrade
+            .upgrade.pull-left
                 h2.h4.text-center(translate='') upgrade.steps.landing.upgrade.title
                 p(translate='') upgrade.steps.landing.upgrade.description
                 button.btn.btn-success(
-                ng-disabled="!upgradeLandingVm.prechecks.completed || !upgradeLandingVm.prechecks.valid || upgradeLandingVm.prepare.running",
-                ng-class="{'spinner-visible': upgradeLandingVm.prepare.spinnerVisible, active: upgradeLandingVm.prepare.running}",
-                ng-click="upgradeLandingVm.beginUpgrade()"
+                    ng-disabled="!upgradeLandingVm.prechecks.completed || !upgradeLandingVm.prechecks.valid || upgradeLandingVm.prepare.running",
+                    ng-class="{'spinner-visible': upgradeLandingVm.prepare.spinnerVisible, active: upgradeLandingVm.prepare.running}",
+                    ng-click="upgradeLandingVm.beginUpgrade()"
                 )
                     suse-lazy-spinner(delay="2000", active="upgradeLandingVm.prepare.running",
                     visible="upgradeLandingVm.prepare.spinnerVisible")
                     span(translate='') upgrade.steps.landing.form.button
         .col-md-6
-            .mode
+            .mode.pull-left
                 h2.h4.text-center(translate='') upgrade.steps.landing.mode.title
                 p(translate='') upgrade.steps.landing.mode.description
