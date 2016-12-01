@@ -7,11 +7,7 @@
 
     function circleButton() {
         return {
-            restrict: 'E',
-            templateUrl: 'app/widgets/crowbar-circle/crowbar-circle.directive.html',
-            scope: {
-                display: '='
-            }
+            restrict: 'E'
         };
     }
 })();
