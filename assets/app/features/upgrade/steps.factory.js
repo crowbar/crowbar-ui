@@ -100,15 +100,15 @@
         }
 
         function stepByState(state) {
-            return _.find(factory.steps, function (o) { return o.state === state; });
+            return _.find(factory.steps, function (step) { return step.state === state; });
         }
 
         function stepByID(id) {
-            return _.find(factory.steps, function (o) { return o.id === id; });
+            return _.find(factory.steps, function (step) { return step.id === id; });
         }
 
         function lastStateForRestore(statusData) {
-            var mapping = {
+            var stepToStateMap = {
                 'upgrade_prechecks': 'upgrade-landing',
                 'upgrade_prepare': 'upgrade-landing',
                 'admin_backup': 'upgrade.backup',
@@ -124,7 +124,7 @@
 
             var currentStep = statusData.current_step,
                 steps = statusData.steps,
-                currentState = mapping[currentStep];
+                currentState = stepToStateMap[currentStep];
 
             // select previous step if current is still pending
             if (steps[currentStep].status === STEP_STATES.pending) {
