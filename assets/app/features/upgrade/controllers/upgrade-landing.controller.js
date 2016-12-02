@@ -129,6 +129,9 @@
             );
         }
 
+        /**
+         * Start polling for status and wait until prepare step is finished
+         */
         function waitForPrepareToEnd() {
             upgradeStatusFactory.waitForStepToEnd(
                 UPGRADE_STEPS.upgrade_prepare,

@@ -237,7 +237,7 @@ describe('Upgrade Landing Controller', function() {
         });
 
         it('should start polling for status', function() {
-            expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalled();
+            expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledTimes(1);
         });
 
         it('prepare should be running', function() {
@@ -249,7 +249,7 @@ describe('Upgrade Landing Controller', function() {
         });
     });
 
-    describe('when created while prepare is finished', function() {
+    describe('when created after prepare is finished', function() {
         beforeEach(function() {
             // local change in mocked service
             upgradeFactory.getStatus =
