@@ -4,9 +4,9 @@
         .module('crowbarApp.upgrade')
         .factory('upgradeStepsFactory', upgradeStepsFactory);
 
-    upgradeStepsFactory.$inject = ['$state', 'upgradeFactory', 'STEP_STATES', 'UPGRADE_LAST_STATE_KEY'];
+    upgradeStepsFactory.$inject = ['$state', 'upgradeFactory', 'UPGRADE_STEP_STATES', 'UPGRADE_LAST_STATE_KEY'];
     /* @ngInject */
-    function upgradeStepsFactory($state, upgradeFactory, STEP_STATES, UPGRADE_LAST_STATE_KEY) {
+    function upgradeStepsFactory($state, upgradeFactory, UPGRADE_STEP_STATES, UPGRADE_LAST_STATE_KEY) {
         var factory = {
             steps: initialSteps(),
             stepByState: stepByState,
@@ -104,7 +104,7 @@
 
         /**
          * Validate if the active step is the last avilable step
-         * @return boolean
+         * @return {Boolean}
          */
         function isLastStep() {
             return factory.steps[factory.steps.length - 1] === factory.activeStep;
@@ -128,6 +128,7 @@
 
         /**
          * Return step data for given state
+         * @return {string}
          */
         function stepByState(state) {
             return _.find(factory.steps, function (step) { return step.state === state; });
@@ -135,6 +136,7 @@
 
         /**
          * Return step data for given id
+         * @return {string}
          */
         function stepByID(id) {
             return _.find(factory.steps, function (step) { return step.id === id; });
@@ -142,6 +144,8 @@
 
         /**
          * Handler for ui-router state change events to ensure requested page matches current backend status
+         * For parameter descriptions see: https://github.com/angular-ui/ui-router/wiki#state-change-events
+         * @return {string}
          */
         function validateRequestedState(event, toState/*, toParams, fromState, fromParams*/) {
             upgradeFactory.getStatus()
@@ -162,6 +166,7 @@
 
         /**
          * For given `map`, return keys mapping to `wantedValue`
+         * @return {Array} List of keys filtered by value
          */
         function keysForValue(map, wantedValue) {
             var keys = [];
@@ -175,6 +180,8 @@
 
         /**
          * Return ui-router state appropriate for current backend status
+         * @param {Object} Status data received from status API
+         * @return {string}
          */
         function lastStateForRestore(statusData) {
             var stepToStateMap = {
@@ -195,7 +202,7 @@
                 currentState = stepToStateMap[currentStep];
 
             // select previous step if current is still pending and previous step has a different page
-            if (steps[currentStep].status === STEP_STATES.pending) {
+            if (steps[currentStep].status === UPGRADE_STEP_STATES.pending) {
                 var storedLastState = localStorage.getItem(UPGRADE_LAST_STATE_KEY);
 
                 // if there is some stored state and it's pointing to page for current pending step
