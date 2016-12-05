@@ -4,9 +4,9 @@
         .module('suseData.crowbar')
         .factory('upgradeStatusFactory', upgradeStatusFactory);
 
-    upgradeStatusFactory.$inject = ['$http', '$timeout', 'upgradeFactory'];
+    upgradeStatusFactory.$inject = ['$http', '$timeout', 'upgradeFactory', 'UPGRADE_STEP_STATES'];
     /* @ngInject */
-    function upgradeStatusFactory($http, $timeout, upgradeFactory) {
+    function upgradeStatusFactory($http, $timeout, upgradeFactory, UPGRADE_STEP_STATES) {
         var factory = {
             waitForStepToEnd: waitForStepToEnd,
         };
@@ -31,7 +31,7 @@
             upgradeFactory.getStatus()
                 .then(
                     function (response) {
-                        if (response.data.steps[step].status == 'passed') {
+                        if (response.data.steps[step].status == UPGRADE_STEP_STATES.passed) {
                             onSuccess(response);
                         } else {
                             // schedule another check
