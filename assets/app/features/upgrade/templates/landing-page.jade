@@ -2,7 +2,7 @@
     .row
         .col-md-6
             .prechecks.pull-left
-                crowbar-circle 1
+                crowbar-circle.active 1
                 .h4.text-center(translate='') upgrade.steps.landing.prechecks.title
 
                 p(translate='') upgrade.steps.landing.prechecks.description
@@ -20,8 +20,8 @@
                     visible="upgradeLandingVm.prechecks.spinnerVisible")
                     span(translate='') upgrade.steps.landing.prechecks.form.check-again
 
-            .upgrade.pull-left
-                crowbar-circle 3
+            .upgrade.inactive.pull-left
+                crowbar-circle.inactive 3
                 .h4.text-center(translate='') upgrade.steps.landing.upgrade.title
                 p(translate='') upgrade.steps.landing.upgrade.description
                 button.btn.btn-success(
@@ -33,7 +33,7 @@
                     visible="upgradeLandingVm.prepare.spinnerVisible")
                     span(translate='') upgrade.steps.landing.form.button
         .col-md-6
-            .mode.pull-left
-                crowbar-circle 2
+            .mode.inactive.pull-left
+                crowbar-circle.inactive 2
                 .h4.text-center(translate='') upgrade.steps.landing.mode.title
                 p(translate='') upgrade.steps.landing.mode.description
