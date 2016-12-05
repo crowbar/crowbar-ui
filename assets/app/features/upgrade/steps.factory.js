@@ -4,14 +4,17 @@
         .module('crowbarApp.upgrade')
         .factory('upgradeStepsFactory', upgradeStepsFactory);
 
-    upgradeStepsFactory.$inject = ['$state', 'STEP_STATES', 'UPGRADE_LAST_STATE_KEY'];
+    upgradeStepsFactory.$inject = ['$state', 'upgradeFactory', 'STEP_STATES', 'UPGRADE_LAST_STATE_KEY'];
     /* @ngInject */
-    function upgradeStepsFactory($state, STEP_STATES, UPGRADE_LAST_STATE_KEY) {
+    function upgradeStepsFactory($state, upgradeFactory, STEP_STATES, UPGRADE_LAST_STATE_KEY) {
         var factory = {
             steps: initialSteps(),
             stepByState: stepByState,
             stepByID: stepByID,
+            validateRequestedState: validateRequestedState,
             lastStateForRestore: lastStateForRestore,
+            showNextStep: showNextStep,
+            isLastStep: isLastStep,
             activeStep: {},
             refeshStepsList: refeshStepsList,
             setCurrentStepCompleted: setCurrentStepCompleted,
@@ -99,34 +102,99 @@
             ];
         }
 
+        /**
+         * Validate if the active step is the last avilable step
+         * @return boolean
+         */
+        function isLastStep() {
+            return factory.steps[factory.steps.length - 1] === factory.activeStep;
+        }
+
+        /**
+         * Move to the next available step
+         */
+        function showNextStep() {
+            // Only move forward if active step isn't last step available
+            if (factory.isLastStep()) {
+                return;
+            }
+
+            var nextState = factory.steps[factory.activeStep.id + 1].state;
+            // save new state in local storage for proper "restore last step" handling
+            localStorage.setItem(UPGRADE_LAST_STATE_KEY, nextState);
+
+            $state.go(nextState);
+        }
+
+        /**
+         * Return step data for given state
+         */
         function stepByState(state) {
             return _.find(factory.steps, function (step) { return step.state === state; });
         }
 
+        /**
+         * Return step data for given id
+         */
         function stepByID(id) {
             return _.find(factory.steps, function (step) { return step.id === id; });
         }
 
+        /**
+         * Handler for ui-router state change events to ensure requested page matches current backend status
+         */
+        function validateRequestedState(event, toState/*, toParams, fromState, fromParams*/) {
+            upgradeFactory.getStatus()
+                .then(
+                    function (response) {
+                        var expectedState = factory.lastStateForRestore(response.data);
+
+                        if (toState.name !== expectedState) {
+                            event.preventDefault();
+                            $state.go(expectedState)
+                                .then(function () { factory.refeshStepsList(); });
+                        }
+                    },
+                    function (/*errorResponse*/) {
+                    }
+                );
+        }
+
+        /**
+         * For given `map`, return keys mapping to `wantedValue`
+         */
+        function keysForValue(map, wantedValue) {
+            var keys = [];
+            _.each(map, function (value, key) {
+                if (value === wantedValue) {
+                    keys.push(key);
+                }
+            });
+            return keys;
+        }
+
+        /**
+         * Return ui-router state appropriate for current backend status
+         */
         function lastStateForRestore(statusData) {
             var stepToStateMap = {
-                'upgrade_prechecks': 'upgrade-landing',
-                'upgrade_prepare': 'upgrade-landing',
-                'admin_backup': 'upgrade.backup',
-                'admin_repo_checks': 'upgrade.administration-repository-checks',
-                'admin_upgrade': 'upgrade.upgrade-administration-server',
-                'database': 'upgrade.database-configuration',
-                'nodes_repo_checks': 'upgrade.nodes-repositories-checks',
-                'nodes_services': 'upgrade.openstack-services',
-                'nodes_db_dump': 'upgrade.openstack-services',
-                'nodes_upgrade': 'upgrade.upgrade-nodes',
-                'finished': 'TODO(skazi): no UI for this step yet',
-            };
-
-            var currentStep = statusData.current_step,
+                    'upgrade_prechecks': 'upgrade-landing',
+                    'upgrade_prepare': 'upgrade-landing',
+                    'admin_backup': 'upgrade.backup',
+                    'admin_repo_checks': 'upgrade.administration-repository-checks',
+                    'admin_upgrade': 'upgrade.upgrade-administration-server',
+                    'database': 'upgrade.database-configuration',
+                    'nodes_repo_checks': 'upgrade.nodes-repositories-checks',
+                    'nodes_services': 'upgrade.openstack-services',
+                    'nodes_db_dump': 'upgrade.openstack-services',
+                    'nodes_upgrade': 'upgrade.upgrade-nodes',
+                    'finished': 'upgrade.upgrade-nodes',
+                },
+                currentStep = statusData.current_step,
                 steps = statusData.steps,
                 currentState = stepToStateMap[currentStep];
 
-            // select previous step if current is still pending
+            // select previous step if current is still pending and previous step has a different page
             if (steps[currentStep].status === STEP_STATES.pending) {
                 var storedLastState = localStorage.getItem(UPGRADE_LAST_STATE_KEY);
 
@@ -134,6 +202,13 @@
                 // show this instead of the previous one, otherwise apply the logic below to find
                 // proper page to show
                 if (storedLastState === currentState) {
+                    return currentState;
+                }
+
+                var backendStepsWithCurrentState = keysForValue(stepToStateMap, currentState);
+                // if there are more "backend" steps matching currentState, only move back if currentStep
+                // is the first one on the list
+                if (backendStepsWithCurrentState.length > 1 && backendStepsWithCurrentState[0] !== currentStep) {
                     return currentState;
                 }
 

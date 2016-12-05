@@ -1,4 +1,4 @@
-/*global bard should assert expect upgradeStepsFactory module $state UPGRADE_LAST_STATE_KEY */
+/*global bard should assert expect upgradeStepsFactory module $state $q UPGRADE_LAST_STATE_KEY */
 describe('Stepes Factory', function () {
     var mockedInitialSteps = [
         {
@@ -329,14 +329,262 @@ describe('Stepes Factory', function () {
                 finished: {
                     status: 'pending',
                 }
+            },
+        },
+        statusDataAfterAdminUpgrade = {
+            current_step: 'database',
+            substep: null,
+            current_node: null,
+            steps: {
+                upgrade_prechecks: {
+                    status: 'passed',
+                },
+                upgrade_prepare: {
+                    status: 'passed',
+                },
+                admin_backup: {
+                    status: 'passed',
+                },
+                admin_repo_checks: {
+                    status: 'passed',
+                },
+                admin_upgrade: {
+                    status: 'passed',
+                },
+                database: {
+                    status: 'pending',
+                },
+                nodes_repo_checks: {
+                    status: 'pending',
+                },
+                nodes_services: {
+                    status: 'pending',
+                },
+                nodes_db_dump: {
+                    status: 'pending',
+                },
+                nodes_upgrade: {
+                    status: 'pending',
+                },
+                finished: {
+                    status: 'pending',
+                }
+            }
+        },
+        statusDataAfterDatabase = {
+            current_step: 'nodes_repo_checks',
+            substep: null,
+            current_node: null,
+            steps: {
+                upgrade_prechecks: {
+                    status: 'passed',
+                },
+                upgrade_prepare: {
+                    status: 'passed',
+                },
+                admin_backup: {
+                    status: 'passed',
+                },
+                admin_repo_checks: {
+                    status: 'passed',
+                },
+                admin_upgrade: {
+                    status: 'passed',
+                },
+                database: {
+                    status: 'passed',
+                },
+                nodes_repo_checks: {
+                    status: 'pending',
+                },
+                nodes_services: {
+                    status: 'pending',
+                },
+                nodes_db_dump: {
+                    status: 'pending',
+                },
+                nodes_upgrade: {
+                    status: 'pending',
+                },
+                finished: {
+                    status: 'pending',
+                }
+            }
+        },
+        statusDataAfterNodesRepoChecks = {
+            current_step: 'nodes_services',
+            substep: null,
+            current_node: null,
+            steps: {
+                upgrade_prechecks: {
+                    status: 'passed',
+                },
+                upgrade_prepare: {
+                    status: 'passed',
+                },
+                admin_backup: {
+                    status: 'passed',
+                },
+                admin_repo_checks: {
+                    status: 'passed',
+                },
+                admin_upgrade: {
+                    status: 'passed',
+                },
+                database: {
+                    status: 'passed',
+                },
+                nodes_repo_checks: {
+                    status: 'passed',
+                },
+                nodes_services: {
+                    status: 'pending',
+                },
+                nodes_db_dump: {
+                    status: 'pending',
+                },
+                nodes_upgrade: {
+                    status: 'pending',
+                },
+                finished: {
+                    status: 'pending',
+                }
+            }
+        },
+        statusDataAfterNodesServices = {
+            current_step: 'nodes_db_dump',
+            substep: null,
+            current_node: null,
+            steps: {
+                upgrade_prechecks: {
+                    status: 'passed',
+                },
+                upgrade_prepare: {
+                    status: 'passed',
+                },
+                admin_backup: {
+                    status: 'passed',
+                },
+                admin_repo_checks: {
+                    status: 'passed',
+                },
+                admin_upgrade: {
+                    status: 'passed',
+                },
+                database: {
+                    status: 'passed',
+                },
+                nodes_repo_checks: {
+                    status: 'passed',
+                },
+                nodes_services: {
+                    status: 'passed',
+                },
+                nodes_db_dump: {
+                    status: 'pending',
+                },
+                nodes_upgrade: {
+                    status: 'pending',
+                },
+                finished: {
+                    status: 'pending',
+                }
+            }
+        },
+        statusDataAfterNodesDBDump = {
+            current_step: 'nodes_upgrade',
+            substep: null,
+            current_node: null,
+            steps: {
+                upgrade_prechecks: {
+                    status: 'passed',
+                },
+                upgrade_prepare: {
+                    status: 'passed',
+                },
+                admin_backup: {
+                    status: 'passed',
+                },
+                admin_repo_checks: {
+                    status: 'passed',
+                },
+                admin_upgrade: {
+                    status: 'passed',
+                },
+                database: {
+                    status: 'passed',
+                },
+                nodes_repo_checks: {
+                    status: 'passed',
+                },
+                nodes_services: {
+                    status: 'passed',
+                },
+                nodes_db_dump: {
+                    status: 'passed',
+                },
+                nodes_upgrade: {
+                    status: 'pending',
+                },
+                finished: {
+                    status: 'pending',
+                }
+            }
+        },
+        statusDataAfterNodesUpgrade = {
+            current_step: 'finished',
+            substep: null,
+            current_node: null,
+            steps: {
+                upgrade_prechecks: {
+                    status: 'passed',
+                },
+                upgrade_prepare: {
+                    status: 'passed',
+                },
+                admin_backup: {
+                    status: 'passed',
+                },
+                admin_repo_checks: {
+                    status: 'passed',
+                },
+                admin_upgrade: {
+                    status: 'passed',
+                },
+                database: {
+                    status: 'passed',
+                },
+                nodes_repo_checks: {
+                    status: 'passed',
+                },
+                nodes_services: {
+                    status: 'passed',
+                },
+                nodes_db_dump: {
+                    status: 'passed',
+                },
+                nodes_upgrade: {
+                    status: 'passed',
+                },
+                finished: {
+                    status: 'pending',
+                }
             }
         };
 
     beforeEach(function () {
         //Setup the module and dependencies to be used.
         module('crowbarApp.upgrade');
-        bard.inject('upgradeStepsFactory', '$state', 'UPGRADE_LAST_STATE_KEY');
+        bard.inject('upgradeStepsFactory', '$state', '$q', 'UPGRADE_LAST_STATE_KEY');
 
+        //Mock the $state service
+        bard.mockService($state, {
+            go : $q.when()
+        });
+        spyOn($state, 'go');
+
+        $state.current = {id: 0, name: 'upgrade.backup', state: 'upgrade.backup'};
+        upgradeStepsFactory.activeStep = upgradeStepsFactory.steps[0];
     });
 
     describe('when executed', function () {
@@ -407,6 +655,52 @@ describe('Stepes Factory', function () {
 
         });
 
+        describe('showNextStep function', function () {
+            it('should exist', function () {
+                should.exist(upgradeStepsFactory.showNextStep);
+                expect(upgradeStepsFactory.showNextStep).toEqual(jasmine.any(Function));
+            });
+
+            it('when called it should move to the next step', function () {
+                expect($state.current.id).toBe(0);
+                // calculate the next step in the list
+                var nextStep = (upgradeStepsFactory.steps[upgradeStepsFactory.activeStep.id + 1]).state;
+                upgradeStepsFactory.showNextStep();
+                expect($state.go).toHaveBeenCalledWith(nextStep);
+            });
+
+            it('when called in the last step it should not change steps', function () {
+                // set the last step in the list as current
+                $state.current = {id: 0, name: 'upgrade.upgrade-nodes', state: 'upgrade.upgrade-nodes'};
+                // set last step as active
+                upgradeStepsFactory.activeStep = upgradeStepsFactory.steps[upgradeStepsFactory.steps.length - 1];
+                upgradeStepsFactory.showNextStep();
+                // should have not called the state.go
+                expect($state.go).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('isLastStep function', function () {
+            it('should exist', function () {
+                should.exist(upgradeStepsFactory.isLastStep);
+                expect(upgradeStepsFactory.isLastStep).toEqual(jasmine.any(Function));
+            });
+
+            it('when called on the first step it should return false', function () {
+                // set the first step in the list as current
+                $state.current = {id: 0, name: 'upgrade.backup', state: 'upgrade.backup'};
+                expect(upgradeStepsFactory.isLastStep()).toBe(false);
+            });
+
+            it('when called on the last step it should return true', function () {
+                // set the last step in the list as current
+                $state.current = {id: 0, name: 'upgrade.upgrade-nodes', state: 'upgrade.upgrade-nodes'};
+                // set last step as active
+                upgradeStepsFactory.activeStep = upgradeStepsFactory.steps[upgradeStepsFactory.steps.length - 1];
+                expect(upgradeStepsFactory.isLastStep()).toBe(true);
+            });
+        });
+
         describe('stepByState function', function () {
             _.forEach(mockedInitialSteps, function (mockedStep) {
                 it('should return step with state=' + mockedStep.state + ' when called', function () {
@@ -464,6 +758,31 @@ describe('Stepes Factory', function () {
                 it('should return "upgrade.administration-repository-checks" after admin repo checks', function() {
                     expect(upgradeStepsFactory.lastStateForRestore(statusDataAfterAdminRepoChecks))
                         .toEqual('upgrade.administration-repository-checks');
+                });
+
+                it('should return "upgrade.upgrade-administration-server" after admin upgrade', function() {
+                    expect(upgradeStepsFactory.lastStateForRestore(statusDataAfterAdminUpgrade))
+                        .toEqual('upgrade.upgrade-administration-server');
+                });
+                it('should return "upgrade.database-configuration" after database configuration', function() {
+                    expect(upgradeStepsFactory.lastStateForRestore(statusDataAfterDatabase))
+                        .toEqual('upgrade.database-configuration');
+                });
+                it('should return "upgrade.nodes-repositories-checks" after nodes repo checks', function() {
+                    expect(upgradeStepsFactory.lastStateForRestore(statusDataAfterNodesRepoChecks))
+                        .toEqual('upgrade.nodes-repositories-checks');
+                });
+                it('should return "upgrade.openstack-services" after stoping services', function() {
+                    expect(upgradeStepsFactory.lastStateForRestore(statusDataAfterNodesServices))
+                        .toEqual('upgrade.openstack-services');
+                });
+                it('should return "upgrade.openstack-services" after nodes db dump', function() {
+                    expect(upgradeStepsFactory.lastStateForRestore(statusDataAfterNodesDBDump))
+                        .toEqual('upgrade.openstack-services');
+                });
+                it('should return "upgrade.upgrade-nodes" after nodes upgrade', function() {
+                    expect(upgradeStepsFactory.lastStateForRestore(statusDataAfterNodesUpgrade))
+                        .toEqual('upgrade.upgrade-nodes');
                 });
             });
             describe('when stored state is invalid in given case', function () {
