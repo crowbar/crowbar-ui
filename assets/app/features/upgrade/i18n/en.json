@@ -39,16 +39,7 @@
                 },
                 "mode": {
                     "title": "Upgrade Mode",
-                    "description": "After all checks are successful the upgrade mode will be shown here...",
-                    "normal_mode": {
-                        "title": "Your cloud is now prepared to begin the upgrade process in normal mode",
-                        "button": "Proceed in normal mode",
-                        "description": "Long description here"
-                    },
-                    "nondisruptive_mode": {
-                        "title": "Your cloud is now prepared to begin the upgrade process in non-disruptive mode",
-                        "description": "Long description here"
-                    }
+                    "description": "After all checks are successful the upgrade mode will be shown here..."
                 }
             },
             "backup": {
