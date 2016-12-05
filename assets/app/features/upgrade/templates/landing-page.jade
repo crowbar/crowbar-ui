@@ -3,7 +3,7 @@
         .col-md-6
             .prechecks.pull-left
                 crowbar-circle 1
-                h4.text-center(translate='') upgrade.steps.landing.prechecks.title
+                .h4.text-center(translate='') upgrade.steps.landing.prechecks.title
 
                 p(translate='') upgrade.steps.landing.prechecks.description
                 crowbar-checklist(checklist='upgradeLandingVm.prechecks.checks', completed='upgradeLandingVm.prechecks.completed')
@@ -22,7 +22,7 @@
 
             .upgrade.pull-left
                 crowbar-circle 3
-                h4.text-center(translate='') upgrade.steps.landing.upgrade.title
+                .h4.text-center(translate='') upgrade.steps.landing.upgrade.title
                 p(translate='') upgrade.steps.landing.upgrade.description
                 button.btn.btn-success(
                     ng-disabled="!upgradeLandingVm.prechecks.completed || !upgradeLandingVm.prechecks.valid || upgradeLandingVm.prepare.running",
@@ -35,5 +35,5 @@
         .col-md-6
             .mode.pull-left
                 crowbar-circle 2
-                h4.text-center(translate='') upgrade.steps.landing.mode.title
+                .h4.text-center(translate='') upgrade.steps.landing.mode.title
                 p(translate='') upgrade.steps.landing.mode.description
