@@ -11,14 +11,23 @@
     angular.module('crowbarApp.upgrade')
         .controller('UpgradeController', UpgradeController);
 
-    UpgradeController.$inject = ['$scope', '$translate', '$state', 'upgradeStepsFactory', 'upgradeFactory'];
+    UpgradeController.$inject = [
+        '$scope', '$translate', '$state', 'upgradeStepsFactory',
+        'upgradeFactory', 'UPGRADE_LAST_STATE_KEY'
+    ];
     // @ngInject
-    function UpgradeController($scope, $translate, $state, upgradeStepsFactory, upgradeFactory) {
+    function UpgradeController(
+        $scope,
+        $translate,
+        $state,
+        upgradeStepsFactory,
+        upgradeFactory,
+        UPGRADE_LAST_STATE_KEY
+    ) {
         var vm = this;
         vm.steps = {
             list: [],
-            nextStep: nextStep,
-            isLastStep: isLastStep,
+            nextStep: upgradeStepsFactory.showNextStep,
             isCurrentStepCompleted: upgradeStepsFactory.isCurrentStepCompleted
         };
 
@@ -32,30 +41,12 @@
         $scope.$on('$viewContentLoaded', upgradeStepsFactory.refeshStepsList);
 
         /**
-         * Move to the next available Step
-         */
-        function nextStep() {
-            // Only move forward if active step isn't last step available
-            if (vm.steps.isLastStep()) {
-                return;
-            }
-
-            $state.go(vm.steps.list[upgradeStepsFactory.activeStep.id + 1].state);
-        }
-
-        /**
-         * Validate if the active step is the last avilable step
-         * @return boolean
-         */
-        function isLastStep() {
-            return vm.steps.list[vm.steps.list.length - 1] === upgradeStepsFactory.activeStep;
-        }
-
-        /**
          * Trigger cancellation of the upgrade process and go back to landing page
          */
         function cancelUpgrade() {
             upgradeFactory.cancelUpgrade().then(function(/* response */) {
+                // clear last page seen by the user
+                localStorage.removeItem(UPGRADE_LAST_STATE_KEY);
                 // TODO(skazi): in final solution this should redirect to crowbar dashboard
                 $state.go('upgrade-landing');
             });
