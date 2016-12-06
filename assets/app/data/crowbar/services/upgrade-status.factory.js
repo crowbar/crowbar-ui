@@ -16,6 +16,7 @@
 
         /**
          * Fetch status info from backend and update flags in passed object
+         *
          * @param {string} step - name of step to be checked
          * @param {Object} flagsObject - object with `running` and `completed` fields to be updated
          * @param {function} onRunning - Callback to be executed if current status is running
