@@ -145,7 +145,6 @@
         /**
          * Handler for ui-router state change events to ensure requested page matches current backend status
          * For parameter descriptions see: https://github.com/angular-ui/ui-router/wiki#state-change-events
-         * @return {string}
          */
         function validateRequestedState(event, toState/*, toParams, fromState, fromParams*/) {
             upgradeFactory.getStatus()

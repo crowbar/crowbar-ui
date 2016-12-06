@@ -785,7 +785,16 @@ describe('Stepes Factory', function () {
                         .toEqual('upgrade.upgrade-nodes');
                 });
             });
-            describe('when stored state is invalid in given case', function () {
+            describe('when stored state is invalid', function () {
+                beforeEach(function () {
+                    localStorage.setItem(UPGRADE_LAST_STATE_KEY, '--dummy--');
+                });
+                it('should return "upgrade.backup" after backup', function() {
+                    expect(upgradeStepsFactory.lastStateForRestore(statusDataAfterBackup))
+                        .toEqual('upgrade.backup');
+                });
+            });
+            describe('when stored state is invalid in current context', function () {
                 beforeEach(function () {
                     localStorage.setItem(UPGRADE_LAST_STATE_KEY, 'upgrade-landing');
                 });
