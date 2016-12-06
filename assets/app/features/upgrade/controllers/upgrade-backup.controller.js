@@ -18,9 +18,10 @@ function() {
         'crowbarUtilsFactory',
         '$document',
         'upgradeStepsFactory',
+        'upgradeStatusFactory',
         'upgradeFactory',
         'FileSaver',
-        'Blob'
+        'UPGRADE_STEPS',
     ];
     // @ngInject
     function UpgradeBackupController(
@@ -29,8 +30,10 @@ function() {
         crowbarUtilsFactory,
         $document,
         upgradeStepsFactory,
+        upgradeStatusFactory,
         upgradeFactory,
-        FileSaver
+        FileSaver,
+        UPGRADE_STEPS
     ) {
         var vm = this;
         vm.backup = {
@@ -40,6 +43,15 @@ function() {
             download: downloadBackup,
             spinnerVisible: false
         };
+
+        activate();
+
+        function activate() {
+            upgradeStatusFactory.syncStatusFlags(
+                UPGRADE_STEPS.admin_backup, vm.backup,
+                undefined,
+                upgradeStepsFactory.setCurrentStepCompleted);
+        }
 
         function createBackup() {
             vm.backup.running = true;
