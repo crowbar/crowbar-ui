@@ -7,14 +7,6 @@
         },
         "steps": {
             "landing": {
-                "title": "SUSE OpenStack Cloud Upgrade",
-                "description": "In order to upgrade SUSE OpenStack Cloud from version 6 to 7, the following requirements must be met:",
-                "requirements": {
-                    "point1": "The Administration Server needs to have the latest SUSE OpenStack Cloud 6 updates installed. One of these updates will add the new upgrade routine to the Crowbar Web interface.",
-                    "point2": "All other nodes need to have the latest SUSE OpenStack Cloud 6 updates and the latest SLES updates.",
-                    "point3": "All allocated nodes need to be available. In addition, a free node with at least an equal amount of disk and memory space as the largest running node must be free of any workload and available."
-                },
-                "note": "Note: Manual changes to the cloud during the upgrade process could lead to irrepairable damage to the cloud, the workloads running in it and the data they produce or consume.",
                 "form": {
                     "button": "Begin Upgrade"
                 },
@@ -43,11 +35,14 @@
                     "normal": {
                         "title": "Your cloud is now pepared to begin the upgrade in normal mode.",
                         "button": "Proceed in Normal Mode",
-                        "description": "In normal mode, each node will be rebooted during the upgrade process, including the workloads running in them.</br></br>In order to proceed in non-disruptive mode your cloud needs to have the pacemaker barclamp correctly configured and applied amd at least one free node as large or larger than any other node in your clouds compute plane.</br></br>Be sure to re-run the checks if you make any changes to your cloud after the initial run."
+                        "description1": "In normal mode, each node will be rebooted during the upgrade process, including the workloads running in them.",
+                        "description2": "In order to proceed in non-disruptive mode your cloud needs to have the pacemaker barclamp correctly configured and applied amd at least one free node as large or larger than any other node in your clouds compute plane.",
+                        "description3": "Be sure to re-run the checks if you make any changes to your cloud after the initial run."
                     },
                     "nondisruptive": {
                         "title": "Your cloud is now prepared to begin the upgrade process in non-disruptive mode.",
-                        "description": "In non-disruptive mode all workloads should continue running but we strongly recommend picking your nose and wiggeling your finger at it for a while first.</br></br>Be sure to re-run the checks if you make any changes to your cloud after the initial run."
+                        "description1": "In non-disruptive mode all workloads should continue running but we strongly recommend picking your nose and wiggeling your finger at it for a while first.",
+                        "description2": "Be sure to re-run the checks if you make any changes to your cloud after the initial run."
                     }
                 }
             },

@@ -143,8 +143,6 @@
                 .then(
                     //Success handler. Al precheck passed successfully:
                     function(response) {
-                        // Store the upgrade best method
-                        vm.mode.type = response.data.best_method;
 
                         _.forEach(response.data.checks, function(value, key) {
                             // skip unknown checks returned from backend
@@ -160,10 +158,12 @@
                         });
 
                         vm.prechecks.valid = checks.every(function (check) {
-                            return check == true
+                            return check === true
                         });
                         // If all prechecks are ok, move to the next step
                         if (vm.prechecks.valid) {
+                            // Store the upgrade best method
+                            vm.mode.type = response.data.best_method;
                             updateMode()
                         }
                     },
