@@ -1,6 +1,6 @@
 /* jshint -W117, -W030 */
 /*global bard $controller $httpBackend should assert upgradeFactory upgradeStatusFactory
-  crowbarFactory $q $rootScope module $state sinon */
+  crowbarFactory $q $rootScope module $state */
 describe('Upgrade Landing Controller', function() {
     var controller,
         completedUpgradeResponseData = {
@@ -192,7 +192,7 @@ describe('Upgrade Landing Controller', function() {
         });
 
         bard.mockService(upgradeFactory, {
-            getStatus: $q.when(initialStatusResponse)
+            getStatus: $q.when(initialStatusResponse),
         });
 
         spyOn(upgradeStatusFactory, 'waitForStepToEnd');
@@ -228,8 +228,7 @@ describe('Upgrade Landing Controller', function() {
     describe('when created while prepare is running', function() {
         beforeEach(function() {
             // local change in mocked service
-            upgradeFactory.getStatus =
-                sinon.spy(function () { return $q.when(incompleteUpgradeResponse); });
+            spyOn(upgradeFactory, 'getStatus').and.returnValue($q.when(incompleteUpgradeResponse));
 
             controller = $controller('UpgradeLandingController');
 
@@ -252,8 +251,7 @@ describe('Upgrade Landing Controller', function() {
     describe('when created after prepare is finished', function() {
         beforeEach(function() {
             // local change in mocked service
-            upgradeFactory.getStatus =
-                sinon.spy(function () { return $q.when(completedUpgradeResponse); });
+            spyOn(upgradeFactory, 'getStatus').and.returnValue($q.when(completedUpgradeResponse));
 
             controller = $controller('UpgradeLandingController');
 
@@ -325,8 +323,7 @@ describe('Upgrade Landing Controller', function() {
         describe('with no addons installed', function () {
             beforeEach(function () {
                 // local change in mocked service
-                crowbarFactory.getEntity =
-                    sinon.spy(function () { return $q.when(entityResponseWithoutAddons); });
+                spyOn(crowbarFactory, 'getEntity').and.returnValue($q.when(entityResponseWithoutAddons));
 
                 controller = $controller('UpgradeLandingController');
             });
@@ -349,8 +346,7 @@ describe('Upgrade Landing Controller', function() {
             describe('when checks pass successfully', function () {
                 beforeEach(function () {
                     // local change in mocked service
-                    upgradeFactory.getPreliminaryChecks =
-                        sinon.spy(function () { return $q.when(passingChecksResponse); });
+                    spyOn(upgradeFactory, 'getPreliminaryChecks').and.returnValue($q.when(passingChecksResponse));
 
                     controller.prechecks.runPrechecks();
                     $rootScope.$digest();
@@ -375,8 +371,7 @@ describe('Upgrade Landing Controller', function() {
             describe('when checks fails', function () {
                 beforeEach(function () {
                     // local change in mocked service
-                    upgradeFactory.getPreliminaryChecks =
-                        sinon.spy(function () { return $q.when(failingChecksResponse); });
+                    spyOn(upgradeFactory, 'getPreliminaryChecks').and.returnValue($q.when(failingChecksResponse));
 
                     controller.prechecks.runPrechecks();
                     $rootScope.$digest();
@@ -401,8 +396,8 @@ describe('Upgrade Landing Controller', function() {
             describe('when checks partially fail', function () {
                 beforeEach(function () {
                     // local change in mocked service
-                    upgradeFactory.getPreliminaryChecks =
-                        sinon.spy(function () { return $q.when(partiallyFailingChecksResponse); });
+                    spyOn(upgradeFactory, 'getPreliminaryChecks').and
+                        .returnValue($q.when(partiallyFailingChecksResponse));
 
                     controller.prechecks.runPrechecks();
                     $rootScope.$digest();
@@ -427,8 +422,7 @@ describe('Upgrade Landing Controller', function() {
             describe('when service call fails', function () {
                 beforeEach(function () {
                     // local change in mocked service
-                    upgradeFactory.getPreliminaryChecks =
-                        sinon.spy(function () { return $q.reject(failingResponse); });
+                    spyOn(upgradeFactory, 'getPreliminaryChecks').and.returnValue($q.reject(failingResponse));
 
                     controller.prechecks.runPrechecks();
                     $rootScope.$digest();
@@ -561,8 +555,7 @@ describe('Upgrade Landing Controller - States', function () {
     describe('when node prepare start fails', function () {
         beforeEach(function () {
             // local change in mocked service
-            upgradeFactory.prepareNodes =
-                sinon.spy(function () { return $q.reject(errorResponse); });
+            spyOn(upgradeFactory, 'prepareNodes').and.returnValue($q.reject(errorResponse));
 
             spyOn(upgradeStatusFactory, 'waitForStepToEnd');
 
