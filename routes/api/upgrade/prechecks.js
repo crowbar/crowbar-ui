@@ -18,7 +18,7 @@ router.get('/', function(req, res) {
                 'ceph_healthy': { required: true, passed: checksPass },
                 'compute_resources_available': { required: false, passed: true }
             },
-            'best_method': checksPass ? 'non-disruptive' : 'none'
+            'best_method': checksPass ? 'non-disruptive' : 'disruptive'
         });
     }
     checksPass = true;

@@ -45,17 +45,17 @@
                     strong
                         p(
                             translate='',
-                            ng-show='upgradeLandingVm.mode.type == "none"'
+                            ng-show='upgradeLandingVm.mode.type == "disruptive"'
                         ) upgrade.steps.landing.mode.normal.title
                     button.btn.btn-primary(
-                        ng-disabled="upgradeLandingVm.mode.type != 'none' || upgradeLandingVm.mode.valid",
-                        ng-show="upgradeLandingVm.mode.type == 'none'"
+                        ng-disabled="upgradeLandingVm.mode.type != 'disruptive' || upgradeLandingVm.mode.valid",
+                        ng-show="upgradeLandingVm.mode.type == 'disruptive'"
                         ng-click="upgradeLandingVm.continueNormal()"
                     )
                         span(translate='') upgrade.steps.landing.mode.normal.button
                     p(
                         translate='',
-                        ng-show='upgradeLandingVm.mode.type == "none"'
+                        ng-show='upgradeLandingVm.mode.type == "disruptive"'
                     ) upgrade.steps.landing.mode.normal.description
                 .nondisruptive
                     strong
