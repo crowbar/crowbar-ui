@@ -14,7 +14,7 @@
     UpgradeUpgradeAdministrationServerController.$inject = [
         '$timeout', 'crowbarFactory', 'upgradeStatusFactory',
         'ADMIN_UPGRADE_TIMEOUT_INTERVAL', 'ADMIN_UPGRADE_ALLOWED_DOWNTIME',
-        'UPGRADE_STEPS', 'UPGRADE_STEP_STATES', 'upgradeFactory', 'upgradeStepsFactory'
+        'UPGRADE_STEPS', 'UPGRADE_STEP_STATES', 'upgradeStepsFactory'
     ];
     // @ngInject
     function UpgradeUpgradeAdministrationServerController(
@@ -25,7 +25,6 @@
       ADMIN_UPGRADE_ALLOWED_DOWNTIME,
       UPGRADE_STEPS,
       UPGRADE_STEP_STATES,
-      upgradeFactory,
       upgradeStepsFactory
     ) {
         var vm = this;

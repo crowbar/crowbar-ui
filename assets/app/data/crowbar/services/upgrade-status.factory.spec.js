@@ -161,11 +161,11 @@ describe('Upgrade Status Factory', function () {
                 });
 
                 it('should call completed callback', function () {
-                    expect(mockedCompletedCallback).toHaveBeenCalled();
+                    expect(mockedCompletedCallback).toHaveBeenCalledTimes(1);
                 });
 
                 it('should not call running callback', function () {
-                    expect(mockedRunningCallback).not.toHaveBeenCalled();
+                    expect(mockedRunningCallback).not.toHaveBeenCalledTimes(1);
                 });
 
                 it('should set completed flag to true', function () {
