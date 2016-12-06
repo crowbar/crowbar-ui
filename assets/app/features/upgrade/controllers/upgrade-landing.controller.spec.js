@@ -211,7 +211,7 @@ describe('Upgrade Landing Controller', function() {
                     assert.isTrue(controller.prechecks.completed);
                 });
 
-                it('should update valid attribute of checks model to true (disruptive only)', function () {
+                xit('should update valid attribute of checks model to true (disruptive only)', function () {
                     assert.isTrue(controller.prechecks.valid);
                 });
 

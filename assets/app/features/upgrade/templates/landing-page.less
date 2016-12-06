@@ -39,8 +39,15 @@
         }
     }
 
-    .mode.inactive {
-        color: #5f5f5f;
+    .mode {
+        &.inactive {
+            color: #5f5f5f;
+        }
+        button {
+            /* This removes the generic button margin to align it properly*/
+            margin-top: 0px;
+            margin-bottom: 20px;
+        }
     }
 
     .btn {
