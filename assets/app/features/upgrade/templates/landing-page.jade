@@ -37,21 +37,21 @@
                 crowbar-circle(ng-class="{'active': upgradeLandingVm.mode.active}") 2
                 .h4.text-center(translate='') upgrade.steps.landing.mode.title
                 .initial
-                    p(translate='', ng-show='upgradeLandingVm.mode.type == "null"') upgrade.steps.landing.mode.description
+                    p(translate='', ng-if='upgradeLandingVm.mode.type == false') upgrade.steps.landing.mode.description
                 .normal
                     strong
-                        p(translate='', ng-show='upgradeLandingVm.mode.type == "disruptive"') upgrade.steps.landing.mode.normal.title
+                        p(translate='', ng-if='upgradeLandingVm.mode.type == "disruptive"') upgrade.steps.landing.mode.normal.title
                     button.btn.btn-primary(
                         ng-disabled="upgradeLandingVm.mode.type != 'disruptive' || upgradeLandingVm.mode.valid",
-                        ng-show="upgradeLandingVm.mode.type == 'disruptive'"
+                        ng-if="upgradeLandingVm.mode.type == 'disruptive'"
                         ng-click="upgradeLandingVm.continueNormal()"
                     )
                         span(translate='') upgrade.steps.landing.mode.normal.button
-                    p(translate='', ng-show='upgradeLandingVm.mode.type == "disruptive"') upgrade.steps.landing.mode.normal.description1
-                    p(translate='', ng-show='upgradeLandingVm.mode.type == "disruptive"') upgrade.steps.landing.mode.normal.description2
-                    p(translate='', ng-show='upgradeLandingVm.mode.type == "disruptive"') upgrade.steps.landing.mode.normal.description3
+                    p(translate='', ng-if='upgradeLandingVm.mode.type == "disruptive"') upgrade.steps.landing.mode.normal.description1
+                    p(translate='', ng-if='upgradeLandingVm.mode.type == "disruptive"') upgrade.steps.landing.mode.normal.description2
+                    p(translate='', ng-if='upgradeLandingVm.mode.type == "disruptive"') upgrade.steps.landing.mode.normal.description3
                 .nondisruptive
                     strong
-                        p(translate='', ng-show='upgradeLandingVm.mode.type == "non-disruptive"') upgrade.steps.landing.mode.nondisruptive.title
-                    p(translate='', ng-show='upgradeLandingVm.mode.type == "non-disruptive"') upgrade.steps.landing.mode.nondisruptive.description1
-                    p(translate='', ng-show='upgradeLandingVm.mode.type == "non-disruptive"') upgrade.steps.landing.mode.nondisruptive.description2
+                        p(translate='', ng-if='upgradeLandingVm.mode.type == "non-disruptive"') upgrade.steps.landing.mode.nondisruptive.title
+                    p(translate='', ng-if='upgradeLandingVm.mode.type == "non-disruptive"') upgrade.steps.landing.mode.nondisruptive.description1
+                    p(translate='', ng-if='upgradeLandingVm.mode.type == "non-disruptive"') upgrade.steps.landing.mode.nondisruptive.description2

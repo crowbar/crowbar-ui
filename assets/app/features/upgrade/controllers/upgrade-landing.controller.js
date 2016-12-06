@@ -71,7 +71,7 @@
 
         vm.mode = {
             active: false,
-            type: null,
+            type: false,
             valid: false
         };
 
@@ -134,7 +134,7 @@
         function runPrechecks() {
             // Clean other checks in case we re-run the prechecks
             vm.mode.valid = false;
-            vm.mode.type = null;
+            vm.mode.type = false;
             vm.mode.active = false;
             vm.prechecks.running = true;
 
