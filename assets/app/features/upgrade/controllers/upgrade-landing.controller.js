@@ -45,6 +45,7 @@
             };
 
         vm.beginUpgrade = beginUpgrade;
+        vm.continueNormal = continueNormal;
 
         vm.prechecks = {
             running: false,
@@ -66,6 +67,12 @@
                 }
             },
             runPrechecks: runPrechecks
+        };
+
+        vm.mode = {
+            active: false,
+            type: null,
+            valid: false
         };
 
         vm.prepare = {
@@ -125,6 +132,10 @@
          * Pre validation checks
          */
         function runPrechecks() {
+            // Clean other checks in case we re-run the prechecks
+            vm.mode.valid = false;
+            vm.mode.type = null;
+            vm.mode.active = false;
             vm.prechecks.running = true;
 
             upgradeFactory
@@ -132,6 +143,8 @@
                 .then(
                     //Success handler. Al precheck passed successfully:
                     function(response) {
+                        // Store the upgrade best method
+                        vm.mode.type = response.data.best_method;
 
                         _.forEach(response.data.checks, function(value, key) {
                             // skip unknown checks returned from backend
@@ -141,8 +154,18 @@
                         });
 
                         // Update prechecks validity
-                        // TODO: handle disruptive vs non-disruptive properly in the new design
-                        vm.prechecks.valid = (response.data.best_method != 'none');
+                        var checks = [];
+                        _.forEach(vm.prechecks.checks, function (check) {
+                            checks.push(check.status)
+                        });
+
+                        vm.prechecks.valid = checks.every(function (check) {
+                            return check == true
+                        });
+                        // If all prechecks are ok, move to the next step
+                        if (vm.prechecks.valid) {
+                            updateMode()
+                        }
                     },
                     //Failure handler:
                     function(errorResponse) {
@@ -157,6 +180,18 @@
                     }
                 );
 
+        }
+
+        function updateMode() {
+            vm.mode.active = true;
+            if (vm.mode.type == 'non-disruptive') {
+                vm.mode.valid = true;
+                return;
+            }
+        }
+
+        function continueNormal() {
+            vm.mode.valid = true;
         }
     }
 })();
