@@ -43,22 +43,10 @@
             // the button status and the update check running
             // TODO(itxaka): Not tested yet, tests should be done as part of card:
             // https://trello.com/c/5fXGm1a7/45-2-27-restore-last-step
-            upgradeFactory.getStatus()
-                .then(
-                    function (response) {
-                        vm.adminUpgrade.running =
-                            response.data.steps.admin_upgrade.status == UPGRADE_STEP_STATES.running;
-                        vm.adminUpgrade.completed =
-                            response.data.steps.admin_upgrade.status == UPGRADE_STEP_STATES.passed;
-                        if (vm.adminUpgrade.completed) {
-                            upgradeStepsFactory.setCurrentStepCompleted();
-                        } else if (vm.adminUpgrade.running) {
-                            waitForUpgradeToEnd();
-                        }
-                    },
-                    function (/*errorResponse*/) {
-                    }
-                );
+            upgradeStatusFactory.syncStatusFlags(
+                UPGRADE_STEPS.admin_upgrade, vm.adminUpgrade,
+                waitForUpgradeToEnd, upgradeStepsFactory.setCurrentStepCompleted
+            );
         }
 
         function beginAdminUpgrade() {

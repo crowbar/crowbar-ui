@@ -20,7 +20,6 @@
         'ADDONS_PRECHECK_MAP',
         'PREPARE_TIMEOUT_INTERVAL',
         'UPGRADE_STEPS',
-        'STEP_STATES'
     ];
     // @ngInject
     function UpgradeLandingController(
@@ -31,8 +30,7 @@
         crowbarFactory,
         ADDONS_PRECHECK_MAP,
         PREPARE_TIMEOUT_INTERVAL,
-        UPGRADE_STEPS,
-        STEP_STATES
+        UPGRADE_STEPS
     ) {
         var vm = this,
             optionalPrechecks = {
@@ -89,23 +87,9 @@
                 });
             });
 
-            // adjust UI state to backend status
-            upgradeFactory.getStatus()
-                .then(
-                    function (response) {
-                        // skz: This part is disabled on purpose. There's no easy way to restore complete checks state
-                        // without running the checks again so it's better to leave this to the user.
-                        //vm.prechecks.running = response.data.steps.upgrade_prechecks.status === STEP_STATES.running;
-                        //vm.prechecks.completed = response.data.steps.upgrade_prechecks.status === STEP_STATES.passed;
-
-                        vm.prepare.running = response.data.steps.upgrade_prepare.status === STEP_STATES.running;
-                        vm.prepare.completed = response.data.steps.upgrade_prepare.status === STEP_STATES.passed;
-
-                        if (vm.prepare.running) {
-                            waitForPrepareToEnd();
-                        }
-                    }
-                );
+            // skz: There is no syncing of 'prechecks' part as there's no easy way to restore complete checks state
+            // without running the checks again so it's better to leave this to the user.
+            upgradeStatusFactory.syncStatusFlags(UPGRADE_STEPS.upgrade_prepare, vm.prepare, waitForPrepareToEnd);
         }
 
         /**

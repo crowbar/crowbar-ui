@@ -9,9 +9,33 @@
     function upgradeStatusFactory($http, $timeout, upgradeFactory, UPGRADE_STEP_STATES) {
         var factory = {
             waitForStepToEnd: waitForStepToEnd,
+            syncStatusFlags: syncStatusFlags,
         };
 
         return factory;
+
+        /**
+         * Fetch status info from backend and update flags in passed object
+         * @param {string} step - name of step to be checked
+         * @param {Object} flagsObject - object with `running` and `completed` fields to be updated
+         * @param {function} onRunning - Callback to be executed if current status is running
+         * @param {function} onCompleted - Callback to be executed if current status is completed
+         */
+        function syncStatusFlags(step, flagsObject, onRunning, onCompleted) {
+            upgradeFactory.getStatus()
+                .then(
+                    function (response) {
+                        flagsObject.running = response.data.steps[step].status === UPGRADE_STEP_STATES.running;
+                        flagsObject.completed = response.data.steps[step].status === UPGRADE_STEP_STATES.passed;
+
+                        if (flagsObject.running && angular.isDefined(onRunning)) {
+                            onRunning();
+                        } else if (flagsObject.completed && angular.isDefined(onCompleted)) {
+                            onCompleted();
+                        }
+                    }
+                );
+        }
 
         /**
          * Polls for upgrade status until step `step` is `passed`.
