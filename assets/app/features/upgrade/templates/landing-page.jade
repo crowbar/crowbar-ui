@@ -2,14 +2,14 @@
     .row
         .col-md-6
             .prechecks.pull-left
-                crowbar-circle 1
-                h2.h4.text-center(translate='') upgrade.steps.landing.prechecks.title
+                crowbar-circle.active 1
+                .h4.text-center(translate='') upgrade.steps.landing.prechecks.title
 
                 p(translate='') upgrade.steps.landing.prechecks.description
                 crowbar-checklist(checklist='upgradeLandingVm.prechecks.checks', completed='upgradeLandingVm.prechecks.completed')
 
-                button.btn.btn-success(
-                ng-disabled="(upgradeLandingVm.prechecks.completed && upgradeLandingVm.prechecks.valid) || upgradeLandingVm.prechecks.running",
+                button.btn.btn-primary(
+                ng-disabled="upgradeLandingVm.prechecks.running",
                 ng-class="{\
                         'spinner-visible': upgradeLandingVm.prechecks.spinnerVisible,\
                         active: upgradeLandingVm.prechecks.running\
@@ -20,12 +20,12 @@
                     visible="upgradeLandingVm.prechecks.spinnerVisible")
                     span(translate='') upgrade.steps.landing.prechecks.form.check-again
 
-            .upgrade.pull-left
-                crowbar-circle 3
-                h2.h4.text-center(translate='') upgrade.steps.landing.upgrade.title
+            .upgrade.pull-left(ng-class="{'active': upgradeLandingVm.mode.valid, 'inactive': !upgradeLandingVm.mode.valid}")
+                crowbar-circle(ng-class="{'active': upgradeLandingVm.mode.valid}") 3
+                .h4.text-center(translate='') upgrade.steps.landing.upgrade.title
                 p(translate='') upgrade.steps.landing.upgrade.description
-                button.btn.btn-success(
-                    ng-disabled="!upgradeLandingVm.prechecks.completed || !upgradeLandingVm.prechecks.valid || upgradeLandingVm.prepare.running",
+                button.btn.btn-primary(
+                    ng-disabled="!upgradeLandingVm.prechecks.completed || !upgradeLandingVm.prechecks.valid || upgradeLandingVm.prepare.running || !upgradeLandingVm.mode.valid",
                     ng-class="{'spinner-visible': upgradeLandingVm.prepare.spinnerVisible, active: upgradeLandingVm.prepare.running}",
                     ng-click="upgradeLandingVm.beginUpgrade()"
                 )
@@ -33,7 +33,37 @@
                     visible="upgradeLandingVm.prepare.spinnerVisible")
                     span(translate='') upgrade.steps.landing.form.button
         .col-md-6
-            .mode.pull-left
-                crowbar-circle 2
-                h2.h4.text-center(translate='') upgrade.steps.landing.mode.title
-                p(translate='') upgrade.steps.landing.mode.description
+            .mode.pull-left(ng-class="{'active': upgradeLandingVm.mode.active, 'inactive': !upgradeLandingVm.mode.valid}")
+                crowbar-circle(ng-class="{'active': upgradeLandingVm.mode.active}") 2
+                .h4.text-center(translate='') upgrade.steps.landing.mode.title
+                .initial
+                    p(
+                        translate='',
+                        ng-show='upgradeLandingVm.mode.type == nil'
+                    ) upgrade.steps.landing.mode.description
+                .normal
+                    strong
+                        p(
+                            translate='',
+                            ng-show='upgradeLandingVm.mode.type == "none"'
+                        ) upgrade.steps.landing.mode.normal.title
+                    button.btn.btn-primary(
+                        ng-disabled="upgradeLandingVm.mode.type != 'none' || upgradeLandingVm.mode.valid",
+                        ng-show="upgradeLandingVm.mode.type == 'none'"
+                        ng-click="upgradeLandingVm.continueNormal()"
+                    )
+                        span(translate='') upgrade.steps.landing.mode.normal.button
+                    p(
+                        translate='',
+                        ng-show='upgradeLandingVm.mode.type == "none"'
+                    ) upgrade.steps.landing.mode.normal.description
+                .nondisruptive
+                    strong
+                        p(
+                            translate='',
+                            ng-show='upgradeLandingVm.mode.type == "non-disruptive"'
+                        ) upgrade.steps.landing.mode.nondisruptive.title
+                    p(
+                        translate='',
+                        ng-show='upgradeLandingVm.mode.type == "non-disruptive"'
+                    ) upgrade.steps.landing.mode.nondisruptive.description

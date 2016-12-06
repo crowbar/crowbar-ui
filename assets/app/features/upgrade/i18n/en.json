@@ -39,15 +39,15 @@
                 },
                 "mode": {
                     "title": "Upgrade Mode",
-                    "description": "After all checks are successful the upgrade mode will be shown here...",
-                    "normal_mode": {
-                        "title": "Your cloud is now prepared to begin the upgrade process in normal mode",
-                        "button": "Proceed in normal mode",
-                        "description": "Long description here"
+                    "description": "After all checks are successful the upgrade mode is will be shown here...",
+                    "normal": {
+                        "title": "Your cloud is now pepared to begin the upgrade in normal mode.",
+                        "button": "Proceed in Normal Mode",
+                        "description": "In normal mode, each node will be rebooted during the upgrade process, including the workloads running in them.</br></br>In order to proceed in non-disruptive mode your cloud needs to have the pacemaker barclamp correctly configured and applied amd at least one free node as large or larger than any other node in your clouds compute plane.</br></br>Be sure to re-run the checks if you make any changes to your cloud after the initial run."
                     },
-                    "nondisruptive_mode": {
-                        "title": "Your cloud is now prepared to begin the upgrade process in non-disruptive mode",
-                        "description": "Long description here"
+                    "nondisruptive": {
+                        "title": "Your cloud is now prepared to begin the upgrade process in non-disruptive mode.",
+                        "description": "In non-disruptive mode all workloads should continue running but we strongly recommend picking your nose and wiggeling your finger at it for a while first.</br></br>Be sure to re-run the checks if you make any changes to your cloud after the initial run."
                     }
                 }
             },
