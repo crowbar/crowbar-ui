@@ -226,17 +226,15 @@
                 if (angular.isDefined(currentStepData)) {
                     if (currentStepData.id > 0) {
                         return stepByID(currentStepData.id - 1).state;
-                    } else {
+                    } /* else {
                         // don't move user back from backup page to landing page
                         // this would require another "prepare" call to move forward
-                    }
-                } else if (currentState === 'upgrade-landing'){
+                    }*/
+                } /* else if (currentState === 'upgrade-landing'){
                     // this is the only valid case when expectedStep can be undefined
                     // expectedState is already on landing page so nothing needs to be done
                     // keeping this empty block here to make logic clear
-                } else {
-                    // TODO(skazi): this should never happen (error)
-                }
+                }*/
             }
 
             return currentState;
