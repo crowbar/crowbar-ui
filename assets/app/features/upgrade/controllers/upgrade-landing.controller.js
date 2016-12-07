@@ -183,21 +183,20 @@
                 );
 
         }
-
+        /**
+        * Sets the type of mode depending on the api response
+        */
         function updateMode() {
-            /**
-            * Sets the type of mode depending on the api response
-            */
             vm.mode.active = true;
             if (vm.mode.type === UPGRADE_MODES.nondisruptive) {
                 vm.mode.valid = true;
             }
         }
 
+        /**
+        * Sets the mode to valid when the continue button is clicked
+        */
         function continueNormal() {
-            /**
-             * Sets the mode to valid when the continue button is clicked
-             */
             vm.mode.valid = true;
         }
     }
