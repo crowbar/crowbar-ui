@@ -1,163 +1,18 @@
 /* global bard $controller should $httpBackend upgradeStatusFactory
-   upgradeFactory crowbarFactory assert $q $rootScope */
+   crowbarFactory assert $q $rootScope upgradeStepsFactory */
 describe('Upgrade Flow - Upgrade Administration Server Controller', function () {
-    var controller,
-        completedUpgradeResponseData = {
-            current_step: 'admin_upgrade',
-            substep: null,
-            current_node: null,
-            steps: {
-                upgrade_prechecks: {
-                    status: 'passed',
-                    errors: {}
-                },
-                admin_backup: {
-                    status: 'passed',
-                    errors: {}
-                },
-                admin_repo_checks: {
-                    status: 'passed',
-                    errors: {}
-                },
-                admin_upgrade: {
-                    status: 'passed',
-                    errors: {}
-                },
-                database: {
-                    status: 'pending',
-                    errors: {}
-                },
-                nodes_repo_checks: {
-                    status: 'pending',
-                    errors: {}
-                },
-                nodes_services: {
-                    status: 'pending',
-                    errors: {}
-                },
-                nodes_db_dump: {
-                    status: 'pending',
-                    errors: {}
-                },
-                nodes_upgrade: {
-                    status: 'pending',
-                    errors: {}
-                },
-                finished: {
-                    status: 'pending',
-                    errors: {}
-                }
-            }
-        },
-        incompleteUpgradeResponseData = {
-            current_step: 'admin_upgrade',
-            substep: null,
-            current_node: null,
-            steps: {
-                upgrade_prechecks: {
-                    status: 'passed',
-                    errors: {}
-                },
-                admin_backup: {
-                    status: 'passed',
-                    errors: {}
-                },
-                admin_repo_checks: {
-                    status: 'passed',
-                    errors: {}
-                },
-                admin_upgrade: {
-                    status: 'running',
-                    errors: {}
-                },
-                database: {
-                    status: 'pending',
-                    errors: {}
-                },
-                nodes_repo_checks: {
-                    status: 'pending',
-                    errors: {}
-                },
-                nodes_services: {
-                    status: 'pending',
-                    errors: {}
-                },
-                nodes_db_dump: {
-                    status: 'pending',
-                    errors: {}
-                },
-                nodes_upgrade: {
-                    status: 'pending',
-                    errors: {}
-                },
-                finished: {
-                    status: 'pending',
-                    errors: {}
-                }
-            }
-        },
-        initialResponseData = {
-            current_step: 'admin_upgrade',
-            substep: null,
-            current_node: null,
-            steps: {
-                upgrade_prechecks: {
-                    status: 'passed',
-                    errors: {}
-                },
-                admin_backup: {
-                    status: 'passed',
-                    errors: {}
-                },
-                admin_repo_checks: {
-                    status: 'passed',
-                    errors: {}
-                },
-                admin_upgrade: {
-                    status: 'pending',
-                    errors: {}
-                },
-                database: {
-                    status: 'pending',
-                    errors: {}
-                },
-                nodes_repo_checks: {
-                    status: 'pending',
-                    errors: {}
-                },
-                nodes_services: {
-                    status: 'pending',
-                    errors: {}
-                },
-                nodes_db_dump: {
-                    status: 'pending',
-                    errors: {}
-                },
-                nodes_upgrade: {
-                    status: 'pending',
-                    errors: {}
-                },
-                finished: {
-                    status: 'pending',
-                    errors: {}
-                }
-            }
-        },
-        activeStatusResponse = { data: null };
+    var controller;
 
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp.upgrade');
         bard.inject(
             '$controller', '$q', '$httpBackend', '$rootScope',
-            'crowbarFactory', 'upgradeFactory', 'upgradeStatusFactory'
+            'crowbarFactory', 'upgradeStatusFactory', 'upgradeStepsFactory'
         );
 
-        // reset the active response to the default values
-        activeStatusResponse.data = initialResponseData;
-        bard.mockService(upgradeFactory, {
-            getStatus: $q.when(activeStatusResponse)
-        });
+        spyOn(upgradeStatusFactory, 'syncStatusFlags');
+        spyOn(upgradeStepsFactory, 'setCurrentStepCompleted');
 
         //Create the controller
         controller = $controller('UpgradeUpgradeAdministrationServerController');
@@ -175,22 +30,11 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
     });
 
     describe('on controller creation', function () {
-        it('should set running to true if the upgrade is running', function () {
-            activeStatusResponse.data = incompleteUpgradeResponseData;
-            // recreate the controller so it can pick our modified initialResponse
-            controller = $controller('UpgradeUpgradeAdministrationServerController');
-            $rootScope.$digest();
-            // initial model should have changed based on the initialization response
-            assert.isFalse(controller.adminUpgrade.completed);
-            assert.isTrue(controller.adminUpgrade.running);
-        });
-
-        it('should set completed to true if upgrade is completed', function () {
-            activeStatusResponse.data = completedUpgradeResponseData;
-            controller = $controller('UpgradeUpgradeAdministrationServerController');
-            $rootScope.$digest();
-            assert.isTrue(controller.adminUpgrade.completed);
-            assert.isFalse(controller.adminUpgrade.running);
+        it('should call syncStatusFlags() to update the state', function () {
+            expect(upgradeStatusFactory.syncStatusFlags).toHaveBeenCalledWith(
+                'admin_upgrade', controller.adminUpgrade,
+                jasmine.any(Function), upgradeStepsFactory.setCurrentStepCompleted
+            );
         });
     });
 
@@ -249,11 +93,11 @@ describe('Upgrade Flow - Upgrade Administration Server Controller - errors', fun
         bard.appModule('crowbarApp.upgrade');
         bard.inject(
             '$controller', '$q', '$httpBackend', '$rootScope',
-            'crowbarFactory', 'upgradeFactory', 'upgradeStatusFactory'
+            'crowbarFactory', 'upgradeStatusFactory'
         );
 
-        bard.mockService(upgradeFactory, {
-            getStatus: $q.reject(errorResponse)
+        bard.mockService(upgradeStatusFactory, {
+            syncStatusFlags: undefined,
         });
 
         //Create the controller
