@@ -50,7 +50,7 @@ describe('Upgrade Status Factory', function () {
             }
         },
         completedUpgradeResponse = {
-            data: completedUpgradeResponseData,
+            data: completedUpgradeResponseData
         },
         incompleteUpgradeResponseData = {
             current_step: 'admin_upgrade',
@@ -100,11 +100,14 @@ describe('Upgrade Status Factory', function () {
             }
         },
         incompleteUpgradeResponse = {
-            data: incompleteUpgradeResponseData,
+            data: incompleteUpgradeResponseData
         },
         mockedSuccessCallback,
         mockedErrorCallback,
-        mockedTimeout;
+        mockedTimeout,
+        errorResponse = {
+            error: 'some error'
+        };
 
     beforeEach(function () {
         //Setup the module and dependencies to be used.
@@ -187,6 +190,61 @@ describe('Upgrade Status Factory', function () {
                     });
                 });
             });
+
+            describe('when got upgrade status from api unsuccessfully', function () {
+                describe('when timeout == 0', function () {
+                    beforeEach(function () {
+                        bard.mockService(upgradeFactory, {
+                            getStatus: $q.reject(errorResponse)
+                        });
+
+                        upgradeStatusFactory.waitForStepToEnd(
+                            testedStep, mockedSuccessCallback, mockedErrorCallback, pollingInterval
+                        );
+
+                        $rootScope.$digest();
+                    });
+
+                    it('should not call success callback', function () {
+                        expect(mockedSuccessCallback).not.toHaveBeenCalled();
+                    });
+
+                    it('should call error callback', function () {
+                        expect(mockedErrorCallback).toHaveBeenCalledWith(errorResponse);
+                    });
+
+                    it('should not schedule another check', function () {
+                        expect(mockedTimeout).not.toHaveBeenCalled();
+                    });
+                });
+
+                describe('when timeout > 0', function () {
+                    beforeEach(function () {
+                        bard.mockService(upgradeFactory, {
+                            getStatus: $q.reject()
+                        });
+
+                        upgradeStatusFactory.waitForStepToEnd(
+                            testedStep, mockedSuccessCallback, mockedErrorCallback, 1, 10
+                        );
+
+                        $rootScope.$digest();
+                    });
+
+                    it('should not call success callback', function () {
+                        expect(mockedSuccessCallback).not.toHaveBeenCalled();
+                    });
+
+                    it('should not call error callback', function () {
+                        expect(mockedErrorCallback).not.toHaveBeenCalled();
+                    });
+
+                    it('should schedule another check', function () {
+                        expect(mockedTimeout).toHaveBeenCalledTimes(1);
+                    });
+                });
+
+            })
         });
 
     });
