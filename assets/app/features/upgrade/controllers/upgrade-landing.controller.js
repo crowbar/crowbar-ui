@@ -20,6 +20,7 @@
         'ADDONS_PRECHECK_MAP',
         'PREPARE_TIMEOUT_INTERVAL',
         'UPGRADE_STEPS',
+        'UPGRADE_MODES'
     ];
     // @ngInject
     function UpgradeLandingController(
@@ -30,7 +31,8 @@
         crowbarFactory,
         ADDONS_PRECHECK_MAP,
         PREPARE_TIMEOUT_INTERVAL,
-        UPGRADE_STEPS
+        UPGRADE_STEPS,
+        UPGRADE_MODES
     ) {
         var vm = this,
             optionalPrechecks = {
@@ -183,14 +185,19 @@
         }
 
         function updateMode() {
+            /**
+            * Sets the type of mode depending on the api response
+            */
             vm.mode.active = true;
-            if (vm.mode.type == 'non-disruptive') {
+            if (vm.mode.type === UPGRADE_MODES.nondisruptive) {
                 vm.mode.valid = true;
-                return;
             }
         }
 
         function continueNormal() {
+            /**
+             * Sets the mode to valid when the continue button is clicked
+             */
             vm.mode.valid = true;
         }
     }
