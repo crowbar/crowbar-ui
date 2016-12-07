@@ -50,7 +50,7 @@ describe('Upgrade Status Factory', function () {
             }
         },
         completedUpgradeResponse = {
-            data: completedUpgradeResponseData,
+            data: completedUpgradeResponseData
         },
         incompleteUpgradeResponseData = {
             current_step: 'admin_upgrade',
@@ -100,11 +100,14 @@ describe('Upgrade Status Factory', function () {
             }
         },
         incompleteUpgradeResponse = {
-            data: incompleteUpgradeResponseData,
+            data: incompleteUpgradeResponseData
         },
         mockedSuccessCallback,
         mockedErrorCallback,
-        mockedTimeout;
+        mockedTimeout,
+        errorResponse = {
+            error: 'some error'
+        };
 
     beforeEach(function () {
         //Setup the module and dependencies to be used.
@@ -192,7 +195,7 @@ describe('Upgrade Status Factory', function () {
                 describe('when timeout == 0', function () {
                     beforeEach(function () {
                         bard.mockService(upgradeFactory, {
-                            getStatus: $q.reject()
+                            getStatus: $q.reject(errorResponse)
                         });
 
                         upgradeStatusFactory.waitForStepToEnd(
@@ -207,7 +210,7 @@ describe('Upgrade Status Factory', function () {
                     });
 
                     it('should call error callback', function () {
-                        expect(mockedErrorCallback).toHaveBeenCalled();
+                        expect(mockedErrorCallback).toHaveBeenCalledWith(errorResponse);
                     });
 
                     it('should not schedule another check', function () {
@@ -237,7 +240,7 @@ describe('Upgrade Status Factory', function () {
                     });
 
                     it('should schedule another check', function () {
-                        expect(mockedTimeout).toHaveBeenCalled();
+                        expect(mockedTimeout).toHaveBeenCalledTimes(1);
                     });
                 });
 
