@@ -1,0 +1,17 @@
+.prechecks
+    .step-title.clearfix
+        crowbar-circle.active.pull-left 1
+        h2.h4(translate='') upgrade.steps.landing.prechecks.title
+
+    p(translate='') upgrade.steps.landing.prechecks.description
+    crowbar-checklist(checklist='upgradeLandingVm.prechecks.checks', completed='upgradeLandingVm.prechecks.completed')
+
+    button.btn.btn-primary(
+        ng-disabled="upgradeLandingVm.prechecks.running",
+        ng-class="{'spinner-visible': upgradeLandingVm.prechecks.spinnerVisible,\
+                    active: upgradeLandingVm.prechecks.running}",
+        ng-click="upgradeLandingVm.prechecks.runPrechecks()"
+    )
+        suse-lazy-spinner(delay="2000", active="upgradeLandingVm.prechecks.running",
+        visible="upgradeLandingVm.prechecks.spinnerVisible")
+        span(translate='') upgrade.steps.landing.prechecks.form.check-again
