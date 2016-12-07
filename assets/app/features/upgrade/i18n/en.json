@@ -33,7 +33,7 @@
                     "title": "Upgrade Mode",
                     "description": "After all checks are successful the upgrade mode is will be shown here...",
                     "normal": {
-                        "title": "Your cloud is now pepared to begin the upgrade in normal mode.",
+                        "title": "Your cloud is now prepared to begin the upgrade in normal mode.",
                         "button": "Proceed in Normal Mode",
                         "description1": "In normal mode, each node will be rebooted during the upgrade process, including the workloads running in them.",
                         "description2": "In order to proceed in non-disruptive mode your cloud needs to have the pacemaker barclamp correctly configured and applied amd at least one free node as large or larger than any other node in your clouds compute plane.",
