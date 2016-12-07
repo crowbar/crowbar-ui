@@ -1,5 +1,5 @@
 /* global bard $controller should $httpBackend upgradeStatusFactory
-   crowbarFactory assert $q $rootScope */
+   crowbarFactory assert $q $rootScope upgradeStepsFactory */
 describe('Upgrade Flow - Upgrade Administration Server Controller', function () {
     var controller;
 
@@ -8,10 +8,11 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
         bard.appModule('crowbarApp.upgrade');
         bard.inject(
             '$controller', '$q', '$httpBackend', '$rootScope',
-            'crowbarFactory', 'upgradeStatusFactory'
+            'crowbarFactory', 'upgradeStatusFactory', 'upgradeStepsFactory'
         );
 
         spyOn(upgradeStatusFactory, 'syncStatusFlags');
+        spyOn(upgradeStepsFactory, 'setCurrentStepCompleted');
 
         //Create the controller
         controller = $controller('UpgradeUpgradeAdministrationServerController');
@@ -31,7 +32,8 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
     describe('on controller creation', function () {
         it('should call syncStatusFlags() to update the state', function () {
             expect(upgradeStatusFactory.syncStatusFlags).toHaveBeenCalledWith(
-                'admin_upgrade', controller.adminUpgrade, jasmine.any(Function), jasmine.any(Function)
+                'admin_upgrade', controller.adminUpgrade,
+                jasmine.any(Function), upgradeStepsFactory.setCurrentStepCompleted
             );
         });
     });

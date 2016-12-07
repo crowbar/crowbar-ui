@@ -3,7 +3,7 @@ describe('Upgrade Status Factory', function () {
     var pollingInterval = 1234,
         testedStep = 'admin_upgrade',
         completedUpgradeResponseData = {
-            current_step: 'admin_upgrade',
+            current_step: 'database',
             substep: null,
             current_node: null,
             steps: {
@@ -165,7 +165,7 @@ describe('Upgrade Status Factory', function () {
                 });
 
                 it('should not call running callback', function () {
-                    expect(mockedRunningCallback).not.toHaveBeenCalledTimes(1);
+                    expect(mockedRunningCallback).not.toHaveBeenCalled();
                 });
 
                 it('should set completed flag to true', function () {
@@ -197,7 +197,7 @@ describe('Upgrade Status Factory', function () {
                 });
 
                 it('should call running callback', function () {
-                    expect(mockedRunningCallback).toHaveBeenCalled();
+                    expect(mockedRunningCallback).toHaveBeenCalledTimes(1);
                 });
 
                 it('should set completed flag to false', function () {

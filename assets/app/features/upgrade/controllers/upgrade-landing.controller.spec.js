@@ -4,7 +4,7 @@
 describe('Upgrade Landing Controller', function() {
     var controller,
         completedUpgradeResponseData = {
-            current_step: 'upgrade_prepare',
+            current_step: 'admin_backup',
             substep: null,
             current_node: null,
             steps: {
