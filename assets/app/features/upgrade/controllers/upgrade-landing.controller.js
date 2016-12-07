@@ -20,6 +20,7 @@
         'ADDONS_PRECHECK_MAP',
         'PREPARE_TIMEOUT_INTERVAL',
         'UPGRADE_STEPS',
+        'UPGRADE_MODES'
     ];
     // @ngInject
     function UpgradeLandingController(
@@ -30,7 +31,8 @@
         crowbarFactory,
         ADDONS_PRECHECK_MAP,
         PREPARE_TIMEOUT_INTERVAL,
-        UPGRADE_STEPS
+        UPGRADE_STEPS,
+        UPGRADE_MODES
     ) {
         var vm = this,
             optionalPrechecks = {
@@ -71,7 +73,7 @@
 
         vm.mode = {
             active: false,
-            type: null,
+            type: false,
             valid: false
         };
 
@@ -134,7 +136,7 @@
         function runPrechecks() {
             // Clean other checks in case we re-run the prechecks
             vm.mode.valid = false;
-            vm.mode.type = null;
+            vm.mode.type = false;
             vm.mode.active = false;
             vm.prechecks.running = true;
 
@@ -143,8 +145,6 @@
                 .then(
                     //Success handler. Al precheck passed successfully:
                     function(response) {
-                        // Store the upgrade best method
-                        vm.mode.type = response.data.best_method;
 
                         _.forEach(response.data.checks, function(value, key) {
                             // skip unknown checks returned from backend
@@ -160,10 +160,12 @@
                         });
 
                         vm.prechecks.valid = checks.every(function (check) {
-                            return check == true
+                            return check === true
                         });
                         // If all prechecks are ok, move to the next step
                         if (vm.prechecks.valid) {
+                            // Store the upgrade best method
+                            vm.mode.type = response.data.best_method;
                             updateMode()
                         }
                     },
@@ -183,14 +185,19 @@
         }
 
         function updateMode() {
+            /**
+            * Sets the type of mode depending on the api response
+            */
             vm.mode.active = true;
-            if (vm.mode.type == 'non-disruptive') {
+            if (vm.mode.type === UPGRADE_MODES.nondisruptive) {
                 vm.mode.valid = true;
-                return;
             }
         }
 
         function continueNormal() {
+            /**
+             * Sets the mode to valid when the continue button is clicked
+             */
             vm.mode.valid = true;
         }
     }

@@ -14,7 +14,7 @@
     UpgradeUpgradeAdministrationServerController.$inject = [
         '$timeout', 'crowbarFactory', 'upgradeStatusFactory',
         'ADMIN_UPGRADE_TIMEOUT_INTERVAL', 'ADMIN_UPGRADE_ALLOWED_DOWNTIME',
-        'UPGRADE_STEPS', 'STEP_STATES', 'upgradeFactory', 'upgradeStepsFactory'
+        'UPGRADE_STEPS', 'UPGRADE_STEP_STATES', 'upgradeFactory', 'upgradeStepsFactory'
     ];
     // @ngInject
     function UpgradeUpgradeAdministrationServerController(
@@ -24,7 +24,7 @@
       ADMIN_UPGRADE_TIMEOUT_INTERVAL,
       ADMIN_UPGRADE_ALLOWED_DOWNTIME,
       UPGRADE_STEPS,
-      STEP_STATES,
+      UPGRADE_STEP_STATES,
       upgradeFactory,
       upgradeStepsFactory
     ) {
@@ -46,8 +46,10 @@
             upgradeFactory.getStatus()
                 .then(
                     function (response) {
-                        vm.adminUpgrade.running = response.data.steps.admin_upgrade.status == STEP_STATES.running;
-                        vm.adminUpgrade.completed = response.data.steps.admin_upgrade.status == STEP_STATES.passed;
+                        vm.adminUpgrade.running =
+                            response.data.steps.admin_upgrade.status == UPGRADE_STEP_STATES.running;
+                        vm.adminUpgrade.completed =
+                            response.data.steps.admin_upgrade.status == UPGRADE_STEP_STATES.passed;
                         if (vm.adminUpgrade.completed) {
                             upgradeStepsFactory.setCurrentStepCompleted();
                         } else if (vm.adminUpgrade.running) {

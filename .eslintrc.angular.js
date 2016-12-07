@@ -5,6 +5,7 @@ module.exports = {
     ],
     'globals': {
         '_': true,
+        'localStorage': true,
         'bard': true
     },
     'env': {
