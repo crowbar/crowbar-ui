@@ -159,14 +159,14 @@
                         });
 
                         vm.prechecks.valid = checksValidity.every(function (check) {
-                            return check === true
+                            return check === true;
                         });
 
                         // If all prechecks are ok, move to the next step
                         if (vm.prechecks.valid) {
                             // Store the upgrade best method
                             vm.mode.type = response.data.best_method;
-                            updateMode()
+                            updateMode();
                         }
                     },
                     //Failure handler:
