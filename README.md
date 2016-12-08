@@ -33,7 +33,9 @@
 
 `NODE_ENV=production npm run postinstall`
 
-8 - Run the server at http://localhost:3000 with (you will need to restart it every time you make changes in the backend, but not in the layout or front-end in general):
+8 - Update the `tested_step` variable in `routes/api/upgrade.js` depending on the scenario you want to test. This is used to properly fill the mocked status API response.
+
+9 - Run the server at http://localhost:3000 with (you will need to restart it every time you make changes in the backend, but not in the layout or front-end in general):
 
 `NODE_ENV=production npm start`
 
