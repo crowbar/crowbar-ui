@@ -4,7 +4,7 @@ var express = require('express'),
 var errors = ['001', '002', '003'];
 
 var status_counter = -1,
-    tested_step = 'admin_upgrade',
+    tested_step = 'landing',
     simulate_temporary_downtime = true,
     status = {
         current_step: 'upgrade_prechecks',

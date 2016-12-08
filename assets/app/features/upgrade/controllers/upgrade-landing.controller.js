@@ -146,22 +146,22 @@
                     //Success handler. Al precheck passed successfully:
                     function(response) {
 
+                        var checksValidity = [];
+
                         _.forEach(response.data.checks, function(value, key) {
                             // skip unknown checks returned from backend
                             if (key in vm.prechecks.checks) {
                                 vm.prechecks.checks[key].status = value.passed;
+                                if (value.required == true) {
+                                    checksValidity.push(value.passed)
+                                }
                             }
                         });
 
-                        // Update prechecks validity
-                        var checks = [];
-                        _.forEach(vm.prechecks.checks, function (check) {
-                            checks.push(check.status)
-                        });
-
-                        vm.prechecks.valid = checks.every(function (check) {
+                        vm.prechecks.valid = checksValidity.every(function (check) {
                             return check === true
                         });
+
                         // If all prechecks are ok, move to the next step
                         if (vm.prechecks.valid) {
                             // Store the upgrade best method

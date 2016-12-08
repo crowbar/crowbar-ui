@@ -6,23 +6,23 @@ describe('Upgrade Landing Controller', function() {
         passingChecks = {
             maintenance_updates_installed: { required: true, passed: true },
             network_checks: { required: true, passed: true },
-            clusters_healthy: { required: true, passed: true },
-            ceph_healthy: { required: true, passed: true },
+            clusters_healthy: { required: false, passed: true },
+            ceph_healthy: { required: false, passed: true },
             compute_resources_available: { required: false, passed: true }
         },
         failingChecks = {
             maintenance_updates_installed: { required: true, passed: false },
             network_checks: { required: true, passed: false },
-            clusters_healthy: { required: true, passed: false },
-            ceph_healthy: { required: true, passed: false },
+            clusters_healthy: { required: false, passed: false },
+            ceph_healthy: { required: false, passed: false },
             compute_resources_available: { required: false, passed: false }
         },
         partiallyFailingChecks = {
             maintenance_updates_installed: { required: true, passed: true },
             network_checks: { required: true, passed: true },
-            clusters_healthy: { required: true, passed: false },
-            ceph_healthy: { required: true, passed: true },
-            compute_resources_available: { required: false, passed: false }
+            clusters_healthy: { required: false, passed: false },
+            ceph_healthy: { required: false, passed: false },
+            compute_resources_available: { required: true, passed: true }
         },
         failingErrors = {
             error_message: 'Authentication failure'
@@ -83,6 +83,10 @@ describe('Upgrade Landing Controller', function() {
         it('should have a beginUpgrade function defined', function() {
             should.exist(controller.beginUpgrade);
         });
+    });
+
+    it('should have a continueNormal function defined', function () {
+        should.exist(controller.continueNormal);
     });
 
     describe('Prechecks object', function() {
@@ -171,6 +175,19 @@ describe('Upgrade Landing Controller', function() {
                         assert.isTrue(value.status);
                     });
                 });
+
+                it('should set the mode to non-disruptive', function () {
+                    expect(controller.mode.type).toEqual('non-disruptive');
+                });
+
+                it('should set the mode.valid to true', function () {
+                    assert.isTrue(controller.mode.valid);
+                });
+
+                it('should set the mode.active to true', function () {
+                    assert.isTrue(controller.mode.active);
+                });
+
             });
 
             describe('when checks fails', function () {
@@ -193,7 +210,7 @@ describe('Upgrade Landing Controller', function() {
                 it('should update required checks values to false', function () {
                     assert.isObject(controller.prechecks.checks);
                     _.forEach(controller.prechecks.checks, function(value) {
-                        assert.isFalse(value.status && value.required);
+                        assert.isFalse(value.status);
                     });
                 });
             });
@@ -211,7 +228,7 @@ describe('Upgrade Landing Controller', function() {
                     assert.isTrue(controller.prechecks.completed);
                 });
 
-                xit('should update valid attribute of checks model to true (disruptive only)', function () {
+                it('should update valid attribute of checks model to true (disruptive only)', function () {
                     assert.isTrue(controller.prechecks.valid);
                 });
 
@@ -221,6 +238,33 @@ describe('Upgrade Landing Controller', function() {
                         expect(controller.prechecks.checks[key].status).toEqual(value.passed);
                     });
                 });
+
+                it('should set the mode to disruptive', function () {
+                    expect(controller.mode.type).toEqual('disruptive');
+                });
+
+                it('should set the mode.valid to false', function () {
+                    assert.isFalse(controller.mode.valid);
+                });
+
+                it('should set the mode.active to true', function () {
+                    assert.isTrue(controller.mode.active);
+                });
+
+                describe('when executing continueNormal to continue with the upgrade', function () {
+                    beforeEach(function () {
+                        controller.continueNormal();
+                        $rootScope.$digest();
+                    });
+
+                    it('mode should be disruptive', function () {
+                        expect(controller.mode.type).toEqual('disruptive');
+                    });
+
+                    it('should set the mode.valid to true', function () {
+                        assert.isTrue(controller.mode.valid);
+                    });
+                })
             });
 
             describe('when service call fails', function () {
