@@ -7,7 +7,7 @@
     crowbar-checklist(checklist='upgradeLandingVm.prechecks.checks', completed='upgradeLandingVm.prechecks.completed')
 
     button.btn.btn-primary(
-        ng-disabled="upgradeLandingVm.prechecks.running",
+        ng-disabled="upgradeLandingVm.prechecks.running || upgradeLandingVm.prepare.running",
         ng-class="{'spinner-visible': upgradeLandingVm.prechecks.spinnerVisible,\
                     active: upgradeLandingVm.prechecks.running}",
         ng-click="upgradeLandingVm.prechecks.runPrechecks()"

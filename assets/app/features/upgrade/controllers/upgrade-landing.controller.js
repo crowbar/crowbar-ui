@@ -95,6 +95,10 @@
                     });
                 });
             });
+
+            // skz: There is no syncing of 'prechecks' part as there's no easy way to restore complete checks state
+            // without running the checks again so it's better to leave this to the user.
+            upgradeStatusFactory.syncStatusFlags(UPGRADE_STEPS.upgrade_prepare, vm.prepare, waitForPrepareToEnd);
         }
 
         /**
@@ -109,24 +113,31 @@
             upgradeFactory.prepareNodes().then(
                 function (/* response */) {
                     vm.prepare.running = true;
-                    upgradeStatusFactory.waitForStepToEnd(
-                        UPGRADE_STEPS.upgrade_prepare,
-                        function (/*response*/) {
-                            vm.prepare.running = false;
-                            $state.go('upgrade.backup');
-                        },
-                        function (errorResponse) {
-                            vm.prepare.running = false;
-                            // Expose the error list to prechecks object
-                            vm.prechecks.errors = errorResponse.data.errors;
-                        },
-                        PREPARE_TIMEOUT_INTERVAL
-                    );
+                    waitForPrepareToEnd();
                 },
                 function (errorResponse) {
                     // Expose the error list to prechecks object
                     vm.prechecks.errors = errorResponse.data.errors;
                 }
+            );
+        }
+
+        /**
+         * Start polling for status and wait until prepare step is finished
+         */
+        function waitForPrepareToEnd() {
+            upgradeStatusFactory.waitForStepToEnd(
+                UPGRADE_STEPS.upgrade_prepare,
+                function (/*response*/) {
+                    vm.prepare.running = false;
+                    $state.go('upgrade.backup');
+                },
+                function (errorResponse) {
+                    vm.prepare.running = false;
+                    // Expose the error list to prechecks object
+                    vm.prechecks.errors = errorResponse.data.errors;
+                },
+                PREPARE_TIMEOUT_INTERVAL
             );
         }
 
