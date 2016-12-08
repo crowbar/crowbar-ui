@@ -4,17 +4,12 @@
     border: 0px;
     box-shadow: none;
 
-    h1 {
-        color: @panel-heading-fg;
-        font-size: 19px;
-        margin: 0px 0px 25px;
-    }
+    .step-title {
+        margin-bottom: 15px;
 
-    .h4 {
-        display: inline-block;
-        margin-bottom: 27px;
-        padding-bottom: 15px;
-        padding-left: 15px;
+        crowbar-circle {
+            margin-right: 15px
+        }
     }
 
     p {
@@ -31,31 +26,21 @@
         }
     }
 
-    .prechecks {
-        color: #0d2c40;
-    }
-
+    .prechecks,
+    .mode,
     .upgrade {
         color: #5f5f5f;
-        padding-top: 25px;
+        margin-top: 25px;
 
         &.active {
             color: #0d2c40;
         }
     }
 
-    .mode {
-        color: #5f5f5f;
-
-        &.active {
-            color: #0d2c40;
-        }
-
-        button {
-            margin-bottom: 20px;
-            /* This removes the generic button margin to align it properly*/
-            margin-top: 0px;
-        }
+    .mode button {
+        margin-bottom: 20px;
+        /* This removes the generic button margin to align it properly*/
+        margin-top: 0px;
     }
 
     .btn {
