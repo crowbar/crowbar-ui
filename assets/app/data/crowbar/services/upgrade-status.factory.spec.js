@@ -1,4 +1,4 @@
-/*global bard assert $q $rootScope should expect module upgradeFactory upgradeStatusFactory */
+/*global bard assert $q $rootScope should expect $timeout upgradeFactory upgradeStatusFactory */
 describe('Upgrade Status Factory', function () {
     var pollingInterval = 1234,
         testedStep = 'admin_upgrade',
@@ -107,7 +107,6 @@ describe('Upgrade Status Factory', function () {
         mockedErrorCallback,
         mockedRunningCallback,
         mockedCompletedCallback,
-        mockedTimeout,
         errorResponse = {
             error: 'some error'
         };
@@ -121,16 +120,8 @@ describe('Upgrade Status Factory', function () {
         mockedCompletedCallback = jasmine.createSpy('onCompleted');
         mockedRunningCallback = jasmine.createSpy('onRunning');
 
-        // mock $timeout service
-        module(function($provide) {
-            $provide.factory('$timeout', function () {
-                mockedTimeout = jasmine.createSpy('$timeout');
-                return mockedTimeout;
-            });
-        });
-
         // inject the rest of dependencies using BardJS
-        bard.inject('upgradeStatusFactory', 'upgradeFactory', '$q', '$rootScope');
+        bard.inject('upgradeStatusFactory', 'upgradeFactory', '$q', '$rootScope', '$timeout');
     });
 
     describe('when executed', function () {
@@ -227,6 +218,8 @@ describe('Upgrade Status Factory', function () {
                             testedStep, mockedSuccessCallback, mockedErrorCallback, pollingInterval
                         );
 
+                        spyOn(upgradeStatusFactory, 'waitForStepToEnd');
+
                         $rootScope.$digest();
                     });
 
@@ -237,7 +230,7 @@ describe('Upgrade Status Factory', function () {
                         expect(mockedErrorCallback).not.toHaveBeenCalled();
                     });
                     it('should not schedule another check', function () {
-                        expect(mockedTimeout).not.toHaveBeenCalled();
+                        expect(upgradeStatusFactory.waitForStepToEnd).not.toHaveBeenCalled();
                     });
                 });
 
@@ -251,6 +244,8 @@ describe('Upgrade Status Factory', function () {
                             testedStep, mockedSuccessCallback, mockedErrorCallback, pollingInterval
                         );
 
+                        spyOn(upgradeStatusFactory, 'waitForStepToEnd');
+
                         $rootScope.$digest();
                     });
                     it('should not call success callback', function () {
@@ -260,8 +255,10 @@ describe('Upgrade Status Factory', function () {
                         expect(mockedErrorCallback).not.toHaveBeenCalled();
                     });
                     it('should schedule another check', function () {
-                        expect(mockedTimeout).toHaveBeenCalledWith(
-                            jasmine.any(Function), pollingInterval
+                        $timeout.flush();
+                        expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledTimes(1);
+                        expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledWith(
+                            testedStep, mockedSuccessCallback, mockedErrorCallback, pollingInterval, 0
                         );
                     });
                 });
@@ -278,6 +275,8 @@ describe('Upgrade Status Factory', function () {
                             testedStep, mockedSuccessCallback, mockedErrorCallback, pollingInterval
                         );
 
+                        spyOn(upgradeStatusFactory, 'waitForStepToEnd');
+
                         $rootScope.$digest();
                     });
 
@@ -290,7 +289,7 @@ describe('Upgrade Status Factory', function () {
                     });
 
                     it('should not schedule another check', function () {
-                        expect(mockedTimeout).not.toHaveBeenCalled();
+                        expect(upgradeStatusFactory.waitForStepToEnd).not.toHaveBeenCalled();
                     });
                 });
 
@@ -304,6 +303,8 @@ describe('Upgrade Status Factory', function () {
                             testedStep, mockedSuccessCallback, mockedErrorCallback, 1, 10
                         );
 
+                        spyOn(upgradeStatusFactory, 'waitForStepToEnd');
+
                         $rootScope.$digest();
                     });
 
@@ -316,7 +317,8 @@ describe('Upgrade Status Factory', function () {
                     });
 
                     it('should schedule another check', function () {
-                        expect(mockedTimeout).toHaveBeenCalledTimes(1);
+                        $timeout.flush();
+                        expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledTimes(1);
                     });
                 });
 
