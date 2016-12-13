@@ -60,12 +60,10 @@
                             onSuccess(response);
                         } else {
                             // schedule another check
-                            $timeout(function () {
-                                factory.waitForStepToEnd(
-                                    step, onSuccess, onError,
-                                    pollingInterval, allowedDowntimeLeft
-                                );
-                            }, pollingInterval);
+                            $timeout(
+                                factory.waitForStepToEnd, pollingInterval, true,
+                                step, onSuccess, onError, pollingInterval, allowedDowntimeLeft
+                            );
                         }
                     },
                     function (errorResponse) {
@@ -74,12 +72,10 @@
                             onError(errorResponse);
                         } else {
                             // schedule another check but with less downtime allowance
-                            $timeout(function () {
-                                factory.waitForStepToEnd(
-                                    step, onSuccess, onError,
-                                    pollingInterval, allowedDowntimeLeft - pollingInterval
-                                );
-                            }, pollingInterval);
+                            $timeout(
+                                factory.waitForStepToEnd, pollingInterval, true,
+                                step, onSuccess, onError, pollingInterval, allowedDowntimeLeft - pollingInterval
+                            );
                         }
                     }
                 );
