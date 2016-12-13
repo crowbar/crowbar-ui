@@ -1,5 +1,6 @@
 /* jshint -W117, -W030 */
-/*global bard $controller $httpBackend should assert $q $rootScope upgradeFactory Blob FileSaver crowbarUtilsFactory */
+/*global bard $controller $httpBackend should assert $q $rootScope upgradeFactory Blob FileSaver
+  crowbarUtilsFactory upgradeStatusFactory */
 describe('Upgrade Flow - Backup Controller', function() {
     var controller,
         mockedErrorList = [ 1, 2, 3],
@@ -33,9 +34,12 @@ describe('Upgrade Flow - Backup Controller', function() {
             '$q',
             '$httpBackend',
             'upgradeFactory',
+            'upgradeStatusFactory',
             'crowbarUtilsFactory',
             'FileSaver'
         );
+
+        spyOn(upgradeStatusFactory, 'syncStatusFlags');
 
         //Create the controller
         controller = $controller('UpgradeBackupController');
@@ -51,6 +55,10 @@ describe('Upgrade Flow - Backup Controller', function() {
 
     it('should exist', function() {
         should.exist(controller);
+    });
+
+    it('should sync status flags when activated', function () {
+        expect(upgradeStatusFactory.syncStatusFlags).toHaveBeenCalledTimes(1);
     });
 
     describe('Backup object', function() {
