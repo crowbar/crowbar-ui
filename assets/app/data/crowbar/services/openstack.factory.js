@@ -8,27 +8,10 @@
     /* @ngInject */
     function openstackFactory($q, $http, COMMON_API_V2_HEADERS) {
         var factory = {
-            stopServices: stopServices,
             createBackup: createBackup
         };
 
         return factory;
-
-        /**
-         * Stop all openstack services
-         *
-         * @return {Promise}
-         */
-        function stopServices() {
-
-            var requestOptions = {
-                method: 'POST',
-                url: '/api/openstack/services',
-                headers: COMMON_API_V2_HEADERS
-            };
-
-            return $http(requestOptions);
-        }
 
         /**
          * Create Openstack Database Backup

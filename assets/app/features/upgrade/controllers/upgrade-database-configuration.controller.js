@@ -11,9 +11,14 @@
     angular.module('crowbarApp.upgrade')
         .controller('UpgradeDatabaseConfigurationController', UpgradeDatabaseConfigurationController);
 
-    UpgradeDatabaseConfigurationController.$inject = ['upgradeStepsFactory', 'upgradeFactory'];
+    UpgradeDatabaseConfigurationController.$inject = [
+        'upgradeStepsFactory', 'upgradeStatusFactory', 'upgradeFactory',
+        'UPGRADE_STEPS', ];
     // @ngInject
-    function UpgradeDatabaseConfigurationController(upgradeStepsFactory, upgradeFactory) {
+    function UpgradeDatabaseConfigurationController(
+        upgradeStepsFactory, upgradeStatusFactory, upgradeFactory,
+        UPGRADE_STEPS
+    ) {
         var vm = this;
         vm.databaseForm = {
             username: '',
@@ -41,7 +46,13 @@
         vm.createServer = createServer;
         vm.connectServer = connectServer;
 
+        activate();
+
         // functions
+        function activate() {
+            upgradeStatusFactory.syncStatusFlags(UPGRADE_STEPS.database, vm,
+                undefined, upgradeStepsFactory.setCurrentStepCompleted);
+        }
 
         function createServer() {
             vm.errors = [];

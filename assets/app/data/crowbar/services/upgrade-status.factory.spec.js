@@ -2,6 +2,7 @@
 describe('Upgrade Status Factory', function () {
     var pollingInterval = 1234,
         testedStep = 'admin_upgrade',
+        allowedDowntime = 4321,
         completedUpgradeResponseData = {
             current_step: 'database',
             substep: null,
@@ -248,7 +249,7 @@ describe('Upgrade Status Factory', function () {
                         });
 
                         upgradeStatusFactory.waitForStepToEnd(
-                            testedStep, mockedSuccessCallback, mockedErrorCallback, pollingInterval
+                            testedStep, mockedSuccessCallback, mockedErrorCallback, pollingInterval, allowedDowntime
                         );
 
                         $rootScope.$digest();
@@ -261,7 +262,8 @@ describe('Upgrade Status Factory', function () {
                     });
                     it('should schedule another check', function () {
                         expect(mockedTimeout).toHaveBeenCalledWith(
-                            jasmine.any(Function), pollingInterval
+                            upgradeStatusFactory.waitForStepToEnd, pollingInterval, true,
+                            testedStep, mockedSuccessCallback, mockedErrorCallback, pollingInterval, allowedDowntime
                         );
                     });
                 });
@@ -275,7 +277,7 @@ describe('Upgrade Status Factory', function () {
                         });
 
                         upgradeStatusFactory.waitForStepToEnd(
-                            testedStep, mockedSuccessCallback, mockedErrorCallback, pollingInterval
+                            testedStep, mockedSuccessCallback, mockedErrorCallback, pollingInterval, 0
                         );
 
                         $rootScope.$digest();

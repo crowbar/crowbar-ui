@@ -1,4 +1,5 @@
-/*global bard $controller should $httpBackend upgradeFactory $rootScope $q chai*/
+/*global bard $controller should $httpBackend upgradeFactory upgradeStatusFactory upgradeStepsFactory
+  UPGRADE_STEPS $rootScope $q chai*/
 describe('Upgrade Flow - Create Connect Database Controller', function () {
     // @ToDo Need to implement unit test, check below card
     // https://trello.com/c/w4ZiBPUh/30-3-16-create-connect-crowbar-db-ui-story-2-page-and-navigation
@@ -42,7 +43,14 @@ describe('Upgrade Flow - Create Connect Database Controller', function () {
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp.upgrade');
-        bard.inject('$controller', '$q', '$httpBackend', '$rootScope', 'upgradeFactory');
+        bard.inject(
+            '$controller', '$q', '$httpBackend', '$rootScope',
+            'upgradeFactory', 'upgradeStatusFactory', 'upgradeStepsFactory',
+            'UPGRADE_STEPS'
+        );
+
+        spyOn(upgradeStatusFactory, 'syncStatusFlags');
+        spyOn(upgradeStepsFactory, 'setCurrentStepCompleted');
 
         //Create the controller
         controller = $controller('UpgradeDatabaseConfigurationController');
@@ -58,6 +66,14 @@ describe('Upgrade Flow - Create Connect Database Controller', function () {
 
     it('should exist', function () {
         should.exist(controller);
+    });
+
+    it('should sync status flags when activated', function () {
+        expect(upgradeStatusFactory.syncStatusFlags).toHaveBeenCalledTimes(1);
+        expect(upgradeStatusFactory.syncStatusFlags).toHaveBeenCalledWith(
+            UPGRADE_STEPS.database, controller,
+            undefined, upgradeStepsFactory.setCurrentStepCompleted
+        );
     });
 
     it('should have an databaseForm model defined', function () {

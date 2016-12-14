@@ -17,6 +17,7 @@
             createNewDatabaseServer: createNewDatabaseServer,
             connectDatabaseServer: connectDatabaseServer,
             cancelUpgrade: cancelUpgrade,
+            stopServices: stopServices
         };
 
         return factory;
@@ -161,6 +162,21 @@
             var requestOptions = {
                 method: 'POST',
                 url: '/api/upgrade/cancel',
+                headers: COMMON_API_V2_HEADERS
+            };
+
+            return $http(requestOptions);
+        }
+
+         /** Stop all openstack services
+         *
+         * @return {Promise}
+         */
+        function stopServices() {
+
+            var requestOptions = {
+                method: 'POST',
+                url: '/api/upgrade/services',
                 headers: COMMON_API_V2_HEADERS
             };
 

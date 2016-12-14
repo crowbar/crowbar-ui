@@ -11,9 +11,14 @@
     angular.module('crowbarApp.upgrade')
         .controller('UpgradeOpenStackServicesController', UpgradeOpenStackServicesController);
 
-    UpgradeOpenStackServicesController.$inject = ['$translate', 'openstackFactory', 'upgradeStepsFactory'];
+    UpgradeOpenStackServicesController.$inject = [
+        '$translate',
+        'openstackFactory',
+        'upgradeFactory',
+        'upgradeStepsFactory'
+    ];
     // @ngInject
-    function UpgradeOpenStackServicesController($translate, openstackFactory, upgradeStepsFactory) {
+    function UpgradeOpenStackServicesController($translate, openstackFactory, upgradeFactory, upgradeStepsFactory) {
         var vm = this;
 
         vm.openStackServices = {
@@ -40,7 +45,7 @@
         function stopServices() {
             vm.openStackServices.running = true;
 
-            openstackFactory.stopServices()
+            upgradeFactory.stopServices()
                 .then(
                     //Success handler. Stop all OpenStackServices successfully:
                     stopServicesSuccess,
@@ -48,34 +53,27 @@
                     stopServicesError
                 );
 
-            function stopServicesSuccess (openStackServicesResponse) {
+            function stopServicesSuccess () {
                 vm.openStackServices.checks.services.status =
-                    vm.openStackServices.valid =
-                    openStackServicesResponse.data.services;
+                    vm.openStackServices.valid = true;
 
-                if (vm.openStackServices.checks.services.status) {
+                openstackFactory.createBackup()
+                    .then(
+                        //Success handler. Backup OpenStackServices successfully:
+                        createBackupSuccess,
+                        //Failure handler:
+                        createBackupError
+                    ).finally(function() {
+                        vm.openStackServices.completed = true;
+                        // Update openStackServices validity
+                        vm.openStackServices.running = false;
 
-                    openstackFactory.createBackup()
-                        .then(
-                            //Success handler. Backup OpenStackServices successfully:
-                            createBackupSuccess,
-                            //Failure handler:
-                            createBackupError
-                        ).finally(function() {
-                            vm.openStackServices.completed = true;
-                            // Update openStackServices validity
-                            vm.openStackServices.running = false;
-
-                            vm.openStackServices.valid = vm.openStackServices.checks.backup.status;
-                            // if the backup has finished set the step to complete
-                            if (vm.openStackServices.valid) {
-                                upgradeStepsFactory.setCurrentStepCompleted()
-                            }
-                        });
-                } else {
-                    vm.openStackServices.completed = true;
-                    vm.openStackServices.running = false;
-                }
+                        vm.openStackServices.valid = vm.openStackServices.checks.backup.status;
+                        // if the backup has finished set the step to complete
+                        if (vm.openStackServices.valid) {
+                            upgradeStepsFactory.setCurrentStepCompleted()
+                        }
+                    });
             }
 
             function stopServicesError (errorOpenStackServicesResponse) {
