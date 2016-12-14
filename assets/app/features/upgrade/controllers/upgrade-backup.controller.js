@@ -20,7 +20,6 @@ function() {
         'upgradeStepsFactory',
         'upgradeFactory',
         'FileSaver',
-        'Blob'
     ];
     // @ngInject
     function UpgradeBackupController(
