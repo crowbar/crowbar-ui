@@ -140,5 +140,8 @@
     },
     "footer": {
         "text": "SUSE OpenStack Cloud - provided by SUSE"
+    },
+    "header": {
+        "title": "SUSE OpenStack Cloud: Upgrade 6-7"
     }
 }

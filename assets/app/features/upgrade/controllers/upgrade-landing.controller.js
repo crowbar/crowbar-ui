@@ -154,23 +154,25 @@
             upgradeFactory
                 .getPreliminaryChecks()
                 .then(
-                    //Success handler. Al precheck passed successfully:
+                    //Success handler. All precheck passed successfully:
                     function(response) {
+                        // Store the upgrade best method
+                        vm.mode.type = response.data.best_method;
 
                         var checksValidity = [];
 
-                        _.forEach(response.data.checks, function(value, key) {
+                        _.forEach(response.data.checks, function(check, checkKey) {
                             // skip unknown checks returned from backend
-                            if (key in vm.prechecks.checks) {
-                                vm.prechecks.checks[key].status = value.passed;
-                                if (value.required == true) {
-                                    checksValidity.push(value.passed)
+                            if (checkKey in vm.prechecks.checks) {
+                                vm.prechecks.checks[checkKey].status = check.passed;
+                                if (check.required) {
+                                    checksValidity.push(check.passed)
                                 }
                             }
                         });
 
-                        vm.prechecks.valid = checksValidity.every(function (check) {
-                            return check === true;
+                        vm.prechecks.valid = checksValidity.every(function (checkPassed) {
+                            return checkPassed;
                         });
 
                         // If all prechecks are ok, move to the next step

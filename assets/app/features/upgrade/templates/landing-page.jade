@@ -2,12 +2,12 @@
     .row
         .col-md-6
             .row
-                .col-md-12
+                .col-md-12.step-1.enabled
                     include landing-page_step1.partial.jade
-                .col-md-12.hidden-xs.hidden-sm
+                .col-md-12.hidden-xs.hidden-sm.step-3(ng-class="{'enabled': upgradeLandingVm.mode.valid}")
                     include landing-page_step3.partial.jade
-        .col-md-6
+        .col-md-6.step-2(ng-class="{'enabled': upgradeLandingVm.prechecks.valid}")
             include landing-page_step2.partial.jade
-    .row.hidden-md.hidden-lg
+    .row.hidden-md.hidden-lg.step-3(ng-class="{'enabled': upgradeLandingVm.mode.valid}")
         .col-md-6
             include landing-page_step3.partial.jade
