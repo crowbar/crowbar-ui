@@ -2,7 +2,8 @@ var express = require('express'),
     router = express.Router();
 
 var errors = ['001', '002', '003'],
-    checksPass = false;
+    checksPass = false,
+    bestMethod = false;
 
 /* GET users listing. */
 router.get('/', function(req, res) {
@@ -14,14 +15,15 @@ router.get('/', function(req, res) {
             'checks': {
                 'maintenance_updates_installed': { required: true, passed: true },
                 'network_checks': { required: true, passed: checksPass },
-                'clusters_healthy': { required: true, passed: true },
-                'ceph_healthy': { required: true, passed: checksPass },
-                'compute_resources_available': { required: false, passed: true }
+                'clusters_healthy': { required: false, passed: false },
+                'ceph_healthy': { required: false, passed: checksPass },
+                'compute_resources_available': { required: true, passed: true }
             },
-            'best_method': checksPass ? 'non-disruptive' : 'none'
+            'best_method': bestMethod ? 'non-disruptive' : 'disruptive'
         });
     }
     checksPass = true;
+    bestMethod = !bestMethod;
 });
 
 module.exports = router;

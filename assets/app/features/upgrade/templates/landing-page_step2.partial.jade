@@ -1,0 +1,22 @@
+.step-title.clearfix
+    crowbar-circle.pull-left(active="upgradeLandingVm.mode.active") 2
+    h2.h4(translate='') upgrade.steps.landing.mode.title
+
+.initial(ng-if='upgradeLandingVm.mode.type === false')
+    p(translate='') upgrade.steps.landing.mode.description
+
+.normal(ng-if='upgradeLandingVm.mode.type === "disruptive"')
+    h3.h5(translate='') upgrade.steps.landing.mode.normal.title
+    button.btn.btn-primary(
+        ng-disabled="upgradeLandingVm.mode.type != 'disruptive' || upgradeLandingVm.mode.valid",
+        ng-click="upgradeLandingVm.continueNormal()"
+    )
+        span(translate='') upgrade.steps.landing.mode.normal.button
+    p(translate='') upgrade.steps.landing.mode.normal.description1
+    p(translate='') upgrade.steps.landing.mode.normal.description2
+    p(translate='') upgrade.steps.landing.mode.normal.description3
+
+.nondisruptive(ng-if='upgradeLandingVm.mode.type === "non-disruptive"')
+    h3.h5(translate='') upgrade.steps.landing.mode.nondisruptive.title
+    p(translate='') upgrade.steps.landing.mode.nondisruptive.description1
+    p(translate='') upgrade.steps.landing.mode.nondisruptive.description2
