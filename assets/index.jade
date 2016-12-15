@@ -12,6 +12,7 @@ html(ng-app='crowbarApp')
       .row
         .col-xs-12
           div(ui-view='')
+    suse-modal
     suse-footer
 
     script(src='js/bower_components.min.js')
@@ -43,6 +44,7 @@ html(ng-app='crowbarApp')
     script(src='app/widgets/suse-lazy-spinner/suse-lazy-spinner.directive.js')
     script(src='app/widgets/crowbar-checklist/crowbar-checklist.directive.js')
     script(src='app/widgets/crowbar-circle/crowbar-circle.directive.js')
+    script(src='app/widgets/suse-modal/suse-modal.directive.js')
 
     // Crowbar Features
     // Upgrade State
@@ -51,6 +53,8 @@ html(ng-app='crowbarApp')
     script(src='app/features/upgrade/upgrade.constants.js')
     script(src='app/features/upgrade/upgrade.controller.js')
     script(src='app/features/upgrade/steps.factory.js')
+    script(src='app/features/upgrade/errorBus.factory.js')
+
     // Upgrade 7
     script(src='app/features/upgrade/upgrade.controller.js')
     script(src='app/features/upgrade/controllers/upgrade-landing.controller.js')
