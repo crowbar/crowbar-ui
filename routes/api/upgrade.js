@@ -4,12 +4,20 @@ var express = require('express'),
 var errors = ['001', '002', '003'];
 
 var status_counter = -1,
-    tested_step = 'upgrade_prechecks',
+    tested_step = 'nodes_upgrade',
     simulate_temporary_downtime = true,
     status = {
         current_step: 'upgrade_prechecks',
         substep: null,
-        current_node: null,
+        current_node:  {
+            alias: 'controller-1',
+            name: 'controller.1234.suse.com',
+            ip: '1.2.3.4',
+            role: 'controller',
+            state: 'post-upgrade'
+        },
+        remaining_nodes: 95,
+        upgraded_nodes: 60,
         steps: {
             upgrade_prechecks: {
                 status: 'pending',

@@ -50,19 +50,36 @@
          *     API will not trigger `onError` handler and will not stop polling. The downtime
          *     allowance is common for whole call so if there are multiple short unavailability
          *     periods, the total time (sum) is checked.
+         * @param {function} [processPartialStatus=undefined] - If specified, will be executed each time with success
+         *     responses as parameter until the specified step is completed.
          */
-        function waitForStepToEnd(step, onSuccess, onError, pollingInterval, allowedDowntimeLeft) {
+        function waitForStepToEnd(
+            step,
+            onSuccess,
+            onError,
+            pollingInterval,
+            allowedDowntimeLeft,
+            processPartialStatus
+        ) {
             allowedDowntimeLeft = angular.isDefined(allowedDowntimeLeft) ? allowedDowntimeLeft : 0;
+            processPartialStatus = angular.isDefined(processPartialStatus) ? processPartialStatus : undefined;
             upgradeFactory.getStatus()
                 .then(
                     function (response) {
-                        if (response.data.steps[step].status == UPGRADE_STEP_STATES.passed) {
+                        // If the step is completed, trigger its success handler
+                        if (response.data.steps[step].status === UPGRADE_STEP_STATES.passed) {
                             onSuccess(response);
                         } else {
+
+                            // If the response needs to be processed before the step if completed
+                            if (angular.isDefined(processPartialStatus)) {
+                                processPartialStatus(response);
+                            }
+
                             // schedule another check
                             $timeout(
                                 factory.waitForStepToEnd, pollingInterval, true,
-                                step, onSuccess, onError, pollingInterval, allowedDowntimeLeft
+                                step, onSuccess, onError, pollingInterval, allowedDowntimeLeft, processPartialStatus
                             );
                         }
                     },
@@ -74,7 +91,8 @@
                             // schedule another check but with less downtime allowance
                             $timeout(
                                 factory.waitForStepToEnd, pollingInterval, true,
-                                step, onSuccess, onError, pollingInterval, allowedDowntimeLeft - pollingInterval
+                                step, onSuccess, onError, pollingInterval,
+                                allowedDowntimeLeft - pollingInterval, processPartialStatus
                             );
                         }
                     }
