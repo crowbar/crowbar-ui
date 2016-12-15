@@ -20,6 +20,7 @@ var express = require('express'),
     openstackBackup = require('./routes/api/openstack/backup'),
     utilsBackupCreate = require('./routes/utils/backups/create'),
     utilsBackupDownload =  require('./routes/utils/backups/download'),
+    nodesUpgrade = require('./routes/api/upgrade/nodes'),
 
     app = express();
 
@@ -46,6 +47,7 @@ app.use('/api/upgrade/services', upgradeServices);
 app.use('/api/openstack/backup', openstackBackup);
 app.use('/api/upgrade/adminbackup', utilsBackupCreate);
 app.use('/utils/backups/\*/download', utilsBackupDownload);
+app.use('/api/upgrade/nodes', nodesUpgrade);
 
 
 
