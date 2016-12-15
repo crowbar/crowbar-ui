@@ -3,26 +3,155 @@
   crowbarFactory $q $rootScope module $state */
 describe('Upgrade Landing Controller', function() {
     var controller,
+        completedUpgradeResponseData = {
+            current_step: 'admin_backup',
+            substep: null,
+            current_node: null,
+            steps: {
+                upgrade_prechecks: {
+                    status: 'passed',
+                },
+                upgrade_prepare: {
+                    status: 'passed',
+                },
+                admin_backup: {
+                    status: 'pending',
+                },
+                admin_repo_checks: {
+                    status: 'pending',
+                },
+                admin_upgrade: {
+                    status: 'pending',
+                },
+                database: {
+                    status: 'pending',
+                },
+                nodes_repo_checks: {
+                    status: 'pending',
+                },
+                nodes_services: {
+                    status: 'pending',
+                },
+                nodes_db_dump: {
+                    status: 'pending',
+                },
+                nodes_upgrade: {
+                    status: 'pending',
+                },
+                finished: {
+                    status: 'pending',
+                }
+            }
+        },
+        completedUpgradeResponse = {
+            data: completedUpgradeResponseData,
+        },
+        incompleteUpgradeResponseData = {
+            current_step: 'upgrade_prepare',
+            substep: null,
+            current_node: null,
+            steps: {
+                upgrade_prechecks: {
+                    status: 'passed',
+                },
+                upgrade_prepare: {
+                    status: 'running',
+                },
+                admin_backup: {
+                    status: 'pending',
+                },
+                admin_repo_checks: {
+                    status: 'pending',
+                },
+                admin_upgrade: {
+                    status: 'pending',
+                },
+                database: {
+                    status: 'pending',
+                },
+                nodes_repo_checks: {
+                    status: 'pending',
+                },
+                nodes_services: {
+                    status: 'pending',
+                },
+                nodes_db_dump: {
+                    status: 'pending',
+                },
+                nodes_upgrade: {
+                    status: 'pending',
+                },
+                finished: {
+                    status: 'pending',
+                }
+            }
+        },
+        incompleteUpgradeResponse = {
+            data: incompleteUpgradeResponseData,
+        },
+        initialResponseData = {
+            current_step: 'upgrade_prechecks',
+            substep: null,
+            current_node: null,
+            steps: {
+                upgrade_prechecks: {
+                    status: 'pending',
+                },
+                upgrade_prepare: {
+                    status: 'pending',
+                },
+                admin_backup: {
+                    status: 'pending',
+                },
+                admin_repo_checks: {
+                    status: 'pending',
+                },
+                admin_upgrade: {
+                    status: 'pending',
+                },
+                database: {
+                    status: 'pending',
+                },
+                nodes_repo_checks: {
+                    status: 'pending',
+                },
+                nodes_services: {
+                    status: 'pending',
+                },
+                nodes_db_dump: {
+                    status: 'pending',
+                },
+                nodes_upgrade: {
+                    status: 'pending',
+                },
+                finished: {
+                    status: 'pending',
+                }
+            }
+        },
+        initialStatusResponse = {
+            data: initialResponseData,
+        },
         passingChecks = {
             maintenance_updates_installed: { required: true, passed: true },
             network_checks: { required: true, passed: true },
-            clusters_healthy: { required: true, passed: true },
-            ceph_healthy: { required: true, passed: true },
+            clusters_healthy: { required: false, passed: true },
+            ceph_healthy: { required: false, passed: true },
             compute_resources_available: { required: false, passed: true }
         },
         failingChecks = {
             maintenance_updates_installed: { required: true, passed: false },
             network_checks: { required: true, passed: false },
-            clusters_healthy: { required: true, passed: false },
-            ceph_healthy: { required: true, passed: false },
+            clusters_healthy: { required: false, passed: false },
+            ceph_healthy: { required: false, passed: false },
             compute_resources_available: { required: false, passed: false }
         },
         partiallyFailingChecks = {
             maintenance_updates_installed: { required: true, passed: true },
             network_checks: { required: true, passed: true },
-            clusters_healthy: { required: true, passed: false },
-            ceph_healthy: { required: true, passed: true },
-            compute_resources_available: { required: false, passed: false }
+            clusters_healthy: { required: false, passed: false },
+            ceph_healthy: { required: false, passed: false },
+            compute_resources_available: { required: true, passed: true }
         },
         failingErrors = {
             error_message: 'Authentication failure'
@@ -50,21 +179,24 @@ describe('Upgrade Landing Controller', function() {
             data: {
                 addons: []
             }
-        },
-        activeEntityResponse;
+        };
 
     beforeEach(function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp.upgrade');
-        bard.inject('$controller', '$rootScope', 'upgradeFactory', 'crowbarFactory', '$q', '$httpBackend');
+        bard.inject('$controller', '$rootScope', 'upgradeFactory',
+            'crowbarFactory', '$q', '$httpBackend', 'upgradeStatusFactory');
 
-        // mock crowbarEntity with different response using an additional variable
-        activeEntityResponse = entityResponseWithAddons;
         bard.mockService(crowbarFactory, {
-            getEntity: $q.when(activeEntityResponse)
+            getEntity: $q.when(entityResponseWithAddons)
         });
 
-        //Create the controller
+        bard.mockService(upgradeFactory, {
+            getStatus: $q.when(initialStatusResponse),
+        });
+
+        spyOn(upgradeStatusFactory, 'waitForStepToEnd');
+
         controller = $controller('UpgradeLandingController');
 
         //Mock requests that are expected to be made
@@ -79,10 +211,75 @@ describe('Upgrade Landing Controller', function() {
         should.exist(controller);
     });
 
+    describe('when created while prepare is not running', function() {
+        it('should not start polling for status', function() {
+            expect(upgradeStatusFactory.waitForStepToEnd).not.toHaveBeenCalled();
+        });
+
+        it('prepare should not be running', function() {
+            assert.isFalse(controller.prepare.running);
+        });
+
+        it('prepare should not be completed', function() {
+            assert.isFalse(controller.prepare.completed);
+        });
+    });
+
+    describe('when created while prepare is running', function() {
+        beforeEach(function() {
+            // local change in mocked service
+            spyOn(upgradeFactory, 'getStatus').and.returnValue($q.when(incompleteUpgradeResponse));
+
+            controller = $controller('UpgradeLandingController');
+
+            $rootScope.$digest();
+        });
+
+        it('should start polling for status', function() {
+            expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledTimes(1);
+        });
+
+        it('prepare should be running', function() {
+            assert.isTrue(controller.prepare.running);
+        });
+
+        it('prepare should not be completed', function() {
+            assert.isFalse(controller.prepare.completed);
+        });
+    });
+
+    describe('when created after prepare is finished', function() {
+        beforeEach(function() {
+            // local change in mocked service
+            spyOn(upgradeFactory, 'getStatus').and.returnValue($q.when(completedUpgradeResponse));
+
+            controller = $controller('UpgradeLandingController');
+
+            $rootScope.$digest();
+        });
+
+        it('should not start polling for status', function() {
+            expect(upgradeStatusFactory.waitForStepToEnd).not.toHaveBeenCalled();
+        });
+
+        it('prepare should not be running', function() {
+            assert.isFalse(controller.prepare.running);
+        });
+
+        it('prepare should be completed', function() {
+            assert.isTrue(controller.prepare.completed);
+        });
+    });
+
+
     describe('Begin Upgrade', function() {
         it('should have a beginUpgrade function defined', function() {
             should.exist(controller.beginUpgrade);
         });
+    });
+
+    it('should have a continueNormal function defined', function () {
+        should.exist(controller.continueNormal);
     });
 
     describe('Prechecks object', function() {
@@ -129,7 +326,9 @@ describe('Upgrade Landing Controller', function() {
 
         describe('with no addons installed', function () {
             beforeEach(function () {
-                activeEntityResponse = entityResponseWithoutAddons;
+                // local change in mocked service
+                spyOn(crowbarFactory, 'getEntity').and.returnValue($q.when(entityResponseWithoutAddons));
+
                 controller = $controller('UpgradeLandingController');
             });
 
@@ -150,9 +349,9 @@ describe('Upgrade Landing Controller', function() {
 
             describe('when checks pass successfully', function () {
                 beforeEach(function () {
-                    bard.mockService(upgradeFactory, {
-                        getPreliminaryChecks: $q.when(passingChecksResponse)
-                    });
+                    // local change in mocked service
+                    spyOn(upgradeFactory, 'getPreliminaryChecks').and.returnValue($q.when(passingChecksResponse));
+
                     controller.prechecks.runPrechecks();
                     $rootScope.$digest();
                 });
@@ -171,13 +370,26 @@ describe('Upgrade Landing Controller', function() {
                         assert.isTrue(value.status);
                     });
                 });
+
+                it('should set the mode to non-disruptive', function () {
+                    expect(controller.mode.type).toEqual('non-disruptive');
+                });
+
+                it('should set the mode.valid to true', function () {
+                    assert.isTrue(controller.mode.valid);
+                });
+
+                it('should set the mode.active to true', function () {
+                    assert.isTrue(controller.mode.active);
+                });
+
             });
 
             describe('when checks fails', function () {
                 beforeEach(function () {
-                    bard.mockService(upgradeFactory, {
-                        getPreliminaryChecks: $q.when(failingChecksResponse)
-                    });
+                    // local change in mocked service
+                    spyOn(upgradeFactory, 'getPreliminaryChecks').and.returnValue($q.when(failingChecksResponse));
+
                     controller.prechecks.runPrechecks();
                     $rootScope.$digest();
                 });
@@ -193,16 +405,17 @@ describe('Upgrade Landing Controller', function() {
                 it('should update required checks values to false', function () {
                     assert.isObject(controller.prechecks.checks);
                     _.forEach(controller.prechecks.checks, function(value) {
-                        assert.isFalse(value.status && value.required);
+                        assert.isFalse(value.status);
                     });
                 });
             });
 
             describe('when checks partially fail', function () {
                 beforeEach(function () {
-                    bard.mockService(upgradeFactory, {
-                        getPreliminaryChecks: $q.when(partiallyFailingChecksResponse)
-                    });
+                    // local change in mocked service
+                    spyOn(upgradeFactory, 'getPreliminaryChecks').and
+                        .returnValue($q.when(partiallyFailingChecksResponse));
+
                     controller.prechecks.runPrechecks();
                     $rootScope.$digest();
                 });
@@ -221,13 +434,40 @@ describe('Upgrade Landing Controller', function() {
                         expect(controller.prechecks.checks[key].status).toEqual(value.passed);
                     });
                 });
+
+                it('should set the mode to disruptive', function () {
+                    expect(controller.mode.type).toEqual('disruptive');
+                });
+
+                it('should set the mode.valid to false', function () {
+                    assert.isFalse(controller.mode.valid);
+                });
+
+                it('should set the mode.active to true', function () {
+                    assert.isTrue(controller.mode.active);
+                });
+
+                describe('when executing continueNormal to continue with the upgrade', function () {
+                    beforeEach(function () {
+                        controller.continueNormal();
+                        $rootScope.$digest();
+                    });
+
+                    it('mode should be disruptive', function () {
+                        expect(controller.mode.type).toEqual('disruptive');
+                    });
+
+                    it('should set the mode.valid to true', function () {
+                        assert.isTrue(controller.mode.valid);
+                    });
+                })
             });
 
             describe('when service call fails', function () {
                 beforeEach(function () {
-                    bard.mockService(upgradeFactory, {
-                        getPreliminaryChecks: $q.reject(failingResponse)
-                    });
+                    // local change in mocked service
+                    spyOn(upgradeFactory, 'getPreliminaryChecks').and.returnValue($q.reject(failingResponse));
+
                     controller.prechecks.runPrechecks();
                     $rootScope.$digest();
                 });
@@ -253,6 +493,49 @@ describe('Upgrade Landing Controller', function() {
 // @see: https://github.com/wardbell/bardjs#dont-use-appmodule-when-testing-routes
 describe('Upgrade Landing Controller - States', function () {
     var controller,
+        statusResponseData = {
+            current_step: 'upgrade_prechecks',
+            substep: null,
+            current_node: null,
+            steps: {
+                upgrade_prepare: {
+                    status: 'pending',
+                },
+                upgrade_prechecks: {
+                    status: 'pending',
+                },
+                admin_backup: {
+                    status: 'pending',
+                },
+                admin_repo_checks: {
+                    status: 'pending',
+                },
+                admin_upgrade: {
+                    status: 'pending',
+                },
+                database: {
+                    status: 'pending',
+                },
+                nodes_repo_checks: {
+                    status: 'pending',
+                },
+                nodes_services: {
+                    status: 'pending',
+                },
+                nodes_db_dump: {
+                    status: 'pending',
+                },
+                nodes_upgrade: {
+                    status: 'pending',
+                },
+                finished: {
+                    status: 'pending',
+                }
+            }
+        },
+        statusResponse = {
+            data: statusResponseData,
+        },
         entityResponseWithoutAddons = {
             data: {
                 addons: []
@@ -273,6 +556,10 @@ describe('Upgrade Landing Controller - States', function () {
             getEntity: $q.when(entityResponseWithoutAddons)
         });
 
+        bard.mockService(upgradeFactory, {
+            getStatus: $q.when(statusResponse),
+            prepareNodes: $q.when(),
+        });
 
         controller = $controller('UpgradeLandingController');
 
@@ -294,10 +581,6 @@ describe('Upgrade Landing Controller - States', function () {
 
     describe('when node prepare starts successfully', function () {
         beforeEach(function () {
-            bard.mockService(upgradeFactory, {
-                prepareNodes: $q.when()
-            });
-
             spyOn(upgradeStatusFactory, 'waitForStepToEnd');
 
             controller.prechecks.completed = true;
@@ -315,9 +598,8 @@ describe('Upgrade Landing Controller - States', function () {
 
     describe('when node prepare start fails', function () {
         beforeEach(function () {
-            bard.mockService(upgradeFactory, {
-                prepareNodes: $q.reject(errorResponse)
-            });
+            // local change in mocked service
+            spyOn(upgradeFactory, 'prepareNodes').and.returnValue($q.reject(errorResponse));
 
             spyOn(upgradeStatusFactory, 'waitForStepToEnd');
 
@@ -336,10 +618,6 @@ describe('Upgrade Landing Controller - States', function () {
 
     describe('when polling is finished successfully', function () {
         beforeEach(function () {
-            bard.mockService(upgradeFactory, {
-                prepareNodes: $q.when()
-            });
-
             bard.mockService(upgradeStatusFactory, {
                 waitForStepToEnd: function (step, onSuccess/*, onError, interval*/) { onSuccess(successResponse); }
             });
@@ -359,10 +637,6 @@ describe('Upgrade Landing Controller - States', function () {
 
     describe('when polling is finished with an error', function () {
         beforeEach(function () {
-            bard.mockService(upgradeFactory, {
-                prepareNodes: $q.when()
-            });
-
             bard.mockService(upgradeStatusFactory, {
                 waitForStepToEnd: function (step, onSuccess, onError/*, interval*/) { onError(errorResponse); }
             });

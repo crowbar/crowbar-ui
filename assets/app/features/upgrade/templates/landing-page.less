@@ -3,47 +3,66 @@
     background: none;
     border: 0px;
     box-shadow: none;
-
-    h1 {
-        color: @panel-heading-fg;
-        font-size: 19px;
-        margin: 0px 0px 25px;
-    }
-
-    .h4 {
-        margin-bottom: 27px;
-    }
-
-    p {
-        line-height: 16px;
-        margin: 0px 0px 28px;
-    }
-
-    .requirements-list {
-        padding-left: 45px;
-
-         li {
-            line-height: 16px;
-            margin-bottom: 25px;
-        }
-    }
-
-    .panel {
-        margin-bottom: 27px;
-
-        .panel-body {
-            padding: 26px 30px 30px;
-        }
-    }
+    margin-bottom: 30px;
+    margin-top: 27px;
 
     .btn {
         margin-bottom: 0px;
-        margin-top: 20px;
+        margin-top: 28px;
+
+        &:first-of-type {
+            margin-top: 26px;
+        }
     }
 
-    .note-message {
-        font-style: italic;
-        margin-bottom: 5px;
+    .step-1,
+    .step-2,
+    .step-3 {
+        color: #969797;
+
+        &.enabled {
+            color: #0d2c40;
+        }
+
+        p {
+            line-height: 15px;
+            margin: 0px 0px 15px;
+        }
+
+        .step-title {
+            margin-bottom: 15px;
+
+            crowbar-circle {
+                margin-right: 15px;
+            }
+        }
     }
+
+    .step-2 {
+
+        .h5 {
+            line-height: 15px;
+            margin: 0px 0px 7px;
+        }
+
+        p:first-of-type {
+            margin-top: 28px;
+        }
+    }
+
+    .step-3 {
+        margin-top: 60px;
+
+        p {
+            margin-bottom: 6px;
+        }
+    }
+
+    @media (max-width: 991px) {
+        .step-2 {
+            margin-top: 60px;
+        }
+    }
+
 }
 /* End= features/upgrade/templates/upgrade7/landing-page.less */

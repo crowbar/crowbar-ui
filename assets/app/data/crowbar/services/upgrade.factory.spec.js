@@ -9,13 +9,34 @@ describe('Upgrade Factory', function () {
         mockedCreateAdminBackupResponse = {
             id: 42
         },
+        mockedNewDatabaseServerResponse = {
+            'database_setup': {
+                'success': true
+            },
+            'database_migration': {
+                'success': true
+            },
+            'schema_migration': {
+                'success': true
+            },
+            'crowbar_init': {
+                'success': true
+            }
+        },
+        mockedConnectDatabaseServerResponse = mockedNewDatabaseServerResponse,
         preliminaryChecksPromise,
         repositoriesChecksPromise,
         prepareNodesPromise,
         nodesRepoChecksPromise,
         statusPromise,
         cancelUpgradePromise,
-        backupPromise;
+        backupPromise,
+        createNewDatabaseServerPromise,
+        connectDatabaseServerPromise,
+        mockedStopServicesPromise = {
+            'services': true
+        },
+        stopServicesPromise;
 
     beforeEach(function () {
         //Setup the module and dependencies to be used.
@@ -51,6 +72,18 @@ describe('Upgrade Factory', function () {
 
         it('returns an object with createAdminBackup function is defined', function () {
             expect(upgradeFactory.createAdminBackup).toEqual(jasmine.any(Function));
+        });
+
+        it('returns an object with createNewDatabaseServer function is defined', function () {
+            expect(upgradeFactory.createNewDatabaseServer).toEqual(jasmine.any(Function));
+        });
+
+        it('returns an object with connectDatabaseServer function is defined', function () {
+            expect(upgradeFactory.connectDatabaseServer).toEqual(jasmine.any(Function));
+        });
+
+        it('returns an object with stopServices function is defined', function () {
+            expect(upgradeFactory.stopServices).toEqual(jasmine.any(Function));
         });
 
         describe('when getPreliminaryChecks method is executed', function () {
@@ -205,7 +238,6 @@ describe('Upgrade Factory', function () {
                     return headers.Accept === COMMON_API_V2_HEADERS.Accept })
                     .respond(200, mockedCreateAdminBackupResponse);
                 backupPromise = upgradeFactory.createAdminBackup();
-                $httpBackend.flush();
             });
 
             it('returns a promise', function () {
@@ -223,6 +255,7 @@ describe('Upgrade Factory', function () {
                     expect(backupResponse.status).toEqual(200);
                     expect(backupResponse.data).toEqual(mockedCreateAdminBackupResponse);
                 });
+                $httpBackend.flush();
             });
         });
 
@@ -247,6 +280,85 @@ describe('Upgrade Factory', function () {
             it('when resolved, it returns the cancelUpgrade response', function () {
                 cancelUpgradePromise.then(function (response) {
                     expect(response.status).toEqual(200);
+                });
+            });
+        });
+
+        describe('when stopServices method is executed', function () {
+            beforeEach(function () {
+                $httpBackend.expectPOST('/api/upgrade/services', null, COMMON_API_V2_HEADERS)
+                    .respond(200, mockedStopServicesPromise);
+                stopServicesPromise = upgradeFactory.stopServices();
+            });
+
+            it('returns a promise', function () {
+                expect(stopServicesPromise).toEqual(jasmine.any(Object));
+                expect(stopServicesPromise['then']).toEqual(jasmine.any(Function));
+                expect(stopServicesPromise['catch']).toEqual(jasmine.any(Function));
+                expect(stopServicesPromise['finally']).toEqual(jasmine.any(Function));
+                expect(stopServicesPromise['error']).toEqual(jasmine.any(Function));
+                expect(stopServicesPromise['success']).toEqual(jasmine.any(Function));
+            });
+
+            // stopOpenStackServices success, partially passing and/or failing are handled in the controller.
+            it('when resolved, it returns the stopOpenStackServices response', function () {
+                stopServicesPromise.then(function (stopServicesResponse) {
+                    expect(stopServicesResponse.status).toEqual(200);
+                    expect(stopServicesResponse.data).toEqual(mockedStopServicesPromise);
+                });
+                $httpBackend.flush();
+            });
+        });
+
+        describe('when createNewDatabaseServer method is executed', function () {
+
+            beforeEach(function () {
+                $httpBackend.expect('POST', '/api/upgrade/new', undefined, function (headers) {
+                    return headers.Accept === COMMON_API_V2_HEADERS.Accept })
+                    .respond(200, mockedNewDatabaseServerResponse);
+                createNewDatabaseServerPromise = upgradeFactory.createNewDatabaseServer();
+            });
+
+            it('returns a promise', function () {
+                expect(createNewDatabaseServerPromise).toEqual(jasmine.any(Object));
+                expect(createNewDatabaseServerPromise['then']).toEqual(jasmine.any(Function));
+                expect(createNewDatabaseServerPromise['catch']).toEqual(jasmine.any(Function));
+                expect(createNewDatabaseServerPromise['finally']).toEqual(jasmine.any(Function));
+                expect(createNewDatabaseServerPromise['error']).toEqual(jasmine.any(Function));
+                expect(createNewDatabaseServerPromise['success']).toEqual(jasmine.any(Function));
+            });
+
+            it('when resolved, it returns the backup response', function () {
+                createNewDatabaseServerPromise.then(function (newDatabaseResponse) {
+                    expect(newDatabaseResponse.status).toEqual(200);
+                    expect(newDatabaseResponse.data).toEqual(mockedNewDatabaseServerResponse);
+                });
+                $httpBackend.flush();
+            });
+        });
+
+        describe('when connectDatabaseServer method is executed', function () {
+
+            beforeEach(function () {
+                $httpBackend.expect('POST', '/api/upgrade/connect', undefined, function (headers) {
+                    return headers.Accept === COMMON_API_V2_HEADERS.Accept })
+                    .respond(200, mockedConnectDatabaseServerResponse);
+                connectDatabaseServerPromise = upgradeFactory.connectDatabaseServer();
+            });
+
+            it('returns a promise', function () {
+                expect(connectDatabaseServerPromise).toEqual(jasmine.any(Object));
+                expect(connectDatabaseServerPromise['then']).toEqual(jasmine.any(Function));
+                expect(connectDatabaseServerPromise['catch']).toEqual(jasmine.any(Function));
+                expect(connectDatabaseServerPromise['finally']).toEqual(jasmine.any(Function));
+                expect(connectDatabaseServerPromise['error']).toEqual(jasmine.any(Function));
+                expect(connectDatabaseServerPromise['success']).toEqual(jasmine.any(Function));
+            });
+
+            it('when resolved, it returns the backup response', function () {
+                connectDatabaseServerPromise.then(function (connectDatabaseResponse) {
+                    expect(connectDatabaseResponse.status).toEqual(200);
+                    expect(connectDatabaseResponse.data).toEqual(mockedConnectDatabaseServerResponse);
                 });
                 $httpBackend.flush();
             });
