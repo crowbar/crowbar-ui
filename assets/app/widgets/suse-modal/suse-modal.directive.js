@@ -1,3 +1,4 @@
+/*global $ */
 (function() {
     'use strict';
 
@@ -10,12 +11,14 @@
             restrict: 'E',
             templateUrl: 'app/widgets/suse-modal/suse-modal.directive.html',
             scope: {
-                errorBus: '=errorBus'  // not sure how to bind this and to where?
+                error: '='
             },
-            link: function (scope, elem, attrs) {
-                scope.$watch(scope.errorBus, function(value) {
-                    if (value) {
-                        elem.modal('show');
+            link: function (scope) {
+                scope.$watch('error', function(value) {
+                    if (angular.isDefined(value)) {
+                        scope.title = value.title;
+                        scope.body = value.body;
+                        $('#suseModal').modal('show');
                     }
                 });
             }
