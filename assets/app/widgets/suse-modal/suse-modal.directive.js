@@ -1,4 +1,3 @@
-/*global $ */
 (function() {
     'use strict';
 
@@ -6,19 +5,25 @@
         .module('crowbarWidgets')
         .directive('suseModal', suseModal);
 
-    function suseModal() {
+    function suseModal($uibModal) {
         return {
             restrict: 'E',
-            templateUrl: 'app/widgets/suse-modal/suse-modal.directive.html',
             scope: {
                 error: '='
             },
             link: function (scope) {
                 scope.$watch('error', function(value) {
                     if (angular.isDefined(value)) {
-                        scope.title = value.title;
-                        scope.body = value.body;
-                        $('#suseModal').modal('show');
+                        $uibModal.open({
+                            templateUrl: 'app/widgets/suse-modal/suse-modal.directive.html',
+                            controller: function($uibModalInstance, $scope){
+                                $scope.dismiss = function() {
+                                    $uibModalInstance.dismiss();
+                                };
+                                $scope.error = value;
+                            }
+                        });
+
                     }
                 });
             }

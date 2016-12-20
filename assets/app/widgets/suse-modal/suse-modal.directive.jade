@@ -1,11 +1,9 @@
-.modal.fade(tabindex='-1', role='dialog', id="suseModal")
-    .modal-dialog(role='document')
-        .modal-content
-            .modal-header
-                button.close(type='button', data-dismiss='modal', aria-label='Close')
-                    span(aria-hidden='true') ×
-                h4.modal-title {{ title }}
-            .modal-body
-                p {{ body }}
-            .modal-footer
-                button.btn.btn-default(type='button', data-dismiss='modal') Close
+.modal-content
+    .modal-header
+        button.close(type='button', ng-click='dismiss()', aria-label='Close')
+            span(aria-hidden='true') ×
+        h4#suseModalLabel.modal-title {{ error.title }}
+    .modal-body
+        p {{ error.body }}
+    .modal-footer
+        button.btn.btn-default(type='button', ng-click='dismiss()') Close
