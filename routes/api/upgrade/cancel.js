@@ -3,6 +3,8 @@ var express = require('express'),
 
 /* cancel upgrade. */
 router.post('/', function(req, res) {
+    //Destroy the current session.
+    req.session.destroy();
     res.status(200).end();
 });
 
