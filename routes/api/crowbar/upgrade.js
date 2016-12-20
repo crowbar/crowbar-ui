@@ -1,5 +1,6 @@
 var express = require('express'),
-    router = express.Router();
+    router = express.Router(),
+    upgradeModel = require('../../../helpers/upgradeStatus.model');
 
 var errors = ['001', '002', '003'];
 var upgrading_state = -1;
@@ -10,6 +11,10 @@ router.post('/', function(req, res) {
     if('fail' in req.query && JSON.parse(req.query.fail) === true) {
         res.status(500).json({'errors': errors});
     } else {
+
+        upgradeModel.runCurrentStep();
+        req.session.upgradeStatus = upgradeModel.getStatus();
+
         res.status(200).json({
             version: '3.0',
             addons: [],

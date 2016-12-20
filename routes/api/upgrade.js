@@ -1,109 +1,63 @@
+/*eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
 var express = require('express'),
-    router = express.Router();
+    router = express.Router(),
+    upgradeModel = require('../../helpers/upgradeStatus.model');
 
-var errors = ['001', '002', '003'];
+var stepStatus = {
+        pending: 'pending',
+        running: 'running',
+        passed: 'passed',
 
-var status_counter = -1,
-    tested_step = 'nodes_upgrade',
-    simulate_temporary_downtime = true,
-    status = {
-        current_step: 'upgrade_prechecks',
-        substep: null,
-        current_node:  {
-            alias: 'controller-1',
-            name: 'controller.1234.suse.com',
-            ip: '1.2.3.4',
-            role: 'controller',
-            state: 'post-upgrade'
-        },
-        remaining_nodes: 95,
-        upgraded_nodes: 60,
-        steps: {
-            upgrade_prechecks: {
-                status: 'pending',
-                errors: {}
-            },
-            upgrade_prepare: {
-                status: 'pending',
-                errors: {}
-            },
-            admin_backup: {
-                status: 'pending',
-                errors: {}
-            },
-            admin_repo_checks: {
-                status: 'pending',
-                errors: {}
-            },
-            admin_upgrade: {
-                status: 'pending',
-                errors: {}
-            },
-            database: {
-                status: 'pending',
-                errors: {}
-            },
-            nodes_repo_checks: {
-                status: 'pending',
-                errors: {}
-            },
-            nodes_services: {
-                status: 'pending',
-                errors: {}
-            },
-            nodes_db_dump: {
-                status: 'pending',
-                errors: {}
-            },
-            nodes_upgrade: {
-                status: 'pending',
-                errors: {}
-            },
-            finished: {
-                status: 'pending',
-                errors: {}
-            }
-        }
-    };
+    },
+    status_counter = 0,
+    status,
+    simulateDowntimeSteps = [
+        'admin_upgrade'
+    ];
 
 /* GET upgrade status. */
 router.get('/', function(req, res) {
-    status_counter += 1;
 
-    function testedStatus() {
+    if (upgradeModel.getCurrentStep().status === null ||
+        upgradeModel.getCurrentStep().status === stepStatus.running
+    ) {
+        console.log('status counter: ' + status_counter);
         switch (status_counter) {
         case 0:
-            return 'pending';
         case 1:
-            return 'running';
         case 2:
+            upgradeModel.runCurrentStep();
+            break;
         case 3:
-            return simulate_temporary_downtime ? null : 'running';
+            if (simulateDowntimeSteps[upgradeModel.getCurrentStepName()]) {
+                console.log('Simulating Downtime for ' + upgradeModel.getCurrentStepName());
+                upgradeModel.simulateDowntime();
+            } else {
+                upgradeModel.runCurrentStep();
+            }
+            break;
         case 4:
-            return 'running';
+            upgradeModel.runCurrentStep();
+            break;
         case 5:
         default:
-            return 'passed';
+            upgradeModel.completeCurrentStep();
+            console.log('Completed: ' + upgradeModel.getCurrentStepName());
+            // reset the status counter
+            status_counter = 0;
+            break;
         }
+        // Increase the status counter
+        status_counter++;
     }
-    if('fail' in req.query && JSON.parse(req.query.fail) === true) {
-        res.status(500).json({'errors': errors});
-    } else {
-        status.current_step = tested_step;
-        for (var step in status.steps) {
-            if (step == tested_step) {
-                break;
-            }
-            status.steps[step].status = 'passed';
-        }
-        status.steps[tested_step].status = testedStatus();
+    console.log('---- Step: %s - Status: %s', upgradeModel.getCurrentStepName(), upgradeModel.getCurrentStep().status);
 
-        // simulated failure
-        if (status.steps[tested_step].status) {
-            res.status(200).json(status);
-        } else {
-            res.status(502).end();
-        }
+    status = upgradeModel.getStatus();
+    // simulated failure
+    if (upgradeModel.getCurrentStep().status) {
+        res.status(200).json(status);
+    } else {
+        res.status(502).end();
     }
 });
 

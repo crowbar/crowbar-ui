@@ -3,6 +3,7 @@ var express = require('express'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
+    session = require('express-session'),
 
     //Routes
     index = require('./routes/index'),
@@ -22,6 +23,8 @@ var express = require('express'),
     utilsBackupDownload =  require('./routes/utils/backups/download'),
     nodesUpgrade = require('./routes/api/upgrade/nodes'),
 
+    upgradeSession = require('./helpers/upgradeSession'),
+
     app = express();
 
 // uncomment after placing your favicon in /public
@@ -30,24 +33,27 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+    secret: '1234567890QWERTY'
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/api/crowbar', crowbarEntity);
-app.use('/api/upgrade/adminrepocheck', crowbarRepocheck);
-app.use('/api/crowbar/upgrade', crowbarUpgrade);
-app.use('/api/upgrade', upgrade);
-app.use('/api/upgrade/prechecks', upgradePrechecks);
-app.use('/api/upgrade/noderepocheck', upgradeNodeRepocheck);
-app.use('/api/upgrade/prepare', upgradePrepare);
-app.use('/api/upgrade/new', upgradeNew);
-app.use('/api/upgrade/connect', upgradeConnect);
-app.use('/api/upgrade/cancel', upgradeCancel);
-app.use('/api/upgrade/services', upgradeServices);
-app.use('/api/openstack/backup', openstackBackup);
-app.use('/api/upgrade/adminbackup', utilsBackupCreate);
-app.use('/utils/backups/\*/download', utilsBackupDownload);
-app.use('/api/upgrade/nodes', nodesUpgrade);
+app.use('/', upgradeSession, index);
+app.use('/api/crowbar', upgradeSession, crowbarEntity);
+app.use('/api/upgrade/adminrepocheck', upgradeSession, crowbarRepocheck);
+app.use('/api/crowbar/upgrade', upgradeSession, crowbarUpgrade);
+app.use('/api/upgrade', upgradeSession, upgrade);
+app.use('/api/upgrade/prechecks', upgradeSession, upgradePrechecks);
+app.use('/api/upgrade/noderepocheck', upgradeSession, upgradeNodeRepocheck);
+app.use('/api/upgrade/prepare', upgradeSession, upgradePrepare);
+app.use('/api/upgrade/new', upgradeSession, upgradeNew);
+app.use('/api/upgrade/connect', upgradeSession, upgradeConnect);
+app.use('/api/upgrade/cancel', upgradeSession, upgradeCancel);
+app.use('/api/upgrade/services', upgradeSession, upgradeServices);
+app.use('/api/openstack/backup', upgradeSession, openstackBackup);
+app.use('/api/upgrade/adminbackup', upgradeSession, utilsBackupCreate);
+app.use('/utils/backups/\*/download', upgradeSession, utilsBackupDownload);
+app.use('/api/upgrade/nodes', upgradeSession, nodesUpgrade);
 
 
 
