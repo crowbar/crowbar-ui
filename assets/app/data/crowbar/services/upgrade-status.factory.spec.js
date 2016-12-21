@@ -50,8 +50,58 @@ describe('Upgrade Status Factory', function () {
                 }
             }
         },
+        partialUpgradeResponseData = {
+            current_step: 'database',
+            substep: null,
+            current_node: null,
+            steps: {
+                upgrade_prechecks: {
+                    status: 'passed',
+                    errors: {}
+                },
+                admin_backup: {
+                    status: 'passed',
+                    errors: {}
+                },
+                admin_repo_checks: {
+                    status: 'passed',
+                    errors: {}
+                },
+                admin_upgrade: {
+                    status: 'running',
+                    errors: {}
+                },
+                database: {
+                    status: 'pending',
+                    errors: {}
+                },
+                nodes_repo_checks: {
+                    status: 'pending',
+                    errors: {}
+                },
+                nodes_services: {
+                    status: 'pending',
+                    errors: {}
+                },
+                nodes_db_dump: {
+                    status: 'pending',
+                    errors: {}
+                },
+                nodes_upgrade: {
+                    status: 'pending',
+                    errors: {}
+                },
+                finished: {
+                    status: 'pending',
+                    errors: {}
+                }
+            }
+        },
         completedUpgradeResponse = {
             data: completedUpgradeResponseData
+        },
+        partialUpgradeResponse = {
+            data: partialUpgradeResponseData
         },
         incompleteUpgradeResponseData = {
             current_step: 'admin_upgrade',
@@ -219,26 +269,64 @@ describe('Upgrade Status Factory', function () {
 
             describe('when got upgrade status from api successfully', function () {
                 describe('when received status is completed', function () {
-                    beforeEach(function () {
-                        bard.mockService(upgradeFactory, {
-                            getStatus: $q.when(completedUpgradeResponse)
+
+                    describe('without onRunning callback', function () {
+                        beforeEach(function () {
+                            bard.mockService(upgradeFactory, {
+                                getStatus: $q.when(completedUpgradeResponse)
+                            });
+
+                            upgradeStatusFactory.waitForStepToEnd(
+                                testedStep, pollingInterval, mockedSuccessCallback, mockedErrorCallback
+                            );
+
+                            $rootScope.$digest();
                         });
 
-                        upgradeStatusFactory.waitForStepToEnd(
-                            testedStep, mockedSuccessCallback, mockedErrorCallback, pollingInterval
-                        );
-
-                        $rootScope.$digest();
+                        it('should call success callback', function () {
+                            expect(mockedSuccessCallback).toHaveBeenCalledTimes(1);
+                            expect(mockedSuccessCallback).toHaveBeenCalledWith(completedUpgradeResponse);
+                        });
+                        it('should not call error callback', function () {
+                            expect(mockedErrorCallback).not.toHaveBeenCalled();
+                        });
+                        it('should not schedule another check', function () {
+                            expect(mockedTimeout).not.toHaveBeenCalled();
+                        });
                     });
 
-                    it('should call success callback', function () {
-                        expect(mockedSuccessCallback).toHaveBeenCalled();
-                    });
-                    it('should not call error callback', function () {
-                        expect(mockedErrorCallback).not.toHaveBeenCalled();
-                    });
-                    it('should not schedule another check', function () {
-                        expect(mockedTimeout).not.toHaveBeenCalled();
+                    describe('with onRunning callback', function () {
+                        beforeEach(function () {
+                            bard.mockService(upgradeFactory, {
+                                getStatus: $q.when(partialUpgradeResponse)
+                            });
+
+                            upgradeStatusFactory.waitForStepToEnd(
+                                testedStep, pollingInterval,
+                                mockedSuccessCallback, mockedErrorCallback, mockedRunningCallback
+                            );
+
+                            $rootScope.$digest();
+                        });
+
+                        it('should not call success callback', function () {
+                            expect(mockedSuccessCallback).not.toHaveBeenCalled();
+                        });
+                        it('should not call error callback', function () {
+                            expect(mockedErrorCallback).not.toHaveBeenCalled();
+                        });
+                        it('should call onRunning callback', function () {
+                            expect(mockedRunningCallback).toHaveBeenCalledTimes(1);
+                            expect(mockedRunningCallback).toHaveBeenCalledWith(partialUpgradeResponse);
+                        });
+                        it('should schedule another check', function () {
+                            expect(mockedTimeout).toHaveBeenCalledTimes(1);
+                            expect(mockedTimeout).toHaveBeenCalledWith(
+                                upgradeStatusFactory.waitForStepToEnd, pollingInterval, true,
+                                testedStep, pollingInterval,
+                                mockedSuccessCallback, mockedErrorCallback, mockedRunningCallback, 0
+                            );
+                        });
                     });
                 });
 
@@ -249,7 +337,8 @@ describe('Upgrade Status Factory', function () {
                         });
 
                         upgradeStatusFactory.waitForStepToEnd(
-                            testedStep, mockedSuccessCallback, mockedErrorCallback, pollingInterval, allowedDowntime
+                            testedStep, pollingInterval,
+                            mockedSuccessCallback, mockedErrorCallback, null, allowedDowntime
                         );
 
                         $rootScope.$digest();
@@ -261,9 +350,11 @@ describe('Upgrade Status Factory', function () {
                         expect(mockedErrorCallback).not.toHaveBeenCalled();
                     });
                     it('should schedule another check', function () {
+                        expect(mockedTimeout).toHaveBeenCalledTimes(1);
                         expect(mockedTimeout).toHaveBeenCalledWith(
                             upgradeStatusFactory.waitForStepToEnd, pollingInterval, true,
-                            testedStep, mockedSuccessCallback, mockedErrorCallback, pollingInterval, allowedDowntime
+                            testedStep, pollingInterval,
+                            mockedSuccessCallback, mockedErrorCallback, null, allowedDowntime
                         );
                     });
                 });
@@ -277,7 +368,7 @@ describe('Upgrade Status Factory', function () {
                         });
 
                         upgradeStatusFactory.waitForStepToEnd(
-                            testedStep, mockedSuccessCallback, mockedErrorCallback, pollingInterval, 0
+                            testedStep, pollingInterval, mockedSuccessCallback, mockedErrorCallback, null, 0
                         );
 
                         $rootScope.$digest();
@@ -288,6 +379,7 @@ describe('Upgrade Status Factory', function () {
                     });
 
                     it('should call error callback', function () {
+                        expect(mockedErrorCallback).toHaveBeenCalledTimes(1);
                         expect(mockedErrorCallback).toHaveBeenCalledWith(errorResponse);
                     });
 
@@ -303,7 +395,7 @@ describe('Upgrade Status Factory', function () {
                         });
 
                         upgradeStatusFactory.waitForStepToEnd(
-                            testedStep, mockedSuccessCallback, mockedErrorCallback, 1, 10
+                            testedStep, 1, mockedSuccessCallback, mockedErrorCallback, null, 10
                         );
 
                         $rootScope.$digest();
@@ -319,6 +411,10 @@ describe('Upgrade Status Factory', function () {
 
                     it('should schedule another check', function () {
                         expect(mockedTimeout).toHaveBeenCalledTimes(1);
+                        expect(mockedTimeout).toHaveBeenCalledWith(
+                            upgradeStatusFactory.waitForStepToEnd, 1, true,
+                            testedStep, 1, mockedSuccessCallback, mockedErrorCallback, null, 9
+                        );
                     });
                 });
 

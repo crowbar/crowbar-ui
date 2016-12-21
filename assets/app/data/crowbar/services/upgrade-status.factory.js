@@ -42,27 +42,26 @@
          * Polls for upgrade status until step `step` is `passed`.
          *
          * @param {string} step - Step name as defined in status API response
+         * @param {int} pollingInterval - Interval used to poll the upgrade status
          * @param {function} onSuccess - Callback to be executed with last response from status API
          *     when waiting time finishes successfully
          * @param {function} onError - Callback to be executed if status API returns error
-         * @param {int} pollingInterval - Interval used to poll the upgrade status
+         * @param {function} [onRunning=undefined] - If specified, will be executed each time with success
+         *     responses as parameter until the specified step is completed.
          * @param {int} [allowedDowntimeLeft=0] - If specified, temporary unavailability of status
          *     API will not trigger `onError` handler and will not stop polling. The downtime
          *     allowance is common for whole call so if there are multiple short unavailability
          *     periods, the total time (sum) is checked.
-         * @param {function} [processPartialStatus=undefined] - If specified, will be executed each time with success
-         *     responses as parameter until the specified step is completed.
          */
         function waitForStepToEnd(
             step,
+            pollingInterval,
             onSuccess,
             onError,
-            pollingInterval,
-            allowedDowntimeLeft,
-            processPartialStatus
+            onRunning,
+            allowedDowntimeLeft
         ) {
             allowedDowntimeLeft = angular.isDefined(allowedDowntimeLeft) ? allowedDowntimeLeft : 0;
-            processPartialStatus = angular.isDefined(processPartialStatus) ? processPartialStatus : undefined;
             upgradeFactory.getStatus()
                 .then(
                     function (response) {
@@ -72,14 +71,15 @@
                         } else {
 
                             // If the response needs to be processed before the step if completed
-                            if (angular.isDefined(processPartialStatus)) {
-                                processPartialStatus(response);
+                            if (angular.isFunction(onRunning)) {
+                                onRunning(response);
                             }
 
                             // schedule another check
                             $timeout(
                                 factory.waitForStepToEnd, pollingInterval, true,
-                                step, onSuccess, onError, pollingInterval, allowedDowntimeLeft, processPartialStatus
+                                step, pollingInterval, onSuccess, onError, onRunning,
+                                allowedDowntimeLeft
                             );
                         }
                     },
@@ -91,8 +91,8 @@
                             // schedule another check but with less downtime allowance
                             $timeout(
                                 factory.waitForStepToEnd, pollingInterval, true,
-                                step, onSuccess, onError, pollingInterval,
-                                allowedDowntimeLeft - pollingInterval, processPartialStatus
+                                step, pollingInterval, onSuccess, onError, onRunning,
+                                allowedDowntimeLeft - pollingInterval
                             );
                         }
                     }
