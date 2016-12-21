@@ -70,6 +70,7 @@
         function waitForUpgradeToEnd() {
             upgradeStatusFactory.waitForStepToEnd(
                 UPGRADE_STEPS.admin_upgrade,
+                ADMIN_UPGRADE_TIMEOUT_INTERVAL,
                 function (/*response*/) {
                     vm.adminUpgrade.running = false;
                     vm.adminUpgrade.completed = true;
@@ -81,7 +82,7 @@
                     // https://trello.com/c/chzg85j4/142-3-s49p7-error-reporting-on-crowbar-level
                     vm.adminUpgrade.errors = errorResponse.data.errors;
                 },
-                ADMIN_UPGRADE_TIMEOUT_INTERVAL,
+                null,
                 ADMIN_UPGRADE_ALLOWED_DOWNTIME
             );
         }
