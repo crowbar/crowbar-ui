@@ -128,6 +128,7 @@
         function waitForPrepareToEnd() {
             upgradeStatusFactory.waitForStepToEnd(
                 UPGRADE_STEPS.upgrade_prepare,
+                PREPARE_TIMEOUT_INTERVAL,
                 function (/*response*/) {
                     vm.prepare.running = false;
                     $state.go('upgrade.backup');
@@ -136,8 +137,7 @@
                     vm.prepare.running = false;
                     // Expose the error list to prechecks object
                     vm.prechecks.errors = errorResponse.data.errors;
-                },
-                PREPARE_TIMEOUT_INTERVAL
+                }
             );
         }
 

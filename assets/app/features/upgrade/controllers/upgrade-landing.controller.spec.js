@@ -1,6 +1,6 @@
 /* jshint -W117, -W030 */
 /*global bard $controller $httpBackend should assert upgradeFactory upgradeStatusFactory
-  crowbarFactory $q $rootScope module $state */
+  crowbarFactory $q $rootScope module $state UPGRADE_STEPS PREPARE_TIMEOUT_INTERVAL */
 describe('Upgrade Landing Controller', function() {
     var controller,
         completedUpgradeResponseData = {
@@ -227,6 +227,7 @@ describe('Upgrade Landing Controller', function() {
 
     describe('when created while prepare is running', function() {
         beforeEach(function() {
+            bard.inject('UPGRADE_STEPS', 'PREPARE_TIMEOUT_INTERVAL');
             // local change in mocked service
             spyOn(upgradeFactory, 'getStatus').and.returnValue($q.when(incompleteUpgradeResponse));
 
@@ -237,6 +238,12 @@ describe('Upgrade Landing Controller', function() {
 
         it('should start polling for status', function() {
             expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledTimes(1);
+            expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledWith(
+                UPGRADE_STEPS.upgrade_prepare,
+                PREPARE_TIMEOUT_INTERVAL,
+                jasmine.any(Function),
+                jasmine.any(Function)
+            );
         });
 
         it('prepare should be running', function() {
@@ -581,6 +588,8 @@ describe('Upgrade Landing Controller - States', function () {
 
     describe('when node prepare starts successfully', function () {
         beforeEach(function () {
+            bard.inject('UPGRADE_STEPS', 'PREPARE_TIMEOUT_INTERVAL');
+
             spyOn(upgradeStatusFactory, 'waitForStepToEnd');
 
             controller.prechecks.completed = true;
@@ -592,12 +601,20 @@ describe('Upgrade Landing Controller - States', function () {
         });
 
         it('should start polling for status', function () {
-            expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalled();
+            expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledTimes(1);
+            expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledWith(
+                UPGRADE_STEPS.upgrade_prepare,
+                PREPARE_TIMEOUT_INTERVAL,
+                jasmine.any(Function),
+                jasmine.any(Function)
+            );
         });
     });
 
     describe('when node prepare start fails', function () {
         beforeEach(function () {
+            bard.inject('UPGRADE_STEPS', 'PREPARE_TIMEOUT_INTERVAL');
+
             // local change in mocked service
             spyOn(upgradeFactory, 'prepareNodes').and.returnValue($q.reject(errorResponse));
 
@@ -619,7 +636,7 @@ describe('Upgrade Landing Controller - States', function () {
     describe('when polling is finished successfully', function () {
         beforeEach(function () {
             bard.mockService(upgradeStatusFactory, {
-                waitForStepToEnd: function (step, onSuccess/*, onError, interval*/) { onSuccess(successResponse); }
+                waitForStepToEnd: function (step, interval, onSuccess/*, onError*/) { onSuccess(successResponse); }
             });
 
             controller.prechecks.completed = true;
@@ -638,7 +655,7 @@ describe('Upgrade Landing Controller - States', function () {
     describe('when polling is finished with an error', function () {
         beforeEach(function () {
             bard.mockService(upgradeStatusFactory, {
-                waitForStepToEnd: function (step, onSuccess, onError/*, interval*/) { onError(errorResponse); }
+                waitForStepToEnd: function (step, interval, onSuccess, onError) { onError(errorResponse); }
             });
 
             controller.prechecks.completed = true;
