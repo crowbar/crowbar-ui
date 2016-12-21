@@ -1,4 +1,5 @@
 var express = require('express'),
+    totalNodes = 125,
     stepStatus = {
         pending: 'pending',
         running: 'running',
@@ -8,6 +9,7 @@ var express = require('express'),
     UpgradeStatusModel = {
         getStatus: getStatus,
         setStatus: setStatus,
+        setUpdatedNodes: setUpdatedNodes,
         getDefaultStatus: getDefaultStatus,
         getCurrentStep: getCurrentStep,
         getCurrentStepName: getCurrentStepName,
@@ -44,8 +46,8 @@ function getDefaultStatus() {
             role: 'controller',
             state: 'post-upgrade'
         },
-        remaining_nodes: 95,
-        upgraded_nodes: 60,
+        remaining_nodes: 125,
+        upgraded_nodes: 0,
         steps: {
             upgrade_prechecks: {
                 status: stepStatus.pending,
@@ -158,6 +160,18 @@ function getStatus () {
 
 function setStatus (upgradeStatus) {
     UpgradeStatusModel.status = upgradeStatus;
+}
+
+function setUpdatedNodes(updatedNodes) {
+    UpgradeStatusModel.status.upgraded_nodes = updatedNodes;
+    UpgradeStatusModel.status.remaining_nodes = totalNodes - updatedNodes;
+    UpgradeStatusModel.status.current_node = {
+        alias: 'controller-' + updatedNodes,
+        name: 'controller.' + updatedNodes + '.suse.com',
+        ip: updatedNodes + '.2.3.4',
+        role: 'controller: ' + updatedNodes,
+        state: 'post-upgrade: ' + updatedNodes
+    };
 }
 
 module.exports = UpgradeStatusModel;

@@ -18,6 +18,11 @@ var stepStatus = {
 /* GET upgrade status. */
 router.get('/', function(req, res) {
 
+    if (upgradeModel.getCurrentStepName() === 'nodes_upgrade' &&
+        upgradeModel.getCurrentStep().status === stepStatus.running) {
+        upgradeModel.setUpdatedNodes(status_counter * 25);
+    }
+
     if (upgradeModel.getCurrentStep().status === null ||
         upgradeModel.getCurrentStep().status === stepStatus.running
     ) {
