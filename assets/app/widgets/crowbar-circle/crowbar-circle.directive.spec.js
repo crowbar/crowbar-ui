@@ -50,7 +50,7 @@ describe('Corwbar Circle Directive', function () {
             });
 
             it('should not have an active class', function () {
-                assert.isFalse(directiveElement.hasClass('active'));
+                assert.isFalse(directiveElement.find('div').hasClass('active'));
             })
 
         });
@@ -66,7 +66,7 @@ describe('Corwbar Circle Directive', function () {
             });
 
             it('should have an active class', function () {
-                assert.isTrue(directiveElement.hasClass('active'));
+                assert.isTrue(directiveElement.find('div').hasClass('active'));
             })
 
         });
