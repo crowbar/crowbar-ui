@@ -60,6 +60,7 @@
 
                         upgradeStatusFactory.waitForStepToEnd(
                             UPGRADE_STEPS.nodes_upgrade,
+                            NODES_UPGRADE_TIMEOUT_INTERVAL,
                             function (response) {
 
                                 vm.nodesUpgrade.running = false;
@@ -73,8 +74,6 @@
                                 // Expose the error list to nodesUpgrade object
                                 vm.nodesUpgrade.errors = errorResponse.data.errors;
                             },
-                            NODES_UPGRADE_TIMEOUT_INTERVAL,
-                            0,
                             updateModel
                         );
                     },
