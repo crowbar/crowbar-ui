@@ -5,13 +5,14 @@
         .module('crowbarWidgets')
         .directive('suseModal', suseModal);
 
+    suseModal.$inject = ['$uibModal'];
+
     var modalController = function ($uibModalInstance, $scope) {
         $scope.dismiss = function() {
             $uibModalInstance.dismiss();
         };
     };
 
-    suseModal.$inject = ['$uibModal'];
     modalController.$inject = ['$uibModalInstance', '$scope'];
 
     function suseModal($uibModal) {
