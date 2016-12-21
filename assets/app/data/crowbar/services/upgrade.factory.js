@@ -18,7 +18,7 @@
             connectDatabaseServer: connectDatabaseServer,
             cancelUpgrade: cancelUpgrade,
             stopServices: stopServices,
-            upgradeNodes: upgradeNodes
+            upgradeNodes: upgradeNodes,
         };
 
         return factory;
