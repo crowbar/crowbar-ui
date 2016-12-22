@@ -86,7 +86,11 @@
         }
 
         function updateModel(response) {
-            vm.nodesUpgrade.currentNode = response.data.current_node.alias;
+            vm.nodesUpgrade.currentNode = {
+                name: response.data.current_node.alias,
+                role: response.data.current_node.role,
+                state: response.data.current_node.state
+            };
             vm.nodesUpgrade.upgradedNodes = response.data.upgraded_nodes;
             vm.nodesUpgrade.totalNodes = response.data.upgraded_nodes + response.data.remaining_nodes;
         }
