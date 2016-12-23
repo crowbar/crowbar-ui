@@ -1,6 +1,7 @@
 var express = require('express'),
     router = express.Router(),
-    repo_correct = false;
+    repo_correct = false,
+    upgradeModel = require('../../../helpers/upgradeStatus.model');
 
 /* GET Admin Repo Checks. */
 router.get('/', function(req, res) {
@@ -27,6 +28,9 @@ router.get('/', function(req, res) {
             'available': true,
             'repos': {}
         }
+
+        upgradeModel.completeCurrentStep();
+        req.session.upgradeStatus = upgradeModel.getStatus();
     }
     repo_correct = !repo_correct;
     res.status(200).json(data);

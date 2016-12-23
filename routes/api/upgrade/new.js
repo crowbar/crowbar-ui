@@ -1,5 +1,6 @@
 var express = require('express'),
-    router = express.Router();
+    router = express.Router(),
+    upgradeModel = require('../../../helpers/upgradeStatus.model');
 
 var responseOk = {
         'database_setup': {
@@ -40,7 +41,15 @@ router.post('/', function(req, res) {
             res.status(422).json(responseFail)
         }, 4000)
     } else {
+
+        upgradeModel.runCurrentStep();
+        req.session.upgradeStatus = upgradeModel.getStatus();
+
         setTimeout(function () {
+
+            upgradeModel.completeCurrentStep();
+            req.session.upgradeStatus = upgradeModel.getStatus();
+
             res.status(200).json(responseOk)
         }, 4000);
     }
