@@ -180,6 +180,9 @@
                             // Store the upgrade best method
                             vm.mode.type = response.data.best_method;
                             updateMode();
+                        } else {
+                            // TODO(itxaka): This is a test, should catch the errors and aggregate them
+                            vm.error = {title: 'an error has occurred', body: 'Error descriptions go here'};
                         }
                     },
                     //Failure handler:
