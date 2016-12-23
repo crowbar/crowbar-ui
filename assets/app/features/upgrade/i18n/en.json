@@ -2,8 +2,7 @@
     "upgrade": {
         "nav": {
             "cancel": "Cancel Upgrade",
-            "next": "Next",
-            "last": "Upgrading Nodes..."
+            "next": "Next"
         },
         "steps": {
             "landing": {
@@ -121,6 +120,18 @@
                 },
                 "form": {
                     "stop-services": "Stop OpenStack Servers"
+                }
+            },
+            "upgrade-nodes": {
+                "title": "Begin upgrading and migrating control and compute nodes by clicking on the button below. Depending upon the size of your cloud and workloads this process might take quite some time.",
+                "form": {
+                    "upgrade-nodes": "Upgrade Nodes"
+                },
+                "status": {
+                    "progress-bar": "{{current}} of {{total}} Nodes Upgraded",
+                    "current-node": "Current Node: {{nodeName}}",
+                    "node-role": "Node Role: {{nodeRole}}",
+                    "node-status": "Status: {{status}}"
                 }
             }
         },

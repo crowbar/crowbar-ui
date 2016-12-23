@@ -17,7 +17,8 @@
             createNewDatabaseServer: createNewDatabaseServer,
             connectDatabaseServer: connectDatabaseServer,
             cancelUpgrade: cancelUpgrade,
-            stopServices: stopServices
+            stopServices: stopServices,
+            upgradeNodes: upgradeNodes,
         };
 
         return factory;
@@ -168,15 +169,32 @@
             return $http(requestOptions);
         }
 
-         /** Stop all openstack services
-         *
-         * @return {Promise}
-         */
+         /**
+          *  Stop all openstack services
+          *
+          * @return {Promise}
+          */
         function stopServices() {
 
             var requestOptions = {
                 method: 'POST',
                 url: '/api/upgrade/services',
+                headers: COMMON_API_V2_HEADERS
+            };
+
+            return $http(requestOptions);
+        }
+
+         /**
+          * Initiate the upgrade of all nodes
+          *
+          * @return {Promise}
+          */
+        function upgradeNodes() {
+
+            var requestOptions = {
+                method: 'POST',
+                url: '/api/upgrade/nodes',
                 headers: COMMON_API_V2_HEADERS
             };
 

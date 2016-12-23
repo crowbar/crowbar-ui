@@ -1,5 +1,6 @@
 /* global bard $controller should $httpBackend upgradeStatusFactory
-   crowbarFactory assert $q $rootScope upgradeStepsFactory */
+   crowbarFactory assert $q $rootScope upgradeStepsFactory
+   UPGRADE_STEPS ADMIN_UPGRADE_TIMEOUT_INTERVAL ADMIN_UPGRADE_ALLOWED_DOWNTIME */
 describe('Upgrade Flow - Upgrade Administration Server Controller', function () {
     var controller;
 
@@ -59,6 +60,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
 
             describe('when upgrade is started successfully', function () {
                 beforeEach(function () {
+                    bard.inject('UPGRADE_STEPS', 'ADMIN_UPGRADE_TIMEOUT_INTERVAL', 'ADMIN_UPGRADE_ALLOWED_DOWNTIME');
                     spyOn(upgradeStatusFactory, 'waitForStepToEnd');
 
                     bard.mockService(crowbarFactory, {
@@ -74,6 +76,14 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
 
                 it('should call waitForStepToEnd() to start polling', function () {
                     expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledTimes(1);
+                    expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledWith(
+                        UPGRADE_STEPS.admin_upgrade,
+                        ADMIN_UPGRADE_TIMEOUT_INTERVAL,
+                        jasmine.any(Function),
+                        jasmine.any(Function),
+                        null,
+                        ADMIN_UPGRADE_ALLOWED_DOWNTIME
+                    );
                 });
             });
         });

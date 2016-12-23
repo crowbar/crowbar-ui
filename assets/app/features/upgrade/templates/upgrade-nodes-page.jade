@@ -1,0 +1,25 @@
+.upgrade-nodes-page
+    h2(translate='') upgrade.steps.upgrade-nodes.title
+    button.btn.btn-success.center-block(
+        ng-click="upgradeNodesVm.nodesUpgrade.beginUpgradeNodes()",
+        ng-disabled="upgradeNodesVm.nodesUpgrade.completed || upgradeNodesVm.nodesUpgrade.running",
+        ng-class="{\
+            'spinner-visible': upgradeNodesVm.nodesUpgrade.spinnerVisible,\
+            active: upgradeNodesVm.nodesUpgrade.running\
+        }",
+    )
+        suse-lazy-spinner(delay="2000", active="upgradeNodesVm.nodesUpgrade.running",
+            visible="upgradeNodesVm.nodesUpgrade.spinnerVisible")
+        span(translate='') upgrade.steps.upgrade-nodes.form.upgrade-nodes
+
+    uib-progressbar(max="upgradeNodesVm.nodesUpgrade.totalNodes" value="upgradeNodesVm.nodesUpgrade.upgradedNodes")
+        .progress-label.text-center(translate='upgrade.steps.upgrade-nodes.status.progress-bar',
+            translate-values='{current: upgradeNodesVm.nodesUpgrade.upgradedNodes, total: upgradeNodesVm.nodesUpgrade.totalNodes}'
+        )
+    .row
+        .col-md-8.col-md-offset-4
+            .upgrade-progress(translate='upgrade.steps.upgrade-nodes.status.current-node', translate-values='{"nodeName": upgradeNodesVm.nodesUpgrade.currentNode.name}')
+        .col-md-8.col-md-offset-4
+            .upgrade-progress(translate='upgrade.steps.upgrade-nodes.status.node-role', translate-values='{"nodeRole": upgradeNodesVm.nodesUpgrade.currentNode.role}')
+        .col-md-8.col-md-offset-4
+            .upgrade-progress(translate='upgrade.steps.upgrade-nodes.status.node-status', translate-values='{status: upgradeNodesVm.nodesUpgrade.currentNode.state}')
