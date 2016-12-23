@@ -159,8 +159,8 @@
                         // Store the upgrade best method
                         vm.mode.type = response.data.best_method;
 
-                        var checksValidity = [];
-                        var checksErrors = [];
+                        var checksValidity = [],
+                            checksErrors = [];
 
                         _.forEach(response.data.checks, function(check, checkKey) {
                             // skip unknown checks returned from backend
