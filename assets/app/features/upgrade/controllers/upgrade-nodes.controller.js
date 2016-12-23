@@ -40,6 +40,12 @@
                 .then(
                     function (response) {
                         updateModel(response);
+
+                        // If the nodes upgrade is currently running,
+                        // start pooling for the upgrade status until is completed
+                        if (response.data.steps.nodes_upgrade.status === 'running') {
+                            waitForUpgradeNodesToEnd();
+                        }
                     },
                     function (errorResponse) {
 
@@ -54,28 +60,7 @@
             upgradeFactory.upgradeNodes()
                 .then(
                     function () {
-
-                        vm.nodesUpgrade.running = false;
-                        vm.nodesUpgrade.completed = true;
-
-                        upgradeStatusFactory.waitForStepToEnd(
-                            UPGRADE_STEPS.nodes_upgrade,
-                            NODES_UPGRADE_TIMEOUT_INTERVAL,
-                            function (response) {
-
-                                vm.nodesUpgrade.running = false;
-                                vm.nodesUpgrade.completed = true;
-
-                                updateModel(response);
-                            },
-                            function (errorResponse) {
-
-                                vm.nodesUpgrade.running = false;
-                                // Expose the error list to nodesUpgrade object
-                                vm.nodesUpgrade.errors = errorResponse.data.errors;
-                            },
-                            updateModel
-                        );
+                        waitForUpgradeNodesToEnd();
                     },
                     function (errorResponse) {
                         vm.nodesUpgrade.running = false;
@@ -83,6 +68,31 @@
                         vm.nodesUpgrade.errors = errorResponse.data.errors;
                     }
                 );
+        }
+
+        function waitForUpgradeNodesToEnd () {
+            vm.nodesUpgrade.running = true;
+            vm.nodesUpgrade.completed = false;
+
+            upgradeStatusFactory.waitForStepToEnd(
+                UPGRADE_STEPS.nodes_upgrade,
+                NODES_UPGRADE_TIMEOUT_INTERVAL,
+                function (response) {
+
+                    vm.nodesUpgrade.running = false;
+                    vm.nodesUpgrade.completed = true;
+
+                    updateModel(response);
+                },
+                function (errorResponse) {
+
+                    vm.nodesUpgrade.running = false;
+                    // Expose the error list to nodesUpgrade object
+                    vm.nodesUpgrade.errors = errorResponse.data.errors;
+                },
+                updateModel
+            );
+
         }
 
         function updateModel(response) {
