@@ -159,14 +159,18 @@
                         // Store the upgrade best method
                         vm.mode.type = response.data.best_method;
 
-                        var checksValidity = [];
+                        var checksValidity = [],
+                            checksErrors = [];
 
                         _.forEach(response.data.checks, function(check, checkKey) {
                             // skip unknown checks returned from backend
                             if (checkKey in vm.prechecks.checks) {
                                 vm.prechecks.checks[checkKey].status = check.passed;
                                 if (check.required) {
-                                    checksValidity.push(check.passed)
+                                    checksValidity.push(check.passed);
+                                    if (!check.passed) {
+                                        checksErrors.push(checkKey);
+                                    }
                                 }
                             }
                         });
@@ -181,8 +185,8 @@
                             vm.mode.type = response.data.best_method;
                             updateMode();
                         } else {
-                            // TODO(itxaka): This is a test, should catch the errors and aggregate them
-                            vm.error = {title: 'an error has occurred', body: 'Error descriptions go here'};
+                            // TODO(itxaka): This is a tmp thing, should be clarified
+                            vm.error = {title: 'Some checks failed', body: checksErrors.join()};
                         }
                     },
                     //Failure handler:
