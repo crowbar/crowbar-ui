@@ -11,11 +11,8 @@
             scope: {
                 active: '='
             },
-            link: function (scope, element) {
-                scope.$watch('active', function(newVal) {
-                    newVal ? element.addClass('active') : element.removeClass('active');
-                });
-            }
+            transclude: true,
+            templateUrl: 'app/widgets/crowbar-circle/crowbar-circle.directive.html'
         };
     }
 })();
