@@ -153,6 +153,56 @@ describe('Upgrade Status Factory', function () {
         incompleteUpgradeResponse = {
             data: incompleteUpgradeResponseData
         },
+        failedUpgradeResponseData = {
+            current_step: 'admin_upgrade',
+            substep: null,
+            current_node: null,
+            steps: {
+                upgrade_prechecks: {
+                    status: 'passed',
+                    errors: {}
+                },
+                admin_backup: {
+                    status: 'passed',
+                    errors: {}
+                },
+                admin_repo_checks: {
+                    status: 'passed',
+                    errors: {}
+                },
+                admin_upgrade: {
+                    status: 'failed',
+                    errors: { some_error: { data: 'error message', help: 'hints for the user', } },
+                },
+                database: {
+                    status: 'pending',
+                    errors: {}
+                },
+                nodes_repo_checks: {
+                    status: 'pending',
+                    errors: {}
+                },
+                nodes_services: {
+                    status: 'pending',
+                    errors: {}
+                },
+                nodes_db_dump: {
+                    status: 'pending',
+                    errors: {}
+                },
+                nodes_upgrade: {
+                    status: 'pending',
+                    errors: {}
+                },
+                finished: {
+                    status: 'pending',
+                    errors: {}
+                }
+            }
+        },
+        failedUpgradeResponse = {
+            data: failedUpgradeResponseData
+        },
         flagsObject,
         mockedSuccessCallback,
         mockedErrorCallback,
@@ -356,6 +406,33 @@ describe('Upgrade Status Factory', function () {
                             testedStep, pollingInterval,
                             mockedSuccessCallback, mockedErrorCallback, null, allowedDowntime
                         );
+                    });
+                });
+
+                describe('when received status is failed', function () {
+                    beforeEach(function () {
+                        bard.mockService(upgradeFactory, {
+                            getStatus: $q.when(failedUpgradeResponse)
+                        });
+
+                        upgradeStatusFactory.waitForStepToEnd(
+                            testedStep, pollingInterval,
+                            mockedSuccessCallback, mockedErrorCallback, mockedRunningCallback, allowedDowntime
+                        );
+
+                        $rootScope.$digest();
+                    });
+                    it('should not call success callback', function () {
+                        expect(mockedSuccessCallback).not.toHaveBeenCalled();
+                    });
+                    it('should not call onRunning callback', function () {
+                        expect(mockedRunningCallback).not.toHaveBeenCalled();
+                    });
+                    it('should call error callback', function () {
+                        expect(mockedErrorCallback).toHaveBeenCalledWith(failedUpgradeResponse);
+                    });
+                    it('should not schedule another check', function () {
+                        expect(mockedTimeout).not.toHaveBeenCalled();
                     });
                 });
             });

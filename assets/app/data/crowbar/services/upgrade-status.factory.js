@@ -65,9 +65,13 @@
             upgradeFactory.getStatus()
                 .then(
                     function (response) {
+                        var stepStatus = response.data.steps[step].status;
                         // If the step is completed, trigger its success handler
-                        if (response.data.steps[step].status === UPGRADE_STEP_STATES.passed) {
+                        if (stepStatus === UPGRADE_STEP_STATES.passed) {
                             onSuccess(response);
+                        } else if (stepStatus === UPGRADE_STEP_STATES.failed) {
+                            // on step failure trigger error handler
+                            onError(response);
                         } else {
 
                             // If the response needs to be processed before the step if completed
