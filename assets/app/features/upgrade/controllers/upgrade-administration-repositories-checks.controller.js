@@ -13,11 +13,11 @@
             UpgradeAdministrationRepositoriesCheckController);
 
     UpgradeAdministrationRepositoriesCheckController.$inject = [
-        '$translate', 'upgradeFactory', 'PRODUCTS_REPO_CHECKS_MAP', 'upgradeStepsFactory'
+        '$translate', 'upgradeFactory', 'PRODUCTS_REPO_CHECKS_MAP', 'upgradeStepsFactory', 'UNEXPECTED_ERROR_DATA'
     ];
     // @ngInject
     function UpgradeAdministrationRepositoriesCheckController(
-        $translate, upgradeFactory, PRODUCTS_REPO_CHECKS_MAP, upgradeStepsFactory
+        $translate, upgradeFactory, PRODUCTS_REPO_CHECKS_MAP, upgradeStepsFactory, UNEXPECTED_ERROR_DATA
     ) {
         var vm = this;
         vm.repoChecks = {
@@ -56,6 +56,7 @@
                 .then(
                     // In case of success
                     function (repoChecksResponse) {
+                        var repoErrors = [];
                         // Iterate over our map
                         _.forEach(PRODUCTS_REPO_CHECKS_MAP, function (repos, type) {
                             // Admin repochecks only checks for os or openstack repos
@@ -67,6 +68,9 @@
                         });
                         // Iterate over the checks to determine the validity of the step
                         vm.repoChecks.valid = Object.keys(vm.repoChecks.checks).every(function(k) {
+                            if (vm.repoChecks.checks[k].status === false) {
+                                repoErrors.push($translate.instant(vm.repoChecks.checks[k].label))
+                            }
                             return vm.repoChecks.checks[k].status === true
                         });
 
@@ -76,15 +80,16 @@
                         }
                     },
                     // In case of failure
-                    function (errorRepoChecksResponse) {
-                        // Expose the error list to repoChecks object
-                        // TODO(itxaka): Check the proper error response when the card is done
-                        // https://trello.com/c/chzg85j4/142-3-s49p7-error-reporting-on-crowbar-level
-                        vm.repoChecks.errors = errorRepoChecksResponse.data.errors;
+                    function (errorResponse) {
+                        if (angular.isDefined(errorResponse.data.errors)) {
+                            vm.errors = errorResponse.data;
+                        } else {
+                            vm.errors = UNEXPECTED_ERROR_DATA;
+                        }
                     }
                 )
                 .finally(function () {
-                    // Either on sucess or failure, the repoChecks has been completed.
+                    // Either on success or failure, the repoChecks has been completed.
                     vm.repoChecks.completed = true;
                     vm.repoChecks.running = false;
                 });
