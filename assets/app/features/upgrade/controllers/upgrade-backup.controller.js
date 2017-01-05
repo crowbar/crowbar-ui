@@ -20,6 +20,7 @@ function() {
         'upgradeStepsFactory',
         'upgradeFactory',
         'FileSaver',
+        'UNEXPECTED_ERROR_DATA',
     ];
     // @ngInject
     function UpgradeBackupController(
@@ -29,7 +30,8 @@ function() {
         $document,
         upgradeStepsFactory,
         upgradeFactory,
-        FileSaver
+        FileSaver,
+        UNEXPECTED_ERROR_DATA
     ) {
         var vm = this;
         vm.backup = {
@@ -51,9 +53,12 @@ function() {
                     },
                     // In case of backup error
                     function (errorResponse) {
-                        vm.backup.errors = errorResponse.data.errors;
+                        if (angular.isDefined(errorResponse.data.errors)) {
+                            vm.backup.errors = errorResponse.data;
+                        } else {
+                            vm.backup.errors = UNEXPECTED_ERROR_DATA;
+                        }
                         vm.backup.running = false;
-                        vm.backup.completed = true;
                     }
                 );
         }
@@ -82,16 +87,21 @@ function() {
                             filename = extractFilename(headers) || 'crowbarBackup';
 
                         FileSaver.saveAs(response.data, filename)
+
+                        upgradeStepsFactory.setCurrentStepCompleted()
+                        vm.backup.completed = true;
                     },
                     // In case of download error
                     function (errorResponse) {
-                        vm.backup.errors = errorResponse.data.errors;
+                        if (angular.isDefined(errorResponse.data.errors)) {
+                            vm.backup.errors = errorResponse.data;
+                        } else {
+                            vm.backup.errors = UNEXPECTED_ERROR_DATA;
+                        }
                     }
                 )
                 .finally(function () {
                     vm.backup.running = false;
-                    vm.backup.completed = true;
-                    upgradeStepsFactory.setCurrentStepCompleted()
                 });
         }
 
