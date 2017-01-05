@@ -20,7 +20,8 @@
         'ADDONS_PRECHECK_MAP',
         'PREPARE_TIMEOUT_INTERVAL',
         'UPGRADE_STEPS',
-        'UPGRADE_MODES'
+        'UPGRADE_MODES',
+        'UNEXPECTED_ERROR_DATA',
     ];
     // @ngInject
     function UpgradeLandingController(
@@ -32,7 +33,8 @@
         ADDONS_PRECHECK_MAP,
         PREPARE_TIMEOUT_INTERVAL,
         UPGRADE_STEPS,
-        UPGRADE_MODES
+        UPGRADE_MODES,
+        UNEXPECTED_ERROR_DATA
     ) {
         var vm = this,
             optionalPrechecks = {
@@ -116,8 +118,11 @@
                     waitForPrepareToEnd();
                 },
                 function (errorResponse) {
-                    // Expose the error list to prechecks object
-                    vm.prechecks.errors = errorResponse.data.errors;
+                    if (angular.isDefined(errorResponse.data.errors)) {
+                        vm.errors = errorResponse.data;
+                    } else {
+                        vm.errors = UNEXPECTED_ERROR_DATA;
+                    }
                 }
             );
         }
@@ -135,8 +140,12 @@
                 },
                 function (errorResponse) {
                     vm.prepare.running = false;
-                    // Expose the error list to prechecks object
-                    vm.prechecks.errors = errorResponse.data.errors;
+
+                    if (angular.isDefined(errorResponse.data.errors)) {
+                        vm.errors = errorResponse.data;
+                    } else {
+                        vm.errors = UNEXPECTED_ERROR_DATA;
+                    }
                 }
             );
         }
@@ -160,7 +169,7 @@
                         vm.mode.type = response.data.best_method;
 
                         var checksValidity = [],
-                            checksErrors = [];
+                            checksErrors = {};
 
                         _.forEach(response.data.checks, function(check, checkKey) {
                             // skip unknown checks returned from backend
@@ -169,7 +178,9 @@
                                 if (check.required) {
                                     checksValidity.push(check.passed);
                                     if (!check.passed) {
-                                        checksErrors.push(checkKey);
+                                        _.forEach(check.errors, function(errorInfo, errorCode) {
+                                            checksErrors[errorCode] = errorInfo;
+                                        });
                                     }
                                 }
                             }
@@ -185,18 +196,16 @@
                             vm.mode.type = response.data.best_method;
                             updateMode();
                         } else {
-                            // TODO(itxaka): This is a tmp thing, should be clarified
-                            var failedCheckLabels = [];
-                            _.forEach(checksErrors, function (code) {
-                                failedCheckLabels.push($translate.instant(vm.prechecks.checks[code].label));
-                            });
-                            vm.error = {title: 'Some checks failed', body: failedCheckLabels.join(', ')};
+                            vm.errors = { title: 'prechecks', errors: checksErrors };
                         }
                     },
                     //Failure handler:
                     function(errorResponse) {
-                        // Expose the error list to prechecks object
-                        vm.prechecks.errors = errorResponse.data.errors;
+                        if (angular.isDefined(errorResponse.data.errors)) {
+                            vm.errors = errorResponse.data;
+                        } else {
+                            vm.errors = UNEXPECTED_ERROR_DATA;
+                        }
                     }
                 ).finally(
                     function() {

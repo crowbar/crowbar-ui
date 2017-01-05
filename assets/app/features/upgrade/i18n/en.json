@@ -147,7 +147,11 @@
             }
         },
         "errors": {
-            "default-title": "Upgrade Error"
+            "default-title": "Upgrade Error",
+            "prechecks": "Some Checks failed",
+            "maintenance_updates_installed": "Maintenance Updates",
+            "clusters_health_crm_failures": "Some crm commands failed",
+            "clusters_health_failed_actions": "Some Clusters Health actions have failed"
         }
     },
     "footer": {
