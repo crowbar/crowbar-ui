@@ -186,7 +186,11 @@
                             updateMode();
                         } else {
                             // TODO(itxaka): This is a tmp thing, should be clarified
-                            vm.error = {title: 'Some checks failed', body: checksErrors.join()};
+                            var failedCheckLabels = [];
+                            _.forEach(checksErrors, function (code) {
+                                failedCheckLabels.push($translate.instant(vm.prechecks.checks[code].label));
+                            });
+                            vm.error = {title: 'Some checks failed', body: failedCheckLabels.join(', ')};
                         }
                     },
                     //Failure handler:

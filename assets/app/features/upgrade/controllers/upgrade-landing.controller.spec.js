@@ -182,6 +182,9 @@ describe('Upgrade Landing Controller', function() {
         };
 
     beforeEach(function() {
+        // load ngSanitize to make translations happy
+        module('ngSanitize');
+
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp.upgrade');
         bard.inject('$controller', '$rootScope', 'upgradeFactory',
