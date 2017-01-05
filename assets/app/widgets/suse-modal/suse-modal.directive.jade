@@ -2,9 +2,14 @@
     .modal-header
         button.close(type='button', ng-click='dismiss()', aria-label='Close')
             span(aria-hidden='true') ×
-        h4.modal-title {{ error.title }}
+        h4.modal-title(ng-if='error.title') {{ (translationPrefix + '.' + error.title) | translate }}
+        h4.modal-title(ng-if='!error.title') {{ (translationPrefix + '.default-title') | translate }}
     .modal-body
-        p {{ error.body }}
+        div.panel.panel-danger(ng-repeat="(code, data) in error.errors")
+            div.panel-heading {{ (translationPrefix + '.' + code) | translate }}
+            div.panel-body
+                p {{ data.data }}
+                p {{ data.help }}
     .modal-footer
         button.btn.btn-default(type='button', ng-click='dismiss()')
             span(translate='') modal.close

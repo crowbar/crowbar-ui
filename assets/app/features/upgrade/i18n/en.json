@@ -147,6 +147,7 @@
             }
         },
         "errors": {
+            "default-title": "Upgrade Error"
         }
     },
     "footer": {
@@ -156,6 +157,7 @@
         "title": "SUSE OpenStack Cloud: Upgrade 6-7"
     },
     "modal": {
-        "close": "Close"
+        "close": "Close",
+        "default-title": "Error"
     }
 }
