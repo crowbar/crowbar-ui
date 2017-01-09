@@ -50,58 +50,8 @@ describe('Upgrade Status Factory', function () {
                 }
             }
         },
-        partialUpgradeResponseData = {
-            current_step: 'database',
-            substep: null,
-            current_node: null,
-            steps: {
-                upgrade_prechecks: {
-                    status: 'passed',
-                    errors: {}
-                },
-                admin_backup: {
-                    status: 'passed',
-                    errors: {}
-                },
-                admin_repo_checks: {
-                    status: 'passed',
-                    errors: {}
-                },
-                admin_upgrade: {
-                    status: 'running',
-                    errors: {}
-                },
-                database: {
-                    status: 'pending',
-                    errors: {}
-                },
-                nodes_repo_checks: {
-                    status: 'pending',
-                    errors: {}
-                },
-                nodes_services: {
-                    status: 'pending',
-                    errors: {}
-                },
-                nodes_db_dump: {
-                    status: 'pending',
-                    errors: {}
-                },
-                nodes_upgrade: {
-                    status: 'pending',
-                    errors: {}
-                },
-                finished: {
-                    status: 'pending',
-                    errors: {}
-                }
-            }
-        },
         completedUpgradeResponse = {
             data: completedUpgradeResponseData
-        },
-        partialUpgradeResponse = {
-            data: partialUpgradeResponseData
         },
         incompleteUpgradeResponseData = {
             current_step: 'admin_upgrade',
@@ -320,35 +270,65 @@ describe('Upgrade Status Factory', function () {
             describe('when got upgrade status from api successfully', function () {
                 describe('when received status is completed', function () {
 
+                    beforeEach(function () {
+                        bard.mockService(upgradeFactory, {
+                            getStatus: $q.when(completedUpgradeResponse)
+                        });
+
+                        upgradeStatusFactory.waitForStepToEnd(
+                            testedStep, pollingInterval, mockedSuccessCallback, mockedErrorCallback
+                        );
+
+                        $rootScope.$digest();
+                    });
+
+                    it('should call success callback', function () {
+                        expect(mockedSuccessCallback).toHaveBeenCalledTimes(1);
+                        expect(mockedSuccessCallback).toHaveBeenCalledWith(completedUpgradeResponse);
+                    });
+                    it('should not call error callback', function () {
+                        expect(mockedErrorCallback).not.toHaveBeenCalled();
+                    });
+                    it('should not schedule another check', function () {
+                        expect(mockedTimeout).not.toHaveBeenCalled();
+                    });
+                });
+
+                describe('when received status is running', function () {
                     describe('without onRunning callback', function () {
                         beforeEach(function () {
                             bard.mockService(upgradeFactory, {
-                                getStatus: $q.when(completedUpgradeResponse)
+                                getStatus: $q.when(incompleteUpgradeResponse)
                             });
 
                             upgradeStatusFactory.waitForStepToEnd(
-                                testedStep, pollingInterval, mockedSuccessCallback, mockedErrorCallback
+                                testedStep, pollingInterval,
+                                mockedSuccessCallback, mockedErrorCallback, null, allowedDowntime
                             );
 
                             $rootScope.$digest();
                         });
 
-                        it('should call success callback', function () {
-                            expect(mockedSuccessCallback).toHaveBeenCalledTimes(1);
-                            expect(mockedSuccessCallback).toHaveBeenCalledWith(completedUpgradeResponse);
+                        it('should not call success callback', function () {
+                            expect(mockedSuccessCallback).not.toHaveBeenCalled();
                         });
                         it('should not call error callback', function () {
                             expect(mockedErrorCallback).not.toHaveBeenCalled();
                         });
-                        it('should not schedule another check', function () {
-                            expect(mockedTimeout).not.toHaveBeenCalled();
+                        it('should schedule another check', function () {
+                            expect(mockedTimeout).toHaveBeenCalledTimes(1);
+                            expect(mockedTimeout).toHaveBeenCalledWith(
+                                upgradeStatusFactory.waitForStepToEnd, pollingInterval, true,
+                                testedStep, pollingInterval,
+                                mockedSuccessCallback, mockedErrorCallback, null, allowedDowntime
+                            );
                         });
                     });
 
                     describe('with onRunning callback', function () {
                         beforeEach(function () {
                             bard.mockService(upgradeFactory, {
-                                getStatus: $q.when(partialUpgradeResponse)
+                                getStatus: $q.when(incompleteUpgradeResponse)
                             });
 
                             upgradeStatusFactory.waitForStepToEnd(
@@ -367,7 +347,7 @@ describe('Upgrade Status Factory', function () {
                         });
                         it('should call onRunning callback', function () {
                             expect(mockedRunningCallback).toHaveBeenCalledTimes(1);
-                            expect(mockedRunningCallback).toHaveBeenCalledWith(partialUpgradeResponse);
+                            expect(mockedRunningCallback).toHaveBeenCalledWith(incompleteUpgradeResponse);
                         });
                         it('should schedule another check', function () {
                             expect(mockedTimeout).toHaveBeenCalledTimes(1);
@@ -377,35 +357,6 @@ describe('Upgrade Status Factory', function () {
                                 mockedSuccessCallback, mockedErrorCallback, mockedRunningCallback, 0
                             );
                         });
-                    });
-                });
-
-                describe('when received status is not completed', function () {
-                    beforeEach(function () {
-                        bard.mockService(upgradeFactory, {
-                            getStatus: $q.when(incompleteUpgradeResponse)
-                        });
-
-                        upgradeStatusFactory.waitForStepToEnd(
-                            testedStep, pollingInterval,
-                            mockedSuccessCallback, mockedErrorCallback, null, allowedDowntime
-                        );
-
-                        $rootScope.$digest();
-                    });
-                    it('should not call success callback', function () {
-                        expect(mockedSuccessCallback).not.toHaveBeenCalled();
-                    });
-                    it('should not call error callback', function () {
-                        expect(mockedErrorCallback).not.toHaveBeenCalled();
-                    });
-                    it('should schedule another check', function () {
-                        expect(mockedTimeout).toHaveBeenCalledTimes(1);
-                        expect(mockedTimeout).toHaveBeenCalledWith(
-                            upgradeStatusFactory.waitForStepToEnd, pollingInterval, true,
-                            testedStep, pollingInterval,
-                            mockedSuccessCallback, mockedErrorCallback, null, allowedDowntime
-                        );
                     });
                 });
 
