@@ -16,6 +16,7 @@
         'upgradeFactory',
         'crowbarFactory',
         'PRODUCTS_REPO_CHECKS_MAP',
+        'UNEXPECTED_ERROR_DATA',
         'upgradeStepsFactory'
     ];
     // @ngInject
@@ -24,6 +25,7 @@
         upgradeFactory,
         crowbarFactory,
         PRODUCTS_REPO_CHECKS_MAP,
+        UNEXPECTED_ERROR_DATA,
         upgradeStepsFactory
     ) {
         var vm = this,
@@ -99,12 +101,16 @@
                     // In case of success
                     onSuccessGetNodesRepoChecks,
                     // In case of failure
-                    function (errorRepoChecksResponse) {
-                        // Expose the error list to repoChecks object
-                        vm.repoChecks.errors = errorRepoChecksResponse.data.errors;
+                    function (errorResponse) {
+                        if (angular.isDefined(errorResponse.data.errors)) {
+                            vm.errors = errorResponse.data;
+                        } else {
+                            vm.errors = UNEXPECTED_ERROR_DATA;
+                        }
                     }
                 )
                 .finally(function () {
+                    // TODO(skazi): marking completed=true on general errors causes all checks to turn red.
                     // Either on sucess or failure, the repoChecks has been completed.
                     vm.repoChecks.completed = true;
                     // And the spinner must be stopped and hidden
