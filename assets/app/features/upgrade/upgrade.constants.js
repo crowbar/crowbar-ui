@@ -12,6 +12,15 @@
             'ha': ['clusters_healthy'],
             'ceph': ['ceph_healthy']
         })
+        .constant('UNEXPECTED_ERROR_DATA', {
+            title: 'unexpected_error',
+            errors: {
+                unexpected_error: {
+                    data: 'An unexpected error ocurred',
+                    help: 'Please check logs for more details'
+                }
+            }
+        })
         .constant('UPGRADE_LAST_STATE_KEY', 'crowbar.upgrade.lastUIState')
         .constant('PREPARE_TIMEOUT_INTERVAL', 1000)
         .constant('ADMIN_UPGRADE_ALLOWED_DOWNTIME', 30 * 60 * 1000)

@@ -491,7 +491,7 @@ describe('Upgrade Landing Controller', function() {
                 });
 
                 it('should expose the errors through vm.prechecks.errors object', function () {
-                    expect(controller.prechecks.errors).toEqual(failingResponse.data.errors);
+                    expect(controller.errors).toEqual(failingResponse.data);
                 });
             });
         });
