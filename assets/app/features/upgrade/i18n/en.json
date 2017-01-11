@@ -119,7 +119,7 @@
                     "backup" : "Backup Created"
                 },
                 "form": {
-                    "stop-services": "Stop OpenStack Servers"
+                    "stop-services": "Stop OpenStack Services"
                 }
             },
             "upgrade-nodes": {
