@@ -18,6 +18,7 @@
             connectDatabaseServer: connectDatabaseServer,
             cancelUpgrade: cancelUpgrade,
             stopServices: stopServices,
+            createOpenstackBackup: createOpenstackBackup,
             upgradeNodes: upgradeNodes,
         };
 
@@ -179,6 +180,22 @@
             var requestOptions = {
                 method: 'POST',
                 url: '/api/upgrade/services',
+                headers: COMMON_API_V2_HEADERS
+            };
+
+            return $http(requestOptions);
+        }
+
+        /**
+         * Create Openstack Database Backup
+         *
+         * @return {Promise}
+         */
+        function createOpenstackBackup() {
+
+            var requestOptions = {
+                method: 'POST',
+                url: '/api/upgrade/openstackbackup',
                 headers: COMMON_API_V2_HEADERS
             };
 
