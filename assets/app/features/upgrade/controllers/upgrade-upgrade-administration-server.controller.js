@@ -43,7 +43,7 @@
             // TODO(itxaka): Not tested yet, tests should be done as part of card:
             // https://trello.com/c/5fXGm1a7/45-2-27-restore-last-step
             upgradeStatusFactory.syncStatusFlags(
-                UPGRADE_STEPS.admin_upgrade, vm.adminUpgrade,
+                UPGRADE_STEPS.admin, vm.adminUpgrade,
                 waitForUpgradeToEnd, upgradeStepsFactory.setCurrentStepCompleted
             );
         }
@@ -69,7 +69,7 @@
 
         function waitForUpgradeToEnd() {
             upgradeStatusFactory.waitForStepToEnd(
-                UPGRADE_STEPS.admin_upgrade,
+                UPGRADE_STEPS.admin,
                 ADMIN_UPGRADE_TIMEOUT_INTERVAL,
                 function (/*response*/) {
                     vm.adminUpgrade.running = false;

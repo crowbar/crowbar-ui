@@ -33,7 +33,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
     describe('on controller creation', function () {
         it('should call syncStatusFlags() to update the state', function () {
             expect(upgradeStatusFactory.syncStatusFlags).toHaveBeenCalledWith(
-                'admin_upgrade', controller.adminUpgrade,
+                'admin', controller.adminUpgrade,
                 jasmine.any(Function), upgradeStepsFactory.setCurrentStepCompleted
             );
         });
@@ -77,7 +77,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
                 it('should call waitForStepToEnd() to start polling', function () {
                     expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledTimes(1);
                     expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledWith(
-                        UPGRADE_STEPS.admin_upgrade,
+                        UPGRADE_STEPS.admin,
                         ADMIN_UPGRADE_TIMEOUT_INTERVAL,
                         jasmine.any(Function),
                         jasmine.any(Function),

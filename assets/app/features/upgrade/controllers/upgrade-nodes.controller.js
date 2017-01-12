@@ -43,7 +43,7 @@
 
                         // If the nodes upgrade is currently running,
                         // start pooling for the upgrade status until is completed
-                        if (response.data.steps.nodes_upgrade.status === 'running') {
+                        if (response.data.steps.nodes.status === 'running') {
                             waitForUpgradeNodesToEnd();
                         }
                     },
@@ -75,7 +75,7 @@
             vm.nodesUpgrade.completed = false;
 
             upgradeStatusFactory.waitForStepToEnd(
-                UPGRADE_STEPS.nodes_upgrade,
+                UPGRADE_STEPS.nodes,
                 NODES_UPGRADE_TIMEOUT_INTERVAL,
                 function (response) {
 
