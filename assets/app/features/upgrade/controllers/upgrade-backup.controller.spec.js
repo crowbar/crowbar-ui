@@ -85,8 +85,12 @@ describe('Upgrade Flow - Backup Controller', function() {
                     expect(controller.backup.download).toHaveBeenCalled();
                 });
 
-                it('should set running to true', function () {
+                it('should leave running at true', function () {
                     assert.isTrue(controller.backup.running);
+                });
+
+                it('should not set completed to true', function () {
+                    assert.isFalse(controller.backup.completed);
                 });
             });
 
@@ -110,7 +114,7 @@ describe('Upgrade Flow - Backup Controller', function() {
                 });
 
                 it('should expose the errors through adminUpgrade.errors object', function () {
-                    expect(controller.backup.errors).toEqual(mockedErrorList);
+                    expect(controller.backup.errors.errors).toEqual(mockedErrorList);
                 });
             });
         });
@@ -216,12 +220,12 @@ describe('Upgrade Flow - Backup Controller', function() {
                         assert.isTrue(crowbarUtilsFactory.getAdminBackup.calledOnce);
                     });
 
-                    it('changes the completed status', function() {
-                        assert.isTrue(controller.backup.completed);
+                    it('leaves the completed at false', function() {
+                        assert.isFalse(controller.backup.completed);
                     });
 
                     it('should expose the errors through adminUpgrade.errors object', function () {
-                        expect(controller.backup.errors).toEqual(mockedErrorList);
+                        expect(controller.backup.errors.errors).toEqual(mockedErrorList);
                     });
                 });
 
