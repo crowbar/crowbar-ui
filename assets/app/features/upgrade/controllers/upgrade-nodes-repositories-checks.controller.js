@@ -30,22 +30,26 @@
     ) {
         var vm = this,
             addonsRepos = {
-                'SLE12-SP2-HA-Pool': {
-                    status: false,
-                    label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SLE12-SP2-HA-Pool'
+                'ha': {
+                    'SLE12-SP2-HA-Pool': {
+                        status: false,
+                        label: 'upgrade.repositories.codes.SLE12-SP2-HA-Pool'
+                    },
+                    'SLE12-SP2-HA-Updates': {
+                        status: false,
+                        label: 'upgrade.repositories.codes.SLE12-SP2-HA-Updates'
+                    },
                 },
-                'SLE12-SP2-HA-Updates': {
-                    status: false,
-                    label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SLE12-SP2-HA-Updates'
+                'ceph': {
+                    'SUSE-Enterprise-Storage-4-Pool': {
+                        status: false,
+                        label: 'upgrade.repositories.codes.SUSE-Enterprise-Storage-4-Pool'
+                    },
+                    'SUSE-Enterprise-Storage-4-Updates': {
+                        status: false,
+                        label: 'upgrade.repositories.codes.SUSE-Enterprise-Storage-4-Updates'
+                    },
                 },
-                'SUSE-Enterprise-Storage-4-Pool': {
-                    status: false,
-                    label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SUSE-Enterprise-Storage-4-Pool'
-                },
-                'SUSE-Enterprise-Storage-4-Updates': {
-                    status: false,
-                    label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SUSE-Enterprise-Storage-4-Updates'
-                }
             };
         vm.repoChecks = {
             completed: false,
@@ -53,19 +57,19 @@
             checks: {
                 'SLES12-SP2-Pool': {
                     status: false,
-                    label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SLES12-SP2-Pool'
+                    label: 'upgrade.repositories.codes.SLES12-SP2-Pool'
                 },
                 'SLES12-SP2-Updates': {
                     status: false,
-                    label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SLES12-SP2-Updates'
+                    label: 'upgrade.repositories.codes.SLES12-SP2-Updates'
                 },
                 'SUSE-OpenStack-Cloud-7-Pool': {
                     status: false,
-                    label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SUSE-OpenStack-Cloud-7-Pool'
+                    label: 'upgrade.repositories.codes.SUSE-OpenStack-Cloud-7-Pool'
                 },
                 'SUSE-OpenStack-Cloud-7-Updates': {
                     status: false,
-                    label: 'upgrade.steps.nodes-repository-checks.repositories.codes.SUSE-OpenStack-Cloud-7-Updates'
+                    label: 'upgrade.repositories.codes.SUSE-OpenStack-Cloud-7-Updates'
                 }
             },
             runRepoChecks: runRepoChecks,
@@ -82,10 +86,7 @@
             crowbarFactory.getEntity().then(function (entityResponse) {
                 if (! _.isEmpty(entityResponse.data.addons)) {
                     _.forEach(entityResponse.data.addons, function (addon) {
-                        _.forEach(PRODUCTS_REPO_CHECKS_MAP[addon], function (addonRepository) {
-                            _.set(vm.repoChecks.checks, addonRepository, addonsRepos[addonRepository]);
-                        });
-
+                        vm.repoChecks.checks = _.merge(vm.repoChecks.checks, addonsRepos[addon]);
                     });
                 }
             });
