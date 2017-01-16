@@ -143,7 +143,10 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             }
         },
         failingErrors = {
-            error_message: 'Authentication failure'
+            auth_error: {
+                data: 'Authentication failure',
+                help: 'Please authenticate',
+            }
         },
         entityResponse = {
             data: {
@@ -364,7 +367,7 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             });
 
             it('should expose the errors through vm.repoChecks.errors object', function () {
-                expect(controller.repoChecks.errors).toEqual(failingResponse.data.errors);
+                expect(controller.errors).toEqual(failingResponse.data);
             });
         });
 
