@@ -13,12 +13,11 @@
 
     UpgradeOpenStackServicesController.$inject = [
         '$translate',
-        'openstackFactory',
         'upgradeFactory',
         'upgradeStepsFactory'
     ];
     // @ngInject
-    function UpgradeOpenStackServicesController($translate, openstackFactory, upgradeFactory, upgradeStepsFactory) {
+    function UpgradeOpenStackServicesController($translate, upgradeFactory, upgradeStepsFactory) {
         var vm = this;
 
         vm.openStackServices = {
@@ -57,7 +56,7 @@
                 vm.openStackServices.checks.services.status =
                     vm.openStackServices.valid = true;
 
-                openstackFactory.createBackup()
+                upgradeFactory.createOpenstackBackup()
                     .then(
                         //Success handler. Backup OpenStackServices successfully:
                         createBackupSuccess,

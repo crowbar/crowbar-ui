@@ -33,6 +33,10 @@ describe('Upgrade Factory', function () {
         backupPromise,
         createNewDatabaseServerPromise,
         connectDatabaseServerPromise,
+        mockedCreateOpenstackBackupResponse = {
+            'services': true,
+        },
+        createOpenstackBackupPromise,
         mockedStopServicesPromise = {
             'services': true
         },
@@ -84,6 +88,10 @@ describe('Upgrade Factory', function () {
 
         it('returns an object with stopServices function is defined', function () {
             expect(upgradeFactory.stopServices).toEqual(jasmine.any(Function));
+        });
+
+        it('returns an object with createOpenstackBackup function defined', function () {
+            expect(upgradeFactory.createOpenstackBackup).toEqual(jasmine.any(Function));
         });
 
         describe('when getPreliminaryChecks method is executed', function () {
@@ -359,6 +367,31 @@ describe('Upgrade Factory', function () {
                 connectDatabaseServerPromise.then(function (connectDatabaseResponse) {
                     expect(connectDatabaseResponse.status).toEqual(200);
                     expect(connectDatabaseResponse.data).toEqual(mockedConnectDatabaseServerResponse);
+                });
+                $httpBackend.flush();
+            });
+        });
+
+        describe('when createOpenstackBackup method is executed', function () {
+            beforeEach(function () {
+                $httpBackend.expectPOST('/api/upgrade/openstackbackup', null, COMMON_API_V2_HEADERS)
+                    .respond(200, mockedCreateOpenstackBackupResponse);
+                createOpenstackBackupPromise = upgradeFactory.createOpenstackBackup();
+            });
+
+            it('returns a promise', function () {
+                expect(createOpenstackBackupPromise).toEqual(jasmine.any(Object));
+                expect(createOpenstackBackupPromise['then']).toEqual(jasmine.any(Function));
+                expect(createOpenstackBackupPromise['catch']).toEqual(jasmine.any(Function));
+                expect(createOpenstackBackupPromise['finally']).toEqual(jasmine.any(Function));
+                expect(createOpenstackBackupPromise['error']).toEqual(jasmine.any(Function));
+                expect(createOpenstackBackupPromise['success']).toEqual(jasmine.any(Function));
+            });
+
+            it('when resolved, it returns the createBackupServices response', function () {
+                createOpenstackBackupPromise.then(function (createBackupResponse) {
+                    expect(createBackupResponse.status).toEqual(200);
+                    expect(createBackupResponse.data).toEqual(mockedCreateOpenstackBackupResponse);
                 });
                 $httpBackend.flush();
             });
