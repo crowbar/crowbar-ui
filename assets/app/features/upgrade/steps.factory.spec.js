@@ -52,38 +52,38 @@ describe('Stepes Factory', function () {
         }
         ],
         initialStatusData = {
-            current_step: 'upgrade_prechecks',
+            current_step: 'prechecks',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'pending',
                 },
-                upgrade_prepare: {
+                prepare: {
                     status: 'pending',
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'pending',
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'pending',
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'pending',
                 },
                 database: {
                     status: 'pending',
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'pending',
                 },
-                nodes_services: {
+                services: {
                     status: 'pending',
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                 },
                 finished: {
@@ -92,38 +92,38 @@ describe('Stepes Factory', function () {
             }
         },
         statusDataAfterPrechecks = {
-            current_step: 'upgrade_prepare',
+            current_step: 'prepare',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'passed',
                 },
-                upgrade_prepare: {
+                prepare: {
                     status: 'pending',
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'pending',
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'pending',
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'pending',
                 },
                 database: {
                     status: 'pending',
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'pending',
                 },
-                nodes_services: {
+                services: {
                     status: 'pending',
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                 },
                 finished: {
@@ -132,38 +132,38 @@ describe('Stepes Factory', function () {
             }
         },
         statusDataDuringPrepare = {
-            current_step: 'upgrade_prepare',
+            current_step: 'prepare',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'passed',
                 },
-                upgrade_prepare: {
+                prepare: {
                     status: 'running',
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'pending',
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'pending',
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'pending',
                 },
                 database: {
                     status: 'pending',
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'pending',
                 },
-                nodes_services: {
+                services: {
                     status: 'pending',
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                 },
                 finished: {
@@ -172,38 +172,38 @@ describe('Stepes Factory', function () {
             }
         },
         statusDataAfterPrepare = {
-            current_step: 'admin_backup',
+            current_step: 'backup_crowbar',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'passed',
                 },
-                upgrade_prepare: {
+                prepare: {
                     status: 'passed',
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'pending',
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'pending',
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'pending',
                 },
                 database: {
                     status: 'pending',
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'pending',
                 },
-                nodes_services: {
+                services: {
                     status: 'pending',
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                 },
                 finished: {
@@ -212,38 +212,38 @@ describe('Stepes Factory', function () {
             }
         },
         statusDataDuringBackup = {
-            current_step: 'admin_backup',
+            current_step: 'backup_crowbar',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'passed',
                 },
-                upgrade_prepare: {
+                prepare: {
                     status: 'passed',
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'running',
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'pending',
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'pending',
                 },
                 database: {
                     status: 'pending',
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'pending',
                 },
-                nodes_services: {
+                services: {
                     status: 'pending',
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                 },
                 finished: {
@@ -252,38 +252,38 @@ describe('Stepes Factory', function () {
             }
         },
         statusDataAfterBackup = {
-            current_step: 'admin_repo_checks',
+            current_step: 'repocheck_crowbar',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'passed',
                 },
-                upgrade_prepare: {
+                prepare: {
                     status: 'passed',
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'passed',
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'pending',
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'pending',
                 },
                 database: {
                     status: 'pending',
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'pending',
                 },
-                nodes_services: {
+                services: {
                     status: 'pending',
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                 },
                 finished: {
@@ -292,38 +292,38 @@ describe('Stepes Factory', function () {
             }
         },
         statusDataAfterAdminRepoChecks = {
-            current_step: 'admin_upgrade',
+            current_step: 'admin',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'passed',
                 },
-                upgrade_prepare: {
+                prepare: {
                     status: 'passed',
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'passed',
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'passed',
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'pending',
                 },
                 database: {
                     status: 'pending',
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'pending',
                 },
-                nodes_services: {
+                services: {
                     status: 'pending',
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                 },
                 finished: {
@@ -336,34 +336,34 @@ describe('Stepes Factory', function () {
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'passed',
                 },
-                upgrade_prepare: {
+                prepare: {
                     status: 'passed',
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'passed',
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'passed',
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'passed',
                 },
                 database: {
                     status: 'pending',
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'pending',
                 },
-                nodes_services: {
+                services: {
                     status: 'pending',
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                 },
                 finished: {
@@ -372,38 +372,38 @@ describe('Stepes Factory', function () {
             }
         },
         statusDataAfterDatabase = {
-            current_step: 'nodes_repo_checks',
+            current_step: 'repocheck_nodes',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'passed',
                 },
-                upgrade_prepare: {
+                prepare: {
                     status: 'passed',
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'passed',
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'passed',
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'passed',
                 },
                 database: {
                     status: 'passed',
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'pending',
                 },
-                nodes_services: {
+                services: {
                     status: 'pending',
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                 },
                 finished: {
@@ -412,38 +412,38 @@ describe('Stepes Factory', function () {
             }
         },
         statusDataAfterNodesRepoChecks = {
-            current_step: 'nodes_services',
+            current_step: 'services',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'passed',
                 },
-                upgrade_prepare: {
+                prepare: {
                     status: 'passed',
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'passed',
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'passed',
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'passed',
                 },
                 database: {
                     status: 'passed',
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'passed',
                 },
-                nodes_services: {
+                services: {
                     status: 'pending',
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                 },
                 finished: {
@@ -452,38 +452,38 @@ describe('Stepes Factory', function () {
             }
         },
         statusDataAfterNodesServices = {
-            current_step: 'nodes_db_dump',
+            current_step: 'backup_openstack',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'passed',
                 },
-                upgrade_prepare: {
+                prepare: {
                     status: 'passed',
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'passed',
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'passed',
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'passed',
                 },
                 database: {
                     status: 'passed',
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'passed',
                 },
-                nodes_services: {
+                services: {
                     status: 'passed',
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                 },
                 finished: {
@@ -492,38 +492,38 @@ describe('Stepes Factory', function () {
             }
         },
         statusDataAfterNodesDBDump = {
-            current_step: 'nodes_upgrade',
+            current_step: 'nodes',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'passed',
                 },
-                upgrade_prepare: {
+                prepare: {
                     status: 'passed',
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'passed',
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'passed',
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'passed',
                 },
                 database: {
                     status: 'passed',
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'passed',
                 },
-                nodes_services: {
+                services: {
                     status: 'passed',
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'passed',
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                 },
                 finished: {
@@ -536,34 +536,34 @@ describe('Stepes Factory', function () {
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'passed',
                 },
-                upgrade_prepare: {
+                prepare: {
                     status: 'passed',
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'passed',
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'passed',
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'passed',
                 },
                 database: {
                     status: 'passed',
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'passed',
                 },
-                nodes_services: {
+                services: {
                     status: 'passed',
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'passed',
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'passed',
                 },
                 finished: {

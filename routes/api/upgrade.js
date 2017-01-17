@@ -4,10 +4,10 @@ var express = require('express'),
 var errors = ['001', '002', '003'];
 
 var status_counter = -1,
-    tested_step = 'nodes_upgrade',
+    tested_step = 'nodes',
     simulate_temporary_downtime = true,
     status = {
-        current_step: 'upgrade_prechecks',
+        current_step: 'prechecks',
         substep: null,
         current_node:  {
             alias: 'controller-1',
@@ -19,23 +19,23 @@ var status_counter = -1,
         remaining_nodes: 95,
         upgraded_nodes: 60,
         steps: {
-            upgrade_prechecks: {
+            prechecks: {
                 status: 'pending',
                 errors: {}
             },
-            upgrade_prepare: {
+            prepare: {
                 status: 'pending',
                 errors: {}
             },
-            admin_backup: {
+            backup_crowbar: {
                 status: 'pending',
                 errors: {}
             },
-            admin_repo_checks: {
+            repocheck_crowbar: {
                 status: 'pending',
                 errors: {}
             },
-            admin_upgrade: {
+            admin: {
                 status: 'pending',
                 errors: {}
             },
@@ -43,19 +43,19 @@ var status_counter = -1,
                 status: 'pending',
                 errors: {}
             },
-            nodes_repo_checks: {
+            repocheck_nodes: {
                 status: 'pending',
                 errors: {}
             },
-            nodes_services: {
+            services: {
                 status: 'pending',
                 errors: {}
             },
-            nodes_db_dump: {
+            backup_openstack: {
                 status: 'pending',
                 errors: {}
             },
-            nodes_upgrade: {
+            nodes: {
                 status: 'pending',
                 errors: {}
             },

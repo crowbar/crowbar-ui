@@ -11,7 +11,7 @@ describe('Upgrade Nodes Controller', function() {
         totalNodes = 125,
         upgradedNodes = 50,
         initialStatusResponseData = {
-            current_step: 'nodes_upgrade',
+            current_step: 'nodes',
             substep: null,
             current_node: {
                 alias: 'controller-1',
@@ -23,23 +23,23 @@ describe('Upgrade Nodes Controller', function() {
             remaining_nodes: totalNodes,
             upgraded_nodes: 0,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: stepStatus.passed,
                     errors: {}
                 },
-                upgrade_prepare: {
+                prepare: {
                     status: stepStatus.passed,
                     errors: {}
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: stepStatus.passed,
                     errors: {}
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: stepStatus.passed,
                     errors: {}
                 },
-                admin_upgrade: {
+                admin: {
                     status: stepStatus.passed,
                     errors: {}
                 },
@@ -47,19 +47,19 @@ describe('Upgrade Nodes Controller', function() {
                     status: stepStatus.passed,
                     errors: {}
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: stepStatus.passed,
                     errors: {}
                 },
-                nodes_services: {
+                services: {
                     status: stepStatus.passed,
                     errors: {}
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: stepStatus.passed,
                     errors: {}
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: stepStatus.pending,
                     errors: {}
                 },
@@ -93,7 +93,7 @@ describe('Upgrade Nodes Controller', function() {
                 remaining_nodes: 0,
                 upgraded_nodes: totalNodes,
                 steps: {
-                    nodes_upgrade: {
+                    nodes: {
                         status: stepStatus.passed
                     },
                     finished: {
@@ -120,7 +120,7 @@ describe('Upgrade Nodes Controller', function() {
                 remaining_nodes: totalNodes - upgradedNodes,
                 upgraded_nodes:  upgradedNodes,
                 steps: {
-                    nodes_upgrade: {
+                    nodes: {
                         status: stepStatus.running
                     }
                 }
@@ -245,7 +245,7 @@ describe('Upgrade Nodes Controller', function() {
             it('should call WaitForStepToEnd', function () {
                 expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledTimes(1);
                 expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledWith(
-                    UPGRADE_STEPS.nodes_upgrade,
+                    UPGRADE_STEPS.nodes,
                     NODES_UPGRADE_TIMEOUT_INTERVAL,
                     jasmine.any(Function),
                     jasmine.any(Function),
@@ -414,7 +414,7 @@ describe('Upgrade Nodes Controller', function() {
                 it('should wait for nodesUpgrade to end', function () {
                     expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledTimes(1);
                     expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledWith(
-                        UPGRADE_STEPS.nodes_upgrade,
+                        UPGRADE_STEPS.nodes,
                         NODES_UPGRADE_TIMEOUT_INTERVAL,
                         jasmine.any(Function),
                         jasmine.any(Function),

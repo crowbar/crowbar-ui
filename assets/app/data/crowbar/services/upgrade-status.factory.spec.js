@@ -1,26 +1,26 @@
 /*global bard assert $q $rootScope should expect module upgradeFactory upgradeStatusFactory */
 describe('Upgrade Status Factory', function () {
     var pollingInterval = 1234,
-        testedStep = 'admin_upgrade',
+        testedStep = 'admin',
         allowedDowntime = 4321,
         completedUpgradeResponseData = {
             current_step: 'database',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'passed',
                     errors: {}
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'passed',
                     errors: {}
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'passed',
                     errors: {}
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'passed',
                     errors: {}
                 },
@@ -28,19 +28,19 @@ describe('Upgrade Status Factory', function () {
                     status: 'pending',
                     errors: {}
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'pending',
                     errors: {}
                 },
-                nodes_services: {
+                services: {
                     status: 'pending',
                     errors: {}
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                     errors: {}
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                     errors: {}
                 },
@@ -54,23 +54,23 @@ describe('Upgrade Status Factory', function () {
             data: completedUpgradeResponseData
         },
         incompleteUpgradeResponseData = {
-            current_step: 'admin_upgrade',
+            current_step: 'admin',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'passed',
                     errors: {}
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'passed',
                     errors: {}
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'passed',
                     errors: {}
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'running',
                     errors: {}
                 },
@@ -78,19 +78,19 @@ describe('Upgrade Status Factory', function () {
                     status: 'pending',
                     errors: {}
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'pending',
                     errors: {}
                 },
-                nodes_services: {
+                services: {
                     status: 'pending',
                     errors: {}
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                     errors: {}
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                     errors: {}
                 },
@@ -104,23 +104,23 @@ describe('Upgrade Status Factory', function () {
             data: incompleteUpgradeResponseData
         },
         failedUpgradeResponseData = {
-            current_step: 'admin_upgrade',
+            current_step: 'admin',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'passed',
                     errors: {}
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'passed',
                     errors: {}
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'passed',
                     errors: {}
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'failed',
                     errors: { some_error: { data: 'error message', help: 'hints for the user', } },
                 },
@@ -128,19 +128,19 @@ describe('Upgrade Status Factory', function () {
                     status: 'pending',
                     errors: {}
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'pending',
                     errors: {}
                 },
-                nodes_services: {
+                services: {
                     status: 'pending',
                     errors: {}
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                     errors: {}
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                     errors: {}
                 },

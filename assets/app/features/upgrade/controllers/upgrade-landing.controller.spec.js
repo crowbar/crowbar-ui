@@ -4,38 +4,38 @@
 describe('Upgrade Landing Controller', function() {
     var controller,
         completedUpgradeResponseData = {
-            current_step: 'admin_backup',
+            current_step: 'backup_crowbar',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'passed',
                 },
-                upgrade_prepare: {
+                prepare: {
                     status: 'passed',
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'pending',
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'pending',
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'pending',
                 },
                 database: {
                     status: 'pending',
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'pending',
                 },
-                nodes_services: {
+                services: {
                     status: 'pending',
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                 },
                 finished: {
@@ -47,38 +47,38 @@ describe('Upgrade Landing Controller', function() {
             data: completedUpgradeResponseData,
         },
         incompleteUpgradeResponseData = {
-            current_step: 'upgrade_prepare',
+            current_step: 'prepare',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'passed',
                 },
-                upgrade_prepare: {
+                prepare: {
                     status: 'running',
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'pending',
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'pending',
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'pending',
                 },
                 database: {
                     status: 'pending',
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'pending',
                 },
-                nodes_services: {
+                services: {
                     status: 'pending',
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                 },
                 finished: {
@@ -90,38 +90,38 @@ describe('Upgrade Landing Controller', function() {
             data: incompleteUpgradeResponseData,
         },
         initialResponseData = {
-            current_step: 'upgrade_prechecks',
+            current_step: 'prechecks',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'pending',
                 },
-                upgrade_prepare: {
+                prepare: {
                     status: 'pending',
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'pending',
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'pending',
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'pending',
                 },
                 database: {
                     status: 'pending',
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'pending',
                 },
-                nodes_services: {
+                services: {
                     status: 'pending',
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                 },
                 finished: {
@@ -242,7 +242,7 @@ describe('Upgrade Landing Controller', function() {
         it('should start polling for status', function() {
             expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledTimes(1);
             expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledWith(
-                UPGRADE_STEPS.upgrade_prepare,
+                UPGRADE_STEPS.prepare,
                 PREPARE_TIMEOUT_INTERVAL,
                 jasmine.any(Function),
                 jasmine.any(Function)
@@ -504,38 +504,38 @@ describe('Upgrade Landing Controller', function() {
 describe('Upgrade Landing Controller - States', function () {
     var controller,
         statusResponseData = {
-            current_step: 'upgrade_prechecks',
+            current_step: 'prechecks',
             substep: null,
             current_node: null,
             steps: {
-                upgrade_prepare: {
+                prepare: {
                     status: 'pending',
                 },
-                upgrade_prechecks: {
+                prechecks: {
                     status: 'pending',
                 },
-                admin_backup: {
+                backup_crowbar: {
                     status: 'pending',
                 },
-                admin_repo_checks: {
+                repocheck_crowbar: {
                     status: 'pending',
                 },
-                admin_upgrade: {
+                admin: {
                     status: 'pending',
                 },
                 database: {
                     status: 'pending',
                 },
-                nodes_repo_checks: {
+                repocheck_nodes: {
                     status: 'pending',
                 },
-                nodes_services: {
+                services: {
                     status: 'pending',
                 },
-                nodes_db_dump: {
+                backup_openstack: {
                     status: 'pending',
                 },
-                nodes_upgrade: {
+                nodes: {
                     status: 'pending',
                 },
                 finished: {
@@ -606,7 +606,7 @@ describe('Upgrade Landing Controller - States', function () {
         it('should start polling for status', function () {
             expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledTimes(1);
             expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledWith(
-                UPGRADE_STEPS.upgrade_prepare,
+                UPGRADE_STEPS.prepare,
                 PREPARE_TIMEOUT_INTERVAL,
                 jasmine.any(Function),
                 jasmine.any(Function)

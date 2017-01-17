@@ -3,16 +3,16 @@
     angular
         .module('suseData.crowbar')
         .constant('UPGRADE_STEPS', {
-            upgrade_prechecks: 'upgrade_prechecks',
-            upgrade_prepare: 'upgrade_prepare',
-            admin_backup: 'admin_backup',
-            admin_repo_checks: 'admin_repo_checks',
-            admin_upgrade: 'admin_upgrade',
+            prechecks: 'prechecks',
+            prepare: 'prepare',
+            backup_crowbar: 'backup_crowbar',
+            repocheck_crowbar: 'repocheck_crowbar',
+            admin: 'admin',
             database: 'database',
-            nodes_repo_checks: 'nodes_repo_checks',
-            nodes_services: 'nodes_services',
-            nodes_db_dump: 'nodes_db_dump',
-            nodes_upgrade: 'nodes_upgrade',
+            repocheck_nodes: 'repocheck_nodes',
+            services: 'services',
+            backup_openstack: 'backup_openstack',
+            nodes: 'nodes',
             finished: 'finished',
         })
         .constant('UPGRADE_STEP_STATES', {
