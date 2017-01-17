@@ -28,19 +28,19 @@
             checks: {
                 'SLES12-SP2-Pool': {
                     status: false,
-                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES12-SP2-Pool'
+                    label: 'upgrade.repositories.codes.SLES12-SP2-Pool'
                 },
                 'SLES12-SP2-Updates': {
                     status: false,
-                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SLES12-SP2-Updates'
+                    label: 'upgrade.repositories.codes.SLES12-SP2-Updates'
                 },
                 'SUSE-OpenStack-Cloud-7-Pool': {
                     status: false,
-                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SUSE-OpenStack-Cloud-7-Pool'
+                    label: 'upgrade.repositories.codes.SUSE-OpenStack-Cloud-7-Pool'
                 },
                 'SUSE-OpenStack-Cloud-7-Updates': {
                     status: false,
-                    label: 'upgrade.steps.admin-repository-checks.repositories.codes.SUSE-OpenStack-Cloud-7-Updates'
+                    label: 'upgrade.repositories.codes.SUSE-OpenStack-Cloud-7-Updates'
                 }
             },
             runRepoChecks: runRepoChecks

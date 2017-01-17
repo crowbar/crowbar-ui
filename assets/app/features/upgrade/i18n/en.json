@@ -57,14 +57,6 @@
                 "name": "",
                 "title": "Upgrading to SUSE OpenStack Cloud 7 requires software repositories for SLES12 SP2 and SUSE OpenStack Cloud 7.",
                 "description": "Update the URLs of the following software repositories and click 'Check' to verify the repositories are available. When all repositories have been verified click on 'Next' to proceed.",
-                "repositories": {
-                    "codes": {
-                        "SLES12-SP2-Pool": "SUSE Linux Enterprise 12 SP2",
-                        "SLES12-SP2-Updates": "SUSE Linux Enterprise 12 SP2 Updates",
-                        "SUSE-OpenStack-Cloud-7-Pool": "SUSE Linux OpenStack Cloud 7",
-                        "SUSE-OpenStack-Cloud-7-Updates": "SUSE Linux OpenStack Cloud 7 Updates"
-                    }
-                },
                 "form": {
                     "check-again": "Check"
                 }
@@ -95,18 +87,6 @@
             "nodes-repository-checks": {
                 "title": "Add-On Products and Compute Nodes Repository Checks",
                 "description": "Please update the repository information on the CEPH and HA add-on products as well as the SUSE OpenStack Cloud 7 and SLES12 SP2 repositories used by the compute plane.",
-                "repositories": {
-                    "codes": {
-                        "SLES12-SP2-Pool": "SUSE Linux Enterprise Server 12 SP2",
-                        "SLES12-SP2-Updates": "SUSE Linux Enterprise Server 12 SP2 Updates",
-                        "SUSE-OpenStack-Cloud-7-Pool": "SUSE Linux OpenStack Cloud 7",
-                        "SUSE-OpenStack-Cloud-7-Updates": "SUSE Linux OpenStack Cloud 7 Updates",
-                        "SLE12-SP2-HA-Pool": "SUSE Linux Enterprise 12 SP2 High Availability",
-                        "SLE12-SP2-HA-Updates": "SUSE Linux Enterprise 12 SP2 High Availability Updates",
-                        "SUSE-Enterprise-Storage-4-Pool": "SUSE Linux Enterprise Storage 4",
-                        "SUSE-Enterprise-Storage-4-Updates": "SUSE Linux Enterprise Storage 4 Updates"
-                    }
-                },
                 "form": {
                     "check-again": "Check"
                 }
@@ -133,6 +113,18 @@
                     "node-role": "Node Role: {{nodeRole}}",
                     "node-status": "Status: {{status}}"
                 }
+            }
+        },
+        "repositories": {
+            "codes": {
+                "SLES12-SP2-Pool": "SUSE Linux Enterprise Server 12 SP2",
+                "SLES12-SP2-Updates": "SUSE Linux Enterprise Server 12 SP2 Updates",
+                "SUSE-OpenStack-Cloud-7-Pool": "SUSE OpenStack Cloud 7",
+                "SUSE-OpenStack-Cloud-7-Updates": "SUSE OpenStack Cloud 7 Updates",
+                "SLE12-SP2-HA-Pool": "SUSE Linux Enterprise 12 SP2 High Availability",
+                "SLE12-SP2-HA-Updates": "SUSE Linux Enterprise 12 SP2 High Availability Updates",
+                "SUSE-Enterprise-Storage-4-Pool": "SUSE Enterprise Storage 4",
+                "SUSE-Enterprise-Storage-4-Updates": "SUSE Enterprise Storage 4 Updates"
             }
         },
         "steps-key": {
