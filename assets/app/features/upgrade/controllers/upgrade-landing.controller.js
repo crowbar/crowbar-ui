@@ -143,6 +143,8 @@
 
                     if (angular.isDefined(errorResponse.data.errors)) {
                         vm.errors = errorResponse.data;
+                    } else if (angular.isDefined(errorResponse.data.steps)) {
+                        vm.errors = { errors: errorResponse.data.steps.prepare.errors };
                     } else {
                         vm.errors = UNEXPECTED_ERROR_DATA;
                     }
