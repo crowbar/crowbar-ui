@@ -26,9 +26,9 @@ var express = require('express'),
         },
         'crowbar_init': {
             'success': false,
-            'body': {
-                'error': 'crowbar_init: Failed to stop crowbar-init.service'
-            }
+        },
+        'errors': {
+            'database_connect': { 'data': 'crowbar_init: Failed to stop crowbar-init.service' }
         }
     },
     responseFailDatabase = {
@@ -43,9 +43,9 @@ var express = require('express'),
         },
         'crowbar_init': {
             'success': false,
-            'body': {
-                'error': 'crowbar_init: Failed to stop crowbar-init.service'
-            }
+        },
+        'errors': {
+            'database_connect': { 'data': 'crowbar_init: Failed to stop crowbar-init.service', 'help': 'check it out' }
         }
     };
 
