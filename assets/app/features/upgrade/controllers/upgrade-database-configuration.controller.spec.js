@@ -32,10 +32,10 @@ describe('Upgrade Flow - Create Connect Database Controller', function () {
                     'success': true
                 },
                 'crowbar_init': {
-                    'success': false,
-                    'body': {
-                        'error': 'crowbar_init: Failed to stop crowbar-init.service'
-                    }
+                    'success': false
+                },
+                'errors': {
+                    'database': { 'data': 'crowbar_init: Failed to stop crowbar-init.service' }
                 }
             }
         };
@@ -153,7 +153,7 @@ describe('Upgrade Flow - Create Connect Database Controller', function () {
 
             it('should fill the errors with the error messages', function () {
                 chai.expect(controller.errors).not.to.be.empty;
-                expect(controller.errors).toContain(failedResponse.data.crowbar_init.body.error)
+                expect(controller.errors.errors).toEqual(failedResponse.data.errors);
             })
         })
     });
@@ -203,7 +203,7 @@ describe('Upgrade Flow - Create Connect Database Controller', function () {
 
             it('should fill the errors with the error messages', function () {
                 chai.expect(controller.errors).not.to.be.empty;
-                expect(controller.errors).toContain(failedResponse.data.crowbar_init.body.error)
+                expect(controller.errors.errors).toEqual(failedResponse.data.errors);
             })
         })
     });

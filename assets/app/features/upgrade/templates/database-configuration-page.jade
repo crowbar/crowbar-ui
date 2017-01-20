@@ -1,9 +1,5 @@
 .database-configuration-page
     h2(translate='') upgrade.steps.database-configuration.title
-    // TODO(itxaka): temporal crappy solution to show the errors for testing
-    ul.list-group
-        li.list-group-item(ng-repeat='error in upgradeDatabaseVm.errors') {{ error }}
-
     uib-tabset
         uib-tab(index='0', disable='upgradeDatabaseVm.running || upgradeDatabaseVm.completed',
         heading="{{'upgrade.steps.database-configuration.navigation-tabs.create-database' | translate}}")
@@ -81,3 +77,4 @@
                                 visible="upgradeDatabaseVm.spinnerVisible"
                             )
                             span(translate='') upgrade.steps.database-configuration.database-form.connect-database
+suse-modal(error="upgradeDatabaseVm.errors", translation-prefix="upgrade.errors")

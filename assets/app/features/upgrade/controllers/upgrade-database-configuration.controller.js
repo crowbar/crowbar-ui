@@ -13,11 +13,11 @@
 
     UpgradeDatabaseConfigurationController.$inject = [
         'upgradeStepsFactory', 'upgradeStatusFactory', 'upgradeFactory',
-        'UPGRADE_STEPS', ];
+        'UPGRADE_STEPS', 'UNEXPECTED_ERROR_DATA', ];
     // @ngInject
     function UpgradeDatabaseConfigurationController(
         upgradeStepsFactory, upgradeStatusFactory, upgradeFactory,
-        UPGRADE_STEPS
+        UPGRADE_STEPS, UNEXPECTED_ERROR_DATA
     ) {
         var vm = this;
         vm.databaseForm = {
@@ -41,7 +41,6 @@
         vm.running = false;
         vm.spinnerVisible = false;
         vm.completed = false;
-        vm.errors = [];
 
         vm.createServer = createServer;
         vm.connectServer = connectServer;
@@ -55,7 +54,6 @@
         }
 
         function createServer() {
-            vm.errors = [];
             vm.running = true;
             upgradeFactory.createNewDatabaseServer(vm.databaseForm)
                 .then(
@@ -66,7 +64,11 @@
                     },
                     // error
                     function (errorResponse) {
-                        vm.errors = getErrorFromResponse(errorResponse);
+                        if (angular.isDefined(errorResponse.data.errors)) {
+                            vm.errors = errorResponse.data;
+                        } else {
+                            vm.errors = UNEXPECTED_ERROR_DATA;
+                        }
                     }
                 )
                 .finally(function () {
@@ -75,7 +77,6 @@
         }
 
         function connectServer() {
-            vm.errors = [];
             vm.running = true;
             upgradeFactory.connectDatabaseServer(vm.databaseForm)
                 .then(
@@ -86,22 +87,16 @@
                     },
                     // error
                     function (errorResponse) {
-                        vm.errors = getErrorFromResponse(errorResponse);
+                        if (angular.isDefined(errorResponse.data.errors)) {
+                            vm.errors = errorResponse.data;
+                        } else {
+                            vm.errors = UNEXPECTED_ERROR_DATA;
+                        }
                     }
                 )
                 .finally(function () {
                     vm.running = false;
                 });
-        }
-
-        function getErrorFromResponse(response) {
-            var errors = [];
-            _.forEach(response.data, function (obj) {
-                if (!obj.success) {
-                    errors.push(obj.body.error);
-                }
-            });
-            return errors;
         }
     }
 })();

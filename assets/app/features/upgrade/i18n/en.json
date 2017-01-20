@@ -146,6 +146,8 @@
             "maintenance_updates_installed": "Maintenance Updates",
             "clusters_health_crm_failures": "Some crm commands failed",
             "clusters_health_failed_actions": "Some Clusters Health actions have failed",
+            "database_connect": "Connecting to Database failed",
+            "database_new": "Creating Database failed",
             "unexpected_error": "Unexpected Error",
             "backup_crowbar": "Administration Server Backup Failed"
         }

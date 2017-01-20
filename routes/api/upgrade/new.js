@@ -27,9 +27,9 @@ var responseOk = {
         },
         'crowbar_init': {
             'success': false,
-            'body': {
-                'error': 'crowbar_init: Failed to stop crowbar-init.service'
-            }
+        },
+        'errors': {
+            'database_new': { 'data': 'crowbar_init: Failed to stop crowbar-init.service' }
         }
     };
 
