@@ -15,7 +15,6 @@
         '$translate',
         'upgradeFactory',
         'crowbarFactory',
-        'PRODUCTS_REPO_CHECKS_MAP',
         'UNEXPECTED_ERROR_DATA',
         'upgradeStepsFactory'
     ];
@@ -24,7 +23,6 @@
         $translate,
         upgradeFactory,
         crowbarFactory,
-        PRODUCTS_REPO_CHECKS_MAP,
         UNEXPECTED_ERROR_DATA,
         upgradeStepsFactory
     ) {
@@ -121,60 +119,34 @@
 
         function onSuccessGetNodesRepoChecks (repoChecksResponse) {
 
-            var failingRepositories = [],
+            var repoAvailable = {},
                 repoChecksResult = true;
 
             // Iterate over each product check returned from the service
-            _.forEach(repoChecksResponse.data, function(productValue, productKey) {
-
-                // Validate a valid check from the service is being updated
-                if (PRODUCTS_REPO_CHECKS_MAP.hasOwnProperty(productKey)) {
-
-                    // Iterate through the repositories list for the product
-                    _.forEach(PRODUCTS_REPO_CHECKS_MAP[productKey], function (repoName) {
-
-                        // If the product is available, then its related repositories should be displayed as passing
-                        if (productValue.available) {
-                            vm.repoChecks.checks[repoName].status = true;
-
-                        // If not, each/all failing repositories must be identified and marked as failing
-                        } else {
-
-                            /*
-                             * If an empty repos details are provided by the service,
-                             * add all related repositories as to the failing repositories collection.
-                             */
-                            if (_.isEmpty(productValue.repos)) {
-
-                                failingRepositories.push(repoName);
-
-                            /*
-                             * If the repos details are provided by the service,
-                             * iterate through the repository problems, repository architectures and repositories list
-                             */
-                            } else {
-                                _.forEach(productValue.repos, function (repoProblemType) {
-                                    _.forEach(repoProblemType, function (repoArchitectureType) {
-                                        _.forEach(repoArchitectureType, function (unavailableRepository) {
-
-                                            // Add the unavailable repository, to the failing repositories collection.
-                                            if (!_.includes(failingRepositories, unavailableRepository)) {
-                                                failingRepositories.push(unavailableRepository);
-                                            }
-                                        });
-                                    });
-                                });
-                            }
-                        }
+            _.forEach(repoChecksResponse.data, function(productValue/*, productKey*/) {
+                // Iterate through the repositories list for the product
+                _.forEach(productValue.repos, function (repoName) {
+                    // assume the best and add new/unseen repos with 'available' status
+                    if (angular.isUndefined(repoAvailable[repoName])) {
+                        repoAvailable[repoName] = true;
+                    }
+                });
+                // Iterate through the repository problems, repository architectures and repositories list
+                _.forEach(productValue.errors, function (repoProblemType) {
+                    _.forEach(repoProblemType, function (repoArchitectureType) {
+                        _.forEach(repoArchitectureType, function (unavailableRepository) {
+                            // mark unavailable repositories
+                            repoAvailable[unavailableRepository] = false;
+                        });
                     });
-                }
+                });
             });
 
             // Go through the complete repository list and update their status
             _.forEach(vm.repoChecks.checks, function (repositoryValue, repositoryKey) {
 
-                // If the repository is included in the failing repositories collection, mark its status as false
-                repositoryValue.status = !_.includes(failingRepositories, repositoryKey);
+                // Update status based on collected availability data
+                repositoryValue.status = repoAvailable[repositoryKey] || false;
 
                 // Validate if there is any failing repository check
                 repoChecksResult = repoChecksResult && repositoryValue.status;

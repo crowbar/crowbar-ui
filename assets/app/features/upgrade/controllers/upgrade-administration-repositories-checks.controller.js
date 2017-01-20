@@ -17,7 +17,7 @@
     ];
     // @ngInject
     function UpgradeAdministrationRepositoriesCheckController(
-        $translate, upgradeFactory, upgradeStepsFactorym, UNEXPECTED_ERROR_DATA
+        $translate, upgradeFactory, upgradeStepsFactory, UNEXPECTED_ERROR_DATA
     ) {
         var vm = this;
         vm.repoChecks = {
