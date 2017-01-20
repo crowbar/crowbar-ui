@@ -1,4 +1,4 @@
-/*global bard $controller $httpBackend should assert upgradeFactory $q $rootScope PRODUCTS_REPO_CHECKS_MAP*/
+/*global module bard $controller $httpBackend should assert upgradeFactory $q $rootScope PRODUCTS_REPO_CHECKS_MAP*/
 describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
     var controller,
         passingRepoChecks = {
@@ -26,7 +26,10 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
             }
         },
         failingErrors = {
-            error_message: 'Authentication failure'
+            auth_error: {
+                data: 'Authentication failure',
+                help: 'Please authenticate'
+            }
         },
         passingReposChecksResponse = {
             data: passingRepoChecks
@@ -44,6 +47,8 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
         };
 
     beforeEach(function() {
+        // load ngSanitize to make translations happy
+        module('ngSanitize');
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp.upgrade');
         bard.inject(
@@ -122,6 +127,10 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
                 _.forEach(controller.repoChecks.checks, function(value) {
                     assert.isTrue(value.status);
                 });
+            });
+
+            it('should not create the controller.error', function () {
+                should.not.exist(controller.error);
             });
         });
 
@@ -204,8 +213,8 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
                 });
             });
 
-            it('should expose the errors through vm.repoChecks.errors object', function () {
-                expect(controller.repoChecks.errors).toEqual(failingReposResponse.data.errors);
+            it('should expose the errors through vm.error object', function () {
+                expect(controller.errors).toEqual(failingReposResponse.data);
             });
         });
     });
