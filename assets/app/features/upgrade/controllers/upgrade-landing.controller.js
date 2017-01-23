@@ -69,9 +69,9 @@
                     status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.cloud_health'
                 },
-                compute_resources_available: {
+                compute_status: {
                     status: false,
-                    label: 'upgrade.steps.landing.prechecks.codes.free_node_available'
+                    label: 'upgrade.steps.landing.prechecks.codes.compute_status'
                 }
             },
             runPrechecks: runPrechecks

@@ -21,7 +21,7 @@
                         "cloud_health": "Cloud Health",
                         "high_availability": "High Availability Health",
                         "storage": "Storage Health",
-                        "free_node_available": "Free node available"
+                        "compute_status": "Compute resources available"
                     }
                 },
                 "upgrade": {

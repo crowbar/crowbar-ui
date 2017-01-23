@@ -138,7 +138,7 @@ describe('Upgrade Landing Controller', function() {
             cloud_healthy: { required: true, passed: true },
             clusters_healthy: { required: false, passed: true },
             ceph_healthy: { required: false, passed: true },
-            compute_resources_available: { required: false, passed: true }
+            compute_status: { required: false, passed: true }
         },
         failingChecks = {
             maintenance_updates_installed: { required: true, passed: false },
@@ -146,7 +146,7 @@ describe('Upgrade Landing Controller', function() {
             cloud_healthy: { required: true, passed: false },
             clusters_healthy: { required: false, passed: false },
             ceph_healthy: { required: false, passed: false },
-            compute_resources_available: { required: false, passed: false }
+            compute_status: { required: false, passed: false }
         },
         partiallyFailingChecks = {
             maintenance_updates_installed: { required: true, passed: true },
@@ -154,7 +154,7 @@ describe('Upgrade Landing Controller', function() {
             cloud_healthy: { required: true, passed: true },
             clusters_healthy: { required: false, passed: false },
             ceph_healthy: { required: false, passed: false },
-            compute_resources_available: { required: true, passed: true }
+            compute_status: { required: true, passed: true }
         },
         failingErrors = {
             error_message: 'Authentication failure'
