@@ -65,6 +65,10 @@
                     status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.network_sanity'
                 },
+                cloud_healthy: {
+                    status: false,
+                    label: 'upgrade.steps.landing.prechecks.codes.cloud_health'
+                },
                 compute_resources_available: {
                     status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.free_node_available'

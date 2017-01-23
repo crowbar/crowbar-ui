@@ -135,6 +135,7 @@ describe('Upgrade Landing Controller', function() {
         passingChecks = {
             maintenance_updates_installed: { required: true, passed: true },
             network_checks: { required: true, passed: true },
+            cloud_healthy: { required: true, passed: true },
             clusters_healthy: { required: false, passed: true },
             ceph_healthy: { required: false, passed: true },
             compute_resources_available: { required: false, passed: true }
@@ -142,6 +143,7 @@ describe('Upgrade Landing Controller', function() {
         failingChecks = {
             maintenance_updates_installed: { required: true, passed: false },
             network_checks: { required: true, passed: false },
+            cloud_healthy: { required: true, passed: false },
             clusters_healthy: { required: false, passed: false },
             ceph_healthy: { required: false, passed: false },
             compute_resources_available: { required: false, passed: false }
@@ -149,6 +151,7 @@ describe('Upgrade Landing Controller', function() {
         partiallyFailingChecks = {
             maintenance_updates_installed: { required: true, passed: true },
             network_checks: { required: true, passed: true },
+            cloud_healthy: { required: true, passed: true },
             clusters_healthy: { required: false, passed: false },
             ceph_healthy: { required: false, passed: false },
             compute_resources_available: { required: true, passed: true }

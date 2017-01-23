@@ -15,6 +15,7 @@ router.get('/', function(req, res) {
             'checks': {
                 'maintenance_updates_installed': { required: true, passed: true },
                 'network_checks': { required: true, passed: checksPass },
+                'cloud_healthy': { required: true, passed: checksPass },
                 'clusters_healthy': { required: false, passed: false },
                 'ceph_healthy': { required: false, passed: checksPass },
                 'compute_resources_available': { required: true, passed: true }
