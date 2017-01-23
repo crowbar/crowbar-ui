@@ -4,7 +4,11 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
         failingRepoChecks = {
             'ceph': {
                 'available': false,
-                'repos': {
+                'repos': [
+                    'SUSE-Enterprise-Storage-4-Pool',
+                    'SUSE-Enterprise-Storage-4-Updates'
+                ],
+                'errors': {
                     'missing': {
                         'x86_64': [
                             'SUSE-Enterprise-Storage-4-Pool',
@@ -21,7 +25,11 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             },
             'ha': {
                 'available': false,
-                'repos': {
+                'repos': [
+                    'SLE12-SP2-HA-Pool',
+                    'SLE12-SP2-HA-Updates'
+                ],
+                'errors': {
                     'missing': {
                         'x86_64': [
                             'SLE12-SP2-HA-Pool',
@@ -38,7 +46,11 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             },
             'os': {
                 'available': false,
-                'repos': {
+                'repos': [
+                    'SLES12-SP2-Pool',
+                    'SLES12-SP2-Updates'
+                ],
+                'errors': {
                     'missing': {
                         'x86_64': [
                             'SLES12-SP2-Pool',
@@ -55,7 +67,11 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             },
             'openstack': {
                 'available': false,
-                'repos': {
+                'repos': [
+                    'SUSE-OpenStack-Cloud-7-Pool',
+                    'SUSE-OpenStack-Cloud-7-Updates'
+                ],
+                'errors': {
                     'missing': {
                         'x86_64': [
                             'SUSE-OpenStack-Cloud-7-Pool',
@@ -74,25 +90,45 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
         passingRepoChecks = {
             'ceph': {
                 'available': true,
-                'repos': {}
+                'repos': [
+                    'SUSE-Enterprise-Storage-4-Pool',
+                    'SUSE-Enterprise-Storage-4-Updates'
+                ],
+                'errors': {}
             },
             'ha': {
                 'available': true,
-                'repos': {}
+                'repos': [
+                    'SLE12-SP2-HA-Pool',
+                    'SLE12-SP2-HA-Updates'
+                ],
+                'errors': {}
             },
             'os': {
                 'available': true,
-                'repos': {}
+                'repos': [
+                    'SLES12-SP2-Pool',
+                    'SLES12-SP2-Updates'
+                ],
+                'errors': {}
             },
             'openstack': {
                 'available': true,
-                'repos': {}
+                'repos': [
+                    'SUSE-OpenStack-Cloud-7-Pool',
+                    'SUSE-OpenStack-Cloud-7-Updates'
+                ],
+                'errors': {}
             }
         },
         partiallyFailingRepoChecks = {
             'ceph': {
                 'available': false,
-                'repos': {
+                'repos': [
+                    'SUSE-Enterprise-Storage-4-Pool',
+                    'SUSE-Enterprise-Storage-4-Updates'
+                ],
+                'errors': {
                     'missing': {
                         'x86_64': [
                             'SUSE-Enterprise-Storage-4-Updates'
@@ -107,7 +143,11 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             },
             'ha': {
                 'available': false,
-                'repos': {
+                'repos': [
+                    'SLE12-SP2-HA-Pool',
+                    'SLE12-SP2-HA-Updates'
+                ],
+                'errors': {
                     'missing': {
                         'x86_64': [
                             'SLE12-SP2-HA-Pool',
@@ -124,7 +164,11 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             },
             'os': {
                 'available': false,
-                'repos': {
+                'repos': [
+                    'SLES12-SP2-Pool',
+                    'SLES12-SP2-Updates'
+                ],
+                'errors': {
                     'missing': {
                         'x86_64': [
                             'SLES12-SP2-Pool'
@@ -139,7 +183,11 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             },
             'openstack': {
                 'available': true,
-                'repos': {}
+                'repos': [
+                    'SUSE-OpenStack-Cloud-7-Pool',
+                    'SUSE-OpenStack-Cloud-7-Updates'
+                ],
+                'errors': {}
             }
         },
         failingErrors = {
@@ -181,8 +229,7 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             'crowbarFactory',
             '$q',
             '$httpBackend',
-            '$rootScope',
-            'PRODUCTS_REPO_CHECKS_MAP'
+            '$rootScope'
         );
 
         bard.mockService(crowbarFactory, {

@@ -13,11 +13,11 @@
             UpgradeAdministrationRepositoriesCheckController);
 
     UpgradeAdministrationRepositoriesCheckController.$inject = [
-        '$translate', 'upgradeFactory', 'PRODUCTS_REPO_CHECKS_MAP', 'upgradeStepsFactory', 'UNEXPECTED_ERROR_DATA'
+        '$translate', 'upgradeFactory', 'upgradeStepsFactory', 'UNEXPECTED_ERROR_DATA'
     ];
     // @ngInject
     function UpgradeAdministrationRepositoriesCheckController(
-        $translate, upgradeFactory, PRODUCTS_REPO_CHECKS_MAP, upgradeStepsFactory, UNEXPECTED_ERROR_DATA
+        $translate, upgradeFactory, upgradeStepsFactory, UNEXPECTED_ERROR_DATA
     ) {
         var vm = this;
         vm.repoChecks = {
@@ -58,13 +58,12 @@
                     function (repoChecksResponse) {
                         var repoErrors = [];
                         // Iterate over our map
-                        _.forEach(PRODUCTS_REPO_CHECKS_MAP, function (repos, type) {
-                            // Admin repochecks only checks for os or openstack repos
-                            if(type == 'os' || type == 'openstack') {
-                                _.forEach(repos, function(repo) {
-                                    vm.repoChecks.checks[repo].status = repoChecksResponse.data[type].available
-                                });
-                            }
+                        _.forEach(repoChecksResponse.data, function (productData/*, product*/) {
+                            _.forEach(productData.repos, function(repo) {
+                                if (vm.repoChecks.checks.hasOwnProperty(repo)) {
+                                    vm.repoChecks.checks[repo].status = productData.available
+                                }
+                            });
                         });
                         // Iterate over the checks to determine the validity of the step
                         vm.repoChecks.valid = Object.keys(vm.repoChecks.checks).every(function(k) {

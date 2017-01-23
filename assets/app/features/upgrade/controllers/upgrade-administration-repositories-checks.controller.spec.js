@@ -1,28 +1,34 @@
-/*global module bard $controller $httpBackend should assert upgradeFactory $q $rootScope PRODUCTS_REPO_CHECKS_MAP*/
+/*global module bard $controller $httpBackend should assert upgradeFactory $q $rootScope*/
 describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
     var controller,
         passingRepoChecks = {
             os: {
-                available: true
+                available: true,
+                repos: ['SLES12-SP2-Pool', 'SLES12-SP2-Updates'],
             },
             openstack: {
-                available: true
+                available: true,
+                repos: ['SUSE-OpenStack-Cloud-7-Pool', 'SUSE-OpenStack-Cloud-7-Updates'],
             }
         },
         failingRepoChecks = {
             os: {
-                available: false
+                available: false,
+                repos: ['SLES12-SP2-Pool', 'SLES12-SP2-Updates'],
             },
             openstack: {
-                available: false
+                available: false,
+                repos: ['SUSE-OpenStack-Cloud-7-Pool', 'SUSE-OpenStack-Cloud-7-Updates'],
             }
         },
         partiallyFailingRepoChecks = {
             os: {
-                available: true
+                available: true,
+                repos: ['SLES12-SP2-Pool', 'SLES12-SP2-Updates'],
             },
             openstack: {
-                available: false
+                available: false,
+                repos: ['SUSE-OpenStack-Cloud-7-Pool', 'SUSE-OpenStack-Cloud-7-Updates'],
             }
         },
         failingErrors = {
@@ -53,7 +59,7 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
         bard.appModule('crowbarApp.upgrade');
         bard.inject(
             '$controller', 'upgradeFactory', '$q', '$httpBackend',
-            '$rootScope', 'PRODUCTS_REPO_CHECKS_MAP'
+            '$rootScope'
         );
 
         //Create the controller
@@ -177,14 +183,13 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
 
             it('should update checks values to true or false as per the response', function () {
                 assert.isObject(controller.repoChecks.checks);
-                _.forEach(PRODUCTS_REPO_CHECKS_MAP, function(repos, type) {
-                    // Admin repochecks only checks for os or openstack repos
-                    if (type == 'os' || type == 'openstack') {
-                        _.forEach(repos, function (repo) {
+                _.forEach(partiallyFailingChecksResponse.data, function(productData, product) {
+                    _.forEach(productData.repos, function (repo) {
+                        if (controller.repoChecks.checks.hasOwnProperty(repo)) {
                             expect(controller.repoChecks.checks[repo].status)
-                                .toEqual(partiallyFailingChecksResponse.data[type].available)
-                        });
-                    }
+                                .toEqual(partiallyFailingChecksResponse.data[product].available)
+                        }
+                    });
                 });
             });
         });
