@@ -17,10 +17,11 @@
                     },
                     "codes": {
                         "updates_installed": "Maintenance Updates to SLES SP1",
-                        "network_sanity": "Cloud Health",
+                        "network_sanity": "Network Health",
+                        "cloud_health": "Cloud Health",
                         "high_availability": "High Availability Health",
                         "storage": "Storage Health",
-                        "free_node_available": "Free node available"
+                        "compute_status": "Compute resources available"
                     }
                 },
                 "upgrade": {
@@ -141,6 +142,7 @@
         "errors": {
             "default-title": "Upgrade Error",
             "prechecks": "Some Checks failed",
+            "nodes_not_ready": "Nodes not ready",
             "prepare": "Begin Upgrade failed",
             "repocheck_nodes": "Some Checks failed",
             "maintenance_updates_installed": "Maintenance Updates",
