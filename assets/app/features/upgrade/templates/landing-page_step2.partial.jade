@@ -2,7 +2,7 @@
     crowbar-circle.pull-left(active="upgradeLandingVm.mode.active") 2
     h2.h4(translate='') upgrade.steps.landing.mode.title
 
-.initial(ng-if='upgradeLandingVm.mode.type === false')
+.initial(ng-if='upgradeLandingVm.mode.type === "none"')
     p(translate='') upgrade.steps.landing.mode.description
 
 .normal(ng-if='upgradeLandingVm.mode.type === "disruptive"')

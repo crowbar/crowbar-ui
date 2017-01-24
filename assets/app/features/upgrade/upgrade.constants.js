@@ -22,6 +22,7 @@
         .constant('NODES_UPGRADE_TIMEOUT_INTERVAL', 5000)
         .constant('UPGRADE_MODES', {
             nondisruptive: 'non-disruptive',
-            disruptive: 'disruptive'
+            disruptive: 'disruptive',
+            none: 'none',
         });
 })();
