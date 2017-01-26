@@ -1,6 +1,7 @@
 /* global bard $controller should $httpBackend upgradeStatusFactory
    crowbarFactory assert $q $rootScope upgradeStepsFactory
-   UPGRADE_STEPS ADMIN_UPGRADE_TIMEOUT_INTERVAL ADMIN_UPGRADE_ALLOWED_DOWNTIME */
+   UPGRADE_STEPS ADMIN_UPGRADE_TIMEOUT_INTERVAL ADMIN_UPGRADE_ALLOWED_DOWNTIME
+   UNEXPECTED_ERROR_DATA */
 describe('Upgrade Flow - Upgrade Administration Server Controller', function () {
     var controller;
 
@@ -9,7 +10,8 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
         bard.appModule('crowbarApp.upgrade');
         bard.inject(
             '$controller', '$q', '$httpBackend', '$rootScope',
-            'crowbarFactory', 'upgradeStatusFactory', 'upgradeStepsFactory'
+            'crowbarFactory', 'upgradeStatusFactory', 'upgradeStepsFactory',
+            'UNEXPECTED_ERROR_DATA'
         );
 
         spyOn(upgradeStatusFactory, 'syncStatusFlags');
@@ -86,6 +88,28 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
                     );
                 });
             });
+
+            describe('when upgrade is finished successfully', function () {
+                beforeEach(function () {
+                    bard.mockService(upgradeStatusFactory, {
+                        waitForStepToEnd: function (step, interval, onSuccess/*, onError*/) { onSuccess(); }
+                    });
+                    bard.mockService(crowbarFactory, {
+                        upgrade: $q.when({})
+                    });
+
+                    controller.adminUpgrade.beginAdminUpgrade();
+
+                    $rootScope.$digest();
+                });
+
+                it('should set running to false', function () {
+                    assert.isFalse(controller.adminUpgrade.running);
+                });
+                it('should set completed to true', function () {
+                    assert.isTrue(controller.adminUpgrade.completed);
+                });
+            });
         });
     });
 });
@@ -96,6 +120,55 @@ describe('Upgrade Flow - Upgrade Administration Server Controller - errors', fun
         // TODO(itxaka): change this to the proper response from the API
         errorResponse = {
             data: { errors: errorList }
+        },
+        errorStatusResponse = {
+            data: {
+                current_step: 'admin',
+                substep: null,
+                current_node: null,
+                steps: {
+                    prechecks: {
+                        status: 'passed',
+                    },
+                    prepare: {
+                        status: 'passed',
+                    },
+                    backup_crowbar: {
+                        status: 'passed',
+                    },
+                    repocheck_crowbar: {
+                        status: 'passed',
+                    },
+                    admin: {
+                        status: 'failed',
+                        errors: {
+                            err1: { data: 'err1 data', help: 'err1 help' },
+                            err2: { data: 'err2 data', help: 'err2 help' }
+                        }
+                    },
+                    database: {
+                        status: 'pending',
+                    },
+                    repocheck_nodes: {
+                        status: 'pending',
+                    },
+                    services: {
+                        status: 'pending',
+                    },
+                    backup_openstack: {
+                        status: 'pending',
+                    },
+                    nodes: {
+                        status: 'pending',
+                    },
+                    finished: {
+                        status: 'pending',
+                    }
+                }
+            }
+        },
+        emptyResponse = {
+            data: {}
         };
 
     beforeEach(function() {
@@ -103,7 +176,8 @@ describe('Upgrade Flow - Upgrade Administration Server Controller - errors', fun
         bard.appModule('crowbarApp.upgrade');
         bard.inject(
             '$controller', '$q', '$httpBackend', '$rootScope',
-            'crowbarFactory', 'upgradeStatusFactory'
+            'crowbarFactory', 'upgradeStatusFactory',
+            'UNEXPECTED_ERROR_DATA'
         );
 
         bard.mockService(upgradeStatusFactory, {
@@ -123,7 +197,7 @@ describe('Upgrade Flow - Upgrade Administration Server Controller - errors', fun
 
     describe('adminUpgrade model', function () {
         describe('beginAdminUpgrade function', function () {
-            describe('when starting upgrade failed', function () {
+            describe('when starting upgrade failed with error info', function () {
                 beforeEach(function () {
                     spyOn(upgradeStatusFactory, 'waitForStepToEnd');
 
@@ -142,8 +216,110 @@ describe('Upgrade Flow - Upgrade Administration Server Controller - errors', fun
                     expect(upgradeStatusFactory.waitForStepToEnd).not.toHaveBeenCalled();
                 });
 
-                it('should expose the errors through adminUpgrade.errors object', function () {
-                    expect(controller.adminUpgrade.errors).toEqual(errorList);
+                it('should expose the errors through errors object', function () {
+                    expect(controller.errors.errors).toEqual(errorList);
+                });
+            });
+
+            describe('when starting upgrade failed unexpectedly', function () {
+                beforeEach(function () {
+                    spyOn(upgradeStatusFactory, 'waitForStepToEnd');
+
+                    bard.mockService(crowbarFactory, {
+                        upgrade: $q.reject(emptyResponse)
+                    });
+                    controller.adminUpgrade.beginAdminUpgrade();
+                    $rootScope.$digest();
+                });
+
+                it('should leave running at false', function () {
+                    assert.isFalse(controller.adminUpgrade.running);
+                });
+
+                it('should not call waitForStepToEnd()', function () {
+                    expect(upgradeStatusFactory.waitForStepToEnd).not.toHaveBeenCalled();
+                });
+
+                it('should expose default error message through errors object', function () {
+                    expect(controller.errors).toEqual(UNEXPECTED_ERROR_DATA);
+                });
+            });
+
+            describe('when upgrade fails with error info', function () {
+                beforeEach(function () {
+                    // local change in mocked service
+                    spyOn(upgradeStatusFactory, 'waitForStepToEnd').and.callFake(
+                        function (step, interval, onSuccess, onError) { onError(errorResponse); }
+                    );
+                    bard.mockService(crowbarFactory, {
+                        upgrade: $q.when({})
+                    });
+
+                    controller.adminUpgrade.beginAdminUpgrade();
+
+                    $rootScope.$digest();
+                });
+
+                it('should set running to false', function () {
+                    assert.isFalse(controller.adminUpgrade.running);
+                });
+                it('should leave completed at false', function () {
+                    assert.isFalse(controller.adminUpgrade.completed);
+                });
+                it('should expose the errors through errors object', function () {
+                    expect(controller.errors.errors).toEqual(errorList);
+                });
+            });
+
+            describe('when upgrade fails with status response', function () {
+                beforeEach(function () {
+                    // local change in mocked service
+                    spyOn(upgradeStatusFactory, 'waitForStepToEnd').and.callFake(
+                        function (step, interval, onSuccess, onError) { onError(errorStatusResponse); }
+                    );
+                    bard.mockService(crowbarFactory, {
+                        upgrade: $q.when({})
+                    });
+
+                    controller.adminUpgrade.beginAdminUpgrade();
+
+                    $rootScope.$digest();
+                });
+
+                it('should set running to false', function () {
+                    assert.isFalse(controller.adminUpgrade.running);
+                });
+                it('should leave completed at false', function () {
+                    assert.isFalse(controller.adminUpgrade.completed);
+                });
+                it('should expose the errors through errors object', function () {
+                    expect(controller.errors.errors).toEqual(errorStatusResponse.data.steps.admin.errors);
+                });
+            });
+
+            describe('when upgrade fails unexpectedly', function () {
+                beforeEach(function () {
+                    // local change in mocked service
+                    spyOn(upgradeStatusFactory, 'waitForStepToEnd').and.callFake(
+                        function (step, interval, onSuccess, onError) { onError(emptyResponse); }
+                    );
+                    bard.mockService(crowbarFactory, {
+                        upgrade: $q.when({})
+                    });
+
+                    controller.adminUpgrade.beginAdminUpgrade();
+
+                    $rootScope.$digest();
+                });
+
+                it('should set running to false', function () {
+                    assert.isFalse(controller.adminUpgrade.running);
+                });
+                it('should leave completed at false', function () {
+                    assert.isFalse(controller.adminUpgrade.completed);
+                });
+                it('should expose default error message through errors object', function () {
+                    expect(controller.errors).toEqual(UNEXPECTED_ERROR_DATA);
                 });
             });
         });
