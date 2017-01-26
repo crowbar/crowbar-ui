@@ -21,7 +21,7 @@
                         "cloud_health": "Cloud Health",
                         "high_availability": "High Availability Health",
                         "storage": "Storage Health",
-                        "compute_status": "Compute resources available"
+                        "compute_status": "Compute Resources"
                     }
                 },
                 "upgrade": {
@@ -31,7 +31,7 @@
                 },
                 "mode": {
                     "title": "Upgrade Mode",
-                    "description": "After all checks are successful the upgrade mode is will be shown here...",
+                    "description": "After all mandatory checks are successful the upgrade mode will be shown here...",
                     "normal": {
                         "title": "Your cloud is now prepared to begin the upgrade in normal mode.",
                         "button": "Proceed in Normal Mode",
@@ -143,6 +143,8 @@
             "default-title": "Upgrade Error",
             "prechecks": "Some Checks failed",
             "nodes_not_ready": "Nodes not ready",
+            "no_live_migration": "Live migration not configured",
+            "no_resources": "Not enough free compute resources",
             "prepare": "Begin Upgrade failed",
             "repocheck_nodes": "Some Checks failed",
             "maintenance_updates_installed": "Maintenance Updates",

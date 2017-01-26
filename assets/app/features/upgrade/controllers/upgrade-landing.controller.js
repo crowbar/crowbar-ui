@@ -79,7 +79,7 @@
 
         vm.mode = {
             active: false,
-            type: false,
+            type: UPGRADE_MODES.none,
             valid: false
         };
 
@@ -162,7 +162,7 @@
         function runPrechecks() {
             // Clean other checks in case we re-run the prechecks
             vm.mode.valid = false;
-            vm.mode.type = false;
+            vm.mode.type = UPGRADE_MODES.none;
             vm.mode.active = false;
             vm.prechecks.running = true;
 
@@ -183,11 +183,10 @@
                                 vm.prechecks.checks[checkKey].status = check.passed;
                                 if (check.required) {
                                     checksValidity.push(check.passed);
-                                    if (!check.passed) {
-                                        _.forEach(check.errors, function(errorInfo, errorCode) {
-                                            checksErrors[errorCode] = errorInfo;
-                                        });
-                                    }
+                                }
+                                // expose errors even for non-required checks
+                                if (!check.passed) {
+                                    _.merge(checksErrors, check.errors);
                                 }
                             }
                         });
@@ -196,13 +195,15 @@
                             return checkPassed;
                         });
 
+                        // expose all errors
+                        if (!_.isEmpty(checksErrors)) {
+                            vm.errors = { title: 'prechecks', errors: checksErrors };
+                        }
                         // If all prechecks are ok, move to the next step
                         if (vm.prechecks.valid) {
                             // Store the upgrade best method
                             vm.mode.type = response.data.best_method;
                             updateMode();
-                        } else {
-                            vm.errors = { title: 'prechecks', errors: checksErrors };
                         }
                     },
                     //Failure handler:
