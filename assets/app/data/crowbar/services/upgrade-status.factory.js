@@ -21,8 +21,11 @@
          * @param {Object} flagsObject - object with `running` and `completed` fields to be updated
          * @param {function} onRunning - Callback to be executed if current status is running
          * @param {function} onCompleted - Callback to be executed if current status is completed
+         * @param {function} [onFailed=undefined] - Callback to be executed if current status is failed
+         * @param {function} [postSync=undefined] - Callback to be executed after flags have been
+         *     synced and other callbacks executed
          */
-        function syncStatusFlags(step, flagsObject, onRunning, onCompleted) {
+        function syncStatusFlags(step, flagsObject, onRunning, onCompleted, onFailed, postSync) {
             upgradeFactory.getStatus()
                 .then(
                     function (response) {
@@ -33,7 +36,16 @@
                             onRunning();
                         } else if (flagsObject.completed && angular.isDefined(onCompleted)) {
                             onCompleted();
+                        } else if (response.data.steps[step].status == UPGRADE_STEP_STATES.failed) {
+                            if (angular.isFunction(onFailed)) {
+                                onFailed(response);
+                            }
                         }
+
+                        if (angular.isFunction(postSync)) {
+                            postSync();
+                        }
+
                     }
                 );
         }
