@@ -2,13 +2,13 @@ ul.check-list
     li(ng-repeat="(checkKey, check) in checklist",
         check-key='{{::checkKey}}',
         ng-class="{\
-            'text-info': !completed,\
-            'text-success': check.status && completed,\
-            'text-danger': !check.status && completed\
+            'text-info': !completed && !check.completed,\
+            'text-success': check.status && (completed || check.completed),\
+            'text-danger': !check.status && (completed || check.completed)\
         }")
         i.glyphicon(ng-class="{\
-            'glyphicon-question-sign': !completed,\
-            'glyphicon-ok-sign': check.status && completed,\
-            'glyphicon-minus-sign': !check.status && completed\
+            'glyphicon-question-sign': !completed && !check.completed,\
+            'glyphicon-ok-sign': check.status && (completed || check.completed),\
+            'glyphicon-minus-sign': !check.status && (completed || check.completed)\
         }")
         span(translate='{{::check.label}}')
