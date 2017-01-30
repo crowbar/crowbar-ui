@@ -7,14 +7,6 @@
 
     suseModal.$inject = ['$uibModal'];
 
-    var modalController = function ($uibModalInstance, $scope) {
-        $scope.dismiss = function() {
-            $uibModalInstance.dismiss();
-        };
-    };
-
-    modalController.$inject = ['$uibModalInstance', '$scope'];
-
     function suseModal($uibModal) {
         return {
             restrict: 'E',
@@ -28,12 +20,13 @@
 
                 scope.$watch('error', function(value) {
                     if (angular.isDefined(value)) {
-                        $uibModal.open({
+                        // store instance in scope to expose `dismiss()` to the view
+                        scope.modalInstance = $uibModal.open({
                             templateUrl: 'app/widgets/suse-modal/suse-modal.directive.html',
-                            controller: modalController,
                             scope: scope
-                        }).closed.then(function () {
-                            // clear the errors when window is closed
+                        });
+                        // clear the errors when window is closed
+                        scope.modalInstance.closed.then(function () {
                             scope.error = undefined;
                         });
 
