@@ -158,6 +158,8 @@ describe('Upgrade Status Factory', function () {
         mockedErrorCallback,
         mockedRunningCallback,
         mockedCompletedCallback,
+        mockedFailedCallback,
+        mockedPostSyncCallback,
         mockedTimeout,
         errorResponse = {
             error: 'some error'
@@ -171,6 +173,8 @@ describe('Upgrade Status Factory', function () {
         mockedErrorCallback = jasmine.createSpy('onError');
         mockedCompletedCallback = jasmine.createSpy('onCompleted');
         mockedRunningCallback = jasmine.createSpy('onRunning');
+        mockedFailedCallback = jasmine.createSpy('onFailed');
+        mockedPostSyncCallback = jasmine.createSpy('postSync');
 
         // mock $timeout service
         module(function($provide) {
@@ -205,7 +209,9 @@ describe('Upgrade Status Factory', function () {
                     flagsObject = { running: true, completed: false };
 
                     upgradeStatusFactory.syncStatusFlags(
-                        testedStep, flagsObject, mockedRunningCallback, mockedCompletedCallback
+                        testedStep, flagsObject,
+                        mockedRunningCallback, mockedCompletedCallback,
+                        mockedFailedCallback, mockedPostSyncCallback
                     );
 
                     $rootScope.$digest();
@@ -217,6 +223,14 @@ describe('Upgrade Status Factory', function () {
 
                 it('should not call running callback', function () {
                     expect(mockedRunningCallback).not.toHaveBeenCalled();
+                });
+
+                it('should not call failed callback', function () {
+                    expect(mockedFailedCallback).not.toHaveBeenCalled();
+                });
+
+                it('should call post sync callback', function () {
+                    expect(mockedPostSyncCallback).toHaveBeenCalledTimes(1);
                 });
 
                 it('should set completed flag to true', function () {
@@ -237,7 +251,9 @@ describe('Upgrade Status Factory', function () {
                     flagsObject = { running: false, completed: true };
 
                     upgradeStatusFactory.syncStatusFlags(
-                        testedStep, flagsObject, mockedRunningCallback, mockedCompletedCallback
+                        testedStep, flagsObject,
+                        mockedRunningCallback, mockedCompletedCallback,
+                        mockedFailedCallback, mockedPostSyncCallback
                     );
 
                     $rootScope.$digest();
@@ -251,12 +267,126 @@ describe('Upgrade Status Factory', function () {
                     expect(mockedRunningCallback).toHaveBeenCalledTimes(1);
                 });
 
+                it('should not call failed callback', function () {
+                    expect(mockedFailedCallback).not.toHaveBeenCalled();
+                });
+
+                it('should call post sync callback', function () {
+                    expect(mockedPostSyncCallback).toHaveBeenCalledTimes(1);
+                });
+
                 it('should set completed flag to false', function () {
                     assert.isFalse(flagsObject.completed);
                 });
 
                 it('should set running flag to true', function () {
                     assert.isTrue(flagsObject.running);
+                });
+            });
+
+            describe('when received status is failed (with callback)', function () {
+                beforeEach(function () {
+                    bard.mockService(upgradeFactory, {
+                        getStatus: $q.when(failedUpgradeResponse)
+                    });
+
+                    flagsObject = { running: true, completed: true };
+
+                    upgradeStatusFactory.syncStatusFlags(
+                        testedStep, flagsObject,
+                        mockedRunningCallback, mockedCompletedCallback,
+                        mockedFailedCallback, mockedPostSyncCallback
+                    );
+
+                    $rootScope.$digest();
+                });
+
+                it('should not call completed callback', function () {
+                    expect(mockedCompletedCallback).not.toHaveBeenCalled();
+                });
+
+                it('should not call running callback', function () {
+                    expect(mockedRunningCallback).not.toHaveBeenCalled();
+                });
+
+                it('should call failed callback', function () {
+                    expect(mockedFailedCallback).toHaveBeenCalledTimes(1);
+                });
+
+                it('should call post sync callback', function () {
+                    expect(mockedPostSyncCallback).toHaveBeenCalledTimes(1);
+                });
+
+                it('should set completed flag to false', function () {
+                    assert.isFalse(flagsObject.completed);
+                });
+
+                it('should set running flag to false', function () {
+                    assert.isFalse(flagsObject.running);
+                });
+            });
+
+            describe('when received status is failed (without callback)', function () {
+                beforeEach(function () {
+                    bard.mockService(upgradeFactory, {
+                        getStatus: $q.when(failedUpgradeResponse)
+                    });
+
+                    flagsObject = { running: true, completed: true };
+
+                    upgradeStatusFactory.syncStatusFlags(
+                        testedStep, flagsObject,
+                        mockedRunningCallback, mockedCompletedCallback,
+                        null, mockedPostSyncCallback
+                    );
+
+                    $rootScope.$digest();
+                });
+
+                it('should not call completed callback', function () {
+                    expect(mockedCompletedCallback).not.toHaveBeenCalled();
+                });
+
+                it('should not call running callback', function () {
+                    expect(mockedRunningCallback).not.toHaveBeenCalled();
+                });
+
+                it('should call post sync callback', function () {
+                    expect(mockedPostSyncCallback).toHaveBeenCalledTimes(1);
+                });
+
+                it('should set completed flag to false', function () {
+                    assert.isFalse(flagsObject.completed);
+                });
+
+                it('should set running flag to false', function () {
+                    assert.isFalse(flagsObject.running);
+                });
+            });
+
+            describe('when there is no post sync callback', function () {
+                beforeEach(function () {
+                    bard.mockService(upgradeFactory, {
+                        getStatus: $q.when(completedUpgradeResponse)
+                    });
+
+                    flagsObject = { running: true, completed: false };
+
+                    upgradeStatusFactory.syncStatusFlags(
+                        testedStep, flagsObject,
+                        mockedRunningCallback, mockedCompletedCallback,
+                        mockedFailedCallback, null
+                    );
+
+                    $rootScope.$digest();
+                });
+
+                it('should set completed flag to true', function () {
+                    assert.isTrue(flagsObject.completed);
+                });
+
+                it('should set running flag to false', function () {
+                    assert.isFalse(flagsObject.running);
                 });
             });
         });
