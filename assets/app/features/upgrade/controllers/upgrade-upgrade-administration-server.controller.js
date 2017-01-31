@@ -14,7 +14,7 @@
     UpgradeUpgradeAdministrationServerController.$inject = [
         '$timeout', 'crowbarFactory', 'upgradeStatusFactory',
         'ADMIN_UPGRADE_TIMEOUT_INTERVAL', 'ADMIN_UPGRADE_ALLOWED_DOWNTIME',
-        'UPGRADE_STEPS', 'UPGRADE_STEP_STATES', 'upgradeStepsFactory'
+        'UPGRADE_STEPS', 'UPGRADE_STEP_STATES', 'UNEXPECTED_ERROR_DATA', 'upgradeStepsFactory'
     ];
     // @ngInject
     function UpgradeUpgradeAdministrationServerController(
@@ -25,6 +25,7 @@
       ADMIN_UPGRADE_ALLOWED_DOWNTIME,
       UPGRADE_STEPS,
       UPGRADE_STEP_STATES,
+      UNEXPECTED_ERROR_DATA,
       upgradeStepsFactory
     ) {
         var vm = this;
@@ -61,8 +62,12 @@
                     // In case of failure
                     function (errorResponse) {
                         vm.adminUpgrade.running = false;
-                        // Expose the error list to adminUpgrade object
-                        vm.adminUpgrade.errors = errorResponse.data.errors;
+
+                        if (angular.isDefined(errorResponse.data.errors)) {
+                            vm.errors = errorResponse.data;
+                        } else {
+                            vm.errors = UNEXPECTED_ERROR_DATA;
+                        }
                     }
                 );
         }
@@ -78,9 +83,14 @@
                 },
                 function (errorResponse) {
                     vm.adminUpgrade.running = false;
-                    // TODO(itxaka): Use the proper error key from the response when this is done
-                    // https://trello.com/c/chzg85j4/142-3-s49p7-error-reporting-on-crowbar-level
-                    vm.adminUpgrade.errors = errorResponse.data.errors;
+
+                    if (angular.isDefined(errorResponse.data.errors)) {
+                        vm.errors = errorResponse.data;
+                    } else if (angular.isDefined(errorResponse.data.steps)) {
+                        vm.errors = { errors: errorResponse.data.steps.admin.errors };
+                    } else {
+                        vm.errors = UNEXPECTED_ERROR_DATA;
+                    }
                 },
                 null,
                 ADMIN_UPGRADE_ALLOWED_DOWNTIME
