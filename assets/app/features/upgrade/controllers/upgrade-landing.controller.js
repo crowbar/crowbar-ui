@@ -174,37 +174,26 @@
                         // Store the upgrade best method
                         vm.mode.type = response.data.best_method;
 
-                        var checksValidity = [],
-                            checksErrors = {};
+                        var checksErrors = {};
 
                         _.forEach(response.data.checks, function(check, checkKey) {
                             // skip unknown checks returned from backend
                             if (checkKey in vm.prechecks.checks) {
                                 vm.prechecks.checks[checkKey].status = check.passed;
-                                if (check.required) {
-                                    checksValidity.push(check.passed);
-                                }
-                                // expose errors even for non-required checks
-                                if (!check.passed) {
+                                if (check.errors) {
                                     _.merge(checksErrors, check.errors);
                                 }
                             }
                         });
 
-                        vm.prechecks.valid = checksValidity.every(function (checkPassed) {
-                            return checkPassed;
-                        });
+                        vm.prechecks.valid = (vm.mode.type !== UPGRADE_MODES.none);
 
                         // expose all errors
                         if (!_.isEmpty(checksErrors)) {
                             vm.errors = { title: 'prechecks', errors: checksErrors };
                         }
-                        // If all prechecks are ok, move to the next step
-                        if (vm.prechecks.valid) {
-                            // Store the upgrade best method
-                            vm.mode.type = response.data.best_method;
-                            updateMode();
-                        }
+
+                        updateMode();
                     },
                     //Failure handler:
                     function(errorResponse) {
@@ -227,7 +216,8 @@
         * Sets the type of mode depending on the api response
         */
         function updateMode() {
-            vm.mode.active = true;
+            // If all prechecks are ok, move to the next step
+            vm.mode.active = vm.prechecks.valid;
             if (vm.mode.type === UPGRADE_MODES.nondisruptive) {
                 vm.mode.valid = true;
             }

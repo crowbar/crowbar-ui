@@ -1,6 +1,7 @@
 /* jshint -W117, -W030 */
 /*global bard $controller $httpBackend should assert upgradeFactory upgradeStatusFactory
-  crowbarFactory $q $rootScope module $state UPGRADE_STEPS PREPARE_TIMEOUT_INTERVAL */
+  crowbarFactory $q $rootScope module $state UPGRADE_STEPS PREPARE_TIMEOUT_INTERVAL
+  UNEXPECTED_ERROR_DATA */
 describe('Upgrade Landing Controller', function() {
     var controller,
         completedUpgradeResponseData = {
@@ -141,19 +142,27 @@ describe('Upgrade Landing Controller', function() {
             compute_status: { required: false, passed: true }
         },
         failingChecks = {
-            maintenance_updates_installed: { required: true, passed: false },
-            network_checks: { required: true, passed: false },
-            cloud_healthy: { required: true, passed: false },
-            clusters_healthy: { required: false, passed: false },
-            ceph_healthy: { required: false, passed: false },
-            compute_status: { required: false, passed: false }
+            maintenance_updates_installed: { required: true, passed: false,
+                errors: { err1: { data: 'err1 data', help: 'err1 help' }} },
+            network_checks: { required: true, passed: false,
+                errors: { err2: { data: 'err2 data', help: 'err2 help' }} },
+            cloud_healthy: { required: true, passed: false,
+                errors: { err3: { data: 'err3 data', help: 'err3 help' }} },
+            clusters_healthy: { required: false, passed: false,
+                errors: { err4: { data: 'err4 data', help: 'err4 help' }} },
+            ceph_healthy: { required: false, passed: false,
+                errors: { err5: { data: 'err5 data', help: 'err5 help' }} },
+            compute_status: { required: false, passed: false,
+                errors: { err6: { data: 'err6 data', help: 'err6 help' }} }
         },
         partiallyFailingChecks = {
             maintenance_updates_installed: { required: true, passed: true },
             network_checks: { required: true, passed: true },
             cloud_healthy: { required: true, passed: true },
-            clusters_healthy: { required: false, passed: false },
-            ceph_healthy: { required: false, passed: false },
+            clusters_healthy: { required: false, passed: false,
+                errors: { err7: { data: 'err7 data', help: 'err7 help' }} },
+            ceph_healthy: { required: false, passed: false,
+                errors: { err8: { data: 'err8 data', help: 'err8 help' }} },
             compute_status: { required: true, passed: true }
         },
         failingErrors = {
@@ -182,6 +191,9 @@ describe('Upgrade Landing Controller', function() {
             data: {
                 addons: []
             }
+        },
+        emptyResponse = {
+            data: {}
         };
 
     beforeEach(function() {
@@ -191,7 +203,8 @@ describe('Upgrade Landing Controller', function() {
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp.upgrade');
         bard.inject('$controller', '$rootScope', 'upgradeFactory',
-            'crowbarFactory', '$q', '$httpBackend', 'upgradeStatusFactory');
+            'crowbarFactory', '$q', '$httpBackend', 'upgradeStatusFactory',
+            'UNEXPECTED_ERROR_DATA');
 
         bard.mockService(crowbarFactory, {
             getEntity: $q.when(entityResponseWithAddons)
@@ -476,7 +489,7 @@ describe('Upgrade Landing Controller', function() {
                 })
             });
 
-            describe('when service call fails', function () {
+            describe('when service call fails with error info', function () {
                 beforeEach(function () {
                     // local change in mocked service
                     spyOn(upgradeFactory, 'getPreliminaryChecks').and.returnValue($q.reject(failingResponse));
@@ -493,8 +506,30 @@ describe('Upgrade Landing Controller', function() {
                     assert.isFalse(controller.prechecks.valid);
                 });
 
-                it('should expose the errors through vm.prechecks.errors object', function () {
+                it('should expose the errors through vm.errors object', function () {
                     expect(controller.errors).toEqual(failingResponse.data);
+                });
+            });
+
+            describe('when service call fails unexpectedly', function () {
+                beforeEach(function () {
+                    // local change in mocked service
+                    spyOn(upgradeFactory, 'getPreliminaryChecks').and.returnValue($q.reject(emptyResponse));
+
+                    controller.prechecks.runPrechecks();
+                    $rootScope.$digest();
+                });
+
+                it('should set prechecks.completed status to true', function () {
+                    assert.isTrue(controller.prechecks.completed);
+                });
+
+                it('should update valid attribute of checks model to false', function () {
+                    assert.isFalse(controller.prechecks.valid);
+                });
+
+                it('should expose default error message through vm.errors object', function () {
+                    expect(controller.errors).toEqual(UNEXPECTED_ERROR_DATA);
                 });
             });
         });
@@ -555,7 +590,8 @@ describe('Upgrade Landing Controller - States', function () {
             }
         },
         successResponse = {},
-        errorResponse = { data: {} };
+        errorResponse = { data: { errors: 'some errors' } },
+        emptyResponse = { data: {} };
 
     // inject the services using Angular "underscore wrapping"
     beforeEach(function () {
@@ -617,7 +653,7 @@ describe('Upgrade Landing Controller - States', function () {
         });
     });
 
-    describe('when node prepare start fails', function () {
+    describe('when node prepare start fails with error info', function () {
         beforeEach(function () {
             bard.inject('UPGRADE_STEPS', 'PREPARE_TIMEOUT_INTERVAL');
 
@@ -637,7 +673,38 @@ describe('Upgrade Landing Controller - States', function () {
         it('should not start polling for status', function () {
             expect(upgradeStatusFactory.waitForStepToEnd).not.toHaveBeenCalled();
         });
+
+        it('should expose received errors throuch vm.errors object', function () {
+            expect(controller.errors).toEqual(errorResponse.data);
+        });
     });
+
+    describe('when node prepare start fails unexpectedly', function () {
+        beforeEach(function () {
+            bard.inject('UPGRADE_STEPS', 'PREPARE_TIMEOUT_INTERVAL', 'UNEXPECTED_ERROR_DATA');
+
+            // local change in mocked service
+            spyOn(upgradeFactory, 'prepareNodes').and.returnValue($q.reject(emptyResponse));
+
+            spyOn(upgradeStatusFactory, 'waitForStepToEnd');
+
+            controller.prechecks.completed = true;
+            controller.prechecks.valid = true;
+
+            controller.beginUpgrade();
+
+            $rootScope.$digest();
+        });
+
+        it('should not start polling for status', function () {
+            expect(upgradeStatusFactory.waitForStepToEnd).not.toHaveBeenCalled();
+        });
+
+        it('should expose default error message throuch vm.errors object', function () {
+            expect(controller.errors).toEqual(UNEXPECTED_ERROR_DATA);
+        });
+    });
+
 
     describe('when polling is finished successfully', function () {
         beforeEach(function () {
