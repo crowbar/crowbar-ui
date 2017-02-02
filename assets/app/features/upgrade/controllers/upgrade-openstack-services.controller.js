@@ -17,6 +17,7 @@
         'upgradeStepsFactory',
         'upgradeStatusFactory',
         'UPGRADE_STEPS',
+        'UNEXPECTED_ERROR_DATA',
         'STOP_OPENSTACK_SERVICES_TIMEOUT_INTERVAL',
         'OPENSTACK_BACKUP_TIMEOUT_INTERVAL',
     ];
@@ -27,6 +28,7 @@
         upgradeStepsFactory,
         upgradeStatusFactory,
         UPGRADE_STEPS,
+        UNEXPECTED_ERROR_DATA,
         STOP_OPENSTACK_SERVICES_TIMEOUT_INTERVAL,
         OPENSTACK_BACKUP_TIMEOUT_INTERVAL
     ) {
@@ -107,9 +109,16 @@
 
         function stopServicesError(errorResponse) {
             vm.checks.services.running = false;
+            vm.checks.services.status = false;
             vm.checks.services.completed = true
-            // Expose the error list to openStackServices object
-            vm.errors = errorResponse.data;
+            // Expose the error list
+            if (angular.isDefined(errorResponse.data.errors)) {
+                vm.errors = errorResponse.data;
+            } else if (angular.isDefined(errorResponse.data.steps)) {
+                vm.errors = { errors: errorResponse.data.steps.services.errors };
+            } else {
+                vm.errors = UNEXPECTED_ERROR_DATA;
+            }
         }
 
         /**
@@ -153,8 +162,14 @@
             vm.checks.backup.running = false;
             vm.checks.backup.status = false;
             vm.checks.backup.completed = true;
-            // Expose the error list to openStackBackup object
-            vm.errors = errorResponse.data;
+            // Expose the error list
+            if (angular.isDefined(errorResponse.data.errors)) {
+                vm.errors = errorResponse.data;
+            } else if (angular.isDefined(errorResponse.data.steps)) {
+                vm.errors = { errors: errorResponse.data.steps.backup_openstack.errors };
+            } else {
+                vm.errors = UNEXPECTED_ERROR_DATA;
+            }
         }
 
         /**
@@ -165,12 +180,7 @@
                 UPGRADE_STEPS.services,
                 STOP_OPENSTACK_SERVICES_TIMEOUT_INTERVAL,
                 stopServicesSuccess,
-                function (errorResponse) {
-                    vm.checks.services.running = false;
-                    vm.checks.services.status = false;
-                    vm.checks.services.completed = true;
-                    vm.errors = errorResponse.data.steps.services;
-                }
+                stopServicesError
             );
         }
     }

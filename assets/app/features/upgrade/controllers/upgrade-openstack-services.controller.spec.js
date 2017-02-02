@@ -30,7 +30,14 @@ describe('openStack Services Controller', function() {
             'upgradeFactory', '$q', '$httpBackend', 'upgradeStatusFactory',
             'upgradeStepsFactory');
 
-        spyOn(upgradeStatusFactory, 'syncStatusFlags');
+        spyOn(upgradeStatusFactory, 'syncStatusFlags').and.callFake(
+            // make sure postSync is called even in test scenarios
+            function(step, flagsObject, onRunning, onSuccess, onError, postSync) {
+                if (angular.isFunction(postSync)) {
+                    postSync();
+                }
+            }
+        );
         spyOn(upgradeStepsFactory, 'setCurrentStepCompleted');
 
         //Create the controller

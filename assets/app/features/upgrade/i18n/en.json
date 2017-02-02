@@ -153,6 +153,8 @@
             "admin_upgrade": "Administration Server upgrade failed",
             "database_connect": "Connecting to Database failed",
             "database_new": "Creating Database failed",
+            "services": "Stopping of some services failed",
+            "backup_openstack": "Creating OpenStack database backup failed",
             "unexpected_error": "Unexpected Error",
             "backup_crowbar": "Administration Server Backup Failed"
         }
