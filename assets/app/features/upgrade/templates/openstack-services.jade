@@ -3,14 +3,15 @@ p(translate='') upgrade.steps.openstack-services.description
 
 button.btn.btn-success.center-block(
     ng-click='upgradeOpenStackServicesVm.openStackServices.stopServices()',
-    ng-disabled='(upgradeOpenStackServicesVm.openStackServices.completed && upgradeOpenStackServicesVm.openStackServices.valid) || upgradeOpenStackServicesVm.openStackServices.running',
+    ng-disabled='upgradeOpenStackServicesVm.checks.services.running || \
+        upgradeOpenStackServicesVm.checks.backup.completed || upgradeOpenStackServicesVm.checks.backup.running',
     ng-class='{\
         "spinner-visible": upgradeOpenStackServicesVm.openStackServices.spinnerVisible,\
-        active: upgradeOpenStackServicesVm.openStackServices.running\
+        active: upgradeOpenStackServicesVm.checks.services.running || upgradeOpenStackServicesVm.checks.backup.running \
     }',
 )
-    suse-lazy-spinner(delay='2000', active='upgradeOpenStackServicesVm.openStackServices.running',
+    suse-lazy-spinner(delay='2000', active='upgradeOpenStackServicesVm.checks.services.running || upgradeOpenStackServicesVm.checks.backup.running',
         visible='upgradeOpenStackServicesVm.openStackServices.spinnerVisible')
     span(translate='') upgrade.steps.openstack-services.form.stop-services
 
-crowbar-checklist(checklist='upgradeOpenStackServicesVm.openStackServices.checks', completed='upgradeOpenStackServicesVm.openStackServices.completed')
+crowbar-checklist(checklist='upgradeOpenStackServicesVm.checks')
