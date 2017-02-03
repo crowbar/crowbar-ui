@@ -48,8 +48,8 @@
             },
             "backup": {
                 "name": "Back up Admin Server",
-                "title": "Download Backup of Administration Server",
-                "description": "Create a backup of the Administration Server configuration and download it in your browser. Keep this backup somewhere safe in case of emergency. With this backup and a fresh deployment of SUSE OpenStack Cloud 6 your cloud can be returned to it’s previous state.",
+                "title": "Create a backup of the Administration Server configuration and download it in your browser.",
+                "description": "Keep this backup somewhere safe in case of emergency. With this backup and a fresh deployment of SUSE OpenStack Cloud 6 your cloud can be returned to it’s previous state.",
                 "form": {
                     "backup": "Download Backup of Administration Server"
                 }
@@ -86,15 +86,15 @@
                 }
             },
             "nodes-repository-checks": {
-                "title": "Add-On Products and Compute Nodes Repository Checks",
-                "description": "Please update the repository information on the CEPH and HA add-on products as well as the SUSE OpenStack Cloud 7 and SLES12 SP2 repositories used by the compute plane.",
+                "title": "Upgrading to SUSE OpenStack Cloud7 requires software repositories for all nodes",
+                "description": "Update the URLs of the following software repositories and click 'Check' to verify the repositories are available. When all reposotires have been verified click on 'Next' to proceed.",
                 "form": {
                     "check-again": "Check"
                 }
             },
             "openstack-services": {
                 "title": "Stop OpenStack Services and Create Backup",
-                "description": "When ready, please click below to stop all services and create a backup of the OpenStack database.",
+                "description": "When ready, click on the button below to stop OpenStack services and create a backup of the OpenStack database.",
                 "codes": {
                     "services" : "Services Stopped",
                     "backup" : "Backup Created"

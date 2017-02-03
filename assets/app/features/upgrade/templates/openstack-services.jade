@@ -4,7 +4,7 @@ p(translate='') upgrade.steps.openstack-services.description
 button.btn.btn-success.center-block(
     ng-click='upgradeOpenStackServicesVm.openStackServices.stopServices()',
     ng-disabled='upgradeOpenStackServicesVm.checks.services.running || \
-        upgradeOpenStackServicesVm.checks.backup.completed || upgradeOpenStackServicesVm.checks.backup.running',
+        upgradeOpenStackServicesVm.checks.backup.status || upgradeOpenStackServicesVm.checks.backup.running',
     ng-class='{\
         "spinner-visible": upgradeOpenStackServicesVm.openStackServices.spinnerVisible,\
         active: upgradeOpenStackServicesVm.checks.services.running || upgradeOpenStackServicesVm.checks.backup.running \
