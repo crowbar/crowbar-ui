@@ -6,6 +6,7 @@ describe('Upgrade Factory', function () {
         mockedNodesRepoChecksData = '--mockedNodesRepoChecksData--',
         mockedRepositoriesChecksData = '--mockedRepositoriesChecksData--',
         mockedStatusData = '--mockedStatusData--',
+        mockedNodesStatusData = '--mockedNodesStatusData--',
         mockedCreateAdminBackupResponse = {
             id: 42
         },
@@ -72,6 +73,10 @@ describe('Upgrade Factory', function () {
 
         it('returns an object with getStatus function is defined', function () {
             expect(upgradeFactory.getStatus).toEqual(jasmine.any(Function));
+        });
+
+        it('returns an object with getNodesStatus function is defined', function () {
+            expect(upgradeFactory.getNodesStatus).toEqual(jasmine.any(Function));
         });
 
         it('returns an object with createAdminBackup function is defined', function () {
@@ -233,6 +238,35 @@ describe('Upgrade Factory', function () {
                 statusPromise.then(function (response) {
                     expect(response.status).toEqual(200);
                     expect(response.data).toEqual(mockedStatusData);
+                });
+                $httpBackend.flush();
+            });
+
+        });
+
+        describe('when getNodesStatus method is executed', function () {
+
+            beforeEach(function () {
+
+                $httpBackend.expectGET('/api/upgrade?nodes=true', COMMON_API_V2_HEADERS)
+                    .respond(200, mockedNodesStatusData);
+                statusPromise = upgradeFactory.getNodesStatus();
+            });
+
+            it('returns a promise', function () {
+                expect(statusPromise).toEqual(jasmine.any(Object));
+                expect(statusPromise['then']).toEqual(jasmine.any(Function));
+                expect(statusPromise['catch']).toEqual(jasmine.any(Function));
+                expect(statusPromise['finally']).toEqual(jasmine.any(Function));
+                expect(statusPromise['error']).toEqual(jasmine.any(Function));
+                expect(statusPromise['success']).toEqual(jasmine.any(Function));
+            });
+
+            // getNodesStatus success, partially passing and/or failing are handled in the controller.
+            it('when resolved, it returns the upgrade status response', function () {
+                statusPromise.then(function (response) {
+                    expect(response.status).toEqual(200);
+                    expect(response.data).toEqual(mockedNodesStatusData);
                 });
                 $httpBackend.flush();
             });
