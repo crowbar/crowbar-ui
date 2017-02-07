@@ -43,7 +43,7 @@
                         }
 
                         if (angular.isFunction(postSync)) {
-                            postSync();
+                            postSync(response);
                         }
 
                     }
