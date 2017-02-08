@@ -28,7 +28,8 @@
         vm.steps = {
             list: [],
             nextStep: upgradeStepsFactory.showNextStep,
-            isCurrentStepCompleted: upgradeStepsFactory.isCurrentStepCompleted
+            isCurrentStepCompleted: upgradeStepsFactory.isCurrentStepCompleted,
+            isLastStep: upgradeStepsFactory.isLastStep,
         };
 
         vm.cancelUpgrade = cancelUpgrade;

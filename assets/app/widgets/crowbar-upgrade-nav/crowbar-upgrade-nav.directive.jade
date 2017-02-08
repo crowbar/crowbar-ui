@@ -2,5 +2,5 @@ button.btn.btn-default.pull-left(type='button', ng-click="onCancel()")
   span(aria-hidden="true", translate='') upgrade.nav.cancel
 button.btn.btn-primary.pull-right(type='button', ng-click="steps.nextStep()", ng-if="!steps.isLastStep()", ng-disabled="!steps.isCurrentStepCompleted()" )
   span(aria-hidden="true", translate='') upgrade.nav.next
-button.btn.btn-primary.disabled.pull-right(type='button', ng-click="steps.nextStep()", ng-if="steps.isLastStep()")
-  span.fa-fw.fa-spinner.fa.fa-spin(aria-hidden="true", translate='') upgrade.nav.last
+button.btn.btn-primary.pull-right(type='button', ng-click="goToDashboard()", ng-if="steps.isLastStep()", ng-disabled="!steps.isCurrentStepCompleted()")
+  span(aria-hidden="true", translate='') upgrade.nav.last

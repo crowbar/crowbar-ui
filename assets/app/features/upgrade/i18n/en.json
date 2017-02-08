@@ -2,7 +2,8 @@
     "upgrade": {
         "nav": {
             "cancel": "Cancel Upgrade",
-            "next": "Next"
+            "next": "Next",
+            "last": "Finish"
         },
         "steps": {
             "landing": {
