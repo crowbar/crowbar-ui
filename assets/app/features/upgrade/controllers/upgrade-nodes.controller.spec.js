@@ -1,27 +1,22 @@
 /* jshint -W117, -W030 */
 /*global bard $controller $httpBackend should assert upgradeFactory $q upgradeStatusFactory
-UPGRADE_STEPS NODES_UPGRADE_TIMEOUT_INTERVAL sinon $rootScope*/
+UPGRADE_STEPS NODES_UPGRADE_TIMEOUT_INTERVAL sinon $rootScope UNEXPECTED_ERROR_DATA */
 describe('Upgrade Nodes Controller', function() {
     var controller,
         stepStatus = {
             pending: 'pending',
             running: 'running',
             passed: 'passed',
+            failed: 'failed',
         },
         totalNodes = 125,
         upgradedNodes = 50,
         initialStatusResponseData = {
             current_step: 'nodes',
             substep: null,
-            current_node: {
-                alias: 'controller-1',
-                name: 'controller.1234.suse.com',
-                ip: '1.2.3.4',
-                role: 'controller',
-                state: 'pre-upgrade'
-            },
-            remaining_nodes: totalNodes,
-            upgraded_nodes: 0,
+            current_node: null,
+            remaining_nodes: null,
+            upgraded_nodes: null,
             steps: {
                 prechecks: {
                     status: stepStatus.passed,
@@ -72,11 +67,17 @@ describe('Upgrade Nodes Controller', function() {
         initialStatusResponse = {
             data: initialStatusResponseData
         },
+        initialNodesResponse = {
+            data: {
+                upgraded: Array(upgradedNodes),
+                not_upgraded: Array(totalNodes - upgradedNodes),
+            }
+        },
         failingErrors = {
-            error_message: 'Authentication failure'
+            error_code: { data: 'Authentication failure', help: 'login please' }
         },
         errorStatusResponse = {
-            data:  { errors: failingErrors }
+            data: { errors: failingErrors },
         },
         completedUpgradeData = _.merge(
             {},
@@ -128,6 +129,24 @@ describe('Upgrade Nodes Controller', function() {
         ),
         runningUpgradeResponse = {
             data: runningUpgradeData
+        },
+        failedUpgradeData = _.merge(
+            {},
+            initialStatusResponseData,
+            {
+                steps: {
+                    nodes: {
+                        status: stepStatus.failed,
+                        errors: failingErrors,
+                    }
+                }
+            }
+        ),
+        failedUpgradeResponse = {
+            data: failedUpgradeData
+        },
+        emptyResponse = {
+            data: {},
         };
 
     beforeEach(function() {
@@ -141,19 +160,27 @@ describe('Upgrade Nodes Controller', function() {
             '$httpBackend',
             'upgradeStatusFactory',
             'UPGRADE_STEPS',
-            'NODES_UPGRADE_TIMEOUT_INTERVAL'
+            'NODES_UPGRADE_TIMEOUT_INTERVAL',
+            'UNEXPECTED_ERROR_DATA'
         );
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
     });
 
-    describe('On initial getStatus success', function () {
+    describe('On initial syncStatusFlags success', function () {
         beforeEach(function () {
+            spyOn(upgradeStatusFactory, 'syncStatusFlags').and.callFake(
+                function(step, flagsObject, onRunning, onSuccess, onError, postSync) {
+                    onSuccess(initialStatusResponse);
+                    postSync(initialStatusResponse);
+                }
+            );
 
             bard.mockService(upgradeFactory, {
-                getStatus: $q.when(initialStatusResponse)
+                getNodesStatus: $q.when(initialNodesResponse),
             });
+
             spyOn(upgradeStatusFactory, 'waitForStepToEnd');
 
             controller = $controller('UpgradeNodesController');
@@ -169,38 +196,24 @@ describe('Upgrade Nodes Controller', function() {
         });
 
         describe('On activation', function () {
-            it('should get the upgrade status', function () {
-                assert(upgradeFactory.getStatus.calledOnce);
+            it('should sync the status flags', function () {
+                expect(upgradeStatusFactory.syncStatusFlags).toHaveBeenCalledTimes(1);
             });
 
             it('should not call WaitForStepToEnd', function () {
                 expect(upgradeStatusFactory.waitForStepToEnd).not.toHaveBeenCalled();
             });
 
-            it('should update the current node\'s alias', function () {
-                expect(controller.nodesUpgrade.currentNode.name)
-                    .toEqual(initialStatusResponseData.current_node.alias);
-            });
-
-            it('should update the current node\'s role', function () {
-                expect(controller.nodesUpgrade.currentNode.role)
-                    .toEqual(initialStatusResponseData.current_node.role);
-            });
-
-            it('should update the current node\'s state', function () {
-                expect(controller.nodesUpgrade.currentNode.state)
-                    .toEqual(initialStatusResponseData.current_node.state);
+            it('should have no current node', function () {
+                expect(controller.nodesUpgrade.currentNode).toBeUndefined();
             });
 
             it('should update upgraded nodes count', function () {
-                expect(controller.nodesUpgrade.upgradedNodes)
-                    .toEqual(initialStatusResponseData.upgraded_nodes);
+                expect(controller.nodesUpgrade.upgradedNodes).toEqual(upgradedNodes);
             });
 
             it('should update total nodes', function () {
-                expect(controller.nodesUpgrade.totalNodes)
-                    .toEqual(initialStatusResponseData.upgraded_nodes +
-                        initialStatusResponseData.remaining_nodes);
+                expect(controller.nodesUpgrade.totalNodes).toEqual(totalNodes);
             });
 
             it('should not be completed', function () {
@@ -217,12 +230,15 @@ describe('Upgrade Nodes Controller', function() {
         });
     });
 
-    describe('On running getStatus success', function () {
+    describe('On syncStatusFlags success', function () {
         beforeEach(function () {
+            spyOn(upgradeStatusFactory, 'syncStatusFlags').and.callFake(
+                function(step, flagsObject, onRunning, onSuccess, onError, postSync) {
+                    onRunning(runningUpgradeResponse);
+                    postSync(runningUpgradeResponse);
+                }
+            );
 
-            bard.mockService(upgradeFactory, {
-                getStatus: $q.when(runningUpgradeResponse),
-            });
             spyOn(upgradeStatusFactory, 'waitForStepToEnd');
 
             controller = $controller('UpgradeNodesController');
@@ -238,8 +254,8 @@ describe('Upgrade Nodes Controller', function() {
         });
 
         describe('On activation', function () {
-            it('should get the upgrade status', function () {
-                assert(upgradeFactory.getStatus.calledOnce);
+            it('should sync the status flags', function () {
+                expect(upgradeStatusFactory.syncStatusFlags).toHaveBeenCalledTimes(1);
             });
 
             it('should call WaitForStepToEnd', function () {
@@ -253,14 +269,6 @@ describe('Upgrade Nodes Controller', function() {
                 );
             });
 
-            it('should not be completed', function () {
-                assert.isFalse(controller.nodesUpgrade.completed);
-            });
-
-            it('should be running', function () {
-                assert.isTrue(controller.nodesUpgrade.running);
-            });
-
             // @TODO: Should not call onSucces with a given Running response
             describe('when onSuccess callback is executed', function () {
                 beforeEach(function () {
@@ -268,7 +276,7 @@ describe('Upgrade Nodes Controller', function() {
                 });
 
                 it('should update the current node\'s alias', function () {
-                    expect(controller.nodesUpgrade.currentNode.name)
+                    expect(controller.nodesUpgrade.currentNode.alias)
                         .toEqual(runningUpgradeData.current_node.alias);
                 });
 
@@ -296,14 +304,28 @@ describe('Upgrade Nodes Controller', function() {
 
             describe('when onError callback is executed', function () {
                 beforeEach(function () {
-                    upgradeStatusFactory.waitForStepToEnd.calls.argsFor(0)[3](errorStatusResponse);
+                    upgradeStatusFactory.waitForStepToEnd.calls.argsFor(0)[3](failedUpgradeResponse);
                 });
                 it('should not be running', function () {
                     assert.isFalse(controller.nodesUpgrade.running);
                 });
 
                 it('should expose the errors to the view model', function () {
-                    expect(controller.nodesUpgrade.errors).toEqual(errorStatusResponse.data.errors);
+                    expect(controller.nodesUpgrade.errors.errors)
+                        .toEqual(failedUpgradeResponse.data.steps.nodes.errors);
+                });
+            });
+
+            describe('when onError callback is executed without error info', function () {
+                beforeEach(function () {
+                    upgradeStatusFactory.waitForStepToEnd.calls.argsFor(0)[3](emptyResponse);
+                });
+                it('should not be running', function () {
+                    assert.isFalse(controller.nodesUpgrade.running);
+                });
+
+                it('should expose the errors to the view model', function () {
+                    expect(controller.nodesUpgrade.errors).toEqual(UNEXPECTED_ERROR_DATA);
                 });
             });
 
@@ -313,7 +335,7 @@ describe('Upgrade Nodes Controller', function() {
                 });
 
                 it('should update the current node\'s alias', function () {
-                    expect(controller.nodesUpgrade.currentNode.name)
+                    expect(controller.nodesUpgrade.currentNode.alias)
                         .toEqual(runningUpgradeData.current_node.alias);
                 });
 
@@ -341,12 +363,15 @@ describe('Upgrade Nodes Controller', function() {
         });
     });
 
-    describe('On initial getStatus error', function () {
+    describe('On syncStatusFlags error', function () {
         beforeEach(function () {
 
-            bard.mockService(upgradeFactory, {
-                getStatus: $q.reject(errorStatusResponse),
-            });
+            spyOn(upgradeStatusFactory, 'syncStatusFlags').and.callFake(
+                function(step, flagsObject, onRunning, onSuccess, onError, postSync) {
+                    onError(errorStatusResponse);
+                    postSync(errorStatusResponse);
+                }
+            );
 
             controller = $controller('UpgradeNodesController');
 
@@ -361,14 +386,16 @@ describe('Upgrade Nodes Controller', function() {
         });
 
         describe('On activation', function () {
-            it('should get the upgrade status', function () {
-                assert(upgradeFactory.getStatus.calledOnce);
+            it('should sync the status flags', function () {
+                expect(upgradeStatusFactory.syncStatusFlags).toHaveBeenCalledTimes(1);
             });
+
             it('should stop running', function () {
                 assert.isFalse(controller.nodesUpgrade.running);
             });
+
             it('should expose the errors to the view model', function () {
-                expect(controller.nodesUpgrade.errors).toEqual(failingErrors);
+                expect(controller.nodesUpgrade.errors.errors).toEqual(failingErrors);
             });
         });
     });
@@ -378,9 +405,16 @@ describe('Upgrade Nodes Controller', function() {
 
         beforeEach(function () {
 
+            spyOn(upgradeStatusFactory, 'syncStatusFlags').and.callFake(
+                function(step, flagsObject, onRunning, onSuccess, onError, postSync) {
+                    onSuccess(initialStatusResponse);
+                    postSync(initialStatusResponse);
+                }
+            );
+
             bard.mockService(upgradeFactory, {
-                getStatus: $q.when(initialStatusResponse),
-                upgradeNodes: $q.when()
+                upgradeNodes: $q.when(),
+                getNodesStatus: $q.when(initialNodesResponse),
             });
 
             controller = $controller('UpgradeNodesController');
@@ -436,7 +470,7 @@ describe('Upgrade Nodes Controller', function() {
                     });
 
                     it('should update the current node\'s alias', function () {
-                        expect(controller.nodesUpgrade.currentNode.name)
+                        expect(controller.nodesUpgrade.currentNode.alias)
                             .toEqual(completedUpgradeData.current_node.alias);
                     });
 
@@ -477,7 +511,7 @@ describe('Upgrade Nodes Controller', function() {
                     });
 
                     it('should expose the errors to the view model', function () {
-                        expect(controller.nodesUpgrade.errors).toEqual(errorStatusResponse.data.errors);
+                        expect(controller.nodesUpgrade.errors.errors).toEqual(errorStatusResponse.data.errors);
                     });
 
                 });
@@ -497,7 +531,7 @@ describe('Upgrade Nodes Controller', function() {
                     });
 
                     it('should update the current node\'s alias', function () {
-                        expect(controller.nodesUpgrade.currentNode.name)
+                        expect(controller.nodesUpgrade.currentNode.alias)
                             .toEqual(runningUpgradeData.current_node.alias);
                     });
 
@@ -528,7 +562,7 @@ describe('Upgrade Nodes Controller', function() {
 
         describe('On Upgrade Nodes Error', function () {
             beforeEach(function () {
-                // Override upgradeNodes behaviod
+                // Override upgradeNodes behavior
                 upgradeFactory.upgradeNodes = sinon.stub().returns($q.reject(errorStatusResponse));
 
                 controller.nodesUpgrade.beginUpgradeNodes();
@@ -545,7 +579,7 @@ describe('Upgrade Nodes Controller', function() {
             });
 
             it('should expose the errors to the view model', function () {
-                expect(controller.nodesUpgrade.errors).toEqual(errorStatusResponse.data.errors);
+                expect(controller.nodesUpgrade.errors.errors).toEqual(errorStatusResponse.data.errors);
             });
         });
     });

@@ -11,21 +11,28 @@
     angular.module('crowbarApp.upgrade')
         .controller('UpgradeNodesController', UpgradeNodesController);
 
-    UpgradeNodesController.$inject = ['upgradeFactory', 'upgradeStatusFactory','$timeout',
-        'UPGRADE_STEPS', 'NODES_UPGRADE_TIMEOUT_INTERVAL'];
+    UpgradeNodesController.$inject = [
+        'upgradeFactory',
+        'upgradeStatusFactory',
+        'upgradeStepsFactory',
+        'UPGRADE_STEPS',
+        'NODES_UPGRADE_TIMEOUT_INTERVAL',
+        'UNEXPECTED_ERROR_DATA',
+    ];
     // @ngInject
     function UpgradeNodesController(
         upgradeFactory,
         upgradeStatusFactory,
-        $timeout,
+        upgradeStepsFactory,
         UPGRADE_STEPS,
-        NODES_UPGRADE_TIMEOUT_INTERVAL
+        NODES_UPGRADE_TIMEOUT_INTERVAL,
+        UNEXPECTED_ERROR_DATA
     ) {
         var vm = this;
 
         vm.nodesUpgrade = {
             beginUpgradeNodes: beginUpgradeNodes,
-            currentNode: '',
+            currentNode: undefined,
             upgradedNodes: 0,
             totalNodes: 0,
             completed: false,
@@ -36,73 +43,79 @@
         activate();
 
         function activate() {
-            upgradeFactory.getStatus()
-                .then(
-                    function (response) {
-                        updateModel(response);
-
-                        // If the nodes upgrade is currently running,
-                        // start pooling for the upgrade status until is completed
-                        if (response.data.steps.nodes.status === 'running') {
-                            waitForUpgradeNodesToEnd();
-                        }
-                    },
-                    function (errorResponse) {
-
-                        vm.nodesUpgrade.running = false;
-                        // Expose the error list to nodesUpgrade object
-                        vm.nodesUpgrade.errors = errorResponse.data.errors;
-                    }
-                );
+            upgradeStatusFactory.syncStatusFlags(
+                UPGRADE_STEPS.nodes,
+                vm.nodesUpgrade,
+                waitForUpgradeNodesToEnd,
+                upgradeStepsFactory.setCurrentStepCompleted,
+                upgradeError,
+                updateModel
+            );
         }
 
         function beginUpgradeNodes() {
+            vm.nodesUpgrade.running = true;
+
             upgradeFactory.upgradeNodes()
                 .then(
-                    function () {
-                        waitForUpgradeNodesToEnd();
-                    },
-                    function (errorResponse) {
-                        vm.nodesUpgrade.running = false;
-                        // Expose the error list to nodesUpgrade object
-                        vm.nodesUpgrade.errors = errorResponse.data.errors;
-                    }
+                    waitForUpgradeNodesToEnd,
+                    upgradeError
                 );
         }
 
         function waitForUpgradeNodesToEnd () {
-            vm.nodesUpgrade.running = true;
-            vm.nodesUpgrade.completed = false;
-
             upgradeStatusFactory.waitForStepToEnd(
                 UPGRADE_STEPS.nodes,
                 NODES_UPGRADE_TIMEOUT_INTERVAL,
                 function (response) {
-
                     vm.nodesUpgrade.running = false;
                     vm.nodesUpgrade.completed = true;
 
+                    upgradeStepsFactory.setCurrentStepCompleted();
+
                     updateModel(response);
                 },
-                function (errorResponse) {
-
-                    vm.nodesUpgrade.running = false;
-                    // Expose the error list to nodesUpgrade object
-                    vm.nodesUpgrade.errors = errorResponse.data.errors;
-                },
+                upgradeError,
                 updateModel
             );
 
         }
 
         function updateModel(response) {
-            vm.nodesUpgrade.currentNode = {
-                name: response.data.current_node.alias,
-                role: response.data.current_node.role,
-                state: response.data.current_node.state
-            };
+            // do nothing if called with error response (e.g. via postSync)
+            if (response.data.errors) {
+                return;
+            }
+            // nodes info is not available in main status response before step is started
+            if (!response.data.current_node) {
+                // fetch base counts from the nodes status api
+                upgradeFactory.getNodesStatus()
+                    .then(
+                        function (response) {
+                            vm.nodesUpgrade.upgradedNodes = response.data.upgraded.length;
+                            vm.nodesUpgrade.totalNodes =
+                                response.data.not_upgraded.length + vm.nodesUpgrade.upgradedNodes;
+                        },
+                        upgradeError
+                    );
+                return;
+            }
+
             vm.nodesUpgrade.upgradedNodes = response.data.upgraded_nodes;
             vm.nodesUpgrade.totalNodes = response.data.upgraded_nodes + response.data.remaining_nodes;
+            vm.nodesUpgrade.currentNode = response.data.current_node;
+        }
+
+        function upgradeError(errorResponse) {
+            vm.nodesUpgrade.running = false;
+            // Expose the error list to nodesUpgrade object
+            if (angular.isDefined(errorResponse.data.errors)) {
+                vm.nodesUpgrade.errors = errorResponse.data;
+            } else if (angular.isDefined(errorResponse.data.steps)) {
+                vm.nodesUpgrade.errors = { errors: errorResponse.data.steps.nodes.errors };
+            } else {
+                vm.nodesUpgrade.errors = UNEXPECTED_ERROR_DATA;
+            }
         }
     }
 })();
