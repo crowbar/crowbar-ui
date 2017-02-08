@@ -13,6 +13,7 @@
             getNodesRepoChecks: getNodesRepoChecks,
             getRepositoriesChecks: getRepositoriesChecks,
             getStatus: getStatus,
+            getNodesStatus: getNodesStatus,
             createAdminBackup: createAdminBackup,
             createNewDatabaseServer: createNewDatabaseServer,
             connectDatabaseServer: connectDatabaseServer,
@@ -132,6 +133,23 @@
                 method: 'GET',
                 url: '/api/upgrade',
                 headers: COMMON_API_V2_HEADERS
+            };
+
+            return $http(requestOptions);
+        }
+
+        /**
+         * Get nodes upgrade status
+         *
+         * @return {Promise}
+         */
+        function getNodesStatus() {
+
+            var requestOptions = {
+                method: 'GET',
+                url: '/api/upgrade',
+                headers: COMMON_API_V2_HEADERS,
+                params: { nodes: true },
             };
 
             return $http(requestOptions);
