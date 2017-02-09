@@ -9,6 +9,7 @@ var gulp = require('gulp'),
 
 // Define main directories
 var assets = 'assets/',
+    bowerComponents = 'bower_components/',
     destination = 'public/';
     // production = environments.production;
 
@@ -24,7 +25,7 @@ gulp.task('less', function () {
     return gulp.src(assets + '**/*.less')
         .pipe(gulpDebug())
         .pipe(lessImport('app.less'))
-        .pipe(less({ paths: [assets + 'content/less', assets + 'app/features']}))
+        .pipe(less({ paths: [assets + 'content/less', assets + 'app/features', bowerComponents + 'font-awesome/less']}))
         // - tasks only for production env = NODE_ENV=production gulp
         // .pipe(production(rename({suffix: '.min'})))
         // .pipe(production(minifyCss()))

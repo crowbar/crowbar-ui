@@ -3,7 +3,23 @@
 
     angular
         .module('crowbarWidgets')
-        .directive('suseModal', suseModal);
+        .directive('suseModal', suseModal)
+        .filter('normalizeErrorData', normalizeErrorData);
+
+    function normalizeErrorData() {
+        return function(data) {
+            // convert plain strings to arrays for easier handling
+            if (!angular.isArray(data)) {
+                data = [data];
+            }
+            // split every "multi-line" into separate lines
+            var lines = [];
+            _.forEach(data, function (line) {
+                lines = lines.concat(line.split('\n'));
+            });
+            return lines;
+        }
+    }
 
     suseModal.$inject = ['$uibModal'];
 
