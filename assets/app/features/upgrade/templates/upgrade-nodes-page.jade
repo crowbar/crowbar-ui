@@ -1,5 +1,6 @@
 .upgrade-nodes-page
     h2(translate='') upgrade.steps.upgrade-nodes.title
+    p(translate='') upgrade.steps.upgrade-nodes.description
     button.btn.btn-success.center-block(
         ng-click="upgradeNodesVm.nodesUpgrade.beginUpgradeNodes()",
         ng-disabled="upgradeNodesVm.nodesUpgrade.completed || upgradeNodesVm.nodesUpgrade.running",
