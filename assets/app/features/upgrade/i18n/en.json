@@ -2,7 +2,8 @@
     "upgrade": {
         "nav": {
             "cancel": "Cancel Upgrade",
-            "next": "Next"
+            "next": "Next",
+            "last": "Finish"
         },
         "steps": {
             "landing": {
@@ -110,7 +111,7 @@
                 },
                 "status": {
                     "progress-bar": "{{current}} of {{total}} Nodes Upgraded",
-                    "current-node": "Current Node: {{nodeName}}",
+                    "current-node": "Current Node: {{nodeIP}}",
                     "node-role": "Node Role: {{nodeRole}}",
                     "node-status": "Status: {{status}}"
                 }
@@ -155,6 +156,7 @@
             "database_new": "Creating Database failed",
             "services": "Stopping of some services failed",
             "backup_openstack": "Creating OpenStack database backup failed",
+            "nodes": "Upgrading current node failed",
             "unexpected_error": "Unexpected Error",
             "backup_crowbar": "Administration Server Backup Failed"
         }

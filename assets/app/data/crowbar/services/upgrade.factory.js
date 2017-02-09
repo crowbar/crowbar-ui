@@ -230,7 +230,9 @@
             var requestOptions = {
                 method: 'POST',
                 url: '/api/upgrade/nodes',
-                headers: COMMON_API_V2_HEADERS
+                headers: COMMON_API_V2_HEADERS,
+                // UI always triggers complete upgrade
+                data: { component: 'all' },
             };
 
             return $http(requestOptions);
