@@ -9,7 +9,7 @@
             div.panel-heading {{ (translationPrefix + '.' + code) | translate }}
             div.panel-body
                 p.error-data
-                    span.error-line(ng-repeat="line in data.data | normalizeErrorData") {{ line }}
+                    span.error-line(ng-repeat="line in data.data | normalizeErrorData track by $index") {{ line }}
                 p.error-help(ng-if="data.help") {{ data.help }}
     .modal-footer
         button.btn.btn-default(type='button', ng-click='modalInstance.dismiss()')
