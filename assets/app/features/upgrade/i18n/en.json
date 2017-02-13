@@ -43,7 +43,7 @@
                     },
                     "nondisruptive": {
                         "title": "Your cloud is now prepared to begin the upgrade process in non-disruptive mode.",
-                        "description1": "In non-disruptive mode all workloads should continue running and remain connected.",
+                        "description1": "In non-disruptive mode all workloads should continue running and be accessible from the outside.",
                         "description2": "Be sure to re-run the checks if you make any changes to your cloud after the initial run."
                     }
                 }
@@ -57,7 +57,7 @@
             },
             "admin-repository-checks": {
                 "title": "Upgrading to SUSE OpenStack Cloud 7 requires updated software repositories for the Administration Server",
-                "description": "Prepare the software repositories locally or via SMT and update the URLs in the Administration Server configuration correspondingly. Click \"Check\" to verify all repositories are available. When all repositories have been verified click on \"Next\" to proceed.",
+                "description": "Prepare the software repositories locally or via SMT and update the URLs in the Administration Server configuration correspondingly. Refer to \"Software Repository Setup\" chapter of the deployment guide. Click \"Check\" to verify all repositories are available. When all repositories have been verified click on \"Next\" to proceed.",
                 "form": {
                     "check-again": "Check"
                 }
@@ -72,7 +72,7 @@
                 }
             },
             "database-configuration": {
-                "title": "Enter Credentials and/or Information to create or connect to a PostgreSQL database for the Crowbar database",
+                "title": "Enter Credentials and/or Information to create or connect to a PostgreSQL service to be used for serving the Crowbar database",
                 "navigation-tabs": {
                     "create-database": "Create a Database",
                     "connect-database": "Connect to a Database"
@@ -88,14 +88,14 @@
             },
             "nodes-repository-checks": {
                 "title": "Upgrading to SUSE OpenStack Cloud 7 requires updated software repositories for all nodes",
-                "description": "Prepare the software repositories locally or via SMT and update the URLs in the Administration Server configuration correspondingly. Click \"Check\" to verify all repositories are available. When all repositories have been verified click on \"Next\" to proceed.",
+                "description": "Prepare the software repositories locally or via SMT and update the URLs in the Administration Server configuration correspondingly. Refer to \"Software Repository Setup\" chapter of the deployment guide. Click \"Check\" to verify all repositories are available. When all repositories have been verified click on \"Next\" to proceed.",
                 "form": {
                     "check-again": "Check"
                 }
             },
             "openstack-services": {
-                "title": "Stop all OpenStack services and back up the OpenStack database",
-                "description": "It is imperative that during and after stopping the OpenStack services no changs are made to your cloud. Once created, the backup can be found in /var/lib/crowbar/backup on Administration Server.",
+                "title": "Stop OpenStack services and back up the OpenStack database",
+                "description": "It is imperative that during and after stopping the OpenStack services no changs are made to your cloud. After this step, OpenStack APIs will not be available until the upgrade process is finished. Once created, the backup can be found in /var/lib/crowbar/backup on Administration Server.",
                 "codes": {
                     "services" : "Services stopped",
                     "backup" : "Backup created"
