@@ -12,82 +12,45 @@
         .controller('UpgradeOpenStackServicesController', UpgradeOpenStackServicesController);
 
     UpgradeOpenStackServicesController.$inject = [
-        '$translate',
         'upgradeFactory',
         'upgradeStepsFactory',
         'upgradeStatusFactory',
         'UPGRADE_STEPS',
         'UNEXPECTED_ERROR_DATA',
         'STOP_OPENSTACK_SERVICES_TIMEOUT_INTERVAL',
-        'OPENSTACK_BACKUP_TIMEOUT_INTERVAL',
     ];
     // @ngInject
     function UpgradeOpenStackServicesController(
-        $translate,
         upgradeFactory,
         upgradeStepsFactory,
         upgradeStatusFactory,
         UPGRADE_STEPS,
         UNEXPECTED_ERROR_DATA,
-        STOP_OPENSTACK_SERVICES_TIMEOUT_INTERVAL,
-        OPENSTACK_BACKUP_TIMEOUT_INTERVAL
+        STOP_OPENSTACK_SERVICES_TIMEOUT_INTERVAL
     ) {
         var vm = this;
 
-        vm.checks = {
-            services: {
-                status: false,
-                completed: false,
-                running: false,
-                label: 'upgrade.steps.openstack-services.codes.services'
-            },
-            backup: {
-                status: false,
-                completed: false,
-                running: false,
-                label: 'upgrade.steps.openstack-services.codes.backup'
-            }
-        };
-
         vm.openStackServices = {
+            completed: false,
+            running: false,
             spinnerVisible: false,
             stopServices: stopServices,
-        };
-
-        vm.openStackBackup = {
-            createBackup: createBackup,
         };
 
         activate();
 
         function activate() {
-            // sync backup status before services step sync
-            // to know if we need to auto-trigger backup or not.
             upgradeStatusFactory.syncStatusFlags(
-                UPGRADE_STEPS.backup_openstack, vm.checks.backup,
-                waitForBackupToEnd, createBackupSuccess, createBackupError,
-                // postSync function to chain services sync after backup was synced
-                function () {
-                    upgradeStatusFactory.syncStatusFlags(
-                        UPGRADE_STEPS.services, vm.checks.services,
-                        waitForStopServicesToEnd, stopServicesSuccess, stopServicesError
-                    );
-                }
+                UPGRADE_STEPS.services, vm.openStackServices,
+                waitForStopServicesToEnd, stopServicesSuccess, stopServicesError
             );
-
         }
 
         /**
          *  Stop OpenStack services which are non-essential during upgrade
          */
         function stopServices() {
-            // re-starting after failed backup?
-            if (vm.checks.services.status) {
-                createBackup();
-                return;
-            }
-
-            vm.checks.services.running = true;
+            vm.openStackServices.running = true;
 
             upgradeFactory.stopServices()
                 .then(
@@ -99,74 +62,19 @@
         }
 
         function stopServicesSuccess(/*response*/) {
-            vm.checks.services.running = false;
-            vm.checks.services.status = true;
-            vm.checks.services.completed = true;
+            vm.openStackServices.running = false;
+            vm.openStackServices.completed = true;
 
-            // trigger backup creation
-            createBackup();
+            upgradeStepsFactory.setCurrentStepCompleted()
         }
 
         function stopServicesError(errorResponse) {
-            vm.checks.services.running = false;
-            vm.checks.services.status = false;
-            vm.checks.services.completed = true
+            vm.openStackServices.running = false;
             // Expose the error list
             if (angular.isDefined(errorResponse.data.errors)) {
                 vm.errors = errorResponse.data;
             } else if (angular.isDefined(errorResponse.data.steps)) {
                 vm.errors = { errors: errorResponse.data.steps.services.errors };
-            } else {
-                vm.errors = UNEXPECTED_ERROR_DATA;
-            }
-        }
-
-        /**
-         * Trigger creation of OpenStack backup
-         */
-        function createBackup() {
-            if (vm.checks.backup.status) {
-                return;
-            }
-
-            vm.checks.backup.completed = false;
-            vm.checks.backup.running = true;
-
-            upgradeFactory.createOpenstackBackup()
-                .then(
-                    waitForBackupToEnd,
-                    createBackupError
-                );
-        }
-
-        /**
-         * Start polling for status and wait until backup is created
-         */
-        function waitForBackupToEnd() {
-            upgradeStatusFactory.waitForStepToEnd(
-                UPGRADE_STEPS.backup_openstack,
-                OPENSTACK_BACKUP_TIMEOUT_INTERVAL,
-                createBackupSuccess,
-                createBackupError
-            );
-        }
-
-        function createBackupSuccess(/*response*/) {
-            vm.checks.backup.running = false;
-            vm.checks.backup.status = true;
-            vm.checks.backup.completed = true;
-            upgradeStepsFactory.setCurrentStepCompleted()
-        }
-
-        function createBackupError(errorResponse) {
-            vm.checks.backup.running = false;
-            vm.checks.backup.status = false;
-            vm.checks.backup.completed = true;
-            // Expose the error list
-            if (angular.isDefined(errorResponse.data.errors)) {
-                vm.errors = errorResponse.data;
-            } else if (angular.isDefined(errorResponse.data.steps)) {
-                vm.errors = { errors: errorResponse.data.steps.backup_openstack.errors };
             } else {
                 vm.errors = UNEXPECTED_ERROR_DATA;
             }

@@ -3,16 +3,14 @@ p(translate='') upgrade.steps.openstack-services.description
 
 button.btn.btn-success.center-block(
     ng-click='upgradeOpenStackServicesVm.openStackServices.stopServices()',
-    ng-disabled='upgradeOpenStackServicesVm.checks.services.running || \
-        upgradeOpenStackServicesVm.checks.backup.status || upgradeOpenStackServicesVm.checks.backup.running',
+    ng-disabled='upgradeOpenStackServicesVm.openStackServices.running || upgradeOpenStackServicesVm.openStackServices.completed',
     ng-class='{\
         "spinner-visible": upgradeOpenStackServicesVm.openStackServices.spinnerVisible,\
-        active: upgradeOpenStackServicesVm.checks.services.running || upgradeOpenStackServicesVm.checks.backup.running \
+        active: upgradeOpenStackServicesVm.openStackServices.running \
     }',
 )
-    suse-lazy-spinner(delay='2000', active='upgradeOpenStackServicesVm.checks.services.running || upgradeOpenStackServicesVm.checks.backup.running',
+    suse-lazy-spinner(delay='2000', active='upgradeOpenStackServicesVm.openStackServices.running',
         visible='upgradeOpenStackServicesVm.openStackServices.spinnerVisible')
     span(translate='') upgrade.steps.openstack-services.form.stop-services
 
-crowbar-checklist(checklist='upgradeOpenStackServicesVm.checks')
 suse-modal(error="upgradeOpenStackServicesVm.errors", translation-prefix="upgrade.errors")

@@ -1,5 +1,5 @@
 /*global bard should assert expect upgradeStepsFactory module $state $q UPGRADE_LAST_STATE_KEY */
-describe('Stepes Factory', function () {
+describe('Steps Factory', function () {
     var mockedInitialSteps = [
         {
             id: 0,
@@ -45,6 +45,13 @@ describe('Stepes Factory', function () {
         },
         {
             id: 6,
+            title: 'upgrade.steps-key.codes.openstack-backup',
+            state: 'upgrade.openstack-backup',
+            active: false,
+            finished: false
+        },
+        {
+            id: 7,
             title: 'upgrade.steps-key.codes.upgrade-nodes',
             state: 'upgrade.upgrade-nodes',
             active: false,
@@ -86,9 +93,6 @@ describe('Stepes Factory', function () {
                 nodes: {
                     status: 'pending',
                 },
-                finished: {
-                    status: 'pending',
-                }
             }
         },
         statusDataAfterPrechecks = {
@@ -126,9 +130,6 @@ describe('Stepes Factory', function () {
                 nodes: {
                     status: 'pending',
                 },
-                finished: {
-                    status: 'pending',
-                }
             }
         },
         statusDataDuringPrepare = {
@@ -166,9 +167,6 @@ describe('Stepes Factory', function () {
                 nodes: {
                     status: 'pending',
                 },
-                finished: {
-                    status: 'pending',
-                }
             }
         },
         statusDataAfterPrepare = {
@@ -206,9 +204,6 @@ describe('Stepes Factory', function () {
                 nodes: {
                     status: 'pending',
                 },
-                finished: {
-                    status: 'pending',
-                }
             }
         },
         statusDataDuringBackup = {
@@ -246,9 +241,6 @@ describe('Stepes Factory', function () {
                 nodes: {
                     status: 'pending',
                 },
-                finished: {
-                    status: 'pending',
-                }
             }
         },
         statusDataAfterBackup = {
@@ -286,9 +278,6 @@ describe('Stepes Factory', function () {
                 nodes: {
                     status: 'pending',
                 },
-                finished: {
-                    status: 'pending',
-                }
             }
         },
         statusDataAfterAdminRepoChecks = {
@@ -326,9 +315,6 @@ describe('Stepes Factory', function () {
                 nodes: {
                     status: 'pending',
                 },
-                finished: {
-                    status: 'pending',
-                }
             },
         },
         statusDataAfterAdminUpgrade = {
@@ -366,9 +352,6 @@ describe('Stepes Factory', function () {
                 nodes: {
                     status: 'pending',
                 },
-                finished: {
-                    status: 'pending',
-                }
             }
         },
         statusDataAfterDatabase = {
@@ -406,9 +389,6 @@ describe('Stepes Factory', function () {
                 nodes: {
                     status: 'pending',
                 },
-                finished: {
-                    status: 'pending',
-                }
             }
         },
         statusDataAfterNodesRepoChecks = {
@@ -446,9 +426,6 @@ describe('Stepes Factory', function () {
                 nodes: {
                     status: 'pending',
                 },
-                finished: {
-                    status: 'pending',
-                }
             }
         },
         statusDataAfterNodesServices = {
@@ -486,9 +463,6 @@ describe('Stepes Factory', function () {
                 nodes: {
                     status: 'pending',
                 },
-                finished: {
-                    status: 'pending',
-                }
             }
         },
         statusDataAfterNodesDBDump = {
@@ -526,13 +500,10 @@ describe('Stepes Factory', function () {
                 nodes: {
                     status: 'pending',
                 },
-                finished: {
-                    status: 'pending',
-                }
             }
         },
         statusDataAfterNodesUpgrade = {
-            current_step: 'finished',
+            current_step: 'nodes',
             substep: null,
             current_node: null,
             steps: {
@@ -566,9 +537,6 @@ describe('Stepes Factory', function () {
                 nodes: {
                     status: 'passed',
                 },
-                finished: {
-                    status: 'pending',
-                }
             }
         };
 
@@ -776,9 +744,9 @@ describe('Stepes Factory', function () {
                     expect(upgradeStepsFactory.lastStateForRestore(statusDataAfterNodesServices))
                         .toEqual('upgrade.openstack-services');
                 });
-                it('should return "upgrade.openstack-services" after nodes db dump', function() {
+                it('should return "upgrade.openstack-backup" after nodes db dump', function() {
                     expect(upgradeStepsFactory.lastStateForRestore(statusDataAfterNodesDBDump))
-                        .toEqual('upgrade.openstack-services');
+                        .toEqual('upgrade.openstack-backup');
                 });
                 it('should return "upgrade.upgrade-nodes" after nodes upgrade', function() {
                     expect(upgradeStepsFactory.lastStateForRestore(statusDataAfterNodesUpgrade))

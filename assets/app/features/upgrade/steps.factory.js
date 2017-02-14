@@ -94,6 +94,13 @@
                 },
                 {
                     id: 6,
+                    title: 'upgrade.steps-key.codes.openstack-backup',
+                    state: 'upgrade.openstack-backup',
+                    active: false,
+                    finished: false
+                },
+                {
+                    id: 7,
                     title: 'upgrade.steps-key.codes.upgrade-nodes',
                     state: 'upgrade.upgrade-nodes',
                     active: false,
@@ -192,9 +199,8 @@
                     'database': 'upgrade.database-configuration',
                     'repocheck_nodes': 'upgrade.nodes-repositories-checks',
                     'services': 'upgrade.openstack-services',
-                    'backup_openstack': 'upgrade.openstack-services',
+                    'backup_openstack': 'upgrade.openstack-backup',
                     'nodes': 'upgrade.upgrade-nodes',
-                    'finished': 'upgrade.upgrade-nodes',
                 },
                 currentStep = statusData.current_step,
                 steps = statusData.steps,
