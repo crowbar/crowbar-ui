@@ -1,14 +1,17 @@
-h2(translate='') upgrade.steps.upgrade-admin.title
-p(translate='') upgrade.steps.upgrade-admin.description
-button.btn.btn-success.center-block(
-    ng-click="upgradeAdminUpgradeVm.adminUpgrade.beginAdminUpgrade()",
-    ng-disabled="upgradeAdminUpgradeVm.adminUpgrade.completed || upgradeAdminUpgradeVm.adminUpgrade.running",
-    ng-class="{\
-        'spinner-visible': upgradeAdminUpgradeVm.adminUpgrade.spinnerVisible,\
-        active: upgradeAdminUpgradeVm.adminUpgrade.running\
-    }",
-)
-    suse-lazy-spinner(delay="2000", active="upgradeAdminUpgradeVm.adminUpgrade.running",
-        visible="upgradeAdminUpgradeVm.adminUpgrade.spinnerVisible")
-    span(translate='') upgrade.steps.upgrade-admin.form.upgrade-admin
+.upgrade-administration-server-page
+    h2(translate='') upgrade.steps.upgrade-admin.title
+    p(translate='') upgrade.steps.upgrade-admin.description
+    h3(translate='') upgrade.steps.upgrade-admin.notice-title
+    p(translate='') upgrade.steps.upgrade-admin.notice-body
+    button.btn.btn-success.center-block(
+        ng-click="upgradeAdminUpgradeVm.adminUpgrade.beginAdminUpgrade()",
+        ng-disabled="upgradeAdminUpgradeVm.adminUpgrade.completed || upgradeAdminUpgradeVm.adminUpgrade.running",
+        ng-class="{\
+            'spinner-visible': upgradeAdminUpgradeVm.adminUpgrade.spinnerVisible,\
+            active: upgradeAdminUpgradeVm.adminUpgrade.running\
+        }",
+    )
+        suse-lazy-spinner(delay="2000", active="upgradeAdminUpgradeVm.adminUpgrade.running",
+            visible="upgradeAdminUpgradeVm.adminUpgrade.spinnerVisible")
+        span(translate='') upgrade.steps.upgrade-admin.form.upgrade-admin
 suse-modal(error="upgradeAdminUpgradeVm.errors", translation-prefix="upgrade.errors")

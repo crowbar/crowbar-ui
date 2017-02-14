@@ -12,12 +12,12 @@
                 },
                 "prechecks": {
                     "title": "Preliminary Checks",
-                    "description": "Run the checks below to check if your cloud is prepared for upgrade",
+                    "description": "Run the checks below to determine if your cloud is prepared for upgrade.",
                     "form": {
                         "check-again": "Check"
                     },
                     "codes": {
-                        "updates_installed": "Maintenance Updates to SLES SP1",
+                        "updates_installed": "SLES 12 SP1 Maintenance Updates",
                         "network_sanity": "Network Health",
                         "cloud_health": "Cloud Health",
                         "high_availability": "High Availability Health",
@@ -32,50 +32,50 @@
                 },
                 "mode": {
                     "title": "Upgrade Mode",
-                    "description": "After all mandatory checks are successful the upgrade mode will be shown here...",
+                    "description": "After all mandatory checks are successful the upgrade mode of your cloud will be shown here...",
                     "normal": {
-                        "title": "Your cloud is now prepared to begin the upgrade in normal mode.",
+                        "title": "Your cloud is now prepared to begin the upgrade process in normal mode.",
                         "button": "Proceed in Normal Mode",
-                        "description1": "In normal mode, each node will be rebooted during the upgrade process, including the workloads running in them.",
-                        "description2": "In order to proceed in non-disruptive mode your cloud needs to have the pacemaker barclamp correctly configured and applied amd at least one free node as large or larger than any other node in your clouds compute plane.",
+                        "description-title": "IMPORTANT!",
+                        "description1": "In normal mode, the workloads running in each node will be live-migrated to another node. Note that you will lose connection to your VMs when upgrading the control node(s).",
+                        "description2": "In order to proceed in non-disruptive mode your cloud needs to be Highly Available and have enough free compute resources. See the deployment guide for details.",
                         "description3": "Be sure to re-run the checks if you make any changes to your cloud after the initial run."
                     },
                     "nondisruptive": {
                         "title": "Your cloud is now prepared to begin the upgrade process in non-disruptive mode.",
-                        "description1": "In non-disruptive mode all workloads should continue running but we strongly recommend picking your nose and wiggeling your finger at it for a while first.",
+                        "description1": "In non-disruptive mode all workloads should continue running and be accessible from the outside.",
                         "description2": "Be sure to re-run the checks if you make any changes to your cloud after the initial run."
                     }
                 }
             },
             "backup": {
-                "name": "Back up Admin Server",
-                "title": "Create a backup of the Administration Server configuration and download it in your browser.",
-                "description": "Keep this backup somewhere safe in case of emergency. With this backup and a fresh deployment of SUSE OpenStack Cloud 6 your cloud can be returned to it’s previous state.",
+                "title": "Create a backup of the Administration Server configuration and download it in your browser",
+                "description": "This backup contains information about the cloud deployment and configuration. Keep this backup somewhere safe in case of emergency.",
                 "form": {
                     "backup": "Download Backup of Administration Server"
                 }
             },
             "admin-repository-checks": {
-                "name": "",
-                "title": "Upgrading to SUSE OpenStack Cloud 7 requires software repositories for SLES12 SP2 and SUSE OpenStack Cloud 7.",
-                "description": "Update the URLs of the following software repositories and click 'Check' to verify the repositories are available. When all repositories have been verified click on 'Next' to proceed.",
+                "title": "Upgrading to SUSE OpenStack Cloud 7 requires updated software repositories for the Administration Server",
+                "description": "Prepare the software repositories locally or via SMT and update the URLs in the Administration Server configuration correspondingly. Refer to \"Software Repository Setup\" chapter of the deployment guide. Click \"Check\" to verify all repositories are available. When all repositories have been verified click on \"Next\" to proceed.",
                 "form": {
                     "check-again": "Check"
                 }
             },
             "upgrade-admin": {
-                "title": "Upgrade the Administration Server",
-                "description": "The button 'Upgrade Administration Server' begins the update and upgrade process of the administration server. The SLES 12 SP1 operating system of the administration server will be upgraded to SLES 12 SP2. This might take up to half an hour so please be patient.",
+                "title": "Upgrade the Administration Server to SUSE OpenStack Cloud 7",
+                "description": "Please wait until the Administration Server has been upgraded and rebooted.",
+                "notice-title": "IMPORTANT!",
+                "notice-body": "This process might take quite some time. Please do not close the browser window or refresh the page.",
                 "form": {
                     "upgrade-admin": "Upgrade Administration Server"
                 }
             },
             "database-configuration": {
-                "name": "",
-                "title": "Enter Credentials and/or Information to Create or Connect to an OpenStack PostgreSQL Server for the OpenStack Database Migration.",
+                "title": "Enter Credentials and/or Information to create or connect to a PostgreSQL service to be used for serving the Crowbar database",
                 "navigation-tabs": {
-                    "create-database": "Create New Database",
-                    "connect-database": "Connect to an Existing Database"
+                    "create-database": "Create a Database",
+                    "connect-database": "Connect to a Database"
                 },
                 "database-form": {
                     "username": "Username",
@@ -87,25 +87,26 @@
                 }
             },
             "nodes-repository-checks": {
-                "title": "Upgrading to SUSE OpenStack Cloud7 requires software repositories for all nodes",
-                "description": "Update the URLs of the following software repositories and click 'Check' to verify the repositories are available. When all reposotires have been verified click on 'Next' to proceed.",
+                "title": "Upgrading to SUSE OpenStack Cloud 7 requires updated software repositories for all nodes",
+                "description": "Prepare the software repositories locally or via SMT and update the URLs in the Administration Server configuration correspondingly. Refer to \"Software Repository Setup\" chapter of the deployment guide. Click \"Check\" to verify all repositories are available. When all repositories have been verified click on \"Next\" to proceed.",
                 "form": {
                     "check-again": "Check"
                 }
             },
             "openstack-services": {
-                "title": "Stop OpenStack Services and Create Backup",
-                "description": "When ready, click on the button below to stop OpenStack services and create a backup of the OpenStack database.",
+                "title": "Stop OpenStack services and back up the OpenStack database",
+                "description": "It is imperative that during and after stopping the OpenStack services no changs are made to your cloud. After this step, OpenStack APIs will not be available until the upgrade process is finished. Once created, the backup can be found in /var/lib/crowbar/backup on Administration Server.",
                 "codes": {
-                    "services" : "Services Stopped",
-                    "backup" : "Backup Created"
+                    "services" : "Services stopped",
+                    "backup" : "Backup created"
                 },
                 "form": {
-                    "stop-services": "Stop OpenStack Services"
+                    "stop-services": "Stop Services and Create Backup"
                 }
             },
             "upgrade-nodes": {
-                "title": "Begin upgrading and migrating control and compute nodes by clicking on the button below. Depending upon the size of your cloud and workloads this process might take quite some time.",
+                "title": "Begin upgrading and migrating nodes by clicking on the button below",
+                "description": "Depending upon the size of your cloud and workloads this process might take quite some time.",
                 "form": {
                     "upgrade-nodes": "Upgrade Nodes"
                 },
@@ -134,9 +135,9 @@
                 "backup": "Download Backup of Administration Server",
                 "administration-repositories-checks": "Check Administration Server Repositories",
                 "upgrade-administration-server": "Upgrade Administration Server",
-                "database-configuration": "Connect or Create OpenStack Database",
+                "database-configuration": "Connect or Create Crowbar Database",
                 "nodes-repositories-checks": "Check Add-On & Node Repositories",
-                "openstack-services": "Backup OpenStack Database",
+                "openstack-services": "Back up OpenStack Database",
                 "upgrade-nodes": "Upgrade Nodes & Reapply Barclamps"
             }
         },
