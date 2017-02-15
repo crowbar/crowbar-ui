@@ -33,9 +33,9 @@
                         flagsObject.completed = response.data.steps[step].status === UPGRADE_STEP_STATES.passed;
 
                         if (flagsObject.running && angular.isDefined(onRunning)) {
-                            onRunning();
+                            onRunning(response);
                         } else if (flagsObject.completed && angular.isDefined(onCompleted)) {
-                            onCompleted();
+                            onCompleted(response);
                         } else if (response.data.steps[step].status == UPGRADE_STEP_STATES.failed) {
                             if (angular.isFunction(onFailed)) {
                                 onFailed(response);
