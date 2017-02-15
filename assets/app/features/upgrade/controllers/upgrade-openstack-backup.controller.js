@@ -71,9 +71,11 @@
             );
         }
 
-        function createBackupSuccess(/*response*/) {
+        function createBackupSuccess(response) {
             vm.openStackBackup.running = false;
             vm.openStackBackup.completed = true;
+
+            vm.openStackBackup.backupPath = response.data.openstack_backup;
 
             upgradeStepsFactory.setCurrentStepCompleted()
         }

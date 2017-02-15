@@ -11,6 +11,8 @@ describe('openStack Backup Controller', function() {
             current_node: null,
             remaining_nodes: null,
             upgraded_nodes: null,
+            crowbar_backup: '--some path--',
+            openstack_backup: '--other path--',
             steps: {
                 prechecks: {
                     status: 'passed',
@@ -54,9 +56,9 @@ describe('openStack Backup Controller', function() {
                 },
             }
         },
-/*        initialStatusResponse = {
+        initialStatusResponse = {
             data: initialStatusResponseData,
-        },*/
+        },
         failedStatusData = _.merge(
             {},
             initialStatusResponseData,
@@ -77,6 +79,21 @@ describe('openStack Backup Controller', function() {
                 errors: failingErrors
             }
         },
+        successStatusData = _.merge(
+            {},
+            initialStatusResponseData,
+            {
+                current_step: 'nodes',
+                steps: {
+                    backup_openstack: {
+                        status: 'passed',
+                    }
+                }
+            }
+        ),
+        successStatusResponse = {
+            data: successStatusData,
+        },
         emptyResponse = {
             data: {}
         };
@@ -90,6 +107,10 @@ describe('openStack Backup Controller', function() {
 
         spyOn(upgradeStatusFactory, 'syncStatusFlags');
         spyOn(upgradeStepsFactory, 'setCurrentStepCompleted');
+
+        bard.mockService(upgradeFactory, {
+            getStatus: $q.when(initialStatusResponse),
+        });
 
         //Create the controller
         controller = $controller('UpgradeOpenStackBackupController');
@@ -125,13 +146,12 @@ describe('openStack Backup Controller', function() {
                 should.exist(controller.openStackBackup.createBackup);
             });
 
-            describe('when Backup stop successfully', function () {
+            describe('when backup is created successfully', function () {
                 beforeEach(function () {
-                    bard.mockService(upgradeFactory, {
-                        createOpenstackBackup: $q.when(),
-                    });
+                    // local change in mocked service
+                    spyOn(upgradeFactory, 'createOpenstackBackup').and.returnValue($q.when(emptyResponse));
                     spyOn(upgradeStatusFactory, 'waitForStepToEnd').and.callFake(
-                        function (step, interval, onSuccess/*, onError*/) { onSuccess(); }
+                        function (step, interval, onSuccess/*, onError*/) { onSuccess(successStatusResponse); }
                     );
                     controller.openStackBackup.createBackup();
                     $rootScope.$digest();
@@ -145,8 +165,8 @@ describe('openStack Backup Controller', function() {
                     assert.isFalse(controller.openStackBackup.running);
                 });
 
-                it('should call stopOpenstack service', function () {
-                    assert.isTrue(upgradeFactory.createOpenstackBackup.calledOnce);
+                it('should call createOpenstackBackup service function', function () {
+                    expect(upgradeFactory.createOpenstackBackup).toHaveBeenCalledTimes(1);
                 });
 
                 it('should start polling for status', function () {
@@ -154,11 +174,10 @@ describe('openStack Backup Controller', function() {
                 });
             });
 
-            describe('when stopping Backup fail', function () {
+            describe('when creating backup fail', function () {
                 beforeEach(function () {
-                    bard.mockService(upgradeFactory, {
-                        createOpenstackBackup: $q.when()
-                    });
+                    // local change in mocked service
+                    spyOn(upgradeFactory, 'createOpenstackBackup').and.returnValue($q.when(emptyResponse));
                     spyOn(upgradeStatusFactory, 'waitForStepToEnd').and.callFake(
                         function (step, interval, onSuccess, onError) { onError(failedStatusResponse); }
                     );
@@ -182,9 +201,8 @@ describe('openStack Backup Controller', function() {
 
             describe('when createBackup call fails', function () {
                 beforeEach(function () {
-                    bard.mockService(upgradeFactory, {
-                        createOpenstackBackup: $q.reject(failingResponse)
-                    });
+                    // local change in mocked service
+                    spyOn(upgradeFactory, 'createOpenstackBackup').and.returnValue($q.reject(failingResponse));
                     spyOn(upgradeStatusFactory, 'waitForStepToEnd');
 
                     controller.openStackBackup.createBackup();
@@ -210,9 +228,8 @@ describe('openStack Backup Controller', function() {
 
             describe('when createBackup call fails unexpectedly', function () {
                 beforeEach(function () {
-                    bard.mockService(upgradeFactory, {
-                        createOpenstackBackup: $q.reject(emptyResponse)
-                    });
+                    // local change in mocked service
+                    spyOn(upgradeFactory, 'createOpenstackBackup').and.returnValue($q.reject(emptyResponse));
                     spyOn(upgradeStatusFactory, 'waitForStepToEnd');
 
                     controller.openStackBackup.createBackup();

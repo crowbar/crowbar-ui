@@ -42,6 +42,12 @@ function() {
             spinnerVisible: false
         };
 
+        activate();
+
+        function activate() {
+            updateBackupFilePath();
+        }
+
         function createBackup() {
             vm.backup.running = true;
 
@@ -50,6 +56,7 @@ function() {
                     function (response) {
                         // the ID should always be returned in a successfull response
                         vm.backup.download(response.data.id);
+                        updateBackupFilePath();
                     },
                     // In case of backup error
                     function (errorResponse) {
@@ -59,6 +66,15 @@ function() {
                             vm.backup.errors = UNEXPECTED_ERROR_DATA;
                         }
                         vm.backup.running = false;
+                    }
+                );
+        }
+
+        function updateBackupFilePath() {
+            upgradeFactory.getStatus()
+                .then(
+                    function (response) {
+                        vm.backup.backupPath = response.data.crowbar_backup;
                     }
                 );
         }

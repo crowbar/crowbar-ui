@@ -53,7 +53,8 @@
                 "description": "This backup contains information about the cloud deployment and configuration. Keep this backup somewhere safe in case of emergency.",
                 "form": {
                     "backup": "Download Backup of Administration Server"
-                }
+                },
+                "location": "Backup can be found under \"{{path}}\" on Administration Server."
             },
             "admin-repository-checks": {
                 "title": "Upgrading to SUSE OpenStack Cloud 7 requires updated software repositories for the Administration Server",
@@ -105,7 +106,8 @@
                 "description": "Backup of OpenStack database will be downloaded from one of database nodes and stored on the Administration Server. Depending on the size of your database this process might take quite some time. Once created, the backup can be found in /var/lib/crowbar/backup on Administration Server.",
                 "form": {
                     "backup": "Create Backup"
-                }
+                },
+                "location": "Backup can be found under \"{{path}}\" on Administration Server."
             },
             "upgrade-nodes": {
                 "title": "Begin upgrading and migrating nodes by clicking on the button below",
