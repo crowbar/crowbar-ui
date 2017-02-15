@@ -1,0 +1,16 @@
+h2(translate='') upgrade.steps.openstack-backup.title
+p(translate='') upgrade.steps.openstack-backup.description
+
+button.btn.btn-success.center-block(
+    ng-click='upgradeOpenStackBackupVm.openStackBackup.createBackup()',
+    ng-disabled='upgradeOpenStackBackupVm.openStackBackup.running || upgradeOpenStackBackupVm.openStackBackup.completed',
+    ng-class='{\
+        "spinner-visible": upgradeOpenStackBackupVm.openStackBackup.spinnerVisible,\
+        active: upgradeOpenStackBackupVm.openStackBackup.running \
+    }',
+)
+    suse-lazy-spinner(delay='2000', active='upgradeOpenStackBackupVm.openStackBackup.running',
+        visible='upgradeOpenStackBackupVm.openStackBackup.spinnerVisible')
+    span(translate='') upgrade.steps.openstack-backup.form.backup
+
+suse-modal(error="upgradeOpenStackBackupVm.errors", translation-prefix="upgrade.errors")

@@ -1,12 +1,12 @@
 /*global bard $controller $httpBackend should assert upgradeFactory $q $rootScope
   upgradeStepsFactory upgradeStatusFactory UNEXPECTED_ERROR_DATA */
-describe('openStack Services Controller', function() {
+describe('openStack Backup Controller', function() {
     var controller,
         failingErrors = {
             auth_error: { data: 'Authentication failure', help: 'Please authenticate' },
         },
         initialStatusResponseData = {
-            current_step: 'services',
+            current_step: 'backup',
             substep: null,
             current_node: null,
             remaining_nodes: null,
@@ -41,7 +41,7 @@ describe('openStack Services Controller', function() {
                     errors: {}
                 },
                 services: {
-                    status: 'pending',
+                    status: 'passed',
                     errors: {}
                 },
                 backup_openstack: {
@@ -62,7 +62,7 @@ describe('openStack Services Controller', function() {
             initialStatusResponseData,
             {
                 steps: {
-                    services: {
+                    backup_openstack: {
                         status: 'failed',
                         errors: failingErrors,
                     }
@@ -88,18 +88,11 @@ describe('openStack Services Controller', function() {
             'upgradeFactory', '$q', '$httpBackend', 'upgradeStatusFactory',
             'upgradeStepsFactory', 'UNEXPECTED_ERROR_DATA');
 
-        spyOn(upgradeStatusFactory, 'syncStatusFlags').and.callFake(
-            // make sure postSync is called even in test scenarios
-            function(step, flagsObject, onRunning, onSuccess, onError, postSync) {
-                if (angular.isFunction(postSync)) {
-                    postSync();
-                }
-            }
-        );
+        spyOn(upgradeStatusFactory, 'syncStatusFlags');
         spyOn(upgradeStepsFactory, 'setCurrentStepCompleted');
 
         //Create the controller
-        controller = $controller('UpgradeOpenStackServicesController');
+        controller = $controller('UpgradeOpenStackBackupController');
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
@@ -114,46 +107,46 @@ describe('openStack Services Controller', function() {
         should.exist(controller);
     });
 
-    describe('openStackServices Model', function () {
+    describe('openStackBackup Model', function () {
         it('should be defined', function () {
-            should.exist(controller.openStackServices);
+            should.exist(controller.openStackBackup);
         });
 
         it('is not completed by default', function() {
-            assert.isFalse(controller.openStackServices.completed);
+            assert.isFalse(controller.openStackBackup.completed);
         });
 
         it('is not running by default', function() {
-            assert.isFalse(controller.openStackServices.running);
+            assert.isFalse(controller.openStackBackup.running);
         });
 
-        describe('stopServices function', function () {
+        describe('createBackup function', function () {
             it('should be defined', function () {
-                should.exist(controller.openStackServices.stopServices);
+                should.exist(controller.openStackBackup.createBackup);
             });
 
-            describe('when services stop successfully', function () {
+            describe('when Backup stop successfully', function () {
                 beforeEach(function () {
                     bard.mockService(upgradeFactory, {
-                        stopServices: $q.when(),
+                        createOpenstackBackup: $q.when(),
                     });
                     spyOn(upgradeStatusFactory, 'waitForStepToEnd').and.callFake(
                         function (step, interval, onSuccess/*, onError*/) { onSuccess(); }
                     );
-                    controller.openStackServices.stopServices();
+                    controller.openStackBackup.createBackup();
                     $rootScope.$digest();
                 });
 
-                it('should set openStackServices.completed status to true', function () {
-                    assert.isTrue(controller.openStackServices.completed);
+                it('should set openStackBackup.completed status to true', function () {
+                    assert.isTrue(controller.openStackBackup.completed);
                 });
 
                 it('should set running to false', function () {
-                    assert.isFalse(controller.openStackServices.running);
+                    assert.isFalse(controller.openStackBackup.running);
                 });
 
                 it('should call stopOpenstack service', function () {
-                    assert.isTrue(upgradeFactory.stopServices.calledOnce);
+                    assert.isTrue(upgradeFactory.createOpenstackBackup.calledOnce);
                 });
 
                 it('should start polling for status', function () {
@@ -161,84 +154,84 @@ describe('openStack Services Controller', function() {
                 });
             });
 
-            describe('when stopping services fail', function () {
+            describe('when stopping Backup fail', function () {
                 beforeEach(function () {
                     bard.mockService(upgradeFactory, {
-                        stopServices: $q.when()
+                        createOpenstackBackup: $q.when()
                     });
                     spyOn(upgradeStatusFactory, 'waitForStepToEnd').and.callFake(
                         function (step, interval, onSuccess, onError) { onError(failedStatusResponse); }
                     );
-                    controller.openStackServices.stopServices();
+                    controller.openStackBackup.createBackup();
                     $rootScope.$digest();
                 });
 
-                it('should leave openStackServices.completed status at false', function () {
-                    assert.isFalse(controller.openStackServices.completed);
+                it('should leave openStackBackup.completed status at false', function () {
+                    assert.isFalse(controller.openStackBackup.completed);
                 });
 
                 it('should set running to false', function () {
-                    assert.isFalse(controller.openStackServices.running);
+                    assert.isFalse(controller.openStackBackup.running);
                 });
 
-                it('should expose the errors through vm.openStackServices.errors object', function () {
+                it('should expose the errors through vm.openStackBackup.errors object', function () {
                     expect(controller.errors).toEqual(failingResponse.data);
                 });
 
             });
 
-            describe('when stopServices call fails', function () {
+            describe('when createBackup call fails', function () {
                 beforeEach(function () {
                     bard.mockService(upgradeFactory, {
-                        stopServices: $q.reject(failingResponse)
+                        createOpenstackBackup: $q.reject(failingResponse)
                     });
                     spyOn(upgradeStatusFactory, 'waitForStepToEnd');
 
-                    controller.openStackServices.stopServices();
+                    controller.openStackBackup.createBackup();
                     $rootScope.$digest();
                 });
 
-                it('should leave openStackServices.completed status at false', function () {
-                    assert.isFalse(controller.openStackServices.completed);
+                it('should leave openStackBackup.completed status at false', function () {
+                    assert.isFalse(controller.openStackBackup.completed);
                 });
 
                 it('should set running to false', function () {
-                    assert.isFalse(controller.openStackServices.running);
+                    assert.isFalse(controller.openStackBackup.running);
                 });
 
                 it('should not start polling for status', function () {
                     expect(upgradeStatusFactory.waitForStepToEnd).not.toHaveBeenCalled();
                 });
 
-                it('should expose the errors through vm.openStackServices.errors object', function () {
+                it('should expose the errors through vm.openStackBackup.errors object', function () {
                     expect(controller.errors).toEqual(failingResponse.data);
                 });
             });
 
-            describe('when stopServices call fails unexpectedly', function () {
+            describe('when createBackup call fails unexpectedly', function () {
                 beforeEach(function () {
                     bard.mockService(upgradeFactory, {
-                        stopServices: $q.reject(emptyResponse)
+                        createOpenstackBackup: $q.reject(emptyResponse)
                     });
                     spyOn(upgradeStatusFactory, 'waitForStepToEnd');
 
-                    controller.openStackServices.stopServices();
+                    controller.openStackBackup.createBackup();
                     $rootScope.$digest();
                 });
 
-                it('should leave openStackServices.completed status at false', function () {
-                    assert.isFalse(controller.openStackServices.completed);
+                it('should leave openStackBackup.completed status at false', function () {
+                    assert.isFalse(controller.openStackBackup.completed);
                 });
 
                 it('should set running to false', function () {
-                    assert.isFalse(controller.openStackServices.running);
+                    assert.isFalse(controller.openStackBackup.running);
                 });
 
                 it('should not start polling for status', function () {
                     expect(upgradeStatusFactory.waitForStepToEnd).not.toHaveBeenCalled();
                 });
 
-                it('should expose default errors data through vm.openStackServices.errors object', function () {
+                it('should expose default errors data through vm.openStackBackup.errors object', function () {
                     expect(controller.errors).toEqual(UNEXPECTED_ERROR_DATA);
                 });
 

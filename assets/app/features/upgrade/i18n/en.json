@@ -94,14 +94,17 @@
                 }
             },
             "openstack-services": {
-                "title": "Stop OpenStack services and back up the OpenStack database",
-                "description": "It is imperative that during and after stopping the OpenStack services no changs are made to your cloud. After this step, OpenStack APIs will not be available until the upgrade process is finished. Once created, the backup can be found in /var/lib/crowbar/backup on Administration Server.",
-                "codes": {
-                    "services" : "Services stopped",
-                    "backup" : "Backup created"
-                },
+                "title": "Stop OpenStack services",
+                "description": "It is imperative that during and after stopping the OpenStack services no changes are made to your cloud. After this step, OpenStack APIs will not be available until the upgrade process is finished.",
                 "form": {
-                    "stop-services": "Stop Services and Create Backup"
+                    "stop-services": "Stop Services"
+                }
+            },
+            "openstack-backup": {
+                "title": "Back up the OpenStack database",
+                "description": "Backup of OpenStack database will be downloaded from one of database nodes and stored on the Administration Server. Depending on the size of your database this process might take quite some time. Once created, the backup can be found in /var/lib/crowbar/backup on Administration Server.",
+                "form": {
+                    "backup": "Create Backup"
                 }
             },
             "upgrade-nodes": {
@@ -137,7 +140,8 @@
                 "upgrade-administration-server": "Upgrade Administration Server",
                 "database-configuration": "Connect or Create Crowbar Database",
                 "nodes-repositories-checks": "Check Add-On & Node Repositories",
-                "openstack-services": "Back up OpenStack Database",
+                "openstack-services": "Stop OpenStack Services",
+                "openstack-backup": "Back up OpenStack Database",
                 "upgrade-nodes": "Upgrade Nodes & Reapply Barclamps"
             }
         },

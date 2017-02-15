@@ -58,10 +58,6 @@ describe('Upgrade Nodes Controller', function() {
                     status: stepStatus.pending,
                     errors: {}
                 },
-                finished: {
-                    status: stepStatus.pending,
-                    errors: {}
-                }
             }
         },
         initialStatusResponse = {
@@ -97,9 +93,6 @@ describe('Upgrade Nodes Controller', function() {
                     nodes: {
                         status: stepStatus.passed
                     },
-                    finished: {
-                        status: stepStatus.pending
-                    }
                 }
 
             }
