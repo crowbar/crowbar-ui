@@ -11,4 +11,9 @@ button.btn.btn-primary.center-block(
   suse-lazy-spinner(delay="2000", active="upgradeBackupVm.backup.running",
     visible="upgradeBackupVm.backup.spinnerVisible")
   span(translate='') upgrade.steps.backup.form.backup
+div.backup-location.step-hint(
+  ng-if="upgradeBackupVm.backup.backupPath",
+  translate='upgrade.steps.backup.location',
+  translate-values='{ path: upgradeBackupVm.backup.backupPath }'
+)
 suse-modal(error="upgradeBackupVm.backup.errors", translation-prefix="upgrade.errors")

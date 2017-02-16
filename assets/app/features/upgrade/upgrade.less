@@ -1,4 +1,5 @@
 /* Start= states/upgrade/upgrade.less */
+@import 'font-awesome';
 
 .upgrade-flow {
     border-color: #cccccc;
@@ -89,6 +90,22 @@
                 .checks-container .btn {
                     margin-bottom: 0px;
                     margin-top: 20px;
+                }
+
+                .step-hint {
+                    color: @success-text;
+
+                    &:before {
+                        color: @success-icon;
+                        content: @fa-var-info-circle;
+                        font-family: FontAwesome;
+                        font-size: 16px;
+                        margin-right: 5px;
+                    }
+                }
+
+                .backup-location {
+                    margin-top: 24px;
                 }
             }
         }

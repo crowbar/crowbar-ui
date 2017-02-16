@@ -22,6 +22,11 @@ describe('Upgrade Flow - Backup Controller', function() {
         mockedDownloadResponse = {
             data: new Blob([mockedDownloadFile]),
             'headers': function() {}
+        },
+        mockedStatusResponse = {
+            data: {
+                crowbar_backup: '--some path--',
+            }
         };
 
     beforeEach(function() {
@@ -36,6 +41,11 @@ describe('Upgrade Flow - Backup Controller', function() {
             'crowbarUtilsFactory',
             'FileSaver'
         );
+
+        bard.mockService(upgradeFactory, {
+            getStatus: $q.when(mockedStatusResponse),
+            createAdminBackup: $q.when(mockedCreateResponse),
+        });
 
         //Create the controller
         controller = $controller('UpgradeBackupController');
@@ -74,9 +84,6 @@ describe('Upgrade Flow - Backup Controller', function() {
                 beforeEach(function () {
                     spyOn(controller.backup, 'download');
 
-                    bard.mockService(upgradeFactory, {
-                        createAdminBackup: $q.when(mockedCreateResponse)
-                    });
                     controller.backup.create();
                     $rootScope.$digest();
                 });
@@ -97,10 +104,8 @@ describe('Upgrade Flow - Backup Controller', function() {
             describe('when executed and finished with failure', function () {
                 beforeEach(function () {
                     spyOn(controller.backup, 'download');
-
-                    bard.mockService(upgradeFactory, {
-                        createAdminBackup: $q.reject(mockedErrorResponse)
-                    });
+                    // local change in mocked service
+                    spyOn(upgradeFactory, 'createAdminBackup').and.returnValue($q.reject(mockedErrorResponse));
                     controller.backup.create();
                     $rootScope.$digest();
                 });
