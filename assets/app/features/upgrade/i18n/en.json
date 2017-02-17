@@ -22,6 +22,7 @@
                         "cloud_health": "Cloud Health",
                         "high_availability": "High Availability Health",
                         "storage": "Storage Health",
+                        "openstack_check": "OpenStack Check",
                         "compute_status": "Compute Resources"
                     }
                 },
@@ -155,6 +156,7 @@
             "no_resources": "Not enough free compute resources",
             "zypper_errors": "Zypper error",
             "failed_proposals": "Failed proposals",
+            "too_many_replicas": "Too many Swift replicas",
             "repositories_missing": "Required repositories missing",
             "repositories_too_soon": "SOC7 repositories found",
             "prepare": "Begin Upgrade failed",
