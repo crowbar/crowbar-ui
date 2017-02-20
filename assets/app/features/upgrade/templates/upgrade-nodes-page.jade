@@ -20,6 +20,7 @@
     .row(ng-if="upgradeNodesVm.nodesUpgrade.currentNode")
         .col-md-8.col-md-offset-4
             .upgrade-progress(
+                title='{{upgradeNodesVm.nodesUpgrade.currentNode.ip}}',
                 translate='upgrade.steps.upgrade-nodes.status.current-node',
                 translate-values='{"nodeIP": upgradeNodesVm.nodesUpgrade.currentNode.ip, "nodeName": upgradeNodesVm.nodesUpgrade.currentNode.name}'
             )

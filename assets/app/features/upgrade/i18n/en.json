@@ -117,7 +117,7 @@
                 },
                 "status": {
                     "progress-bar": "{{current}} of {{total}} Nodes Upgraded",
-                    "current-node": "Current Node: {{nodeIP}}",
+                    "current-node": "Current Node: {{nodeName}}",
                     "node-role": "Node Role: {{nodeRole}}",
                     "node-status": "Status: {{status}}"
                 }
