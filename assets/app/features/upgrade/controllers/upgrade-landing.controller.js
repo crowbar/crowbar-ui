@@ -72,7 +72,11 @@
                 compute_status: {
                     status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.compute_status'
-                }
+                },
+                openstack_check: {
+                    status: false,
+                    label: 'upgrade.steps.landing.prechecks.codes.openstack_check'
+                },
             },
             runPrechecks: runPrechecks
         };
