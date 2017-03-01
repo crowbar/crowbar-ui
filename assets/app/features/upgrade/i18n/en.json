@@ -23,6 +23,7 @@
                         "high_availability": "High Availability Health",
                         "storage": "Storage Health",
                         "openstack_check": "OpenStack Check",
+                        "ha_configured": "High Availability Setup",
                         "compute_status": "Compute Resources"
                     }
                 },
@@ -39,7 +40,7 @@
                         "button": "Proceed in Normal Mode",
                         "description-title": "IMPORTANT!",
                         "description1": "In normal mode, the workloads running in each node will be live-migrated to another node. Note that you will lose connection to your VMs when upgrading the control node(s).",
-                        "description2": "In order to proceed in non-disruptive mode your cloud needs to be Highly Available and have enough free compute resources. See the deployment guide for details.",
+                        "description2": "In order to proceed in non-disruptive mode your cloud needs to be configured as Highly Available and have enough free compute resources. See the deployment guide for details.",
                         "description3": "Be sure to re-run the checks if you make any changes to your cloud after the initial run."
                     },
                     "nondisruptive": {
@@ -151,6 +152,8 @@
         "errors": {
             "default-title": "Upgrade Error",
             "prechecks": "Some Checks failed",
+            "ha_configured": "Cloud is not configured as Highly Available",
+            "ha_not_installed": "High Availability module is not present",
             "nodes_not_ready": "Nodes not ready",
             "no_live_migration": "Live migration not configured",
             "no_resources": "Not enough free compute resources",

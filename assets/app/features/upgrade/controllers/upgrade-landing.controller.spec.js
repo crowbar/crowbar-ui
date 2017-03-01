@@ -141,6 +141,7 @@ describe('Upgrade Landing Controller', function() {
             ceph_healthy: { required: false, passed: true },
             compute_status: { required: false, passed: true },
             openstack_check: { required: false, passed: true },
+            ha_configured: { required: false, passed: true },
         },
         failingChecks = {
             maintenance_updates_installed: { required: true, passed: false,
@@ -157,6 +158,8 @@ describe('Upgrade Landing Controller', function() {
                 errors: { err6: { data: 'err6 data', help: 'err6 help' }} },
             openstack_check: { required: true, passed: false,
                 errors: { err7: { data: 'err7 data', help: 'err7 help' }} },
+            ha_configured: { required: false, passed: false,
+                errors: { err8: { data: 'err8 data', help: 'err8 help' }} },
         },
         partiallyFailingChecks = {
             maintenance_updates_installed: { required: true, passed: true },
@@ -168,6 +171,7 @@ describe('Upgrade Landing Controller', function() {
                 errors: { err8: { data: 'err8 data', help: 'err8 help' }} },
             compute_status: { required: true, passed: true },
             openstack_check: { required: true, passed: true },
+            ha_configured: { required: false, passed: true },
         },
         failingErrors = {
             error_message: 'Authentication failure'

@@ -77,6 +77,10 @@
                     status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.openstack_check'
                 },
+                ha_configured: {
+                    status: false,
+                    label: 'upgrade.steps.landing.prechecks.codes.ha_configured'
+                },
             },
             runPrechecks: runPrechecks
         };
