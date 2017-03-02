@@ -176,6 +176,7 @@
             "database_connect": "Connecting to Database failed",
             "database_new": "Creating Database failed",
             "services": "Stopping of some services failed",
+            "running_instances": "Running instances detected",
             "backup_openstack": "Creating OpenStack database backup failed",
             "nodes": "Upgrading current node failed",
             "unexpected_error": "Unexpected Error",
