@@ -188,6 +188,7 @@
                             // skip unknown checks returned from backend
                             if (checkKey in vm.prechecks.checks) {
                                 vm.prechecks.checks[checkKey].status = check.passed;
+                                vm.prechecks.checks[checkKey].optional = !check.required;
                                 if (check.errors) {
                                     _.merge(checksErrors, check.errors);
                                 }
