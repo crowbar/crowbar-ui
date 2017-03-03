@@ -39,7 +39,7 @@
                         "title": "Your cloud is now prepared to begin the upgrade process in normal mode.",
                         "button": "Proceed in Normal Mode",
                         "description-title": "IMPORTANT!",
-                        "description1": "In normal mode, the workloads running in each node will be live-migrated to another node. Note that you will lose connection to your VMs when upgrading the control node(s).",
+                        "description1": "In normal mode, you will need to shutdown or suspend all of the workloads running on each node. You can start or resume them again once the upgrade is finished. You will be notified once such action is necessary.",
                         "description2": "In order to proceed in non-disruptive mode your cloud needs to be configured as Highly Available and have enough free compute resources. See the deployment guide for details.",
                         "description3": "Be sure to re-run the checks if you make any changes to your cloud after the initial run."
                     },
@@ -100,6 +100,7 @@
             "openstack-services": {
                 "title": "Stop OpenStack services",
                 "description": "It is imperative that during and after stopping the OpenStack services no changes are made to your cloud. After this step, OpenStack APIs will not be available until the upgrade process is finished.",
+                "normal-mode-note": "Before executing Stop Services action, make sure no workloads are running on any of your compute nodes. You need to shutdown or susspend all of them now. You can start or resume them again once the upgrade is finished.",
                 "form": {
                     "stop-services": "Stop Services"
                 }

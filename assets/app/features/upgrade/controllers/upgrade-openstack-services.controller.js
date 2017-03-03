@@ -35,6 +35,7 @@
             running: false,
             spinnerVisible: false,
             stopServices: stopServices,
+            mode: null,
         };
 
         activate();
@@ -42,8 +43,18 @@
         function activate() {
             upgradeStatusFactory.syncStatusFlags(
                 UPGRADE_STEPS.services, vm.openStackServices,
-                waitForStopServicesToEnd, stopServicesSuccess, stopServicesError
+                waitForStopServicesToEnd, stopServicesSuccess, stopServicesError,
+                updateMode
             );
+        }
+
+        /**
+         * Update stored upgrade mode from received status response.
+         */
+        function updateMode(response) {
+            if (response.data.selected_upgrade_mode) {
+                vm.openStackServices.mode = response.data.selected_upgrade_mode;
+            }
         }
 
         /**
