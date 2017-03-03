@@ -76,6 +76,7 @@
             },
             "database-configuration": {
                 "title": "Enter Credentials and/or Information to create or connect to a PostgreSQL service to be used for serving the Crowbar database",
+                "title-completed": "This step has been completed. Click on \"Next\" to continue the upgrade process.",
                 "navigation-tabs": {
                     "create-database": "Create a Database",
                     "connect-database": "Connect to a Database"
