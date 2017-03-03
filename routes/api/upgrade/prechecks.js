@@ -20,7 +20,7 @@ router.get('/', function(req, res) {
                 'ceph_healthy': { required: false, passed: checksPass },
                 'compute_status': { required: true, passed: true }
             },
-            'best_method': bestMethod ? 'non-disruptive' : 'disruptive'
+            'best_method': bestMethod ? 'non-disruptive' : 'normal'
         });
     }
     checksPass = true;

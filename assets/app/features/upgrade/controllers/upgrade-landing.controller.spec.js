@@ -183,7 +183,7 @@ describe('Upgrade Landing Controller', function() {
             data: { checks: failingChecks, best_method: 'none' }
         },
         partiallyFailingChecksResponse = {
-            data: { checks: partiallyFailingChecks, best_method: 'disruptive' }
+            data: { checks: partiallyFailingChecks, best_method: 'normal' }
         },
         failingResponse = {
             data: {
@@ -458,7 +458,7 @@ describe('Upgrade Landing Controller', function() {
                     assert.isTrue(controller.prechecks.completed);
                 });
 
-                it('should update valid attribute of checks model to true (disruptive only)', function () {
+                it('should update valid attribute of checks model to true (normal only)', function () {
                     assert.isTrue(controller.prechecks.valid);
                 });
 
@@ -469,8 +469,8 @@ describe('Upgrade Landing Controller', function() {
                     });
                 });
 
-                it('should set the mode to disruptive', function () {
-                    expect(controller.mode.type).toEqual('disruptive');
+                it('should set the mode to normal', function () {
+                    expect(controller.mode.type).toEqual('normal');
                 });
 
                 it('should set the mode.valid to false', function () {
@@ -487,8 +487,8 @@ describe('Upgrade Landing Controller', function() {
                         $rootScope.$digest();
                     });
 
-                    it('mode should be disruptive', function () {
-                        expect(controller.mode.type).toEqual('disruptive');
+                    it('mode should be normal', function () {
+                        expect(controller.mode.type).toEqual('normal');
                     });
 
                     it('should set the mode.valid to true', function () {
