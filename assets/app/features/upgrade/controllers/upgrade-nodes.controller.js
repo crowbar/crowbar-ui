@@ -82,12 +82,12 @@
         }
 
         function updateModel(response) {
-            // do nothing if called with error response (e.g. via postSync)
+            // do nothing if called with error-only response (e.g. via postSync)
             if (response.data.errors) {
                 return;
             }
             // nodes info is not available in main status response before step is started
-            if (!response.data.current_node) {
+            if (response.data.remaining_nodes === null) {
                 // fetch base counts from the nodes status api
                 upgradeFactory.getNodesStatus()
                     .then(
@@ -107,6 +107,9 @@
         }
 
         function upgradeError(errorResponse) {
+            // make sure we update the UI with latest status even if it contained errors
+            updateModel(errorResponse);
+
             vm.nodesUpgrade.running = false;
             // Expose the error list to nodesUpgrade object
             if (angular.isDefined(errorResponse.data.errors)) {
