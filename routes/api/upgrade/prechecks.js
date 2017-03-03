@@ -18,7 +18,9 @@ router.get('/', function(req, res) {
                 'cloud_healthy': { required: true, passed: checksPass },
                 'clusters_healthy': { required: false, passed: false },
                 'ceph_healthy': { required: false, passed: checksPass },
-                'compute_status': { required: true, passed: true }
+                'compute_status': { required: true, passed: true },
+                'ha_configured': { required: false, passed: true },
+                'openstack_check': { required: true, passed: checksPass },
             },
             'best_method': bestMethod ? 'non-disruptive' : 'disruptive'
         });

@@ -4,7 +4,8 @@ ul.check-list
         ng-class="{\
             'text-info': !completed && !check.completed,\
             'text-success': check.status && (completed || check.completed),\
-            'text-danger': !check.status && (completed || check.completed)\
+            'text-warning': !check.status && check.optional && (completed || check.completed),\
+            'text-danger': !check.status && !check.optional && (completed || check.completed)\
         }")
         i.glyphicon(ng-class="{\
             'glyphicon-question-sign': !completed && !check.completed,\
