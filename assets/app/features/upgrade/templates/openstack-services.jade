@@ -1,6 +1,8 @@
 h2(translate='') upgrade.steps.openstack-services.title
 p(translate='') upgrade.steps.openstack-services.description
 
+p(translate='', ng-if='upgradeOpenStackServicesVm.openStackServices.mode === "normal"') upgrade.steps.openstack-services.normal-mode-note
+
 button.btn.btn-success.center-block(
     ng-click='upgradeOpenStackServicesVm.openStackServices.stopServices()',
     ng-disabled='upgradeOpenStackServicesVm.openStackServices.running || upgradeOpenStackServicesVm.openStackServices.completed',

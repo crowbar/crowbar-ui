@@ -54,9 +54,9 @@ describe('openStack Services Controller', function() {
                 },
             }
         },
-/*        initialStatusResponse = {
+        initialStatusResponse = {
             data: initialStatusResponseData,
-        },*/
+        },
         failedStatusData = _.merge(
             {},
             initialStatusResponseData,
@@ -91,20 +91,17 @@ describe('openStack Services Controller', function() {
         spyOn(upgradeStatusFactory, 'syncStatusFlags').and.callFake(
             // make sure postSync is called even in test scenarios
             function(step, flagsObject, onRunning, onSuccess, onError, postSync) {
-                if (angular.isFunction(postSync)) {
-                    postSync();
-                }
+                postSync(initialStatusResponse);
             }
         );
         spyOn(upgradeStepsFactory, 'setCurrentStepCompleted');
-
-        //Create the controller
-        controller = $controller('UpgradeOpenStackServicesController');
 
         //Mock requests that are expected to be made
         $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
         $httpBackend.flush();
 
+        //Create the controller
+        controller = $controller('UpgradeOpenStackServicesController');
     });
 
     // Verify no unexpected http call has been made
