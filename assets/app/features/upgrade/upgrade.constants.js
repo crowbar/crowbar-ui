@@ -24,7 +24,7 @@
         .constant('OPENSTACK_BACKUP_TIMEOUT_INTERVAL', 1000)
         .constant('UPGRADE_MODES', {
             nondisruptive: 'non-disruptive',
-            disruptive: 'disruptive',
+            normal: 'normal',
             none: 'none',
         });
 })();

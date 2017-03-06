@@ -5,10 +5,10 @@
 .initial(ng-if='upgradeLandingVm.mode.type === "none"')
     p(translate='') upgrade.steps.landing.mode.description
 
-.normal(ng-if='upgradeLandingVm.mode.type === "disruptive"')
+.normal(ng-if='upgradeLandingVm.mode.type === "normal"')
     h3.h5(translate='') upgrade.steps.landing.mode.normal.title
     button.btn.btn-primary.mode-button(
-        ng-disabled="upgradeLandingVm.mode.type != 'disruptive' || upgradeLandingVm.mode.valid",
+        ng-disabled="upgradeLandingVm.mode.type != 'normal' || upgradeLandingVm.mode.valid",
         ng-click="upgradeLandingVm.continueNormal()"
     )
         span(translate='') upgrade.steps.landing.mode.normal.button
