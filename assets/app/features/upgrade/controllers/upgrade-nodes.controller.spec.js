@@ -223,7 +223,7 @@ describe('Upgrade Nodes Controller', function() {
         });
     });
 
-    describe('On syncStatusFlags success', function () {
+    describe('On running syncStatusFlags success', function () {
         beforeEach(function () {
             spyOn(upgradeStatusFactory, 'syncStatusFlags').and.callFake(
                 function(step, flagsObject, onRunning, onSuccess, onError, postSync) {
@@ -233,6 +233,10 @@ describe('Upgrade Nodes Controller', function() {
             );
 
             spyOn(upgradeStatusFactory, 'waitForStepToEnd');
+
+            bard.mockService(upgradeFactory, {
+                getNodesStatus: $q.when(initialNodesResponse),
+            });
 
             controller = $controller('UpgradeNodesController');
 
