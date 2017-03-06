@@ -177,7 +177,7 @@ describe('Upgrade Landing Controller', function() {
             error_message: 'Authentication failure'
         },
         passingChecksResponse = {
-            data: { checks: passingChecks, best_method: 'non-disruptive' }
+            data: { checks: passingChecks, best_method: 'non_disruptive' }
         },
         failingChecksResponse = {
             data: { checks: failingChecks, best_method: 'none' }
@@ -405,8 +405,8 @@ describe('Upgrade Landing Controller', function() {
                     });
                 });
 
-                it('should set the mode to non-disruptive', function () {
-                    expect(controller.mode.type).toEqual('non-disruptive');
+                it('should set the mode to non_disruptive', function () {
+                    expect(controller.mode.type).toEqual('non_disruptive');
                 });
 
                 it('should set the mode.valid to true', function () {
