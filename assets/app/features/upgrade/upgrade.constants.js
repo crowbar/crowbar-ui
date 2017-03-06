@@ -23,7 +23,7 @@
         .constant('STOP_OPENSTACK_SERVICES_TIMEOUT_INTERVAL', 5000)
         .constant('OPENSTACK_BACKUP_TIMEOUT_INTERVAL', 1000)
         .constant('UPGRADE_MODES', {
-            nondisruptive: 'non-disruptive',
+            nondisruptive: 'non_disruptive',
             normal: 'normal',
             none: 'none',
         });

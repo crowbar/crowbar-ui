@@ -18,6 +18,10 @@ var status_counter = -1,
         },
         remaining_nodes: 95,
         upgraded_nodes: 60,
+        crowbar_backup: '/var/lib/crowbar/backup/upgrade-backup.....tar.gz',
+        openstack_backup: '/var/lib/crowbar/backup/6-yp-7-openstack_dump.sql.gz',
+        suggested_upgrade_mode: 'non_disruptive',
+        selected_upgrade_mode: 'normal',
         steps: {
             prechecks: {
                 status: 'pending',
@@ -72,6 +76,7 @@ router.get('/', function(req, res) {
 
     function testedStatus() {
         switch (status_counter) {
+        default:
         case 0:
             return 'pending';
         case 1:
@@ -82,7 +87,6 @@ router.get('/', function(req, res) {
         case 4:
             return 'running';
         case 5:
-        default:
             return 'passed';
         }
     }
