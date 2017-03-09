@@ -5,17 +5,56 @@ var errors = ['001', '002', '003'];
 
 var status_counter = -1,
     tested_step = 'nodes',
+    current_count = 6,
     simulate_temporary_downtime = true,
     status = {
         current_step: 'prechecks',
         substep: null,
-        current_node:  {
-            alias: 'controller-1',
-            name: 'controller.1234.suse.com',
-            ip: '1.2.3.4',
-            role: 'controller',
-            state: 'post-upgrade'
-        },
+        current_nodes:  [
+            {
+                alias: 'controller-1',
+                name: 'controller.1234.suse.com',
+                ip: '192.168.123.4',
+                role: 'controller',
+                state: 'upgrading'
+            },
+            {
+                alias: 'controller-2',
+                name: 'controller.1235.suse.com',
+                ip: '192.168.123.5',
+                role: 'controller',
+                state: 'upgrading'
+            },
+            {
+                alias: 'controller-3',
+                name: 'controller.1236.suse.com',
+                ip: '192.168.123.6',
+                role: 'controller',
+                state: 'upgrading'
+            },
+            {
+                alias: 'controller-4',
+                name: 'controller.1237.suse.com',
+                ip: '192.168.123.7',
+                role: 'controller',
+                state: 'upgrading'
+            },
+            {
+                alias: 'controller-5',
+                name: 'controller.1238.suse.com',
+                ip: '192.168.123.8',
+                role: 'controller',
+                state: 'upgrading'
+            },
+            {
+                alias: 'controller-6',
+                name: 'controller.1239.suse.com',
+                ip: '192.168.123.9',
+                role: 'controller',
+                state: 'upgrading'
+            }
+        ].slice(0, current_count),
+        current_node_action: 'live-evacuting nova instances',
         remaining_nodes: 95,
         upgraded_nodes: 60,
         crowbar_backup: '/var/lib/crowbar/backup/upgrade-backup.....tar.gz',
