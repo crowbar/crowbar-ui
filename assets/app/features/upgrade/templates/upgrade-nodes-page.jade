@@ -17,45 +17,36 @@
         .progress-label.text-center(translate='upgrade.steps.upgrade-nodes.status.progress-bar',
             translate-values='{current: upgradeNodesVm.nodesUpgrade.upgradedNodes, total: upgradeNodesVm.nodesUpgrade.totalNodes}'
         )
-    .row(ng-if="upgradeNodesVm.nodesUpgrade.currentAction")
-        .col-md-8.col-md-offset-4
-            .upgrade-progress(
-                translate='upgrade.steps.upgrade-nodes.status.current-action',
-                translate-values='{"action": upgradeNodesVm.nodesUpgrade.currentAction}'
-            )
-    .row(ng-if="upgradeNodesVm.nodesUpgrade.currentNodes.length === 1")
-        .col-md-8.col-md-offset-4
-            .upgrade-progress(
-                title='{{upgradeNodesVm.nodesUpgrade.currentNodes[0].ip}}',
-                translate='upgrade.steps.upgrade-nodes.status.current-node',
-                translate-values='upgradeNodesVm.nodesUpgrade.currentNodes[0]'
-            )
-        .col-md-8.col-md-offset-4
-            .upgrade-progress(
-                translate='upgrade.steps.upgrade-nodes.status.node-role',
-                translate-values='upgradeNodesVm.nodesUpgrade.currentNodes[0]'
-            )
-        .col-md-8.col-md-offset-4
-            .upgrade-progress(
-                translate='upgrade.steps.upgrade-nodes.status.node-status',
-                translate-values='upgradeNodesVm.nodesUpgrade.currentNodes[0]'
-            )
-    .row(ng-if="upgradeNodesVm.nodesUpgrade.currentNodes.length > 1")
+    .row.upgrade-progress(ng-if="upgradeNodesVm.nodesUpgrade.currentNodes.length === 1")
+        .col-md-8.col-md-offset-4(
+            title='{{upgradeNodesVm.nodesUpgrade.currentNodes[0].ip}}',
+            translate='upgrade.steps.upgrade-nodes.status.current-node',
+            translate-values='upgradeNodesVm.nodesUpgrade.currentNodes[0]'
+        )
+    .row.upgrade-progress(ng-if="upgradeNodesVm.nodesUpgrade.currentNodes.length > 1")
         .col-md-8.col-md-offset-4(translate='') upgrade.steps.upgrade-nodes.status.current-nodes
-    .row(ng-if="upgradeNodesVm.nodesUpgrade.currentNodes.length > 1",
+        .col-md-8.col-md-offset-4(ng-if="upgradeNodesVm.nodesUpgrade.currentNodes.length > 1",
         ng-repeat="currentNode in upgradeNodesVm.nodesUpgrade.currentNodes | limitTo:upgradeNodesVm.nodesUpgrade.maxDisplayNodes")
-        .col-md-8.col-md-offset-4
             .multi-node-line(
                 title='{{currentNode.ip}}',
                 translate='upgrade.steps.upgrade-nodes.status.multi-nodes-line',
                 translate-values='currentNode'
             )
-    .row(ng-if="upgradeNodesVm.nodesUpgrade.currentNodes.length > upgradeNodesVm.nodesUpgrade.maxDisplayNodes")
-        .col-md-8.col-md-offset-4
+        .col-md-8.col-md-offset-4(ng-if="upgradeNodesVm.nodesUpgrade.currentNodes.length > upgradeNodesVm.nodesUpgrade.maxDisplayNodes")
             .multi-node-line(
                 translate='upgrade.steps.upgrade-nodes.status.more-line',
                 translate-values='{"totalCount": upgradeNodesVm.nodesUpgrade.currentNodes.length,\
                     "moreCount": upgradeNodesVm.nodesUpgrade.currentNodes.length - upgradeNodesVm.nodesUpgrade.maxDisplayNodes\
                 }'
             )
+    .row.upgrade-progress(ng-if="upgradeNodesVm.nodesUpgrade.currentNodes.length > 0")
+        .col-md-8.col-md-offset-4(
+            translate='upgrade.steps.upgrade-nodes.status.node-role',
+            translate-values='upgradeNodesVm.nodesUpgrade.currentNodes[0]'
+        )
+    .row.upgrade-progress(ng-if="upgradeNodesVm.nodesUpgrade.currentAction")
+        .col-md-8.col-md-offset-4(
+            translate='upgrade.steps.upgrade-nodes.status.current-action',
+            translate-values='{"action": upgradeNodesVm.nodesUpgrade.currentAction}'
+        )
 suse-modal(error="upgradeNodesVm.nodesUpgrade.errors", translation-prefix="upgrade.errors")
