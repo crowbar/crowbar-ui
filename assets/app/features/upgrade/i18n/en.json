@@ -121,9 +121,13 @@
                 },
                 "status": {
                     "progress-bar": "{{current}} of {{total}} Nodes Upgraded",
-                    "current-node": "Current Node: {{nodeName}}",
-                    "node-role": "Node Role: {{nodeRole}}",
-                    "node-status": "Status: {{status}}"
+                    "current-nodes": "Current Nodes:",
+                    "multi-nodes-line": "{{name}} / role: {{ role }}",
+                    "more-line": "... and {{moreCount}} more",
+                    "current-action": "Current Action: {{action}}",
+                    "current-node": "Current Node: {{name}}",
+                    "node-role": "Node Role: {{role}}",
+                    "node-status": "Status: {{state}}"
                 }
             }
         },

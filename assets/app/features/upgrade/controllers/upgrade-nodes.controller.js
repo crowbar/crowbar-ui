@@ -32,7 +32,9 @@
 
         vm.nodesUpgrade = {
             beginUpgradeNodes: beginUpgradeNodes,
-            currentNode: undefined,
+            currentNodes: [],
+            currentAction: null,
+            maxDisplayNodes: 4,
             upgradedNodes: 0,
             totalNodes: 0,
             completed: false,
@@ -103,7 +105,8 @@
 
             vm.nodesUpgrade.upgradedNodes = response.data.upgraded_nodes;
             vm.nodesUpgrade.totalNodes = response.data.upgraded_nodes + response.data.remaining_nodes;
-            vm.nodesUpgrade.currentNode = response.data.current_node;
+            vm.nodesUpgrade.currentNodes = response.data.current_nodes;
+            vm.nodesUpgrade.currentAction = response.data.current_node_action;
         }
 
         function upgradeError(errorResponse) {

@@ -14,7 +14,8 @@ describe('Upgrade Nodes Controller', function() {
         initialStatusResponseData = {
             current_step: 'nodes',
             substep: null,
-            current_node: null,
+            current_nodes: null,
+            current_node_action: null,
             remaining_nodes: null,
             upgraded_nodes: null,
             steps: {
@@ -80,13 +81,14 @@ describe('Upgrade Nodes Controller', function() {
             initialStatusResponseData,
             {
                 current_step: 'finished',
-                current_node: {
+                current_nodes: [{
                     alias: 'compute-1234',
                     name: 'compute.1234.suse.com',
                     ip: '123.2.3.4',
                     role: 'compute',
                     state: 'finished'
-                },
+                }],
+                current_node_action: 'finished upgrading',
                 remaining_nodes: 0,
                 upgraded_nodes: totalNodes,
                 steps: {
@@ -104,13 +106,14 @@ describe('Upgrade Nodes Controller', function() {
             {},
             initialStatusResponseData,
             {
-                current_node: {
+                current_nodes: [{
                     alias: 'compute-345',
                     name: 'compute.345.suse.com',
                     ip: '34.2.3.4',
                     role: 'compute',
                     state: 'migrating VMs'
-                },
+                }],
+                current_node_action: 'doing something',
                 remaining_nodes: totalNodes - upgradedNodes,
                 upgraded_nodes:  upgradedNodes,
                 steps: {
@@ -272,19 +275,14 @@ describe('Upgrade Nodes Controller', function() {
                     upgradeStatusFactory.waitForStepToEnd.calls.argsFor(0)[2](runningUpgradeResponse);
                 });
 
-                it('should update the current node\'s alias', function () {
-                    expect(controller.nodesUpgrade.currentNode.alias)
-                        .toEqual(runningUpgradeData.current_node.alias);
+                it('should update the current nodes list', function () {
+                    expect(controller.nodesUpgrade.currentNodes)
+                        .toEqual(runningUpgradeData.current_nodes);
                 });
 
-                it('should update the current node\'s role', function () {
-                    expect(controller.nodesUpgrade.currentNode.role)
-                        .toEqual(runningUpgradeData.current_node.role);
-                });
-
-                it('should update the current node\'s state', function () {
-                    expect(controller.nodesUpgrade.currentNode.state)
-                        .toEqual(runningUpgradeData.current_node.state);
+                it('should update current action', function () {
+                    expect(controller.nodesUpgrade.currentAction)
+                        .toEqual(runningUpgradeData.current_node_action);
                 });
 
                 it('should update upgraded nodes count', function () {
@@ -331,19 +329,14 @@ describe('Upgrade Nodes Controller', function() {
                     upgradeStatusFactory.waitForStepToEnd.calls.argsFor(0)[4](runningUpgradeResponse);
                 });
 
-                it('should update the current node\'s alias', function () {
-                    expect(controller.nodesUpgrade.currentNode.alias)
-                        .toEqual(runningUpgradeData.current_node.alias);
+                it('should update the current nodes list', function () {
+                    expect(controller.nodesUpgrade.currentNodes)
+                        .toEqual(runningUpgradeData.current_nodes);
                 });
 
-                it('should update the current node\'s role', function () {
-                    expect(controller.nodesUpgrade.currentNode.role)
-                        .toEqual(runningUpgradeData.current_node.role);
-                });
-
-                it('should update the current node\'s state', function () {
-                    expect(controller.nodesUpgrade.currentNode.state)
-                        .toEqual(runningUpgradeData.current_node.state);
+                it('should update current action', function () {
+                    expect(controller.nodesUpgrade.currentAction)
+                        .toEqual(runningUpgradeData.current_node_action);
                 });
 
                 it('should update upgraded nodes count', function () {
@@ -466,19 +459,14 @@ describe('Upgrade Nodes Controller', function() {
                         assert.isTrue(controller.nodesUpgrade.completed);
                     });
 
-                    it('should update the current node\'s alias', function () {
-                        expect(controller.nodesUpgrade.currentNode.alias)
-                            .toEqual(completedUpgradeData.current_node.alias);
+                    it('should update the current nodes list', function () {
+                        expect(controller.nodesUpgrade.currentNodes)
+                            .toEqual(completedUpgradeData.current_nodes);
                     });
 
-                    it('should update the current node\'s role', function () {
-                        expect(controller.nodesUpgrade.currentNode.role)
-                            .toEqual(completedUpgradeData.current_node.role);
-                    });
-
-                    it('should update the current node\'s state', function () {
-                        expect(controller.nodesUpgrade.currentNode.state)
-                            .toEqual(completedUpgradeData.current_node.state);
+                    it('should update current action', function () {
+                        expect(controller.nodesUpgrade.currentAction)
+                            .toEqual(completedUpgradeData.current_node_action);
                     });
 
                     it('should update upgraded nodes count', function () {
@@ -527,19 +515,14 @@ describe('Upgrade Nodes Controller', function() {
                         assert.isFalse(controller.nodesUpgrade.completed);
                     });
 
-                    it('should update the current node\'s alias', function () {
-                        expect(controller.nodesUpgrade.currentNode.alias)
-                            .toEqual(runningUpgradeData.current_node.alias);
+                    it('should update the current nodes list', function () {
+                        expect(controller.nodesUpgrade.currentNodes)
+                            .toEqual(runningUpgradeData.current_nodes);
                     });
 
-                    it('should update the current node\'s role', function () {
-                        expect(controller.nodesUpgrade.currentNode.role)
-                            .toEqual(runningUpgradeData.current_node.role);
-                    });
-
-                    it('should update the current node\'s state', function () {
-                        expect(controller.nodesUpgrade.currentNode.state)
-                            .toEqual(runningUpgradeData.current_node.state);
+                    it('should update current action', function () {
+                        expect(controller.nodesUpgrade.currentAction)
+                            .toEqual(runningUpgradeData.current_node_action);
                     });
 
                     it('should update upgraded nodes count', function () {
