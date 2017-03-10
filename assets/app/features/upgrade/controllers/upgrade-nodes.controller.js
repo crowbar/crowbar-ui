@@ -49,7 +49,7 @@
                 UPGRADE_STEPS.nodes,
                 vm.nodesUpgrade,
                 waitForUpgradeNodesToEnd,
-                upgradeStepsFactory.setCurrentStepCompleted,
+                upgradeSuccess,
                 upgradeError,
                 updateModel
             );
@@ -69,14 +69,7 @@
             upgradeStatusFactory.waitForStepToEnd(
                 UPGRADE_STEPS.nodes,
                 NODES_UPGRADE_TIMEOUT_INTERVAL,
-                function (response) {
-                    vm.nodesUpgrade.running = false;
-                    vm.nodesUpgrade.completed = true;
-
-                    upgradeStepsFactory.setCurrentStepCompleted();
-
-                    updateModel(response);
-                },
+                upgradeSuccess,
                 upgradeError,
                 updateModel
             );
@@ -107,6 +100,15 @@
             vm.nodesUpgrade.totalNodes = response.data.upgraded_nodes + response.data.remaining_nodes;
             vm.nodesUpgrade.currentNodes = response.data.current_nodes;
             vm.nodesUpgrade.currentAction = response.data.current_node_action;
+        }
+
+        function upgradeSuccess(response) {
+            updateModel(response);
+
+            vm.nodesUpgrade.running = false;
+            vm.nodesUpgrade.completed = true;
+
+            upgradeStepsFactory.setCurrentStepCompleted();
         }
 
         function upgradeError(errorResponse) {

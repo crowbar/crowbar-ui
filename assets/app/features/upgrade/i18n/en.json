@@ -119,6 +119,7 @@
                 "form": {
                     "upgrade-nodes": "Upgrade Nodes"
                 },
+                "finished": "Upgrade is completed. Click Finish button to go back to the dashboard.",
                 "status": {
                     "progress-bar": "{{current}} of {{total}} Nodes Upgraded",
                     "current-nodes": "Current Nodes:",

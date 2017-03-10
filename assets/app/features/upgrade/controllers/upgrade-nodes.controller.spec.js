@@ -168,7 +168,6 @@ describe('Upgrade Nodes Controller', function() {
         beforeEach(function () {
             spyOn(upgradeStatusFactory, 'syncStatusFlags').and.callFake(
                 function(step, flagsObject, onRunning, onSuccess, onError, postSync) {
-                    onSuccess(initialStatusResponse);
                     postSync(initialStatusResponse);
                 }
             );
@@ -397,7 +396,6 @@ describe('Upgrade Nodes Controller', function() {
 
             spyOn(upgradeStatusFactory, 'syncStatusFlags').and.callFake(
                 function(step, flagsObject, onRunning, onSuccess, onError, postSync) {
-                    onSuccess(initialStatusResponse);
                     postSync(initialStatusResponse);
                 }
             );
