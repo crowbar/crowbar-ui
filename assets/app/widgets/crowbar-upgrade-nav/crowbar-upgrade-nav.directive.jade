@@ -1,4 +1,4 @@
-button.btn.btn-default.pull-left(type='button', ng-click="onCancel()")
+button.btn.btn-default.pull-left(type='button', ng-click="onCancel()", ng-disabled="!steps.isCancelAllowed()")
   span(aria-hidden="true", translate='') upgrade.nav.cancel
 button.btn.btn-primary.pull-right(type='button', ng-click="steps.nextStep()", ng-if="!steps.isLastStep()", ng-disabled="!steps.isCurrentStepCompleted()" )
   span(aria-hidden="true", translate='') upgrade.nav.next

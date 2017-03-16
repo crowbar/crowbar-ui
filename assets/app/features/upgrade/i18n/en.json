@@ -5,6 +5,16 @@
             "next": "Next",
             "last": "Finish"
         },
+        "cancel": {
+            "title": "Cancel Upgrade",
+            "buttons": {
+                "yes": "Yes",
+                "no": "No"
+            },
+            "description": "If upgrade is canceled, nodes will return to \"ready\" state and you will be redirected to the dashboard. If any changes were already made to the cloud (e.g. new repositories were configured), they will not be reverted automatically. You will need to manually revert those changes to fully return the cloud to the previous state.",
+            "question": "Are you sure you want to cancel the upgrade process?",
+            "ongoing": "Please wait..."
+        },
         "steps": {
             "landing": {
                 "form": {

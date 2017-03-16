@@ -45,18 +45,23 @@
             // https://trello.com/c/5fXGm1a7/45-2-27-restore-last-step
             upgradeStatusFactory.syncStatusFlags(
                 UPGRADE_STEPS.admin, vm.adminUpgrade,
-                waitForUpgradeToEnd, upgradeStepsFactory.setCurrentStepCompleted
+                waitForUpgradeToEnd, upgradeStepsFactory.setCurrentStepCompleted, null,
+                function (/*response*/) {
+                    if (vm.adminUpgrade.completed || vm.adminUpgrade.running) {
+                        upgradeStepsFactory.setCancelAllowed(false);
+                    }
+                }
             );
         }
 
         function beginAdminUpgrade() {
             vm.adminUpgrade.running = true;
+            upgradeStepsFactory.setCancelAllowed(false);
 
             crowbarFactory.upgrade()
                 .then(
                     // In case of success
                     function (/*response*/) {
-                        vm.adminUpgrade.running = true;
                         waitForUpgradeToEnd();
                     },
                     // In case of failure

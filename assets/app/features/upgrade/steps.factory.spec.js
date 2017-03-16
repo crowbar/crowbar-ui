@@ -6,6 +6,7 @@ describe('Steps Factory', function () {
             title: 'upgrade.steps-key.codes.backup',
             state: 'upgrade.backup',
             active: false,
+            cancelAllowed: true,
             finished: false
         },
         {
@@ -13,6 +14,7 @@ describe('Steps Factory', function () {
             title: 'upgrade.steps-key.codes.administration-repositories-checks',
             state: 'upgrade.administration-repository-checks',
             active: false,
+            cancelAllowed: true,
             finished: false
         },
         {
@@ -20,6 +22,7 @@ describe('Steps Factory', function () {
             title: 'upgrade.steps-key.codes.upgrade-administration-server',
             state: 'upgrade.upgrade-administration-server',
             active: false,
+            cancelAllowed: true,
             finished: false
         },
         {
