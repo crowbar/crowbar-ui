@@ -179,6 +179,7 @@
             "too_many_replicas": "Too many Swift replicas",
             "ceph_old_version": "Old version of SES",
             "ceph_not_prepared": "Ceph nodes not prepared",
+            "ceph_not_healthy": "Ceph health check failed",
             "cinder_wrong_backend": "Cinder backend",
             "keystone_hybrid_backend": "Keystone hybrid backend",
             "lbaas_v1": "Old version of LBaaS",
