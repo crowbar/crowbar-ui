@@ -22,7 +22,7 @@ router.get('/', function(req, res) {
                 'ha_configured': { required: false, passed: true },
                 'openstack_check': { required: true, passed: checksPass },
             },
-            'best_method': bestMethod ? 'non-disruptive' : 'normal'
+            'best_method': bestMethod ? 'non_disruptive' : 'normal'
         });
     }
     checksPass = true;
