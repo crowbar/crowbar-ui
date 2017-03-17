@@ -18,7 +18,10 @@
             activeStep: {},
             refeshStepsList: refeshStepsList,
             setCurrentStepCompleted: setCurrentStepCompleted,
-            isCurrentStepCompleted: isCurrentStepCompleted
+            isCurrentStepCompleted: isCurrentStepCompleted,
+            isCancelAllowed: isCancelAllowed,
+            setCancelAllowed: setCancelAllowed,
+            reset: reset,
         };
 
         return factory;
@@ -28,6 +31,17 @@
         }
         function setCurrentStepCompleted() {
             factory.activeStep.finished = true;
+        }
+
+        function isCancelAllowed() {
+            return factory.activeStep.cancelAllowed;
+        }
+        function setCancelAllowed(value) {
+            factory.activeStep.cancelAllowed = value;
+        }
+
+        function reset() {
+            factory.steps = initialSteps();
         }
 
         function refeshStepsList() {
@@ -55,6 +69,7 @@
                     title: 'upgrade.steps-key.codes.backup',
                     state: 'upgrade.backup',
                     active: false,
+                    cancelAllowed: true,
                     finished: false
                 },
                 {
@@ -62,6 +77,7 @@
                     title: 'upgrade.steps-key.codes.administration-repositories-checks',
                     state: 'upgrade.administration-repository-checks',
                     active: false,
+                    cancelAllowed: true,
                     finished: false
                 },
                 {
@@ -69,6 +85,7 @@
                     title: 'upgrade.steps-key.codes.upgrade-administration-server',
                     state: 'upgrade.upgrade-administration-server',
                     active: false,
+                    cancelAllowed: true,
                     finished: false
                 },
                 {

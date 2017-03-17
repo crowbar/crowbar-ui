@@ -36,7 +36,8 @@ describe('Upgrade Flow - Upgrade Administration Server Controller', function () 
         it('should call syncStatusFlags() to update the state', function () {
             expect(upgradeStatusFactory.syncStatusFlags).toHaveBeenCalledWith(
                 'admin', controller.adminUpgrade,
-                jasmine.any(Function), upgradeStepsFactory.setCurrentStepCompleted
+                jasmine.any(Function), upgradeStepsFactory.setCurrentStepCompleted, null,
+                jasmine.any(Function)
             );
         });
     });

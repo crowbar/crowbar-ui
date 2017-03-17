@@ -1,0 +1,16 @@
+.modal-content.cancel-dialog
+    .modal-header
+        button.close(type='button', ng-click='cancelVm.dismiss()', aria-label='Close', ng-disabled='cancelVm.running')
+            span(aria-hidden='true') ×
+        h4.modal-title(translate='') upgrade.cancel.title
+    .modal-body
+        p(translate='') upgrade.cancel.description
+        p(translate='') upgrade.cancel.question
+    .modal-footer
+        .pull-left.ongoing
+            suse-lazy-spinner(delay='100', active='cancelVm.running', visible='cancelVm.spinnerVisible')
+            span(translate='', ng-if='cancelVm.spinnerVisible') upgrade.cancel.ongoing
+        button.btn.btn-primary(type='button', ng-click='cancelVm.cancelUpgrade()', ng-disabled='cancelVm.running')
+            span(translate='') upgrade.cancel.buttons.yes
+        button.btn.btn-default(type='button', ng-click='cancelVm.dismiss()', ng-disabled='cancelVm.running')
+            span(translate='') upgrade.cancel.buttons.no

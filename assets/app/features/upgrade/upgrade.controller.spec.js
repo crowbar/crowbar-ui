@@ -1,30 +1,22 @@
-/*global bard $controller $httpBackend should assert upgradeStepsFactory
-  upgradeFactory $rootScope $q $state UPGRADE_LAST_STATE_KEY */
+/*global module bard $controller $httpBackend should assert upgradeStepsFactory
+  upgradeFactory $rootScope $q $uibModal UPGRADE_LAST_STATE_KEY */
 describe('Upgrade Controller', function () {
     var controller,
         controllerScope;
 
     beforeEach(function() {
+        // no idea why this is needed but for some reason this module doesn't get loaded via appModule
+        module('ui.bootstrap');
         //Setup the module and dependencies to be used.
         bard.appModule('crowbarApp.upgrade');
         bard.inject(
-            '$controller', 'upgradeStepsFactory', '$httpBackend',
-            '$rootScope', '$q', '$state', 'upgradeFactory', 'UPGRADE_LAST_STATE_KEY'
+            '$controller', 'upgradeStepsFactory', '$httpBackend', '$uibModal',
+            '$rootScope', '$q'
         );
 
         controllerScope = $rootScope.$new();
 
-        bard.mockService(upgradeFactory, {
-            cancelUpgrade: $q.when()
-        });
-
-        //Mock the $state service
-        bard.mockService($state, {
-            go : true
-        });
-        spyOn($state, 'go');
-
-        //spy on the refeshStepsList function
+        spyOn($uibModal, 'open');
         spyOn(upgradeStepsFactory, 'refeshStepsList');
 
         //Create the controller
@@ -66,13 +58,74 @@ describe('Upgrade Controller', function () {
         });
     });
 
+    describe('confirmCancel callback', function () {
+        it('should be defined', function () {
+            should.exist(controller.confirmCancel);
+            expect(controller.confirmCancel).toEqual(jasmine.any(Function));
+        });
+
+        describe('when called', function () {
+            beforeEach(function () {
+                controller.confirmCancel();
+                $rootScope.$digest();
+            });
+
+            it('should call modal service to open dialog', function() {
+                expect($uibModal.open).toHaveBeenCalledTimes(1);
+            });
+        });
+    });
+});
+
+describe('Cancel Controller', function () {
+    var controller,
+        controllerScope,
+        mockedModalInstance,
+        mockedWindow;
+
+    beforeEach(function() {
+        //Setup the module and dependencies to be used.
+        bard.appModule('crowbarApp.upgrade');
+        bard.inject(
+            '$controller', 'upgradeStepsFactory', '$httpBackend',
+            '$rootScope', '$q', 'upgradeFactory', 'UPGRADE_LAST_STATE_KEY'
+        );
+
+        controllerScope = $rootScope.$new();
+        mockedModalInstance = { dismiss: jasmine.createSpy('modalInstance.dismiss') };
+        mockedWindow = { location: { href: '--dummy--' } };
+
+        bard.mockService(upgradeFactory, {
+            cancelUpgrade: $q.when()
+        });
+
+        bard.mockService(upgradeStepsFactory, {
+            reset: true
+        });
+
+        //Create the controller
+        controller = $controller('CancelController', {
+            '$scope': controllerScope,
+            '$uibModalInstance': mockedModalInstance,
+            '$window': mockedWindow
+        });
+
+        //Mock requests that are expected to be made
+        $httpBackend.expectGET('app/features/upgrade/i18n/en.json').respond({});
+        $httpBackend.flush();
+    });
+
+    it('should exist', function() {
+        should.exist(controller);
+    });
+
     describe('cancelUpgrade callback', function () {
         it('should be defined', function () {
             should.exist(controller.cancelUpgrade);
             expect(controller.cancelUpgrade).toEqual(jasmine.any(Function));
         });
 
-        describe('when called', function () {
+        describe('when completed', function () {
             beforeEach(function () {
                 localStorage.setItem(UPGRADE_LAST_STATE_KEY, '--dummy--');
 
@@ -80,12 +133,24 @@ describe('Upgrade Controller', function () {
                 $rootScope.$digest();
             });
 
+            it('should set running to false', function() {
+                assert.isFalse(controller.running);
+            });
+
+            it('should close the modal', function() {
+                expect(mockedModalInstance.dismiss).toHaveBeenCalledTimes(1);
+            });
+
             it('should remove last seen state from localStorage', function() {
                 expect(localStorage.getItem(UPGRADE_LAST_STATE_KEY)).toBe(null);
             });
 
-            it('should redirect to landing page', function() {
-                expect($state.go).toHaveBeenCalledWith('upgrade-landing');
+            it('should reset stored steps state', function() {
+                assert.isTrue(upgradeStepsFactory.reset.calledOnce);
+            });
+
+            it('should redirect to dashboard', function() {
+                expect(mockedWindow.location.href).toEqual('/');
             });
         });
     });
