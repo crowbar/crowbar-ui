@@ -72,7 +72,7 @@ describe('Upgrade Flow - Create Connect Database Controller', function () {
         expect(upgradeStatusFactory.syncStatusFlags).toHaveBeenCalledTimes(1);
         expect(upgradeStatusFactory.syncStatusFlags).toHaveBeenCalledWith(
             UPGRADE_STEPS.database, controller,
-            undefined, upgradeStepsFactory.setCurrentStepCompleted
+            undefined, upgradeStepsFactory.setCurrentStepCompleted, jasmine.any(Function)
         );
     });
 
