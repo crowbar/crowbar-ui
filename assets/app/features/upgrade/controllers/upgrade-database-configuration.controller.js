@@ -50,7 +50,7 @@
         // functions
         function activate() {
             upgradeStatusFactory.syncStatusFlags(UPGRADE_STEPS.database, vm,
-                undefined, upgradeStepsFactory.setCurrentStepCompleted);
+                undefined, upgradeStepsFactory.setCurrentStepCompleted, serverError);
         }
 
         function createServer() {
@@ -62,14 +62,7 @@
                         vm.completed = true;
                         upgradeStepsFactory.setCurrentStepCompleted();
                     },
-                    // error
-                    function (errorResponse) {
-                        if (angular.isDefined(errorResponse.data.errors)) {
-                            vm.errors = errorResponse.data;
-                        } else {
-                            vm.errors = UNEXPECTED_ERROR_DATA;
-                        }
-                    }
+                    serverError
                 )
                 .finally(function () {
                     vm.running = false;
@@ -85,18 +78,21 @@
                         vm.completed = true;
                         upgradeStepsFactory.setCurrentStepCompleted();
                     },
-                    // error
-                    function (errorResponse) {
-                        if (angular.isDefined(errorResponse.data.errors)) {
-                            vm.errors = errorResponse.data;
-                        } else {
-                            vm.errors = UNEXPECTED_ERROR_DATA;
-                        }
-                    }
+                    serverError
                 )
                 .finally(function () {
                     vm.running = false;
                 });
+        }
+
+        function serverError(errorResponse) {
+            if (angular.isDefined(errorResponse.data.errors)) {
+                vm.errors = errorResponse.data;
+            } else if (angular.isDefined(errorResponse.data.steps)) {
+                vm.errors = { errors: errorResponse.data.steps.database.errors };
+            } else {
+                vm.errors = UNEXPECTED_ERROR_DATA;
+            }
         }
     }
 })();
