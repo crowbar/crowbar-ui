@@ -69,6 +69,10 @@
                     status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.cloud_health'
                 },
+                cloud_deployment: {
+                    status: false,
+                    label: 'upgrade.steps.landing.prechecks.codes.cloud_deployment'
+                },
                 compute_status: {
                     status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.compute_status'

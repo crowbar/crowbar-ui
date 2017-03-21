@@ -30,6 +30,7 @@
                         "updates_installed": "SLES 12 SP1 Maintenance Updates",
                         "network_sanity": "Network Health",
                         "cloud_health": "Cloud Health",
+                        "cloud_deployment": "Deployment Conflicts",
                         "high_availability": "High Availability Health",
                         "storage": "Storage Health",
                         "openstack_check": "OpenStack Check",
