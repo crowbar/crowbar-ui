@@ -178,6 +178,7 @@
             "nodes_not_ready": "Nodes not ready",
             "no_live_migration": "Live migration not configured",
             "no_resources": "Not enough free compute resources",
+            "non_kvm_computes": "Non-KVM compute nodes found",
             "zypper_errors": "Zypper error",
             "failed_proposals": "Failed proposals",
             "too_many_replicas": "Too many Swift replicas",
