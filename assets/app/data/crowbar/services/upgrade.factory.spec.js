@@ -311,12 +311,12 @@ describe('Upgrade Factory', function () {
             });
 
             it('returns a promise', function () {
-                expect(prepareNodesPromise).toEqual(jasmine.any(Object));
-                expect(prepareNodesPromise['then']).toEqual(jasmine.any(Function));
-                expect(prepareNodesPromise['catch']).toEqual(jasmine.any(Function));
-                expect(prepareNodesPromise['finally']).toEqual(jasmine.any(Function));
-                expect(prepareNodesPromise['error']).toEqual(jasmine.any(Function));
-                expect(prepareNodesPromise['success']).toEqual(jasmine.any(Function));
+                expect(cancelUpgradePromise).toEqual(jasmine.any(Object));
+                expect(cancelUpgradePromise['then']).toEqual(jasmine.any(Function));
+                expect(cancelUpgradePromise['catch']).toEqual(jasmine.any(Function));
+                expect(cancelUpgradePromise['finally']).toEqual(jasmine.any(Function));
+                expect(cancelUpgradePromise['error']).toEqual(jasmine.any(Function));
+                expect(cancelUpgradePromise['success']).toEqual(jasmine.any(Function));
             });
 
             it('when resolved, it returns the cancelUpgrade response', function () {
