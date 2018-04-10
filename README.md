@@ -50,11 +50,11 @@ docker exec -ti crowbar-ui_container npm test
 
 6 - Let bower fetch all our dependencies:
 
-`NODE_ENV=production npm run preinstall`
+`NODE_ENV=production bower install`
 
-7 - Let Gulp build the public folder for your assets (it will keep watching for changes, so yes, after this, you are ready to start making changes in the front-end):
+7 - Let Gulp build the public folder for your assets (it will keep watching for changes, so yes, after this, you are ready to start making changes in the front-end), note that this will exit with a warning if cloud.config.json is missing (it will continue to run if `NODE_ENV` is not set to production):
 
-`NODE_ENV=production npm run postinstall`
+`NODE_ENV=production gulp`
 
 8 - Update the `tested_step` variable in `routes/api/upgrade.js` depending on the scenario you want to test. This is used to properly fill the mocked status API response.
 
@@ -70,9 +70,13 @@ docker exec -ti crowbar-ui_container npm test
 
 2 - and then, in a new terminal:
 
-`npm run preinstall && npm run postinstall`
+`bower install && gulp`
 
 to compile all your assets again and leave it watching your changes.
+
+#### Latest build/run info:
+
+The most up to date source of setup information is `.travis.yml` in the base folder, as this builds/runs the test suite and must be up to date. Check there first if you encounter any issues with running the build locally
 
 ### That's it fellas! .. enjoy coding! ###
 
