@@ -37,17 +37,7 @@
                         status: false,
                         label: 'upgrade.repositories.codes.SLE12-SP3-HA-Updates'
                     },
-                },
-                'ceph': {
-                    'SUSE-Enterprise-Storage-5-Pool': {
-                        status: false,
-                        label: 'upgrade.repositories.codes.SUSE-Enterprise-Storage-5-Pool'
-                    },
-                    'SUSE-Enterprise-Storage-5-Updates': {
-                        status: false,
-                        label: 'upgrade.repositories.codes.SUSE-Enterprise-Storage-5-Updates'
-                    },
-                },
+                }
             };
         vm.repoChecks = {
             completed: false,

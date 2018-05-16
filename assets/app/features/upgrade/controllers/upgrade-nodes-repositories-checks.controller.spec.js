@@ -2,27 +2,6 @@
 describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
     var controller,
         failingRepoChecks = {
-            'ceph': {
-                'available': false,
-                'repos': [
-                    'SUSE-Enterprise-Storage-5-Pool',
-                    'SUSE-Enterprise-Storage-5-Updates'
-                ],
-                'errors': {
-                    'missing': {
-                        'x86_64': [
-                            'SUSE-Enterprise-Storage-5-Pool',
-                            'SUSE-Enterprise-Storage-5-Updates'
-                        ]
-                    },
-                    'inactive': {
-                        'x86_64': [
-                            'SUSE-Enterprise-Storage-5-Pool',
-                            'SUSE-Enterprise-Storage-5-Updates'
-                        ]
-                    }
-                }
-            },
             'ha': {
                 'available': false,
                 'repos': [
@@ -88,14 +67,6 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             }
         },
         passingRepoChecks = {
-            'ceph': {
-                'available': true,
-                'repos': [
-                    'SUSE-Enterprise-Storage-5-Pool',
-                    'SUSE-Enterprise-Storage-5-Updates'
-                ],
-                'errors': {}
-            },
             'ha': {
                 'available': true,
                 'repos': [
@@ -122,25 +93,6 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             }
         },
         partiallyFailingRepoChecks = {
-            'ceph': {
-                'available': false,
-                'repos': [
-                    'SUSE-Enterprise-Storage-5-Pool',
-                    'SUSE-Enterprise-Storage-5-Updates'
-                ],
-                'errors': {
-                    'missing': {
-                        'x86_64': [
-                            'SUSE-Enterprise-Storage-5-Updates'
-                        ]
-                    },
-                    'inactive': {
-                        'x86_64': [
-                            'SUSE-Enterprise-Storage-5-Updates'
-                        ]
-                    }
-                }
-            },
             'ha': {
                 'available': false,
                 'repos': [
@@ -200,7 +152,6 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             data: {
                 'version': '4.0',
                 'addons': [
-                    'ceph',
                     'ha'
                 ]
             }
@@ -381,14 +332,6 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
                         'SLE12-SP3-HA-Updates': {
                             status: false,
                             label: langKeyPrefix + 'SLE12-SP3-HA-Updates'
-                        },
-                        'SUSE-Enterprise-Storage-5-Pool': {
-                            status: true,
-                            label: langKeyPrefix + 'SUSE-Enterprise-Storage-5-Pool'
-                        },
-                        'SUSE-Enterprise-Storage-5-Updates': {
-                            status: false,
-                            label: langKeyPrefix + 'SUSE-Enterprise-Storage-5-Updates'
                         }
                     };
                 expect(controller.repoChecks.checks).toEqual(expectedChecks);

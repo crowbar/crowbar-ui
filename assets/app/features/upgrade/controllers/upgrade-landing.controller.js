@@ -38,10 +38,6 @@
     ) {
         var vm = this,
             optionalPrechecks = {
-                ceph_healthy: {
-                    status: false,
-                    label: 'upgrade.steps.landing.prechecks.codes.storage'
-                },
                 clusters_healthy: {
                     status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.high_availability'
@@ -80,6 +76,10 @@
                 openstack_check: {
                     status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.openstack_check'
+                },
+                ceph_status: {
+                    status: false,
+                    label: 'upgrade.steps.landing.prechecks.codes.ceph_status'
                 },
                 ha_configured: {
                     status: false,
