@@ -4,31 +4,31 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
         passingRepoChecks = {
             os: {
                 available: true,
-                repos: ['SLES12-SP2-Pool', 'SLES12-SP2-Updates'],
+                repos: ['SLES12-SP3-Pool', 'SLES12-SP3-Updates'],
             },
             openstack: {
                 available: true,
-                repos: ['SUSE-OpenStack-Cloud-7-Pool', 'SUSE-OpenStack-Cloud-7-Updates'],
+                repos: ['SUSE-OpenStack-Cloud-8-Pool', 'SUSE-OpenStack-Cloud-8-Updates'],
             }
         },
         failingRepoChecks = {
             os: {
                 available: false,
-                repos: ['SLES12-SP2-Pool', 'SLES12-SP2-Updates'],
+                repos: ['SLES12-SP3-Pool', 'SLES12-SP3-Updates'],
             },
             openstack: {
                 available: false,
-                repos: ['SUSE-OpenStack-Cloud-7-Pool', 'SUSE-OpenStack-Cloud-7-Updates'],
+                repos: ['SUSE-OpenStack-Cloud-8-Pool', 'SUSE-OpenStack-Cloud-8-Updates'],
             }
         },
         partiallyFailingRepoChecks = {
             os: {
                 available: true,
-                repos: ['SLES12-SP2-Pool', 'SLES12-SP2-Updates'],
+                repos: ['SLES12-SP3-Pool', 'SLES12-SP3-Updates'],
             },
             openstack: {
                 available: false,
-                repos: ['SUSE-OpenStack-Cloud-7-Pool', 'SUSE-OpenStack-Cloud-7-Updates'],
+                repos: ['SUSE-OpenStack-Cloud-8-Pool', 'SUSE-OpenStack-Cloud-8-Updates'],
             }
         },
         failingErrors = {

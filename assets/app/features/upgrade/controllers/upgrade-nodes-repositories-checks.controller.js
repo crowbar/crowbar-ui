@@ -29,23 +29,23 @@
         var vm = this,
             addonsRepos = {
                 'ha': {
-                    'SLE12-SP2-HA-Pool': {
+                    'SLE12-SP3-HA-Pool': {
                         status: false,
-                        label: 'upgrade.repositories.codes.SLE12-SP2-HA-Pool'
+                        label: 'upgrade.repositories.codes.SLE12-SP3-HA-Pool'
                     },
-                    'SLE12-SP2-HA-Updates': {
+                    'SLE12-SP3-HA-Updates': {
                         status: false,
-                        label: 'upgrade.repositories.codes.SLE12-SP2-HA-Updates'
+                        label: 'upgrade.repositories.codes.SLE12-SP3-HA-Updates'
                     },
                 },
                 'ceph': {
-                    'SUSE-Enterprise-Storage-4-Pool': {
+                    'SUSE-Enterprise-Storage-5-Pool': {
                         status: false,
-                        label: 'upgrade.repositories.codes.SUSE-Enterprise-Storage-4-Pool'
+                        label: 'upgrade.repositories.codes.SUSE-Enterprise-Storage-5-Pool'
                     },
-                    'SUSE-Enterprise-Storage-4-Updates': {
+                    'SUSE-Enterprise-Storage-5-Updates': {
                         status: false,
-                        label: 'upgrade.repositories.codes.SUSE-Enterprise-Storage-4-Updates'
+                        label: 'upgrade.repositories.codes.SUSE-Enterprise-Storage-5-Updates'
                     },
                 },
             };
@@ -53,21 +53,21 @@
             completed: false,
             valid: false,
             checks: {
-                'SLES12-SP2-Pool': {
+                'SLES12-SP3-Pool': {
                     status: false,
-                    label: 'upgrade.repositories.codes.SLES12-SP2-Pool'
+                    label: 'upgrade.repositories.codes.SLES12-SP3-Pool'
                 },
-                'SLES12-SP2-Updates': {
+                'SLES12-SP3-Updates': {
                     status: false,
-                    label: 'upgrade.repositories.codes.SLES12-SP2-Updates'
+                    label: 'upgrade.repositories.codes.SLES12-SP3-Updates'
                 },
-                'SUSE-OpenStack-Cloud-7-Pool': {
+                'SUSE-OpenStack-Cloud-8-Pool': {
                     status: false,
-                    label: 'upgrade.repositories.codes.SUSE-OpenStack-Cloud-7-Pool'
+                    label: 'upgrade.repositories.codes.SUSE-OpenStack-Cloud-8-Pool'
                 },
-                'SUSE-OpenStack-Cloud-7-Updates': {
+                'SUSE-OpenStack-Cloud-8-Updates': {
                     status: false,
-                    label: 'upgrade.repositories.codes.SUSE-OpenStack-Cloud-7-Updates'
+                    label: 'upgrade.repositories.codes.SUSE-OpenStack-Cloud-8-Updates'
                 }
             },
             runRepoChecks: runRepoChecks,
