@@ -68,20 +68,20 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             'openstack': {
                 'available': false,
                 'repos': [
-                    'SUSE-OpenStack-Cloud-8-Pool',
-                    'SUSE-OpenStack-Cloud-8-Updates'
+                    'SUSE-OpenStack-Cloud-Crowbar-8-Pool',
+                    'SUSE-OpenStack-Cloud-Crowbar-8-Updates'
                 ],
                 'errors': {
                     'missing': {
                         'x86_64': [
-                            'SUSE-OpenStack-Cloud-8-Pool',
-                            'SUSE-OpenStack-Cloud-8-Updates'
+                            'SUSE-OpenStack-Cloud-Crowbar-8-Pool',
+                            'SUSE-OpenStack-Cloud-Crowbar-8-Updates'
                         ]
                     },
                     'inactive': {
                         'x86_64': [
-                            'SUSE-OpenStack-Cloud-8-Pool',
-                            'SUSE-OpenStack-Cloud-8-Updates'
+                            'SUSE-OpenStack-Cloud-Crowbar-8-Pool',
+                            'SUSE-OpenStack-Cloud-Crowbar-8-Updates'
                         ]
                     }
                 }
@@ -115,8 +115,8 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             'openstack': {
                 'available': true,
                 'repos': [
-                    'SUSE-OpenStack-Cloud-8-Pool',
-                    'SUSE-OpenStack-Cloud-8-Updates'
+                    'SUSE-OpenStack-Cloud-Crowbar-8-Pool',
+                    'SUSE-OpenStack-Cloud-Crowbar-8-Updates'
                 ],
                 'errors': {}
             }
@@ -184,8 +184,8 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             'openstack': {
                 'available': true,
                 'repos': [
-                    'SUSE-OpenStack-Cloud-8-Pool',
-                    'SUSE-OpenStack-Cloud-8-Updates'
+                    'SUSE-OpenStack-Cloud-Crowbar-8-Pool',
+                    'SUSE-OpenStack-Cloud-Crowbar-8-Updates'
                 ],
                 'errors': {}
             }
@@ -366,13 +366,13 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
                             status: true,
                             label: langKeyPrefix + 'SLES12-SP3-Updates'
                         },
-                        'SUSE-OpenStack-Cloud-8-Pool': {
+                        'SUSE-OpenStack-Cloud-Crowbar-8-Pool': {
                             status: true,
-                            label: langKeyPrefix + 'SUSE-OpenStack-Cloud-8-Pool'
+                            label: langKeyPrefix + 'SUSE-OpenStack-Cloud-Crowbar-8-Pool'
                         },
-                        'SUSE-OpenStack-Cloud-8-Updates': {
+                        'SUSE-OpenStack-Cloud-Crowbar-8-Updates': {
                             status: true,
-                            label: langKeyPrefix + 'SUSE-OpenStack-Cloud-8-Updates'
+                            label: langKeyPrefix + 'SUSE-OpenStack-Cloud-Crowbar-8-Updates'
                         },
                         'SLE12-SP3-HA-Pool': {
                             status: false,

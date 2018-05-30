@@ -8,7 +8,7 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
             },
             openstack: {
                 available: true,
-                repos: ['SUSE-OpenStack-Cloud-8-Pool', 'SUSE-OpenStack-Cloud-8-Updates'],
+                repos: ['SUSE-OpenStack-Cloud-Crowbar-8-Pool', 'SUSE-OpenStack-Cloud-Crowbar-8-Updates'],
             }
         },
         failingRepoChecks = {
@@ -18,7 +18,7 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
             },
             openstack: {
                 available: false,
-                repos: ['SUSE-OpenStack-Cloud-8-Pool', 'SUSE-OpenStack-Cloud-8-Updates'],
+                repos: ['SUSE-OpenStack-Cloud-Crowbar-8-Pool', 'SUSE-OpenStack-Cloud-Crowbar-8-Updates'],
             }
         },
         partiallyFailingRepoChecks = {
@@ -28,7 +28,7 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
             },
             openstack: {
                 available: false,
-                repos: ['SUSE-OpenStack-Cloud-8-Pool', 'SUSE-OpenStack-Cloud-8-Updates'],
+                repos: ['SUSE-OpenStack-Cloud-Crowbar-8-Pool', 'SUSE-OpenStack-Cloud-Crowbar-8-Updates'],
             }
         },
         failingErrors = {

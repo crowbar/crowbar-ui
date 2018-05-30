@@ -149,18 +149,16 @@
                 "SLES12-SP2-Updates": "SUSE Linux Enterprise Server 12 SP2 Updates",
                 "SUSE-OpenStack-Cloud-7-Pool": "SUSE OpenStack Cloud 7",
                 "SUSE-OpenStack-Cloud-7-Updates": "SUSE OpenStack Cloud 7 Updates",
-                "SLES12-SP3-Pool": "SUSE Linux Enterprise Server 12 SP3",
-                "SLES12-SP3-Updates": "SUSE Linux Enterprise Server 12 SP3 Updates",
-                "SUSE-OpenStack-Cloud-8-Pool": "SUSE OpenStack Cloud 8",
-                "SUSE-OpenStack-Cloud-8-Updates": "SUSE OpenStack Cloud 8 Updates",
                 "SLE12-SP2-HA-Pool": "SUSE Linux Enterprise 12 SP2 High Availability",
                 "SLE12-SP2-HA-Updates": "SUSE Linux Enterprise 12 SP2 High Availability Updates",
                 "SUSE-Enterprise-Storage-4-Pool": "SUSE Enterprise Storage 4",
-                "SUSE-Enterprise-Storage-4-Updates": "SUSE Enterprise Storage 4 Updates"
+                "SUSE-Enterprise-Storage-4-Updates": "SUSE Enterprise Storage 4 Updates",
+                "SLES12-SP3-Pool": "SUSE Linux Enterprise Server 12 SP3",
+                "SLES12-SP3-Updates": "SUSE Linux Enterprise Server 12 SP3 Updates",
+                "SUSE-OpenStack-Cloud-Crowbar-8-Pool": "SUSE OpenStack Cloud Crowbar 8",
+                "SUSE-OpenStack-Cloud-Crowbar-8-Updates": "SUSE OpenStack Cloud Crowbar 8 Updates",
                 "SLE12-SP3-HA-Pool": "SUSE Linux Enterprise 12 SP3 High Availability",
-                "SLE12-SP3-HA-Updates": "SUSE Linux Enterprise 12 SP3 High Availability Updates",
-                "SUSE-Enterprise-Storage-5-Pool": "SUSE Enterprise Storage 5",
-                "SUSE-Enterprise-Storage-5-Updates": "SUSE Enterprise Storage 5 Updates"
+                "SLE12-SP3-HA-Updates": "SUSE Linux Enterprise 12 SP3 High Availability Updates"
             }
         },
         "steps-key": {

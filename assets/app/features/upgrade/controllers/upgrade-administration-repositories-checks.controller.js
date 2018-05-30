@@ -34,13 +34,13 @@
                     status: false,
                     label: 'upgrade.repositories.codes.SLES12-SP3-Updates'
                 },
-                'SUSE-OpenStack-Cloud-8-Pool': {
+                'SUSE-OpenStack-Cloud-Crowbar-8-Pool': {
                     status: false,
-                    label: 'upgrade.repositories.codes.SUSE-OpenStack-Cloud-8-Pool'
+                    label: 'upgrade.repositories.codes.SUSE-OpenStack-Cloud-Crowbar-8-Pool'
                 },
-                'SUSE-OpenStack-Cloud-8-Updates': {
+                'SUSE-OpenStack-Cloud-Crowbar-8-Updates': {
                     status: false,
-                    label: 'upgrade.repositories.codes.SUSE-OpenStack-Cloud-8-Updates'
+                    label: 'upgrade.repositories.codes.SUSE-OpenStack-Cloud-Crowbar-8-Updates'
                 }
             },
             runRepoChecks: runRepoChecks
