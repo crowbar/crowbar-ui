@@ -85,22 +85,6 @@
                     "upgrade-admin": "Upgrade Administration Server"
                 }
             },
-            "database-configuration": {
-                "title": "Enter Credentials and/or Information to create or connect to a PostgreSQL service to be used for serving the Crowbar database",
-                "title-completed": "This step has been completed. Click on \"Next\" to continue the upgrade process.",
-                "navigation-tabs": {
-                    "create-database": "Create a Database",
-                    "connect-database": "Connect to a Database"
-                },
-                "database-form": {
-                    "username": "Username",
-                    "password": "Password",
-                    "create-database": "Create Database",
-                    "server": "Server",
-                    "port": "Port",
-                    "connect-database": "Connect to Database"
-                }
-            },
             "nodes-repository-checks": {
                 "title": "Upgrading to SUSE OpenStack Cloud 7 requires updated software repositories for all nodes",
                 "description": "Prepare the software repositories locally or via SMT and update the URLs in the Administration Server configuration correspondingly. Refer to \"Software Repository Setup\" chapter of the deployment guide. Click \"Check\" to verify all repositories are available. When all repositories have been verified click on \"Next\" to proceed.",
@@ -211,7 +195,7 @@
         "text": "SUSE OpenStack Cloud - provided by SUSE"
     },
     "header": {
-        "title": "SUSE OpenStack Cloud: Upgrade 6-7"
+        "title": "SUSE OpenStack Cloud: Upgrade 998"
     },
     "modal": {
         "close": "Close",

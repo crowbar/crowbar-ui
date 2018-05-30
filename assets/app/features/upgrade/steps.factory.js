@@ -90,34 +90,27 @@
                 },
                 {
                     id: 3,
-                    title: 'upgrade.steps-key.codes.database-configuration',
-                    state: 'upgrade.database-configuration',
-                    active: false,
-                    finished: false
-                },
-                {
-                    id: 4,
                     title: 'upgrade.steps-key.codes.nodes-repositories-checks',
                     state: 'upgrade.nodes-repositories-checks',
                     active: false,
                     finished: false
                 },
                 {
-                    id: 5,
+                    id: 4,
                     title: 'upgrade.steps-key.codes.openstack-services',
                     state: 'upgrade.openstack-services',
                     active: false,
                     finished: false
                 },
                 {
-                    id: 6,
+                    id: 5,
                     title: 'upgrade.steps-key.codes.openstack-backup',
                     state: 'upgrade.openstack-backup',
                     active: false,
                     finished: false
                 },
                 {
-                    id: 7,
+                    id: 6,
                     title: 'upgrade.steps-key.codes.upgrade-nodes',
                     state: 'upgrade.upgrade-nodes',
                     active: false,
@@ -213,7 +206,6 @@
                     'backup_crowbar': 'upgrade.backup',
                     'repocheck_crowbar': 'upgrade.administration-repository-checks',
                     'admin': 'upgrade.upgrade-administration-server',
-                    'database': 'upgrade.database-configuration',
                     'repocheck_nodes': 'upgrade.nodes-repositories-checks',
                     'services': 'upgrade.openstack-services',
                     'backup_openstack': 'upgrade.openstack-backup',
