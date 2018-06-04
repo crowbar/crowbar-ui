@@ -27,7 +27,7 @@
                         "check-again": "Check"
                     },
                     "codes": {
-                        "updates_installed": "SLES 12 SP1 Maintenance Updates",
+                        "updates_installed": "SLES 12 SP2 Maintenance Updates",
                         "network_sanity": "Network Health",
                         "cloud_health": "Cloud Health",
                         "cloud_deployment": "Deployment Conflicts",
@@ -70,14 +70,14 @@
                 "location": "Backup can be found under \"{{path}}\" on Administration Server."
             },
             "admin-repository-checks": {
-                "title": "Upgrading to SUSE OpenStack Cloud 7 requires updated software repositories for the Administration Server",
+                "title": "Upgrading to SUSE OpenStack Cloud 8 requires updated software repositories for the Administration Server",
                 "description": "Prepare the software repositories locally or via SMT and update the URLs in the Administration Server configuration correspondingly. Refer to \"Software Repository Setup\" chapter of the deployment guide. Click \"Check\" to verify all repositories are available. When all repositories have been verified click on \"Next\" to proceed.",
                 "form": {
                     "check-again": "Check"
                 }
             },
             "upgrade-admin": {
-                "title": "Upgrade the Administration Server to SUSE OpenStack Cloud 7",
+                "title": "Upgrade the Administration Server to SUSE OpenStack Cloud 8",
                 "description": "Please wait until the Administration Server has been upgraded and rebooted.",
                 "notice-title": "IMPORTANT!",
                 "notice-body": "This process might take quite some time. Please do not close the browser window or refresh the page.",
@@ -86,7 +86,7 @@
                 }
             },
             "nodes-repository-checks": {
-                "title": "Upgrading to SUSE OpenStack Cloud 7 requires updated software repositories for all nodes",
+                "title": "Upgrading to SUSE OpenStack Cloud 8 requires updated software repositories for all nodes",
                 "description": "Prepare the software repositories locally or via SMT and update the URLs in the Administration Server configuration correspondingly. Refer to \"Software Repository Setup\" chapter of the deployment guide. Click \"Check\" to verify all repositories are available. When all repositories have been verified click on \"Next\" to proceed.",
                 "form": {
                     "check-again": "Check"
@@ -136,7 +136,13 @@
                 "SLE12-SP2-HA-Pool": "SUSE Linux Enterprise 12 SP2 High Availability",
                 "SLE12-SP2-HA-Updates": "SUSE Linux Enterprise 12 SP2 High Availability Updates",
                 "SUSE-Enterprise-Storage-4-Pool": "SUSE Enterprise Storage 4",
-                "SUSE-Enterprise-Storage-4-Updates": "SUSE Enterprise Storage 4 Updates"
+                "SUSE-Enterprise-Storage-4-Updates": "SUSE Enterprise Storage 4 Updates",
+                "SLES12-SP3-Pool": "SUSE Linux Enterprise Server 12 SP3",
+                "SLES12-SP3-Updates": "SUSE Linux Enterprise Server 12 SP3 Updates",
+                "SUSE-OpenStack-Cloud-Crowbar-8-Pool": "SUSE OpenStack Cloud Crowbar 8",
+                "SUSE-OpenStack-Cloud-Crowbar-8-Updates": "SUSE OpenStack Cloud Crowbar 8 Updates",
+                "SLE12-SP3-HA-Pool": "SUSE Linux Enterprise 12 SP3 High Availability",
+                "SLE12-SP3-HA-Updates": "SUSE Linux Enterprise 12 SP3 High Availability Updates"
             }
         },
         "steps-key": {
@@ -173,7 +179,7 @@
             "keystone_hybrid_backend": "Keystone hybrid backend",
             "lbaas_v1": "Old version of LBaaS",
             "repositories_missing": "Required repositories missing",
-            "repositories_too_soon": "SOC7 repositories found",
+            "repositories_too_soon": "SOC8 repositories found",
             "prepare": "Begin Upgrade failed",
             "repocheck_nodes": "Some Checks failed",
             "maintenance_updates_installed": "Maintenance Updates",
@@ -195,7 +201,7 @@
         "text": "SUSE OpenStack Cloud - provided by SUSE"
     },
     "header": {
-        "title": "SUSE OpenStack Cloud: Upgrade 6-7"
+        "title": "SUSE OpenStack Cloud 7 Upgrade Wizard"
     },
     "modal": {
         "close": "Close",
