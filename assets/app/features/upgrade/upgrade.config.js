@@ -43,12 +43,6 @@
                 controller: 'UpgradeUpgradeAdministrationServerController',
                 controllerAs: 'upgradeAdminUpgradeVm'
             })
-            .state('upgrade.database-configuration', {
-                url: '/database-configuration',
-                templateUrl: 'app/features/upgrade/templates/database-configuration-page.html',
-                controller: 'UpgradeDatabaseConfigurationController',
-                controllerAs: 'upgradeDatabaseVm'
-            })
             .state('upgrade.nodes-repositories-checks', {
                 url: '/nodes-repositories-checks',
                 templateUrl: 'app/features/upgrade/templates/nodes-repositories-checks-page.html',

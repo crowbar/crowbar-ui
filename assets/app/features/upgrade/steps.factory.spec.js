@@ -27,34 +27,27 @@ describe('Steps Factory', function () {
         },
         {
             id: 3,
-            title: 'upgrade.steps-key.codes.database-configuration',
-            state: 'upgrade.database-configuration',
-            active: false,
-            finished: false
-        },
-        {
-            id: 4,
             title: 'upgrade.steps-key.codes.nodes-repositories-checks',
             state: 'upgrade.nodes-repositories-checks',
             active: false,
             finished: false
         },
         {
-            id: 5,
+            id: 4,
             title: 'upgrade.steps-key.codes.openstack-services',
             state: 'upgrade.openstack-services',
             active: false,
             finished: false
         },
         {
-            id: 6,
+            id: 5,
             title: 'upgrade.steps-key.codes.openstack-backup',
             state: 'upgrade.openstack-backup',
             active: false,
             finished: false
         },
         {
-            id: 7,
+            id: 6,
             title: 'upgrade.steps-key.codes.upgrade-nodes',
             state: 'upgrade.upgrade-nodes',
             active: false,
@@ -79,9 +72,6 @@ describe('Steps Factory', function () {
                     status: 'pending',
                 },
                 admin: {
-                    status: 'pending',
-                },
-                database: {
                     status: 'pending',
                 },
                 repocheck_nodes: {
@@ -118,9 +108,6 @@ describe('Steps Factory', function () {
                 admin: {
                     status: 'pending',
                 },
-                database: {
-                    status: 'pending',
-                },
                 repocheck_nodes: {
                     status: 'pending',
                 },
@@ -153,9 +140,6 @@ describe('Steps Factory', function () {
                     status: 'pending',
                 },
                 admin: {
-                    status: 'pending',
-                },
-                database: {
                     status: 'pending',
                 },
                 repocheck_nodes: {
@@ -192,9 +176,6 @@ describe('Steps Factory', function () {
                 admin: {
                     status: 'pending',
                 },
-                database: {
-                    status: 'pending',
-                },
                 repocheck_nodes: {
                     status: 'pending',
                 },
@@ -227,9 +208,6 @@ describe('Steps Factory', function () {
                     status: 'pending',
                 },
                 admin: {
-                    status: 'pending',
-                },
-                database: {
                     status: 'pending',
                 },
                 repocheck_nodes: {
@@ -266,9 +244,6 @@ describe('Steps Factory', function () {
                 admin: {
                     status: 'pending',
                 },
-                database: {
-                    status: 'pending',
-                },
                 repocheck_nodes: {
                     status: 'pending',
                 },
@@ -303,9 +278,6 @@ describe('Steps Factory', function () {
                 admin: {
                     status: 'pending',
                 },
-                database: {
-                    status: 'pending',
-                },
                 repocheck_nodes: {
                     status: 'pending',
                 },
@@ -321,43 +293,6 @@ describe('Steps Factory', function () {
             },
         },
         statusDataAfterAdminUpgrade = {
-            current_step: 'database',
-            substep: null,
-            current_node: null,
-            steps: {
-                prechecks: {
-                    status: 'passed',
-                },
-                prepare: {
-                    status: 'passed',
-                },
-                backup_crowbar: {
-                    status: 'passed',
-                },
-                repocheck_crowbar: {
-                    status: 'passed',
-                },
-                admin: {
-                    status: 'passed',
-                },
-                database: {
-                    status: 'pending',
-                },
-                repocheck_nodes: {
-                    status: 'pending',
-                },
-                services: {
-                    status: 'pending',
-                },
-                backup_openstack: {
-                    status: 'pending',
-                },
-                nodes: {
-                    status: 'pending',
-                },
-            }
-        },
-        statusDataAfterDatabase = {
             current_step: 'repocheck_nodes',
             substep: null,
             current_node: null,
@@ -375,9 +310,6 @@ describe('Steps Factory', function () {
                     status: 'passed',
                 },
                 admin: {
-                    status: 'passed',
-                },
-                database: {
                     status: 'passed',
                 },
                 repocheck_nodes: {
@@ -414,9 +346,6 @@ describe('Steps Factory', function () {
                 admin: {
                     status: 'passed',
                 },
-                database: {
-                    status: 'passed',
-                },
                 repocheck_nodes: {
                     status: 'passed',
                 },
@@ -449,9 +378,6 @@ describe('Steps Factory', function () {
                     status: 'passed',
                 },
                 admin: {
-                    status: 'passed',
-                },
-                database: {
                     status: 'passed',
                 },
                 repocheck_nodes: {
@@ -488,9 +414,6 @@ describe('Steps Factory', function () {
                 admin: {
                     status: 'passed',
                 },
-                database: {
-                    status: 'passed',
-                },
                 repocheck_nodes: {
                     status: 'passed',
                 },
@@ -523,9 +446,6 @@ describe('Steps Factory', function () {
                     status: 'passed',
                 },
                 admin: {
-                    status: 'passed',
-                },
-                database: {
                     status: 'passed',
                 },
                 repocheck_nodes: {
@@ -734,10 +654,6 @@ describe('Steps Factory', function () {
                 it('should return "upgrade.upgrade-administration-server" after admin upgrade', function() {
                     expect(upgradeStepsFactory.lastStateForRestore(statusDataAfterAdminUpgrade))
                         .toEqual('upgrade.upgrade-administration-server');
-                });
-                it('should return "upgrade.database-configuration" after database configuration', function() {
-                    expect(upgradeStepsFactory.lastStateForRestore(statusDataAfterDatabase))
-                        .toEqual('upgrade.database-configuration');
                 });
                 it('should return "upgrade.nodes-repositories-checks" after nodes repo checks', function() {
                     expect(upgradeStepsFactory.lastStateForRestore(statusDataAfterNodesRepoChecks))
