@@ -3,8 +3,7 @@
     angular
         .module('crowbarApp.upgrade')
         .constant('ADDONS_PRECHECK_MAP', {
-            'ha': ['clusters_healthy'],
-            'ceph': ['ceph_healthy']
+            'ha': ['clusters_healthy']
         })
         .constant('UNEXPECTED_ERROR_DATA', {
             title: 'unexpected_error',

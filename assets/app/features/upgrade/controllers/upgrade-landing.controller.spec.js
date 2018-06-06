@@ -138,7 +138,7 @@ describe('Upgrade Landing Controller', function() {
             network_checks: { required: true, passed: true },
             cloud_healthy: { required: true, passed: true },
             clusters_healthy: { required: false, passed: true },
-            ceph_healthy: { required: false, passed: true },
+            ceph_status: { required: true, passed: true },
             compute_status: { required: false, passed: true },
             openstack_check: { required: false, passed: true },
             ha_configured: { required: false, passed: true },
@@ -153,7 +153,7 @@ describe('Upgrade Landing Controller', function() {
                 errors: { err3: { data: 'err3 data', help: 'err3 help' }} },
             clusters_healthy: { required: false, passed: false,
                 errors: { err4: { data: 'err4 data', help: 'err4 help' }} },
-            ceph_healthy: { required: false, passed: false,
+            ceph_status: { required: true, passed: false,
                 errors: { err5: { data: 'err5 data', help: 'err5 help' }} },
             compute_status: { required: false, passed: false,
                 errors: { err6: { data: 'err6 data', help: 'err6 help' }} },
@@ -170,7 +170,7 @@ describe('Upgrade Landing Controller', function() {
             cloud_healthy: { required: true, passed: true },
             clusters_healthy: { required: false, passed: false,
                 errors: { err7: { data: 'err7 data', help: 'err7 help' }} },
-            ceph_healthy: { required: false, passed: false,
+            ceph_status: { required: false, passed: false,
                 errors: { err8: { data: 'err8 data', help: 'err8 help' }} },
             compute_status: { required: true, passed: true },
             openstack_check: { required: true, passed: true },
@@ -196,7 +196,7 @@ describe('Upgrade Landing Controller', function() {
         },
         entityResponseWithAddons = {
             data: {
-                addons: ['ha', 'ceph']
+                addons: ['ha']
             }
         },
         entityResponseWithoutAddons = {
@@ -353,10 +353,6 @@ describe('Upgrade Landing Controller', function() {
                         'clusters_healthy': jasmine.objectContaining({
                             status: jasmine.any(Boolean),
                             label: 'upgrade.steps.landing.prechecks.codes.high_availability'
-                        }),
-                        'ceph_healthy': jasmine.objectContaining({
-                            status: jasmine.any(Boolean),
-                            label: 'upgrade.steps.landing.prechecks.codes.storage'
                         })
                     }));
             });
@@ -373,8 +369,7 @@ describe('Upgrade Landing Controller', function() {
             it('should not contain checks for addons', function () {
                 expect(controller.prechecks.checks).not.toEqual(
                     jasmine.objectContaining({
-                        'clusters_healthy': jasmine.anything(),
-                        'ceph_healthy': jasmine.anything()
+                        'clusters_healthy': jasmine.anything()
                     }));
             });
         });
