@@ -73,10 +73,6 @@
                     status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.compute_status'
                 },
-                openstack_check: {
-                    status: false,
-                    label: 'upgrade.steps.landing.prechecks.codes.openstack_check'
-                },
                 ceph_status: {
                     status: false,
                     label: 'upgrade.steps.landing.prechecks.codes.ceph_status'

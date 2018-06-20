@@ -32,7 +32,6 @@
                         "cloud_health": "Cloud Health",
                         "cloud_deployment": "Deployment Conflicts",
                         "high_availability": "High Availability Health",
-                        "openstack_check": "OpenStack Check",
                         "ceph_status": "Crowbar Managed CEPH",
                         "ha_configured": "High Availability Setup",
                         "compute_status": "Compute Resources"
