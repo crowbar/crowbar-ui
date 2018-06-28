@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-/*global bard $controller $httpBackend should assert upgradeFactory $q upgradeStatusFactory
+/*global bard $controller $httpBackend should assert upgradeFactory $q upgradeStatusFactory upgradeStepsFactory
 UPGRADE_STEPS NODES_UPGRADE_TIMEOUT_INTERVAL sinon $rootScope UNEXPECTED_ERROR_DATA */
 describe('Upgrade Nodes Controller', function() {
     var controller,
@@ -18,6 +18,7 @@ describe('Upgrade Nodes Controller', function() {
             current_node_action: null,
             remaining_nodes: null,
             upgraded_nodes: null,
+            compute_nodes_postponed: false,
             steps: {
                 prechecks: {
                     status: stepStatus.passed,
@@ -141,6 +142,61 @@ describe('Upgrade Nodes Controller', function() {
         failedUpgradeResponse = {
             data: failedUpgradeData
         },
+        partialUpgradeResponse = {
+            data: {
+                compute_nodes_postponed: true,
+                current_step: 'nodes',
+                current_substep: 'controller_nodes',
+                current_substep_status: 'finished',
+                upgraded_nodes:  upgradedNodes,
+                steps: {
+                    nodes: {
+                        status: stepStatus.running
+                    }
+                },
+            }
+        },
+        resumeUpgradeStartResponse = {
+            data: {
+                compute_nodes_postponed: false,
+                current_step: 'nodes',
+                current_substep: 'controller_nodes',
+                current_substep_status: 'finished',
+                upgraded_nodes:  upgradedNodes,
+                steps: {
+                    nodes: {
+                        status: stepStatus.running
+                    }
+                },
+            }
+        },
+        resumeUpgradeRunningResponse = {
+            data: {
+                compute_nodes_postponed: false,
+                current_step: 'nodes',
+                current_substep: 'compute_nodes',
+                current_substep_status: 'running',
+                upgraded_nodes: upgradedNodes,
+                steps: {
+                    nodes: {
+                        status: stepStatus.running
+                    }
+                },
+            }
+        },
+        resumeUpgradeDoneResponse = {
+            data: {
+                compute_nodes_postponed: false,
+                current_step: 'nodes',
+                current_substep: 'end_of_upgrade',
+                current_substep_status: 'finished',
+                steps: {
+                    nodes: {
+                        status: stepStatus.passed
+                    }
+                },
+            }
+        },
         emptyResponse = {
             data: {},
         };
@@ -155,6 +211,7 @@ describe('Upgrade Nodes Controller', function() {
             '$q',
             '$httpBackend',
             'upgradeStatusFactory',
+            'upgradeStepsFactory',
             'UPGRADE_STEPS',
             'NODES_UPGRADE_TIMEOUT_INTERVAL',
             'UNEXPECTED_ERROR_DATA'
@@ -403,6 +460,7 @@ describe('Upgrade Nodes Controller', function() {
             bard.mockService(upgradeFactory, {
                 upgradeNodes: $q.when(),
                 getNodesStatus: $q.when(initialNodesResponse),
+                setResumeComputeNodes: $q.when(),
             });
 
             controller = $controller('UpgradeNodesController');
@@ -410,7 +468,7 @@ describe('Upgrade Nodes Controller', function() {
             $httpBackend.flush();
         });
 
-        describe('On Upgrade Nodes Success', function () {
+        describe('On Upgrade All Nodes Success', function () {
             beforeEach(function () {
                 spyOn(upgradeStatusFactory, 'waitForStepToEnd');
                 // getStatus call needs to be overridden with a upgrade running response
@@ -446,6 +504,7 @@ describe('Upgrade Nodes Controller', function() {
 
                 describe ('when onSuccess is executed', function () {
                     beforeEach(function () {
+                        spyOn(upgradeStepsFactory, 'setCurrentStepCompleted');
                         upgradeStatusFactory.waitForStepToEnd.calls.argsFor(0)[2](completedUpgradeResponse);
                     });
 
@@ -478,6 +537,13 @@ describe('Upgrade Nodes Controller', function() {
                                 completedUpgradeData.remaining_nodes);
                     });
 
+                    it('should default to upgrade compute node option', function () {
+                        assert.isTrue(controller.nodesUpgrade.upgradeComputeSelected);
+                    });
+
+                    it('should set current step completed', function () {
+                        expect(upgradeStepsFactory.setCurrentStepCompleted).toHaveBeenCalledTimes(1);
+                    });
                 });
 
                 describe ('when onError is executed', function () {
@@ -538,7 +604,7 @@ describe('Upgrade Nodes Controller', function() {
             });
         });
 
-        describe('On Upgrade Nodes Error', function () {
+        describe('On Upgrade All Nodes Error', function () {
             beforeEach(function () {
                 // Override upgradeNodes behavior
                 upgradeFactory.upgradeNodes = sinon.stub().returns($q.reject(errorStatusResponse));
@@ -559,6 +625,183 @@ describe('Upgrade Nodes Controller', function() {
             it('should expose the errors to the view model', function () {
                 expect(controller.nodesUpgrade.errors.errors).toEqual(errorStatusResponse.data.errors);
             });
+        });
+    });
+
+    describe('On performing node upgrade with postpone compute node upgrade option', function () {
+        beforeEach(function () {
+            spyOn(upgradeStatusFactory, 'syncStatusFlags').and.callFake(
+                function(step, flagsObject, onRunning, onSuccess, onError, postSync) {
+                    postSync(initialStatusResponse);
+                }
+            );
+
+            bard.mockService(upgradeFactory, {
+                upgradeNodes: $q.when(),
+                getNodesStatus: $q.when(initialNodesResponse),
+                setResumeComputeNodes: $q.when(),
+            });
+
+            controller = $controller('UpgradeNodesController');
+
+            $httpBackend.flush();
+
+            spyOn(upgradeStatusFactory, 'waitForStepToEnd');
+            // getStatus call needs to be overridden with a upgrade running response
+            upgradeFactory.getStatus = sinon.stub().returns(runningUpgradeResponse);
+            spyOn(upgradeStepsFactory, 'setCurrentStepCompleted');
+            spyOn(upgradeFactory, 'setPostponeComputeNodes');
+
+            controller.nodesUpgrade.upgradeComputeSelected = false;
+            controller.nodesUpgrade.beginUpgradeNodes();
+            $rootScope.$digest();
+
+            upgradeStatusFactory.waitForStepToEnd.calls.argsFor(0)[2](partialUpgradeResponse);
+        });
+
+        it('should not set current step completed', function () {
+            expect(upgradeStepsFactory.setCurrentStepCompleted).not.toHaveBeenCalled();
+        });
+
+        it('should set compute nodes postponed', function () {
+            expect(upgradeFactory.setPostponeComputeNodes).toHaveBeenCalledTimes(1);
+        });
+
+        it('should set controller computeNodesPostponed to true', function () {
+            assert.isTrue(controller.nodesUpgrade.computeNodesPostponed);
+        });
+    });
+
+    describe('On resuming compute node upgrade', function () {
+        beforeEach(function () {
+            spyOn(upgradeStatusFactory, 'syncStatusFlags').and.callFake(
+                function(step, flagsObject, onRunning, onSuccess, onError, postSync) {
+                    postSync(partialUpgradeResponse);
+                }
+            );
+
+            bard.mockService(upgradeFactory, {
+                upgradeNodes: $q.when(),
+                getNodesStatus: $q.when(initialNodesResponse),
+            });
+
+            controller = $controller('UpgradeNodesController');
+
+            $httpBackend.flush();
+
+            spyOn(upgradeStatusFactory, 'waitForStepToEnd');
+            spyOn(upgradeFactory, 'setResumeComputeNodes').and.returnValue($q.when());
+            spyOn(upgradeStepsFactory, 'setUpgradeAll');
+            spyOn(upgradeStepsFactory, 'setUpgradeStep');
+            spyOn(upgradeStepsFactory, 'setCurrentStepCompleted');
+
+            controller.nodesUpgrade.beginUpgradeNodes();
+            $rootScope.$digest();
+        });
+
+        describe('and compute_nodes_postponed is true', function () {
+            beforeEach(function () {
+                upgradeStatusFactory.waitForStepToEnd.calls.argsFor(0)[2](resumeUpgradeStartResponse);
+            });
+
+            it('should call setResumeComputeNodes', function () {
+                expect(upgradeFactory.setResumeComputeNodes).toHaveBeenCalledTimes(1);
+            });
+
+            it('should set controller computeNodesPostponed to false', function () {
+                assert.isFalse(controller.nodesUpgrade.computeNodesPostponed);
+            });
+
+            it('should call setUpgradeAll', function () {
+                expect(upgradeStepsFactory.setUpgradeAll).toHaveBeenCalledTimes(1);
+            });
+
+            it('should set UpgradeAll value to true', function () {
+                assert.isTrue(upgradeStepsFactory.isUpgradeAll());
+            });
+
+            it('should call setUpgradeStep', function () {
+                expect(upgradeStepsFactory.setUpgradeStep).toHaveBeenCalledWith(2);
+            });
+        });
+
+
+        describe('when compute node upgrade is triggered', function () {
+            beforeEach(function () {
+                upgradeStatusFactory.waitForStepToEnd.calls.argsFor(0)[2](resumeUpgradeRunningResponse);
+            });
+
+            it('should call setUpgradeAll', function () {
+                expect(upgradeStepsFactory.setUpgradeAll).toHaveBeenCalledTimes(2);
+            });
+
+            it('should set UpgradeAll value to true', function () {
+                assert.isTrue(upgradeStepsFactory.isUpgradeAll());
+            });
+
+            it('should call setUpgradeStep', function () {
+                expect(upgradeStepsFactory.setUpgradeStep).toHaveBeenCalledWith(2);
+            });
+        });
+
+        describe('when compute node upgrade finishes', function () {
+            beforeEach(function () {
+                upgradeStatusFactory.waitForStepToEnd.calls.argsFor(0)[2](resumeUpgradeDoneResponse);
+            });
+
+            it('should set current step completed', function () {
+                expect(upgradeStepsFactory.setCurrentStepCompleted).toHaveBeenCalledTimes(1);
+            });
+        });
+
+    });
+
+    describe('when resume compute node upgrade after compute_nodes_postponed is false', function () {
+        beforeEach(function () {
+            spyOn(upgradeStatusFactory, 'syncStatusFlags').and.callFake(
+                function(step, flagsObject, onRunning, onSuccess, onError, postSync) {
+                    postSync(resumeUpgradeStartResponse);
+                }
+            );
+
+            bard.mockService(upgradeFactory, {
+                upgradeNodes: $q.when(),
+                getNodesStatus: $q.when(initialNodesResponse),
+            });
+
+            controller = $controller('UpgradeNodesController');
+
+            $httpBackend.flush();
+
+            spyOn(upgradeStatusFactory, 'waitForStepToEnd');
+            spyOn(upgradeFactory, 'setResumeComputeNodes');
+            spyOn(upgradeStepsFactory, 'setUpgradeAll');
+            spyOn(upgradeStepsFactory, 'setUpgradeStep');
+
+            controller.nodesUpgrade.beginUpgradeNodes();
+            $rootScope.$digest();
+
+            upgradeStatusFactory.waitForStepToEnd.calls.argsFor(0)[2](resumeUpgradeRunningResponse);
+        });
+
+        it('should not call setResumeComputeNodes', function () {
+            expect(upgradeFactory.setResumeComputeNodes).not.toHaveBeenCalled();
+        });
+
+        it('should set controller computeNodesPostponed to false', function () {
+            assert.isFalse(controller.nodesUpgrade.computeNodesPostponed);
+        });
+
+        it('should call setUpgradeAll', function () {
+            expect(upgradeStepsFactory.setUpgradeAll).toHaveBeenCalledTimes(2);
+        });
+
+        it('should set UpgradeAll value to true', function () {
+            assert.isTrue(upgradeStepsFactory.isUpgradeAll());
+        });
+
+        it('should not call setUpgradeStep', function () {
+            expect(upgradeStepsFactory.setUpgradeStep).not.toHaveBeenCalled;
         });
     });
 

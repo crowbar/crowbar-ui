@@ -32,6 +32,8 @@
             isCurrentStepCompleted: upgradeStepsFactory.isCurrentStepCompleted,
             isLastStep: upgradeStepsFactory.isLastStep,
             isCancelAllowed: upgradeStepsFactory.isCancelAllowed,
+            isUpgradeAll: upgradeStepsFactory.isUpgradeAll,
+            getUpgradeStep: upgradeStepsFactory.getUpgradeStep,
         };
 
         vm.confirmCancel = confirmCancel;

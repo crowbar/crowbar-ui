@@ -21,6 +21,8 @@
             stopServices: stopServices,
             createOpenstackBackup: createOpenstackBackup,
             upgradeNodes: upgradeNodes,
+            setPostponeComputeNodes: setPostponeComputeNodes,
+            setResumeComputeNodes: setResumeComputeNodes,
         };
 
         return factory;
@@ -225,14 +227,48 @@
           *
           * @return {Promise}
           */
-        function upgradeNodes() {
+        function upgradeNodes(upgradeCompute) {
 
             var requestOptions = {
                 method: 'POST',
                 url: '/api/upgrade/nodes',
                 headers: COMMON_API_V2_HEADERS,
-                // UI always triggers complete upgrade
-                data: { component: 'all' },
+                // triggers upgrade all when upgradeCompute is true, otherwise upgrade controllers only
+                data: { component: upgradeCompute ? 'all' : 'controllers' },
+            };
+
+            return $http(requestOptions);
+        }
+
+        /**
+          * Set compute nodes postponed flag
+          *
+          * @return {Promise}
+          */
+        function setPostponeComputeNodes() {
+
+            var requestOptions = {
+                method: 'POST',
+                url: '/api/upgrade/nodes',
+                headers: COMMON_API_V2_HEADERS,
+                data: { component: 'postpone' },
+            };
+
+            return $http(requestOptions);
+        }
+
+        /**
+          * Unset compute nodes postponed flag
+          *
+          * @return {Promise}
+          */
+        function setResumeComputeNodes() {
+
+            var requestOptions = {
+                method: 'POST',
+                url: '/api/upgrade/nodes',
+                headers: COMMON_API_V2_HEADERS,
+                data: { component: 'resume' },
             };
 
             return $http(requestOptions);

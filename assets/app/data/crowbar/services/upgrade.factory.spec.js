@@ -41,7 +41,15 @@ describe('Upgrade Factory', function () {
         mockedStopServicesPromise = {
             'services': true
         },
-        stopServicesPromise;
+        stopServicesPromise,
+        mockedSetPostponeComputeNodesResponse = {
+            'compute_nodes_postpone': true
+        },
+        setPostponeComputeNodesPromise,
+        mockedSetResumeComputeNodesResponse = {
+            'compute_nodes_postpone': false
+        },
+        setResumeComputeNodesPromise;
 
     beforeEach(function () {
         //Setup the module and dependencies to be used.
@@ -97,6 +105,18 @@ describe('Upgrade Factory', function () {
 
         it('returns an object with createOpenstackBackup function defined', function () {
             expect(upgradeFactory.createOpenstackBackup).toEqual(jasmine.any(Function));
+        });
+
+        it('returns an object with upgradeNodes function is defined', function () {
+            expect(upgradeFactory.upgradeNodes).toEqual(jasmine.any(Function));
+        });
+
+        it('returns an object with setPostponeComputeNodes function is defined', function () {
+            expect(upgradeFactory.setPostponeComputeNodes).toEqual(jasmine.any(Function));
+        });
+
+        it('returns an object with setResumeComputeNodes function is defined', function () {
+            expect(upgradeFactory.setResumeComputeNodes).toEqual(jasmine.any(Function));
         });
 
         describe('when getPreliminaryChecks method is executed', function () {
@@ -426,6 +446,60 @@ describe('Upgrade Factory', function () {
                 createOpenstackBackupPromise.then(function (createBackupResponse) {
                     expect(createBackupResponse.status).toEqual(200);
                     expect(createBackupResponse.data).toEqual(mockedCreateOpenstackBackupResponse);
+                });
+                $httpBackend.flush();
+            });
+        });
+
+        describe('when setPostponeComputeNodes method is executed', function () {
+
+            beforeEach(function () {
+                $httpBackend.expect('POST', '/api/upgrade/nodes', '{"component":"postpone"}', function (headers) {
+                    return headers.Accept === COMMON_API_V2_HEADERS.Accept })
+                    .respond(200, mockedSetPostponeComputeNodesResponse);
+                setPostponeComputeNodesPromise = upgradeFactory.setPostponeComputeNodes();
+            });
+
+            it('returns a promise', function () {
+                expect(setPostponeComputeNodesPromise).toEqual(jasmine.any(Object));
+                expect(setPostponeComputeNodesPromise['then']).toEqual(jasmine.any(Function));
+                expect(setPostponeComputeNodesPromise['catch']).toEqual(jasmine.any(Function));
+                expect(setPostponeComputeNodesPromise['finally']).toEqual(jasmine.any(Function));
+                expect(setPostponeComputeNodesPromise['error']).toEqual(jasmine.any(Function));
+                expect(setPostponeComputeNodesPromise['success']).toEqual(jasmine.any(Function));
+            });
+
+            it('when resolved, it returns the setPostponeComputeNodes response', function () {
+                setPostponeComputeNodesPromise.then(function (response) {
+                    expect(response.status).toEqual(200);
+                    expect(response.data).toEqual(mockedSetPostponeComputeNodesResponse);
+                });
+                $httpBackend.flush();
+            });
+        });
+
+        describe('when setResumeComputeNodes method is executed', function () {
+
+            beforeEach(function () {
+                $httpBackend.expect('POST', '/api/upgrade/nodes', '{"component":"resume"}', function (headers) {
+                    return headers.Accept === COMMON_API_V2_HEADERS.Accept })
+                    .respond(200, mockedSetResumeComputeNodesResponse);
+                setResumeComputeNodesPromise = upgradeFactory.setResumeComputeNodes();
+            });
+
+            it('returns a promise', function () {
+                expect(setResumeComputeNodesPromise).toEqual(jasmine.any(Object));
+                expect(setResumeComputeNodesPromise['then']).toEqual(jasmine.any(Function));
+                expect(setResumeComputeNodesPromise['catch']).toEqual(jasmine.any(Function));
+                expect(setResumeComputeNodesPromise['finally']).toEqual(jasmine.any(Function));
+                expect(setResumeComputeNodesPromise['error']).toEqual(jasmine.any(Function));
+                expect(setResumeComputeNodesPromise['success']).toEqual(jasmine.any(Function));
+            });
+
+            it('when resolved, it returns the setPostponeComputeNodes response', function () {
+                setResumeComputeNodesPromise.then(function (response) {
+                    expect(response.status).toEqual(200);
+                    expect(response.data).toEqual(mockedSetResumeComputeNodesResponse);
                 });
                 $httpBackend.flush();
             });

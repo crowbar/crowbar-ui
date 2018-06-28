@@ -22,6 +22,10 @@
             isCancelAllowed: isCancelAllowed,
             setCancelAllowed: setCancelAllowed,
             reset: reset,
+            setUpgradeAll: setUpgradeAll,
+            isUpgradeAll: isUpgradeAll,
+            setUpgradeStep: setUpgradeStep,
+            getUpgradeStep: getUpgradeStep,
         };
 
         return factory;
@@ -38,6 +42,22 @@
         }
         function setCancelAllowed(value) {
             factory.activeStep.cancelAllowed = value;
+        }
+
+        function isUpgradeAll() {
+            return factory.activeStep.upgradeAll;
+        }
+        function setUpgradeAll(value) {
+            // switches between 'Finish' or 'Go to Dashboard'
+            factory.activeStep.upgradeAll = value;
+        }
+
+        function getUpgradeStep() {
+            return factory.activeStep.upgradeStep;
+        }
+        function setUpgradeStep(value) {
+            // checks where we are in the upgrade process: 1 is from the beginning, 2 is from resume compute node
+            factory.activeStep.upgradeStep = value;
         }
 
         function reset() {

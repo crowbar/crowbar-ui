@@ -16,6 +16,7 @@
         'upgradeStatusFactory',
         'upgradeStepsFactory',
         'UPGRADE_STEPS',
+        'UPGRADE_STEP_STATES',
         'NODES_UPGRADE_TIMEOUT_INTERVAL',
         'UNEXPECTED_ERROR_DATA',
     ];
@@ -25,6 +26,7 @@
         upgradeStatusFactory,
         upgradeStepsFactory,
         UPGRADE_STEPS,
+        UPGRADE_STEP_STATES,
         NODES_UPGRADE_TIMEOUT_INTERVAL,
         UNEXPECTED_ERROR_DATA
     ) {
@@ -40,6 +42,12 @@
             completed: false,
             running: false,
             spinnerVisible: false,
+            upgradeComputeSelected: true,
+            upgradeComputePostponed: false,
+            computeNodesPostponed: false,
+            startAtComputeUpgrade: false,
+            toggleComputeUpgrade: toggleComputeUpgrade,
+            resumeUpgradeComputeNodes: resumeUpgradeComputeNodes,
         };
 
         activate();
@@ -56,13 +64,37 @@
         }
 
         function beginUpgradeNodes() {
-            vm.nodesUpgrade.running = true;
+            if (vm.nodesUpgrade.upgradedNodes === 0) {
+                vm.nodesUpgrade.running = true;
+                upgradeFactory.upgradeNodes(vm.nodesUpgrade.upgradeComputeSelected)
+                    .then(
+                        waitForUpgradeNodesToEnd,
+                        upgradeError
+                    );
+            } else {
+                resumeUpgradeComputeNodes();
+            }
+        }
 
-            upgradeFactory.upgradeNodes()
+        function resumeUpgradeComputeNodes() {
+            vm.nodesUpgrade.startAtComputeUpgrade = true;
+            if (vm.nodesUpgrade.computeNodesPostponed) {
+                upgradeFactory.setResumeComputeNodes()
+                    .then(
+                        upgradeAllNodes
+                    )
+            } else {
+                upgradeAllNodes();
+            }
+        }
+
+        function upgradeAllNodes() {
+            vm.nodesUpgrade.running = true;
+            upgradeFactory.upgradeNodes(true)
                 .then(
                     waitForUpgradeNodesToEnd,
                     upgradeError
-                );
+                )
         }
 
         function waitForUpgradeNodesToEnd () {
@@ -90,6 +122,8 @@
                             vm.nodesUpgrade.upgradedNodes = response.data.upgraded.length;
                             vm.nodesUpgrade.totalNodes =
                                 response.data.not_upgraded.length + vm.nodesUpgrade.upgradedNodes;
+                            upgradeStepsFactory.setUpgradeAll(vm.nodesUpgrade.upgradeComputeSelected);
+                            upgradeStepsFactory.setUpgradeStep(1);
                         },
                         upgradeError
                     );
@@ -100,6 +134,19 @@
             vm.nodesUpgrade.totalNodes = response.data.upgraded_nodes + response.data.remaining_nodes;
             vm.nodesUpgrade.currentNodes = response.data.current_nodes;
             vm.nodesUpgrade.currentAction = response.data.current_node_action;
+            vm.nodesUpgrade.computeNodesPostponed = response.data.compute_nodes_postponed;
+
+            // in case of resume upgrade or refreshing page
+            upgradeStepsFactory.setUpgradeAll(vm.nodesUpgrade.upgradeComputeSelected);
+            if (response.data.current_substep === 'controller_nodes' &&
+                response.data.current_substep_status === 'finished' && vm.nodesUpgrade.running) {
+                vm.nodesUpgrade.running = false;
+                vm.nodesUpgrade.upgradeComputePostponed = response.data.compute_nodes_postponed;
+                upgradeStepsFactory.setUpgradeStep(2);
+            } else if (response.data.current_substep === 'compute_nodes') {
+                upgradeStepsFactory.setUpgradeAll(true);
+                upgradeStepsFactory.setUpgradeStep(2);
+            }
         }
 
         function upgradeSuccess(response) {
@@ -108,7 +155,16 @@
             vm.nodesUpgrade.running = false;
             vm.nodesUpgrade.completed = true;
 
-            upgradeStepsFactory.setCurrentStepCompleted();
+            // only sets step completed after upgrade all, not after upgrade controllers
+            if (!(response.data.current_substep === 'controller_nodes' &&
+                response.data.current_substep_status === 'finished')) {
+                upgradeStepsFactory.setCurrentStepCompleted();
+            }
+
+            if (!vm.nodesUpgrade.upgradeComputeSelected) {
+                vm.nodesUpgrade.upgradeComputePostponed = true;
+                upgradeFactory.setPostponeComputeNodes();
+            }
         }
 
         function upgradeError(errorResponse) {
@@ -116,6 +172,7 @@
             updateModel(errorResponse);
 
             vm.nodesUpgrade.running = false;
+            vm.nodesUpgrade.completed = false;
             // Expose the error list to nodesUpgrade object
             if (angular.isDefined(errorResponse.data.errors)) {
                 vm.nodesUpgrade.errors = errorResponse.data;
@@ -124,6 +181,10 @@
             } else {
                 vm.nodesUpgrade.errors = UNEXPECTED_ERROR_DATA;
             }
+        }
+
+        function toggleComputeUpgrade() {
+            upgradeStepsFactory.setUpgradeAll(vm.nodesUpgrade.upgradeComputeSelected);
         }
     }
 })();
