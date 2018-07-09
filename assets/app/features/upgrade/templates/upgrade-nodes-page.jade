@@ -1,19 +1,18 @@
 .upgrade-nodes-page
     h2(translate='') upgrade.steps.upgrade-nodes.title
-    p(ng-if="!upgradeNodesVm.nodesUpgrade.startAtComputeUpgrade", translate='') upgrade.steps.upgrade-nodes.description
-    p(ng-if="upgradeNodesVm.nodesUpgrade.startAtComputeUpgrade", translate='') upgrade.steps.upgrade-nodes.alt-description
+    p(translate='') upgrade.steps.upgrade-nodes.description
 
     input.upgrade-option(type='checkbox' name='upgrade-compute'
-        ng-model='upgradeNodesVm.nodesUpgrade.upgradeComputeSelected'
+        ng-model='upgradeNodesVm.nodesUpgrade.upgradeComputeCheckboxSelected'
         ng-change='upgradeNodesVm.nodesUpgrade.toggleComputeUpgrade()'
-        ng-disabled='upgradeNodesVm.nodesUpgrade.upgradedNodes === upgradeNodesVm.nodesUpgrade.totalNodes')
+        ng-disabled='upgradeNodesVm.nodesUpgrade.upgradedNodes === upgradeNodesVm.nodesUpgrade.totalNodes || upgradeNodesVm.nodesUpgrade.running')
     span(translate='') upgrade.steps.upgrade-nodes.upgrade-option
 
     button.btn.btn-success.center-block(
         ng-click="upgradeNodesVm.nodesUpgrade.beginUpgradeNodes()",
         ng-disabled="upgradeNodesVm.nodesUpgrade.running || " +
-        "(upgradeNodesVm.nodesUpgrade.completed && upgradeNodesVm.nodesUpgrade.upgradedNodes === upgradeNodesVm.nodesUpgrade.totalNodes) || " +
-        "(upgradeNodesVm.nodesUpgrade.completed && upgradeNodesVm.nodesUpgrade.upgradedNodes < upgradeNodesVm.nodesUpgrade.totalNodes && !upgradeNodesVm.nodesUpgrade.upgradeComputeSelected)",
+        "(upgradeNodesVm.nodesUpgrade.upgradedNodes === upgradeNodesVm.nodesUpgrade.totalNodes) || " +
+        "(upgradeNodesVm.nodesUpgrade.upgradeControllersDone && upgradeNodesVm.nodesUpgrade.upgradedNodes < upgradeNodesVm.nodesUpgrade.totalNodes && !upgradeNodesVm.nodesUpgrade.upgradeComputeCheckboxSelected)",
         ng-class="{\
             'spinner-visible': upgradeNodesVm.nodesUpgrade.spinnerVisible,\
             active: upgradeNodesVm.nodesUpgrade.running\
@@ -62,7 +61,6 @@
         )
 
     .step-hint(ng-if="upgradeNodesVm.nodesUpgrade.completed && upgradeNodesVm.nodesUpgrade.upgradedNodes === upgradeNodesVm.nodesUpgrade.totalNodes", translate='') upgrade.steps.upgrade-nodes.finished
-    .step-hint(ng-if="upgradeNodesVm.nodesUpgrade.startAtComputeUpgrade && upgradeNodesVm.nodesUpgrade.upgradedNodes < upgradeNodesVm.nodesUpgrade.totalNodes && !upgradeNodesVm.nodesUpgrade.running", translate='') upgrade.steps.upgrade-nodes.resume
-    .step-hint(ng-if="!upgradeNodesVm.nodesUpgrade.startAtComputeUpgrade && upgradeNodesVm.nodesUpgrade.upgradeComputePostponed", translate='') upgrade.steps.upgrade-nodes.partially-upgraded
+    .step-hint(ng-if="!upgradeNodesVm.nodesUpgrade.completed && upgradeNodesVm.nodesUpgrade.upgradeControllersDone && !upgradeNodesVm.nodesUpgrade.running", translate='') upgrade.steps.upgrade-nodes.partially-upgraded
 
 suse-modal(error="upgradeNodesVm.nodesUpgrade.errors", translation-prefix="upgrade.errors")

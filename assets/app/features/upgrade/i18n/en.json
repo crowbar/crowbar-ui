@@ -3,7 +3,7 @@
         "nav": {
             "cancel": "Cancel Upgrade",
             "next": "Next",
-            "dashboard": "Go To Dashboard",
+            "dashboard": "Go to Dashboard",
             "last": "Finish"
         },
         "cancel": {
@@ -111,14 +111,12 @@
             "upgrade-nodes": {
                 "title": "Begin upgrading and migrating nodes by clicking on the button below",
                 "description": "This process might take some time depending upon the size of your cloud and workloads. Uncheck the 'Upgrade Compute Nodes' box if you wish to only upgrade the controller nodes and postpone the upgrade of compute nodes. You can start the upgrade process of the compute nodes again after the controller node upgrade has been completed.",
-                "alt-description": "The Upgrade Wizard has detected that you have upgraded your controller nodes. Press the 'Upgrade Nodes' button to continue with the compute node upgrade now.",
                 "upgrade-option": "Upgrade Compute Nodes",
                 "form": {
                     "upgrade-nodes": "Upgrade Nodes"
                 },
                 "finished": "Upgrade is completed. Click the Finish button to go back to the dashboard.",
-                "partially-upgraded": "Upgrade of the controller nodes has been completed. Click the 'Upgrade Compute Nodes' checkbox then press the 'Upgrade Nodes' button to upgrade the compute nodes now. Otherwise, exit this wizard if you wish to upgrade the compute nodes at a later time.",
-                "resume": "Click the 'Upgrade Nodes' button to proceed with the controller node upgrade.",
+                "partially-upgraded": "Upgrade of the controller nodes has been completed. Click the 'Upgrade Compute Nodes' checkbox, then press the 'Upgrade Nodes' button to upgrade the compute nodes now. Otherwise, exit this wizard if you wish to upgrade the compute nodes at a later time.",
                 "status": {
                     "progress-bar": "{{current}} of {{total}} Nodes Upgraded",
                     "current-nodes": "Current Nodes:",

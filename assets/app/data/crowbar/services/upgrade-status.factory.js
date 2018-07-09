@@ -85,25 +85,18 @@
                             // on step failure trigger error handler
                             onError(response);
                         } else {
-                            // check for the case of postpone upgrade of compute nodes, after controller nodes were
-                            // upgraded, step status would still be 'running' while substep status would be 'finished'
-                            var subStep = response.data.current_substep;
-                            var subStepStatus = response.data.current_substep_status;
-                            if (subStep === 'controller_nodes' && subStepStatus === 'finished') {
-                                onSuccess(response);
-                            } else {
-                                // If the response needs to be processed before the step if completed
-                                if (angular.isFunction(onRunning)) {
-                                    onRunning(response);
-                                }
 
-                                // schedule another check
-                                $timeout(
-                                    factory.waitForStepToEnd, pollingInterval, true,
-                                    step, pollingInterval, onSuccess, onError, onRunning,
-                                    allowedDowntimeLeft
-                                );
+                            // If the response needs to be processed before the step if completed
+                            if (angular.isFunction(onRunning)) {
+                                onRunning(response);
                             }
+
+                            // schedule another check
+                            $timeout(
+                                factory.waitForStepToEnd, pollingInterval, true,
+                                step, pollingInterval, onSuccess, onError, onRunning,
+                                allowedDowntimeLeft
+                            );
                         }
                     },
                     function (errorResponse) {
