@@ -11,7 +11,7 @@
     button.btn.btn-success.center-block(
         ng-click="upgradeNodesVm.nodesUpgrade.beginUpgradeNodes()",
         ng-disabled="upgradeNodesVm.nodesUpgrade.running || " +
-        "(upgradeNodesVm.nodesUpgrade.upgradedNodes === upgradeNodesVm.nodesUpgrade.totalNodes) || " +
+        "(upgradeNodesVm.nodesUpgrade.upgradedNodes === upgradeNodesVm.nodesUpgrade.totalNodes && upgradeNodesVm.nodesUpgrade.completed) || " +
         "(upgradeNodesVm.nodesUpgrade.upgradeControllersDone && upgradeNodesVm.nodesUpgrade.upgradedNodes < upgradeNodesVm.nodesUpgrade.totalNodes && !upgradeNodesVm.nodesUpgrade.upgradeComputeCheckboxSelected)",
         ng-class="{\
             'spinner-visible': upgradeNodesVm.nodesUpgrade.spinnerVisible,\

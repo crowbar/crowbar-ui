@@ -68,8 +68,9 @@
         }
 
         function beginUpgradeNodes() {
+            vm.nodesUpgrade.running = true;
+
             if (vm.nodesUpgrade.upgradedNodes === 0) {
-                vm.nodesUpgrade.running = true;
                 upgradeFactory.upgradeNodes(vm.nodesUpgrade.upgradeComputeCheckboxSelected)
                     .then(
                         waitForUpgradeNodesToEnd,
@@ -83,7 +84,6 @@
         function resumeUpgradeComputeNodes() {
             vm.nodesUpgrade.resumeUpgrade = true;
             if (vm.nodesUpgrade.computeNodesPostponedFlag) {
-                vm.nodesUpgrade.running = true;
                 upgradeFactory.setResumeComputeNodes()
                     .then(
                         function() {
@@ -99,7 +99,6 @@
         }
 
         function upgradeAllNodes() {
-            vm.nodesUpgrade.running = true;
             upgradeFactory.upgradeNodes(true)
                 .then(
                     waitForUpgradeNodesToEnd,
@@ -168,18 +167,22 @@
             var nodesSelected = response.data.nodes_selected_for_upgrade
             if (subStep === 'controller_nodes' && subStepStatus === 'finished' && nodesSelected === 'controllers') {
                 vm.nodesUpgrade.running = false;
-                // shows partially upgrade message
+                // show partially upgrade message
                 vm.nodesUpgrade.upgradeControllersDone = true;
                 upgradeStepsFactory.setUpgradeStep(2);
                 if (!vm.nodesUpgrade.computeNodesPostponedFlag && !vm.nodesUpgrade.resumeUpgrade) {
                     upgradeFactory.setPostponeComputeNodes();
                 }
+                // set checkbox to checked
+                vm.nodesUpgrade.upgradeComputeCheckboxSelected = true;
+                upgradeStepsFactory.setUpgradeAll(true);
             } else {
-                // in case of resume upgrade or refreshing page
+                // in case of resume upgrade
                 upgradeStepsFactory.setUpgradeAll(vm.nodesUpgrade.upgradeComputeCheckboxSelected);
-                if (response.data.current_substep === 'compute_nodes') {
-                    // upgradeStepsFactory.setUpgradeAll(true);
+                if (subStep === 'compute_nodes') {
                     upgradeStepsFactory.setUpgradeStep(2);
+                    vm.nodesUpgrade.upgradeControllersDone = true;
+                    vm.nodesUpgrade.running = subStepStatus === 'running';
                 }
             }
         }

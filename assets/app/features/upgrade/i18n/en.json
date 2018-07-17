@@ -116,7 +116,7 @@
                     "upgrade-nodes": "Upgrade Nodes"
                 },
                 "finished": "Upgrade is completed. Click the Finish button to go back to the dashboard.",
-                "partially-upgraded": "Upgrade of the controller nodes has been completed. Click the 'Upgrade Compute Nodes' checkbox, then press the 'Upgrade Nodes' button to upgrade the compute nodes now. Otherwise, exit this wizard if you wish to upgrade the compute nodes at a later time.",
+                "partially-upgraded": "Upgrade of the controller nodes has been completed. Press the 'Upgrade Nodes' button to upgrade the compute nodes now. Otherwise, uncheck the 'Upgrade Compute Nodes' box and press the 'Go to Dashboard' button if you wish to upgrade the compute nodes at a later time.",
                 "status": {
                     "progress-bar": "{{current}} of {{total}} Nodes Upgraded",
                     "current-nodes": "Current Nodes:",
