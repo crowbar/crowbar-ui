@@ -3,7 +3,7 @@
     p(translate='') upgrade.steps.upgrade-nodes.description
 
     input.upgrade-option(type='checkbox' name='upgrade-compute'
-        ng-model='upgradeNodesVm.nodesUpgrade.upgradeComputeCheckboxSelected'
+        ng-model='upgradeNodesVm.nodesUpgrade.computeUpgradeEnabled'
         ng-change='upgradeNodesVm.nodesUpgrade.toggleComputeUpgrade()'
         ng-disabled='upgradeNodesVm.nodesUpgrade.upgradedNodes === upgradeNodesVm.nodesUpgrade.totalNodes || upgradeNodesVm.nodesUpgrade.running')
     span(translate='') upgrade.steps.upgrade-nodes.upgrade-option
@@ -12,7 +12,7 @@
         ng-click="upgradeNodesVm.nodesUpgrade.beginUpgradeNodes()",
         ng-disabled="upgradeNodesVm.nodesUpgrade.running || " +
         "(upgradeNodesVm.nodesUpgrade.upgradedNodes === upgradeNodesVm.nodesUpgrade.totalNodes && upgradeNodesVm.nodesUpgrade.completed) || " +
-        "(upgradeNodesVm.nodesUpgrade.upgradeControllersDone && upgradeNodesVm.nodesUpgrade.upgradedNodes < upgradeNodesVm.nodesUpgrade.totalNodes && !upgradeNodesVm.nodesUpgrade.upgradeComputeCheckboxSelected)",
+        "(upgradeNodesVm.nodesUpgrade.upgradeControllersDone && upgradeNodesVm.nodesUpgrade.upgradedNodes < upgradeNodesVm.nodesUpgrade.totalNodes && !upgradeNodesVm.nodesUpgrade.computeUpgradeEnabled)",
         ng-class="{\
             'spinner-visible': upgradeNodesVm.nodesUpgrade.spinnerVisible,\
             active: upgradeNodesVm.nodesUpgrade.running\

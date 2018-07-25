@@ -18,7 +18,7 @@
         .constant('PREPARE_TIMEOUT_INTERVAL', 1000)
         .constant('ADMIN_UPGRADE_ALLOWED_DOWNTIME', 30 * 60 * 1000)
         .constant('ADMIN_UPGRADE_TIMEOUT_INTERVAL', 5000)
-        .constant('NODES_UPGRADE_TIMEOUT_INTERVAL', 30 * 1000)
+        .constant('NODE_UPGRADE_TIMEOUT_INTERVAL', 30 * 1000)
         .constant('RESUME_UPGRADE_TIMEOUT_INTERVAL', 5 * 1000)
         .constant('STOP_OPENSTACK_SERVICES_TIMEOUT_INTERVAL', 5000)
         .constant('OPENSTACK_BACKUP_TIMEOUT_INTERVAL', 1000)
@@ -26,5 +26,9 @@
             nondisruptive: 'non_disruptive',
             normal: 'normal',
             none: 'none',
+        })
+        .constant('NODE_UPGRADE_STEPS', {
+            controller: 'controller',
+            compute: 'compute',
         });
 })();

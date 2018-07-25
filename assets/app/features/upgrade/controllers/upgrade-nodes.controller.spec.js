@@ -1,6 +1,6 @@
 /* jshint -W117, -W030 */
 /*global bard $controller $httpBackend should assert upgradeFactory $q upgradeStatusFactory upgradeStepsFactory
-UPGRADE_STEPS NODES_UPGRADE_TIMEOUT_INTERVAL sinon $rootScope UNEXPECTED_ERROR_DATA $timeout */
+UPGRADE_STEPS NODE_UPGRADE_STEPS NODE_UPGRADE_TIMEOUT_INTERVAL sinon $rootScope UNEXPECTED_ERROR_DATA $timeout */
 describe('Upgrade Nodes Controller', function() {
     var controller,
         stepStatus = {
@@ -236,7 +236,8 @@ describe('Upgrade Nodes Controller', function() {
             'upgradeStatusFactory',
             'upgradeStepsFactory',
             'UPGRADE_STEPS',
-            'NODES_UPGRADE_TIMEOUT_INTERVAL',
+            'NODE_UPGRADE_STEPS',
+            'NODE_UPGRADE_TIMEOUT_INTERVAL',
             'UNEXPECTED_ERROR_DATA'
         );
 
@@ -341,7 +342,7 @@ describe('Upgrade Nodes Controller', function() {
                 expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledTimes(1);
                 expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledWith(
                     UPGRADE_STEPS.nodes,
-                    NODES_UPGRADE_TIMEOUT_INTERVAL,
+                    NODE_UPGRADE_TIMEOUT_INTERVAL,
                     jasmine.any(Function),
                     jasmine.any(Function),
                     jasmine.any(Function)
@@ -518,7 +519,7 @@ describe('Upgrade Nodes Controller', function() {
                     expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledTimes(1);
                     expect(upgradeStatusFactory.waitForStepToEnd).toHaveBeenCalledWith(
                         UPGRADE_STEPS.nodes,
-                        NODES_UPGRADE_TIMEOUT_INTERVAL,
+                        NODE_UPGRADE_TIMEOUT_INTERVAL,
                         jasmine.any(Function),
                         jasmine.any(Function),
                         jasmine.any(Function)
@@ -667,9 +668,8 @@ describe('Upgrade Nodes Controller', function() {
 
             spyOn(upgradeStatusFactory, 'waitForStepToEnd');
             spyOn(upgradeStepsFactory, 'setCurrentStepCompleted');
-            spyOn(upgradeFactory, 'setPostponeComputeNodes');
 
-            controller.nodesUpgrade.upgradeComputeCheckboxSelected = false;
+            controller.nodesUpgrade.computeUpgradeEnabled = false;
             controller.nodesUpgrade.beginUpgradeNodes();
             $rootScope.$digest();
 
@@ -678,10 +678,6 @@ describe('Upgrade Nodes Controller', function() {
 
         it('should not set current step completed', function () {
             expect(upgradeStepsFactory.setCurrentStepCompleted).not.toHaveBeenCalled();
-        });
-
-        it('should set compute nodes postponed', function () {
-            expect(upgradeFactory.setPostponeComputeNodes).toHaveBeenCalledTimes(1);
         });
     });
 
@@ -708,7 +704,7 @@ describe('Upgrade Nodes Controller', function() {
             spyOn(upgradeStepsFactory, 'setUpgradeStep');
             spyOn(upgradeStepsFactory, 'setCurrentStepCompleted');
 
-            controller.nodesUpgrade.upgradeComputeCheckboxSelected = true;
+            controller.nodesUpgrade.computeUpgradeEnabled = true;
             controller.nodesUpgrade.beginUpgradeNodes();
             $rootScope.$digest();
             $timeout.flush();
@@ -729,7 +725,7 @@ describe('Upgrade Nodes Controller', function() {
             });
 
             it('should call setUpgradeStep', function () {
-                expect(upgradeStepsFactory.setUpgradeStep).toHaveBeenCalledWith(2);
+                expect(upgradeStepsFactory.setUpgradeStep).toHaveBeenCalledWith(NODE_UPGRADE_STEPS.compute);
             });
         });
 

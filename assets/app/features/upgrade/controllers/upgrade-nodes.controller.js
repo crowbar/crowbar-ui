@@ -17,7 +17,8 @@
         'upgradeStepsFactory',
         'UPGRADE_STEPS',
         'UPGRADE_STEP_STATES',
-        'NODES_UPGRADE_TIMEOUT_INTERVAL',
+        'NODE_UPGRADE_STEPS',
+        'NODE_UPGRADE_TIMEOUT_INTERVAL',
         'RESUME_UPGRADE_TIMEOUT_INTERVAL',
         'UNEXPECTED_ERROR_DATA',
         '$timeout'
@@ -29,7 +30,8 @@
         upgradeStepsFactory,
         UPGRADE_STEPS,
         UPGRADE_STEP_STATES,
-        NODES_UPGRADE_TIMEOUT_INTERVAL,
+        NODE_UPGRADE_STEPS,
+        NODE_UPGRADE_TIMEOUT_INTERVAL,
         RESUME_UPGRADE_TIMEOUT_INTERVAL,
         UNEXPECTED_ERROR_DATA,
         $timeout
@@ -46,12 +48,13 @@
             completed: false,
             running: false,
             spinnerVisible: false,
-            upgradeComputeCheckboxSelected: null,
+            computeUpgradeEnabled: null,
             upgradeControllersDone: false,
-            computeNodesPostponedFlag: null,
+            computeNodesPostponedFlag: false,
             resumeUpgrade: false,
             toggleComputeUpgrade: toggleComputeUpgrade,
             resumeUpgradeComputeNodes: resumeUpgradeComputeNodes,
+            setDefaultComputeUpgrade: false,
         };
 
         activate();
@@ -70,14 +73,14 @@
         function beginUpgradeNodes() {
             vm.nodesUpgrade.running = true;
 
-            if (vm.nodesUpgrade.upgradedNodes === 0) {
-                upgradeFactory.upgradeNodes(vm.nodesUpgrade.upgradeComputeCheckboxSelected)
+            if (vm.nodesUpgrade.subStep === 'controller_nodes' && vm.nodesUpgrade.subStepStatus === 'finished') {
+                resumeUpgradeComputeNodes();
+            } else {
+                upgradeFactory.upgradeNodes(vm.nodesUpgrade.computeUpgradeEnabled)
                     .then(
                         waitForUpgradeNodesToEnd,
                         upgradeError
                     );
-            } else {
-                resumeUpgradeComputeNodes();
             }
         }
 
@@ -89,9 +92,7 @@
                         function() {
                             $timeout(upgradeAllNodes, RESUME_UPGRADE_TIMEOUT_INTERVAL);
                         },
-                        function(errorResponse) {
-                            upgradeError(errorResponse);
-                        }
+                        upgradeError
                     )
             } else {
                 upgradeAllNodes();
@@ -109,7 +110,7 @@
         function waitForUpgradeNodesToEnd () {
             upgradeStatusFactory.waitForStepToEnd(
                 UPGRADE_STEPS.nodes,
-                NODES_UPGRADE_TIMEOUT_INTERVAL,
+                NODE_UPGRADE_TIMEOUT_INTERVAL,
                 upgradeSuccess,
                 upgradeError,
                 updateModel
@@ -123,18 +124,9 @@
                 return;
             }
 
-            // init upgrade compute checkbox
-            if (vm.nodesUpgrade.upgradeComputeCheckboxSelected === null) {
-                if (angular.isDefined(response.data.nodes_selected_for_upgrade)) {
-                    vm.nodesUpgrade.upgradeComputeCheckboxSelected = response.data.nodes_selected_for_upgrade === 'all';
-                } else {
-                    vm.nodesUpgrade.upgradeComputeCheckboxSelected = true;
-                }
-            }
-
-            // init compute node postponed flag
-            if (vm.nodesUpgrade.computeNodesPostponedFlag === null) {
-                vm.nodesUpgrade.computeNodesPostponedFlag = response.data.compute_nodes_postponed;
+            // set default upgrade compute checkbox state one time only, so not to override user's choice
+            if (vm.nodesUpgrade.computeUpgradeEnabled === null) {
+                vm.nodesUpgrade.computeUpgradeEnabled = true;
             }
 
             // nodes info is not available in main status response before step is started
@@ -146,8 +138,8 @@
                             vm.nodesUpgrade.upgradedNodes = response.data.upgraded.length;
                             vm.nodesUpgrade.totalNodes =
                                 response.data.not_upgraded.length + vm.nodesUpgrade.upgradedNodes;
-                            upgradeStepsFactory.setUpgradeAll(vm.nodesUpgrade.upgradeComputeCheckboxSelected);
-                            upgradeStepsFactory.setUpgradeStep(1);
+                            upgradeStepsFactory.setUpgradeAll(vm.nodesUpgrade.computeUpgradeEnabled);
+                            upgradeStepsFactory.setUpgradeStep(NODE_UPGRADE_STEPS.controller);
                         },
                         upgradeError
                     );
@@ -162,27 +154,29 @@
 
             // check for the case of postpone upgrade of compute nodes, after controller nodes were
             // upgraded, step status would still be 'running' while substep status would be 'finished'
-            var subStep = response.data.current_substep;
-            var subStepStatus = response.data.current_substep_status;
-            var nodesSelected = response.data.nodes_selected_for_upgrade
-            if (subStep === 'controller_nodes' && subStepStatus === 'finished' && nodesSelected === 'controllers') {
+            vm.nodesUpgrade.subStep = response.data.current_substep;
+            vm.nodesUpgrade.subStepStatus = response.data.current_substep_status;
+            if (vm.nodesUpgrade.subStep === 'controller_nodes' && vm.nodesUpgrade.subStepStatus === 'finished'
+                && response.data.nodes_selected_for_upgrade === 'controllers') {
                 vm.nodesUpgrade.running = false;
+
                 // show partially upgrade message
                 vm.nodesUpgrade.upgradeControllersDone = true;
-                upgradeStepsFactory.setUpgradeStep(2);
-                if (!vm.nodesUpgrade.computeNodesPostponedFlag && !vm.nodesUpgrade.resumeUpgrade) {
-                    upgradeFactory.setPostponeComputeNodes();
+                upgradeStepsFactory.setUpgradeStep(NODE_UPGRADE_STEPS.compute);
+
+                // automatically set check box to checked after upgrade controllers
+                if (!vm.nodesUpgrade.setDefaultComputeUpgrade) {
+                    vm.nodesUpgrade.computeUpgradeEnabled = true;
+                    upgradeStepsFactory.setUpgradeAll(true)
+                    vm.nodesUpgrade.setDefaultComputeUpgrade = true;
                 }
-                // set checkbox to checked
-                vm.nodesUpgrade.upgradeComputeCheckboxSelected = true;
-                upgradeStepsFactory.setUpgradeAll(true);
             } else {
                 // in case of resume upgrade
-                upgradeStepsFactory.setUpgradeAll(vm.nodesUpgrade.upgradeComputeCheckboxSelected);
-                if (subStep === 'compute_nodes') {
-                    upgradeStepsFactory.setUpgradeStep(2);
+                upgradeStepsFactory.setUpgradeAll(vm.nodesUpgrade.computeUpgradeEnabled);
+                if (vm.nodesUpgrade.subStep === 'compute_nodes') {
+                    upgradeStepsFactory.setUpgradeStep(NODE_UPGRADE_STEPS.compute);
                     vm.nodesUpgrade.upgradeControllersDone = true;
-                    vm.nodesUpgrade.running = subStepStatus === 'running';
+                    vm.nodesUpgrade.running = vm.nodesUpgrade.subStepStatus === 'running';
                 }
             }
         }
@@ -193,9 +187,8 @@
             vm.nodesUpgrade.running = false;
             vm.nodesUpgrade.completed = true;
 
-            // only sets step completed after upgrade all, not after upgrade controllers
-            if (response.data.current_substep === 'end_of_upgrade' &&
-                response.data.current_substep_status === 'finished') {
+            // only set step completed after upgrade all
+            if (vm.nodesUpgrade.subStep === 'end_of_upgrade' && response.data.current_substep_status === 'finished') {
                 upgradeStepsFactory.setCurrentStepCompleted();
             }
         }
@@ -217,7 +210,7 @@
         }
 
         function toggleComputeUpgrade() {
-            upgradeStepsFactory.setUpgradeAll(vm.nodesUpgrade.upgradeComputeCheckboxSelected);
+            upgradeStepsFactory.setUpgradeAll(vm.nodesUpgrade.computeUpgradeEnabled);
         }
     }
 })();
