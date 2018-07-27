@@ -157,6 +157,7 @@ describe('Upgrade Status Factory', function () {
         mockedSuccessCallback,
         mockedErrorCallback,
         mockedRunningCallback,
+        mockedRunningInterruptCallback,
         mockedCompletedCallback,
         mockedFailedCallback,
         mockedPostSyncCallback,
@@ -173,6 +174,7 @@ describe('Upgrade Status Factory', function () {
         mockedErrorCallback = jasmine.createSpy('onError');
         mockedCompletedCallback = jasmine.createSpy('onCompleted');
         mockedRunningCallback = jasmine.createSpy('onRunning');
+        mockedRunningInterruptCallback = jasmine.createSpy('onRunning(interrupt)').and.returnValue(false);
         mockedFailedCallback = jasmine.createSpy('onFailed');
         mockedPostSyncCallback = jasmine.createSpy('postSync');
 
@@ -486,6 +488,35 @@ describe('Upgrade Status Factory', function () {
                                 testedStep, pollingInterval,
                                 mockedSuccessCallback, mockedErrorCallback, mockedRunningCallback, 0
                             );
+                        });
+                    });
+
+                    describe('with onRunning callback (interrupting)', function () {
+                        beforeEach(function () {
+                            bard.mockService(upgradeFactory, {
+                                getStatus: $q.when(incompleteUpgradeResponse)
+                            });
+
+                            upgradeStatusFactory.waitForStepToEnd(
+                                testedStep, pollingInterval,
+                                mockedSuccessCallback, mockedErrorCallback, mockedRunningInterruptCallback
+                            );
+
+                            $rootScope.$digest();
+                        });
+
+                        it('should not call success callback', function () {
+                            expect(mockedSuccessCallback).not.toHaveBeenCalled();
+                        });
+                        it('should not call error callback', function () {
+                            expect(mockedErrorCallback).not.toHaveBeenCalled();
+                        });
+                        it('should call onRunning callback', function () {
+                            expect(mockedRunningInterruptCallback).toHaveBeenCalledTimes(1);
+                            expect(mockedRunningInterruptCallback).toHaveBeenCalledWith(incompleteUpgradeResponse);
+                        });
+                        it('should not schedule another check', function () {
+                            expect(mockedTimeout).not.toHaveBeenCalled();
                         });
                     });
                 });
