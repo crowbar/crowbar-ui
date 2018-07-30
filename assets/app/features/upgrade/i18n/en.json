@@ -3,6 +3,7 @@
         "nav": {
             "cancel": "Cancel Upgrade",
             "next": "Next",
+            "dashboard": "Go to Dashboard",
             "last": "Finish"
         },
         "cancel": {
@@ -109,11 +110,13 @@
             },
             "upgrade-nodes": {
                 "title": "Begin upgrading and migrating nodes by clicking on the button below",
-                "description": "Depending upon the size of your cloud and workloads this process might take quite some time.",
+                "description": "This process might take some time depending upon the size of your cloud and workloads. Uncheck the 'Upgrade Compute Nodes' box if you wish to only upgrade the controller nodes and postpone the upgrade of compute nodes. You can start the upgrade process of the compute nodes again after the controller node upgrade has been completed.",
+                "upgrade-option": "Upgrade Compute Nodes",
                 "form": {
                     "upgrade-nodes": "Upgrade Nodes"
                 },
-                "finished": "Upgrade is completed. Click Finish button to go back to the dashboard.",
+                "finished": "Upgrade is completed. Click the Finish button to go back to the dashboard.",
+                "partially-upgraded": "Upgrade of the controller nodes has been completed. Press the 'Upgrade Nodes' button to upgrade the compute nodes now. Otherwise, uncheck the 'Upgrade Compute Nodes' box and press the 'Go to Dashboard' button if you wish to upgrade the compute nodes at a later time.",
                 "status": {
                     "progress-bar": "{{current}} of {{total}} Nodes Upgraded",
                     "current-nodes": "Current Nodes:",
