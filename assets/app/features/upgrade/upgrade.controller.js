@@ -15,14 +15,18 @@
     UpgradeController.$inject = [
         '$scope',
         '$translate',
+        '$window',
         '$uibModal',
+        'upgradeFactory',
         'upgradeStepsFactory',
     ];
     // @ngInject
     function UpgradeController(
         $scope,
         $translate,
+        $window,
         $uibModal,
+        upgradeFactory,
         upgradeStepsFactory
     ) {
         var vm = this;
@@ -33,10 +37,11 @@
             isLastStep: upgradeStepsFactory.isLastStep,
             isCancelAllowed: upgradeStepsFactory.isCancelAllowed,
             isUpgradeAll: upgradeStepsFactory.isUpgradeAll,
-            getUpgradeStep: upgradeStepsFactory.getUpgradeStep,
+            isControllersUpgraded: upgradeStepsFactory.isControllersUpgraded,
         };
 
         vm.confirmCancel = confirmCancel;
+        vm.postponeUpgradeAndGoToDashboard = postponeUpgradeAndGoToDashboard;
 
         // Get Steps list from provider
         vm.steps.list = upgradeStepsFactory.steps;
@@ -53,6 +58,11 @@
             });
         }
 
+        function postponeUpgradeAndGoToDashboard() {
+            upgradeFactory.setPostponeComputeNodes().then(
+                function () { $window.location.href = '/'; }
+            );
+        }
     }
 
     CancelController.$inject = [

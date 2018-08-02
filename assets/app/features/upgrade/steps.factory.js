@@ -22,10 +22,12 @@
             isCancelAllowed: isCancelAllowed,
             setCancelAllowed: setCancelAllowed,
             reset: reset,
+            upgradeAll: true,
             setUpgradeAll: setUpgradeAll,
             isUpgradeAll: isUpgradeAll,
-            setUpgradeStep: setUpgradeStep,
-            getUpgradeStep: getUpgradeStep,
+            controllersUpgraded: null,
+            setControllersUpgraded: setControllersUpgraded,
+            isControllersUpgraded: isControllersUpgraded,
         };
 
         return factory;
@@ -45,19 +47,19 @@
         }
 
         function isUpgradeAll() {
-            return factory.activeStep.upgradeAll;
+            return factory.upgradeAll;
         }
         function setUpgradeAll(value) {
             // switches between 'Finish' or 'Go to Dashboard'
-            factory.activeStep.upgradeAll = value;
+            factory.upgradeAll = value;
         }
 
-        function getUpgradeStep() {
-            return factory.activeStep.upgradeStep;
+        function isControllersUpgraded() {
+            return factory.controllersUpgraded;
         }
-        function setUpgradeStep(value) {
-            // checks where we are in the upgrade process: 1 is from the beginning, 2 is from resume compute node
-            factory.activeStep.upgradeStep = value;
+        function setControllersUpgraded(value) {
+            // checks where we are in the upgrade process: false is before controllers are upgraded, true is after
+            factory.controllersUpgraded = value;
         }
 
         function reset() {

@@ -3,10 +3,9 @@ button.btn.btn-default.pull-left(type='button', ng-click="onCancel()", ng-disabl
 button.btn.btn-primary.pull-right(type='button', ng-click="steps.nextStep()", ng-if="!steps.isLastStep()", ng-disabled="!steps.isCurrentStepCompleted()" )
   span(aria-hidden="true", translate='') upgrade.nav.next
 button.btn.btn-primary.pull-right(type='button', ng-click="finish()",
-  ng-if="steps.isLastStep() && steps.isUpgradeAll()",
+  ng-if="steps.isLastStep() && (!steps.isControllersUpgraded() || steps.isUpgradeAll())",
   ng-disabled="!steps.isCurrentStepCompleted() || !steps.isUpgradeAll()")
   span(aria-hidden="true", translate='') upgrade.nav.last
-button.btn.btn-primary.pull-right(type='button', ng-click="goToDashboard()",
-  ng-if="steps.isLastStep() && !steps.isUpgradeAll()",
-  ng-disabled="!steps.isCurrentStepCompleted() && !(!steps.isUpgradeAll() && steps.getUpgradeStep() === 'compute')")
+button.btn.btn-primary.pull-right(type='button', ng-click="onGoToDashboard()",
+  ng-if="steps.isLastStep() && steps.isControllersUpgraded() && !steps.isUpgradeAll()")
   span(aria-hidden="true", translate='') upgrade.nav.dashboard

@@ -5,17 +5,13 @@
         .module('crowbarWidgets')
         .directive('crowbarUpgradeNav', [crowbarUpgradeNav]);
 
-    var navController = function ($scope, $window, upgradeFactory) {
+    var navController = function ($scope, $window) {
         $scope.finish = function() {
             $window.location.href = '/';
         }
-        $scope.goToDashboard = function() {
-            upgradeFactory.setPostponeComputeNodes();
-            $window.location.href = '/';
-        };
     };
 
-    navController.$inject = ['$scope', '$window', 'upgradeFactory'];
+    navController.$inject = ['$scope', '$window'];
 
     function crowbarUpgradeNav() {
         return {
@@ -24,6 +20,7 @@
             scope: {
                 steps: '=',
                 onCancel: '&',
+                onGoToDashboard: '&',
             },
             controller: navController,
         };
