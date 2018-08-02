@@ -59,7 +59,8 @@
          *     when waiting time finishes successfully
          * @param {function} onError - Callback to be executed if status API returns error
          * @param {function} [onRunning=undefined] - If specified, will be executed each time with success
-         *     responses as parameter until the specified step is completed.
+         *     responses as parameter until the specified step is completed. Wait loop can be interrupted
+         *     before step is completed by returning `false` from the `onRunning` callback.
          * @param {int} [allowedDowntimeLeft=0] - If specified, temporary unavailability of status
          *     API will not trigger `onError` handler and will not stop polling. The downtime
          *     allowance is common for whole call so if there are multiple short unavailability
@@ -85,10 +86,12 @@
                             // on step failure trigger error handler
                             onError(response);
                         } else {
-
-                            // If the response needs to be processed before the step if completed
+                            // If the response needs to be processed before the step is completed
                             if (angular.isFunction(onRunning)) {
-                                onRunning(response);
+                                if (onRunning(response) === false) {
+                                    // interrupt wait loop by returning before next check is scheduled
+                                    return;
+                                }
                             }
 
                             // schedule another check
