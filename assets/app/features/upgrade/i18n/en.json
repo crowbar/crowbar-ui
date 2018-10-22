@@ -180,6 +180,7 @@
             "lbaas_v1": "Old version of LBaaS",
             "repositories_missing": "Required repositories missing",
             "repositories_too_soon": "SOC8 repositories found",
+            "wrong_sql_engine": "Wrong SQL engine",
             "prepare": "Begin Upgrade failed",
             "repocheck_nodes": "Some Checks failed",
             "maintenance_updates_installed": "Maintenance Updates",
