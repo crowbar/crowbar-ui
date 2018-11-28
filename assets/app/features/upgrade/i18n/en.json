@@ -182,6 +182,7 @@
             "repositories_too_soon": "SOC8 repositories found",
             "wrong_sql_engine": "Wrong SQL engine",
             "prepare": "Begin Upgrade failed",
+            "repocheck_crowbar": "Some Checks failed",
             "repocheck_nodes": "Some Checks failed",
             "maintenance_updates_installed": "Maintenance Updates",
             "clusters_health_crm_failures": "Some crm commands failed",
