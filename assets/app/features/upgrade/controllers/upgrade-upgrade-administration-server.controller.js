@@ -44,8 +44,16 @@
             // TODO(itxaka): Not tested yet, tests should be done as part of card:
             // https://trello.com/c/5fXGm1a7/45-2-27-restore-last-step
             upgradeStatusFactory.syncStatusFlags(
-                UPGRADE_STEPS.admin, vm.adminUpgrade,
-                waitForUpgradeToEnd, upgradeStepsFactory.setCurrentStepCompleted, null,
+                UPGRADE_STEPS.admin,
+                vm.adminUpgrade,
+                waitForUpgradeToEnd,
+                function (/*response*/) {
+                    // don't enable "Next" if another step is already active
+                    if (upgradeStepsFactory.activeStep.state === 'upgrade.upgrade-administration-server') {
+                        upgradeStepsFactory.setCurrentStepCompleted();
+                    }
+                },
+                null,
                 function (/*response*/) {
                     if (vm.adminUpgrade.completed || vm.adminUpgrade.running) {
                         upgradeStepsFactory.setCancelAllowed(false);

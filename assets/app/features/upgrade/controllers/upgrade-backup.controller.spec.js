@@ -26,6 +26,11 @@ describe('Upgrade Flow - Backup Controller', function() {
         mockedStatusResponse = {
             data: {
                 crowbar_backup: '--some path--',
+                steps: {
+                    backup_crowbar: {
+                        status: 'pending'
+                    },
+                },
             }
         };
 

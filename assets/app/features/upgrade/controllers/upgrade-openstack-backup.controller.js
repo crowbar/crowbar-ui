@@ -77,7 +77,10 @@
 
             vm.openStackBackup.backupPath = response.data.openstack_backup;
 
-            upgradeStepsFactory.setCurrentStepCompleted()
+            // don't enable "Next" if another step is already active
+            if (upgradeStepsFactory.activeStep.state === 'upgrade.openstack-backup') {
+                upgradeStepsFactory.setCurrentStepCompleted()
+            }
         }
 
         function createBackupError(errorResponse) {

@@ -18,8 +18,10 @@ function() {
         'crowbarUtilsFactory',
         '$document',
         'upgradeStepsFactory',
+        'upgradeStatusFactory',
         'upgradeFactory',
         'FileSaver',
+        'UPGRADE_STEPS',
         'UNEXPECTED_ERROR_DATA',
     ];
     // @ngInject
@@ -29,8 +31,10 @@ function() {
         crowbarUtilsFactory,
         $document,
         upgradeStepsFactory,
+        upgradeStatusFactory,
         upgradeFactory,
         FileSaver,
+        UPGRADE_STEPS,
         UNEXPECTED_ERROR_DATA
     ) {
         var vm = this;
@@ -45,6 +49,17 @@ function() {
         activate();
 
         function activate() {
+            upgradeStatusFactory.syncStatusFlags(
+                UPGRADE_STEPS.backup_crowbar,
+                vm.backup,
+                null,
+                function() {
+                    // don't enable "Next" if another step is already active
+                    if (upgradeStepsFactory.activeStep.state === 'upgrade.backup') {
+                        upgradeStepsFactory.setCurrentStepCompleted();
+                    }
+                }
+            );
             updateBackupFilePath();
         }
 
