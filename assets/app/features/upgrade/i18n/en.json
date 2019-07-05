@@ -28,7 +28,7 @@
                         "check-again": "Check"
                     },
                     "codes": {
-                        "updates_installed": "SLES 12 SP2 Maintenance Updates",
+                        "updates_installed": "SLES 12 SP3 Maintenance Updates",
                         "network_sanity": "Network Health",
                         "cloud_health": "Cloud Health",
                         "cloud_deployment": "Deployment Conflicts",
@@ -70,14 +70,14 @@
                 "location": "Backup can be found under \"{{path}}\" on Administration Server."
             },
             "admin-repository-checks": {
-                "title": "Upgrading to SUSE OpenStack Cloud 8 requires updated software repositories for the Administration Server",
+                "title": "Upgrading to SUSE OpenStack Cloud 9 requires updated software repositories for the Administration Server",
                 "description": "Prepare the software repositories locally or via SMT and update the URLs in the Administration Server configuration correspondingly. Refer to \"Software Repository Setup\" chapter of the deployment guide. Click \"Check\" to verify all repositories are available. When all repositories have been verified click on \"Next\" to proceed.",
                 "form": {
                     "check-again": "Check"
                 }
             },
             "upgrade-admin": {
-                "title": "Upgrade the Administration Server to SUSE OpenStack Cloud 8",
+                "title": "Upgrade the Administration Server to SUSE OpenStack Cloud 9",
                 "description": "Please wait until the Administration Server has been upgraded and rebooted.",
                 "notice-title": "IMPORTANT!",
                 "notice-body": "This process might take quite some time. Please do not close the browser window or refresh the page.",
@@ -86,7 +86,7 @@
                 }
             },
             "nodes-repository-checks": {
-                "title": "Upgrading to SUSE OpenStack Cloud 8 requires updated software repositories for all nodes",
+                "title": "Upgrading to SUSE OpenStack Cloud 9 requires updated software repositories for all nodes",
                 "description": "Prepare the software repositories locally or via SMT and update the URLs in the Administration Server configuration correspondingly. Refer to \"Software Repository Setup\" chapter of the deployment guide. Click \"Check\" to verify all repositories are available. When all repositories have been verified click on \"Next\" to proceed.",
                 "form": {
                     "check-again": "Check"
@@ -131,20 +131,20 @@
         },
         "repositories": {
             "codes": {
-                "SLES12-SP2-Pool": "SUSE Linux Enterprise Server 12 SP2",
-                "SLES12-SP2-Updates": "SUSE Linux Enterprise Server 12 SP2 Updates",
-                "SUSE-OpenStack-Cloud-7-Pool": "SUSE OpenStack Cloud 7",
-                "SUSE-OpenStack-Cloud-7-Updates": "SUSE OpenStack Cloud 7 Updates",
-                "SLE12-SP2-HA-Pool": "SUSE Linux Enterprise 12 SP2 High Availability",
-                "SLE12-SP2-HA-Updates": "SUSE Linux Enterprise 12 SP2 High Availability Updates",
-                "SUSE-Enterprise-Storage-4-Pool": "SUSE Enterprise Storage 4",
-                "SUSE-Enterprise-Storage-4-Updates": "SUSE Enterprise Storage 4 Updates",
                 "SLES12-SP3-Pool": "SUSE Linux Enterprise Server 12 SP3",
                 "SLES12-SP3-Updates": "SUSE Linux Enterprise Server 12 SP3 Updates",
-                "SUSE-OpenStack-Cloud-Crowbar-8-Pool": "SUSE OpenStack Cloud Crowbar 8",
-                "SUSE-OpenStack-Cloud-Crowbar-8-Updates": "SUSE OpenStack Cloud Crowbar 8 Updates",
+                "SUSE-OpenStack-Cloud-8-Pool": "SUSE OpenStack Cloud 8",
+                "SUSE-OpenStack-Cloud-8-Updates": "SUSE OpenStack Cloud 8 Updates",
                 "SLE12-SP3-HA-Pool": "SUSE Linux Enterprise 12 SP3 High Availability",
-                "SLE12-SP3-HA-Updates": "SUSE Linux Enterprise 12 SP3 High Availability Updates"
+                "SLE12-SP3-HA-Updates": "SUSE Linux Enterprise 12 SP3 High Availability Updates",
+                "SUSE-Enterprise-Storage-4-Pool": "SUSE Enterprise Storage 4",
+                "SUSE-Enterprise-Storage-4-Updates": "SUSE Enterprise Storage 4 Updates",
+                "SLES12-SP4-Pool": "SUSE Linux Enterprise Server 12 SP4",
+                "SLES12-SP4-Updates": "SUSE Linux Enterprise Server 12 SP4 Updates",
+                "SUSE-OpenStack-Cloud-Crowbar-9-Pool": "SUSE OpenStack Cloud Crowbar 9",
+                "SUSE-OpenStack-Cloud-Crowbar-9-Updates": "SUSE OpenStack Cloud Crowbar 9 Updates",
+                "SLE12-SP4-HA-Pool": "SUSE Linux Enterprise 12 SP4 High Availability",
+                "SLE12-SP4-HA-Updates": "SUSE Linux Enterprise 12 SP4 High Availability Updates"
             }
         },
         "steps-key": {
@@ -179,7 +179,7 @@
             "keystone_hybrid_backend": "Keystone hybrid backend",
             "lbaas_v1": "Old version of LBaaS",
             "repositories_missing": "Required repositories missing",
-            "repositories_too_soon": "SOC8 repositories found",
+            "repositories_too_soon": "SOC9 repositories found",
             "wrong_sql_engine": "Wrong SQL engine",
             "prepare": "Begin Upgrade failed",
             "repocheck_crowbar": "Some Checks failed",
@@ -203,7 +203,7 @@
         "text": "SUSE OpenStack Cloud - provided by SUSE"
     },
     "header": {
-        "title": "SUSE OpenStack Cloud 7 Upgrade Wizard"
+        "title": "SUSE OpenStack Cloud 8 Upgrade Wizard"
     },
     "modal": {
         "close": "Close",
