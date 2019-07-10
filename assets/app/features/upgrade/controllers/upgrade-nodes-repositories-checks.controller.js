@@ -29,13 +29,13 @@
         var vm = this,
             addonsRepos = {
                 'ha': {
-                    'SLE12-SP3-HA-Pool': {
+                    'SLE12-SP4-HA-Pool': {
                         status: false,
-                        label: 'upgrade.repositories.codes.SLE12-SP3-HA-Pool'
+                        label: 'upgrade.repositories.codes.SLE12-SP4-HA-Pool'
                     },
-                    'SLE12-SP3-HA-Updates': {
+                    'SLE12-SP4-HA-Updates': {
                         status: false,
-                        label: 'upgrade.repositories.codes.SLE12-SP3-HA-Updates'
+                        label: 'upgrade.repositories.codes.SLE12-SP4-HA-Updates'
                     },
                 }
             };
@@ -43,21 +43,21 @@
             completed: false,
             valid: false,
             checks: {
-                'SLES12-SP3-Pool': {
+                'SLES12-SP4-Pool': {
                     status: false,
-                    label: 'upgrade.repositories.codes.SLES12-SP3-Pool'
+                    label: 'upgrade.repositories.codes.SLES12-SP4-Pool'
                 },
-                'SLES12-SP3-Updates': {
+                'SLES12-SP4-Updates': {
                     status: false,
-                    label: 'upgrade.repositories.codes.SLES12-SP3-Updates'
+                    label: 'upgrade.repositories.codes.SLES12-SP4-Updates'
                 },
-                'SUSE-OpenStack-Cloud-Crowbar-8-Pool': {
+                'SUSE-OpenStack-Cloud-Crowbar-9-Pool': {
                     status: false,
-                    label: 'upgrade.repositories.codes.SUSE-OpenStack-Cloud-Crowbar-8-Pool'
+                    label: 'upgrade.repositories.codes.SUSE-OpenStack-Cloud-Crowbar-9-Pool'
                 },
-                'SUSE-OpenStack-Cloud-Crowbar-8-Updates': {
+                'SUSE-OpenStack-Cloud-Crowbar-9-Updates': {
                     status: false,
-                    label: 'upgrade.repositories.codes.SUSE-OpenStack-Cloud-Crowbar-8-Updates'
+                    label: 'upgrade.repositories.codes.SUSE-OpenStack-Cloud-Crowbar-9-Updates'
                 }
             },
             runRepoChecks: runRepoChecks,

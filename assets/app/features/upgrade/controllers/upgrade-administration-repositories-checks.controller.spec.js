@@ -4,31 +4,31 @@ describe('Upgrade Flow - Admin Repositories Checks Controller', function () {
         passingRepoChecks = {
             os: {
                 available: true,
-                repos: ['SLES12-SP3-Pool', 'SLES12-SP3-Updates'],
+                repos: ['SLES12-SP4-Pool', 'SLES12-SP4-Updates'],
             },
             openstack: {
                 available: true,
-                repos: ['SUSE-OpenStack-Cloud-Crowbar-8-Pool', 'SUSE-OpenStack-Cloud-Crowbar-8-Updates'],
+                repos: ['SUSE-OpenStack-Cloud-Crowbar-9-Pool', 'SUSE-OpenStack-Cloud-Crowbar-9-Updates'],
             }
         },
         failingRepoChecks = {
             os: {
                 available: false,
-                repos: ['SLES12-SP3-Pool', 'SLES12-SP3-Updates'],
+                repos: ['SLES12-SP4-Pool', 'SLES12-SP4-Updates'],
             },
             openstack: {
                 available: false,
-                repos: ['SUSE-OpenStack-Cloud-Crowbar-8-Pool', 'SUSE-OpenStack-Cloud-Crowbar-8-Updates'],
+                repos: ['SUSE-OpenStack-Cloud-Crowbar-9-Pool', 'SUSE-OpenStack-Cloud-Crowbar-9-Updates'],
             }
         },
         partiallyFailingRepoChecks = {
             os: {
                 available: true,
-                repos: ['SLES12-SP3-Pool', 'SLES12-SP3-Updates'],
+                repos: ['SLES12-SP4-Pool', 'SLES12-SP4-Updates'],
             },
             openstack: {
                 available: false,
-                repos: ['SUSE-OpenStack-Cloud-Crowbar-8-Pool', 'SUSE-OpenStack-Cloud-Crowbar-8-Updates'],
+                repos: ['SUSE-OpenStack-Cloud-Crowbar-9-Pool', 'SUSE-OpenStack-Cloud-Crowbar-9-Updates'],
             }
         },
         failingErrors = {
