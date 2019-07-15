@@ -5,20 +5,20 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             'ha': {
                 'available': false,
                 'repos': [
-                    'SLE12-SP3-HA-Pool',
-                    'SLE12-SP3-HA-Updates'
+                    'SLE12-SP4-HA-Pool',
+                    'SLE12-SP4-HA-Updates'
                 ],
                 'errors': {
                     'missing': {
                         'x86_64': [
-                            'SLE12-SP3-HA-Pool',
-                            'SLE12-SP3-HA-Updates'
+                            'SLE12-SP4-HA-Pool',
+                            'SLE12-SP4-HA-Updates'
                         ]
                     },
                     'inactive': {
                         'x86_64': [
-                            'SLE12-SP3-HA-Pool',
-                            'SLE12-SP3-HA-Updates'
+                            'SLE12-SP4-HA-Pool',
+                            'SLE12-SP4-HA-Updates'
                         ]
                     }
                 }
@@ -26,20 +26,20 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             'os': {
                 'available': false,
                 'repos': [
-                    'SLES12-SP3-Pool',
-                    'SLES12-SP3-Updates'
+                    'SLES12-SP4-Pool',
+                    'SLES12-SP4-Updates'
                 ],
                 'errors': {
                     'missing': {
                         'x86_64': [
-                            'SLES12-SP3-Pool',
-                            'SLES12-SP3-Updates'
+                            'SLES12-SP4-Pool',
+                            'SLES12-SP4-Updates'
                         ]
                     },
                     'inactive': {
                         'x86_64': [
-                            'SLES12-SP3-Pool',
-                            'SLES12-SP3-Updates'
+                            'SLES12-SP4-Pool',
+                            'SLES12-SP4-Updates'
                         ]
                     }
                 }
@@ -47,20 +47,20 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             'openstack': {
                 'available': false,
                 'repos': [
-                    'SUSE-OpenStack-Cloud-Crowbar-8-Pool',
-                    'SUSE-OpenStack-Cloud-Crowbar-8-Updates'
+                    'SUSE-OpenStack-Cloud-Crowbar-9-Pool',
+                    'SUSE-OpenStack-Cloud-Crowbar-9-Updates'
                 ],
                 'errors': {
                     'missing': {
                         'x86_64': [
-                            'SUSE-OpenStack-Cloud-Crowbar-8-Pool',
-                            'SUSE-OpenStack-Cloud-Crowbar-8-Updates'
+                            'SUSE-OpenStack-Cloud-Crowbar-9-Pool',
+                            'SUSE-OpenStack-Cloud-Crowbar-9-Updates'
                         ]
                     },
                     'inactive': {
                         'x86_64': [
-                            'SUSE-OpenStack-Cloud-Crowbar-8-Pool',
-                            'SUSE-OpenStack-Cloud-Crowbar-8-Updates'
+                            'SUSE-OpenStack-Cloud-Crowbar-9-Pool',
+                            'SUSE-OpenStack-Cloud-Crowbar-9-Updates'
                         ]
                     }
                 }
@@ -70,24 +70,24 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             'ha': {
                 'available': true,
                 'repos': [
-                    'SLE12-SP3-HA-Pool',
-                    'SLE12-SP3-HA-Updates'
+                    'SLE12-SP4-HA-Pool',
+                    'SLE12-SP4-HA-Updates'
                 ],
                 'errors': {}
             },
             'os': {
                 'available': true,
                 'repos': [
-                    'SLES12-SP3-Pool',
-                    'SLES12-SP3-Updates'
+                    'SLES12-SP4-Pool',
+                    'SLES12-SP4-Updates'
                 ],
                 'errors': {}
             },
             'openstack': {
                 'available': true,
                 'repos': [
-                    'SUSE-OpenStack-Cloud-Crowbar-8-Pool',
-                    'SUSE-OpenStack-Cloud-Crowbar-8-Updates'
+                    'SUSE-OpenStack-Cloud-Crowbar-9-Pool',
+                    'SUSE-OpenStack-Cloud-Crowbar-9-Updates'
                 ],
                 'errors': {}
             }
@@ -96,20 +96,20 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             'ha': {
                 'available': false,
                 'repos': [
-                    'SLE12-SP3-HA-Pool',
-                    'SLE12-SP3-HA-Updates'
+                    'SLE12-SP4-HA-Pool',
+                    'SLE12-SP4-HA-Updates'
                 ],
                 'errors': {
                     'missing': {
                         'x86_64': [
-                            'SLE12-SP3-HA-Pool',
-                            'SLE12-SP3-HA-Updates'
+                            'SLE12-SP4-HA-Pool',
+                            'SLE12-SP4-HA-Updates'
                         ]
                     },
                     'inactive': {
                         'x86_64': [
-                            'SLE12-SP3-HA-Pool',
-                            'SLE12-SP3-HA-Updates'
+                            'SLE12-SP4-HA-Pool',
+                            'SLE12-SP4-HA-Updates'
                         ]
                     }
                 }
@@ -117,18 +117,18 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             'os': {
                 'available': false,
                 'repos': [
-                    'SLES12-SP3-Pool',
-                    'SLES12-SP3-Updates'
+                    'SLES12-SP4-Pool',
+                    'SLES12-SP4-Updates'
                 ],
                 'errors': {
                     'missing': {
                         'x86_64': [
-                            'SLES12-SP3-Pool'
+                            'SLES12-SP4-Pool'
                         ]
                     },
                     'inactive': {
                         'x86_64': [
-                            'SLES12-SP3-Pool'
+                            'SLES12-SP4-Pool'
                         ]
                     }
                 }
@@ -136,8 +136,8 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
             'openstack': {
                 'available': true,
                 'repos': [
-                    'SUSE-OpenStack-Cloud-Crowbar-8-Pool',
-                    'SUSE-OpenStack-Cloud-Crowbar-8-Updates'
+                    'SUSE-OpenStack-Cloud-Crowbar-9-Pool',
+                    'SUSE-OpenStack-Cloud-Crowbar-9-Updates'
                 ],
                 'errors': {}
             }
@@ -309,29 +309,29 @@ describe('Upgrade Flow - Nodes Repositories Checks Controller', function () {
 
                 var langKeyPrefix = 'upgrade.repositories.codes.',
                     expectedChecks = {
-                        'SLES12-SP3-Pool': {
+                        'SLES12-SP4-Pool': {
                             status: false,
-                            label: langKeyPrefix + 'SLES12-SP3-Pool'
+                            label: langKeyPrefix + 'SLES12-SP4-Pool'
                         },
-                        'SLES12-SP3-Updates': {
+                        'SLES12-SP4-Updates': {
                             status: true,
-                            label: langKeyPrefix + 'SLES12-SP3-Updates'
+                            label: langKeyPrefix + 'SLES12-SP4-Updates'
                         },
-                        'SUSE-OpenStack-Cloud-Crowbar-8-Pool': {
+                        'SUSE-OpenStack-Cloud-Crowbar-9-Pool': {
                             status: true,
-                            label: langKeyPrefix + 'SUSE-OpenStack-Cloud-Crowbar-8-Pool'
+                            label: langKeyPrefix + 'SUSE-OpenStack-Cloud-Crowbar-9-Pool'
                         },
-                        'SUSE-OpenStack-Cloud-Crowbar-8-Updates': {
+                        'SUSE-OpenStack-Cloud-Crowbar-9-Updates': {
                             status: true,
-                            label: langKeyPrefix + 'SUSE-OpenStack-Cloud-Crowbar-8-Updates'
+                            label: langKeyPrefix + 'SUSE-OpenStack-Cloud-Crowbar-9-Updates'
                         },
-                        'SLE12-SP3-HA-Pool': {
+                        'SLE12-SP4-HA-Pool': {
                             status: false,
-                            label: langKeyPrefix + 'SLE12-SP3-HA-Pool'
+                            label: langKeyPrefix + 'SLE12-SP4-HA-Pool'
                         },
-                        'SLE12-SP3-HA-Updates': {
+                        'SLE12-SP4-HA-Updates': {
                             status: false,
-                            label: langKeyPrefix + 'SLE12-SP3-HA-Updates'
+                            label: langKeyPrefix + 'SLE12-SP4-HA-Updates'
                         }
                     };
                 expect(controller.repoChecks.checks).toEqual(expectedChecks);
