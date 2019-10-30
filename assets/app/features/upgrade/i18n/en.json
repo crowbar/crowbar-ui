@@ -181,6 +181,7 @@
             "aodh_proposal": "Deprecated Aodh deployment",
             "trove_proposal": "Deprecated Trove deployment",
             "legacy_ceilometer": "Deprecated Ceilometer deployment",
+            "xen_nodes_present": "XEN compute nodes present",
             "repositories_missing": "Required repositories missing",
             "repositories_too_soon": "SOC9 repositories found",
             "wrong_sql_engine": "Wrong SQL engine",
