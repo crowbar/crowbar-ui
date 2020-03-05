@@ -7,7 +7,7 @@ ENV PORT=3000
 WORKDIR /crowbar-ui
 
 RUN apt-get update && \
-    apt-get install -y libfontconfig1 libfontconfig1-dev supervisor
+    apt-get --no-install-recommends install -y libfontconfig1 libfontconfig1-dev supervisor
 RUN npm install --global gulp bower nodemon
 RUN mkdir -p /var/log/supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
